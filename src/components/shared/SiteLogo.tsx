@@ -34,7 +34,6 @@ export function SiteLogo({
         width={LOGO_INTRINSIC_WIDTH}
         height={LOGO_INTRINSIC_HEIGHT}
         priority
-        unoptimized
         className={cn(
           "h-auto w-auto object-contain object-left transition-transform duration-300 group-hover:scale-[1.02]",
           LOGO_SIZE_CLASSES[size],
