@@ -101,13 +101,13 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
               <SiteLogo alt={common("appName")} size="header" />
             </Link>
 
-            <nav className="hidden items-center gap-1 xl:flex">
+            <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 md:flex lg:gap-1">
               {NAV_SECTIONS.map((section) =>
                 section.type === "route" ? (
                   <Link
                     key={section.key}
                     href={section.href}
-                    className="rounded-full px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                    className="rounded-full px-2 py-1.5 text-xs font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white lg:px-3.5 lg:py-2 lg:text-sm"
                   >
                     {t(section.key)}
                   </Link>
@@ -115,7 +115,7 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
                   <a
                     key={section.key}
                     href={resolveNavHref(pathname, section)}
-                    className="rounded-full px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                    className="rounded-full px-2 py-1.5 text-xs font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white lg:px-3.5 lg:py-2 lg:text-sm"
                   >
                     {t(section.key)}
                   </a>
@@ -123,7 +123,7 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
               )}
             </nav>
 
-            <div className="hidden items-center gap-2 md:flex">
+            <div className="hidden shrink-0 items-center gap-2 md:flex">
               <LocaleSwitcher enabledLocales={enabledLocales} />
 
               <a

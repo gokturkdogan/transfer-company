@@ -1,10 +1,11 @@
 "use client";
 
 import {
-  Check,
+  BadgeCheck,
+  CupSoda,
+  Droplets,
   Luggage,
-  Plane,
-  ShieldCheck,
+  Tv,
   Users,
   Wifi,
 } from "lucide-react";
@@ -26,7 +27,13 @@ type VehicleRecommendationCardProps = {
   onSelect: () => void;
 };
 
-const INCLUDED_SERVICE_ICONS = [Plane, Wifi, ShieldCheck, Users, Check] as const;
+const INCLUDED_SERVICES = [
+  { key: "tv", icon: Tv },
+  { key: "wifi", icon: Wifi },
+  { key: "water", icon: Droplets },
+  { key: "softDrinks", icon: CupSoda },
+  { key: "welcomeWithName", icon: BadgeCheck },
+] as const;
 
 function eligibilityVariant(
   eligibility: TransferVehicleOptionDto["eligibility"],
@@ -101,21 +108,17 @@ export function VehicleRecommendationCard({
               {t("includedServicesTitle")}
             </p>
             <ul className="grid gap-2 sm:grid-cols-2">
-              {(["0", "1", "2", "3", "4"] as const).map((key, index) => {
-                const Icon = INCLUDED_SERVICE_ICONS[index] ?? Check;
-
-                return (
-                  <li
-                    key={key}
-                    className="flex items-center gap-2 text-sm text-foreground/85"
-                  >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold">
-                      <Icon className="h-3.5 w-3.5" aria-hidden />
-                    </span>
-                    {t(`includedServices.${key}`)}
-                  </li>
-                );
-              })}
+              {INCLUDED_SERVICES.map(({ key, icon: Icon }) => (
+                <li
+                  key={key}
+                  className="flex items-center gap-2 text-sm text-foreground/85"
+                >
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold">
+                    <Icon className="h-3.5 w-3.5" aria-hidden />
+                  </span>
+                  {t(`includedServices.${key}`)}
+                </li>
+              ))}
             </ul>
           </div>
 

@@ -360,11 +360,11 @@
       "luggageMax": "حد أقصى {large} كبير · {cabin} يدوي",
       "includedServicesTitle": "الخدمات المشمولة في السعر",
       "includedServices": {
-        "0": "استقبال مجاني في المطار",
-        "1": "تتبع الرحلة",
-        "2": "ضمان سعر ثابت",
-        "3": "سائق محترف",
-        "4": "الدفع عند الوصول"
+        "tv": "تلفزيون",
+        "wifi": "واي فاي",
+        "water": "ماء",
+        "softDrinks": "مشروبات غازية",
+        "welcomeWithName": "استقبال بلوحة الاسم"
       },
       "totalLabel": "الإجمالي",
       "multiVehicle": "{quantity} × {name}",

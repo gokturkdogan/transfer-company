@@ -26,69 +26,64 @@ export function BookingFlow() {
     (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
   );
 
+  const showStepCard = state.step !== "vehicle";
+
   return (
     <BookingFlowShell>
-      <BookingStepCard>
-        {state.errorKey && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertDescription>{t(state.errorKey)}</AlertDescription>
-          </Alert>
-        )}
+      {state.errorKey && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertDescription>{t(state.errorKey)}</AlertDescription>
+        </Alert>
+      )}
 
-        {state.step === "search" && (
-          <BookingStepHeader
-            eyebrow={t("page.searchEyebrow")}
-            title={t("page.searchTitle")}
-            subtitle={t("page.searchSubtitle")}
-          />
-        )}
+      {state.step === "vehicle" && <VehicleRecommendationList />}
 
-        {state.step === "vehicle" && (
-          <>
+      {showStepCard && (
+        <BookingStepCard>
+          {state.step === "search" && (
             <BookingStepHeader
-              eyebrow={t("page.vehicleEyebrow")}
-              title={t("vehicle.title")}
-              subtitle={t("page.vehicleSubtitle")}
+              eyebrow={t("page.searchEyebrow")}
+              title={t("page.searchTitle")}
+              subtitle={t("page.searchSubtitle")}
             />
-            <VehicleRecommendationList />
-          </>
-        )}
+          )}
 
-        {state.step === "customer" && selectedOption && (
-          <>
-            <BookingStepHeader
-              eyebrow={t("page.detailsEyebrow")}
-              title={t("page.detailsTitle")}
-              subtitle={t("page.detailsSubtitle")}
-            />
-            <div className="space-y-6">
-              <RequiredExtrasPanel
-                extras={selectedOption.requiredExtras}
-                currency={state.quote!.currency}
+          {state.step === "customer" && selectedOption && (
+            <>
+              <BookingStepHeader
+                eyebrow={t("page.detailsEyebrow")}
+                title={t("page.detailsTitle")}
+                subtitle={t("page.detailsSubtitle")}
               />
-              <OptionalExtrasSelector />
-              <HotelSelector />
-              <CustomDestinationFields />
-              <CustomerDetailsForm />
-              <FlightDetailsForm />
-            </div>
-            <BookingFlowNavigation
-              className="mt-8"
-              onBack={() => dispatch({ type: "SET_STEP", step: "vehicle" })}
-              onContinue={() =>
-                dispatch({
-                  type: "SET_STEP",
-                  step: "review",
-                  idempotencyKey: crypto.randomUUID(),
-                })
-              }
-            />
-          </>
-        )}
+              <div className="space-y-6">
+                <RequiredExtrasPanel
+                  extras={selectedOption.requiredExtras}
+                  currency={state.quote!.currency}
+                />
+                <OptionalExtrasSelector />
+                <HotelSelector />
+                <CustomDestinationFields />
+                <CustomerDetailsForm />
+                <FlightDetailsForm />
+              </div>
+              <BookingFlowNavigation
+                className="mt-8"
+                onBack={() => dispatch({ type: "SET_STEP", step: "vehicle" })}
+                onContinue={() =>
+                  dispatch({
+                    type: "SET_STEP",
+                    step: "review",
+                    idempotencyKey: crypto.randomUUID(),
+                  })
+                }
+              />
+            </>
+          )}
 
-        {state.step === "review" && <BookingReview />}
-        {state.step === "success" && <SuccessStep />}
-      </BookingStepCard>
+          {state.step === "review" && <BookingReview />}
+          {state.step === "success" && <SuccessStep />}
+        </BookingStepCard>
+      )}
     </BookingFlowShell>
   );
 }

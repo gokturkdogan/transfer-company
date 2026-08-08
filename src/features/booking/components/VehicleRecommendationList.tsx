@@ -12,10 +12,14 @@ export function VehicleRecommendationList() {
 
   if (state.isLoadingQuote) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-52 w-full rounded-[1.35rem]" />
-        <Skeleton className="h-52 w-full rounded-[1.35rem]" />
-      </div>
+      <ul className="space-y-5" aria-busy="true">
+        <li>
+          <Skeleton className="h-52 w-full rounded-[1.35rem]" />
+        </li>
+        <li>
+          <Skeleton className="h-52 w-full rounded-[1.35rem]" />
+        </li>
+      </ul>
     );
   }
 
@@ -28,10 +32,10 @@ export function VehicleRecommendationList() {
   }
 
   return (
-    <div className="space-y-6">
+    <ul className="space-y-5">
       {state.quote.options.map((option) => (
-        <VehicleRecommendationCard
-          key={option.vehicleCategoryId}
+        <li key={option.vehicleCategoryId}>
+          <VehicleRecommendationCard
           option={option}
           selected={state.selectedVehicleCategoryId === option.vehicleCategoryId}
           disabled={option.eligibility === "INELIGIBLE"}
@@ -42,8 +46,9 @@ export function VehicleRecommendationList() {
               quantity: option.quantity,
             })
           }
-        />
+          />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

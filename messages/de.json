@@ -360,11 +360,11 @@
       "luggageMax": "Max. {large} groß · {cabin} Handgepäck",
       "includedServicesTitle": "Im Preis enthaltene Leistungen",
       "includedServices": {
-        "0": "Kostenloser Flughafen-Meet & Greet",
-        "1": "Flugverfolgung",
-        "2": "Festpreisgarantie",
-        "3": "Professioneller Chauffeur",
-        "4": "Zahlung bei Ankunft"
+        "tv": "TV",
+        "wifi": "WLAN",
+        "water": "Wasser",
+        "softDrinks": "Erfrischungsgetränke",
+        "welcomeWithName": "Begrüßung mit Namensschild"
       },
       "totalLabel": "Gesamt",
       "multiVehicle": "{quantity} × {name}",

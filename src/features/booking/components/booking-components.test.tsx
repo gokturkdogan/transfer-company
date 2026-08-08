@@ -18,11 +18,11 @@ const messages = {
       luggageMax: "Max. {large} large",
       includedServicesTitle: "Services included",
       includedServices: {
-        "0": "Meet & greet",
-        "1": "Flight tracking",
-        "2": "Fixed price",
-        "3": "Chauffeur",
-        "4": "Pay on arrival",
+        tv: "TV",
+        wifi: "Wi-Fi",
+        water: "Water",
+        softDrinks: "Soft Drinks",
+        welcomeWithName: "Welcome with Name",
       },
       totalLabel: "Total",
       eligibility: {

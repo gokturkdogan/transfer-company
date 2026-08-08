@@ -360,11 +360,11 @@
       "luggageMax": "Max. {large} large · {cabin} cabin",
       "includedServicesTitle": "Services included in the price",
       "includedServices": {
-        "0": "Free airport meet & greet",
-        "1": "Flight tracking",
-        "2": "Fixed price guarantee",
-        "3": "Professional chauffeur",
-        "4": "Pay on arrival"
+        "tv": "TV",
+        "wifi": "Wi-Fi",
+        "water": "Water",
+        "softDrinks": "Soft Drinks",
+        "welcomeWithName": "Welcome with Name"
       },
       "totalLabel": "Total",
       "multiVehicle": "{quantity} × {name}",

@@ -360,11 +360,11 @@
       "luggageMax": "Max. {large} büyük · {cabin} kabin",
       "includedServicesTitle": "Fiyata dahil hizmetler",
       "includedServices": {
-        "0": "Ücretsiz havalimanı karşılama",
-        "1": "Uçuş takibi",
-        "2": "Sabit fiyat garantisi",
-        "3": "Profesyonel şoför",
-        "4": "Ödeme varışta"
+        "tv": "TV",
+        "wifi": "Wi-Fi",
+        "water": "Su",
+        "softDrinks": "Meşrubat",
+        "welcomeWithName": "İsimli karşılama"
       },
       "totalLabel": "Toplam",
       "multiVehicle": "{quantity} × {name}",
