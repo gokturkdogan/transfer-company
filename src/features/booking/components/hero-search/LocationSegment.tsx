@@ -98,6 +98,7 @@ export function LocationSegment({
         </button>
       </PopoverTrigger>
       <PopoverContent
+        side="top"
         align="start"
         className="w-[min(22rem,calc(100vw-2rem))] rounded-2xl border-border/70 p-0 shadow-premium"
       >

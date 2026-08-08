@@ -298,6 +298,9 @@
       "outboundTime": "Gidiş saati",
       "returnDate": "Dönüş tarihi",
       "returnTime": "Dönüş saati",
+      "selectDateTime": "Tarih ve saat seçin",
+      "pickTime": "Saat seçin",
+      "noTimesAvailable": "Bu tarih için uygun saat kalmadı.",
       "passengers": "Yolcu",
       "adults": "Yetişkin",
       "children": "Çocuk",
@@ -390,7 +393,8 @@
   },
   "contact": {
     "call": "Ara",
-    "whatsapp": "WhatsApp"
+    "whatsapp": "WhatsApp",
+    "reserve": "Rezervasyon"
   },
   "trust": {
     "fixedPrice": {

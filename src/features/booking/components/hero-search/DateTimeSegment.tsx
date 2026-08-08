@@ -1,15 +1,20 @@
 "use client";
 
 import { CalendarDays } from "lucide-react";
-import { useId } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 
-import { SearchSegmentShell } from "@/features/booking/components/hero-search/SearchSegment";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { DateTimePickerPanel } from "@/features/booking/components/DateTimePickerPanel";
+import {
+  SearchSegmentShell,
+  SegmentValue,
+} from "@/features/booking/components/hero-search/SearchSegment";
+import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
 import { cn } from "@/lib/utils";
 
 type DateTimeSegmentProps = {
   label: string;
-  dateLabel: string;
-  timeLabel: string;
   dateValue: string;
   timeValue: string;
   minDate: string;
@@ -19,14 +24,8 @@ type DateTimeSegmentProps = {
   withDivider?: boolean;
 };
 
-/**
- * Native date + time inputs rendered inline so the whole picker stays on one
- * row. Native controls keep mobile UX (system pickers) and RTL support intact.
- */
 export function DateTimeSegment({
   label,
-  dateLabel,
-  timeLabel,
   dateValue,
   timeValue,
   minDate,
@@ -35,47 +34,53 @@ export function DateTimeSegment({
   className,
   withDivider = true,
 }: DateTimeSegmentProps) {
-  const dateId = useId();
-  const timeId = useId();
-
-  const inputClasses =
-    "min-w-0 cursor-pointer appearance-none border-0 bg-transparent p-0 text-sm font-semibold leading-tight text-foreground outline-none focus:outline-none";
+  const locale = useLocale();
+  const t = useTranslations("booking.search");
+  const [open, setOpen] = useState(false);
+  const hasValue = Boolean(dateValue && timeValue);
+  const displayValue = formatDateTimeLabel(dateValue, timeValue, locale);
 
   return (
-    <div
-      className={cn(
-        "rounded-2xl transition-colors hover:bg-muted/60 lg:rounded-xl",
-        className,
-      )}
-    >
-      <SearchSegmentShell
-        icon={CalendarDays}
-        label={label}
-        withDivider={withDivider}
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          aria-label={label}
+          className={cn(
+            "cursor-pointer text-start outline-none transition-colors",
+            "hover:bg-muted/60 focus-visible:bg-muted/60",
+            "rounded-2xl lg:rounded-xl",
+            className,
+          )}
+        >
+          <SearchSegmentShell
+            icon={CalendarDays}
+            label={label}
+            withDivider={withDivider}
+          >
+            <SegmentValue placeholder={!hasValue}>
+              {hasValue ? displayValue : t("selectDateTime")}
+            </SegmentValue>
+          </SearchSegmentShell>
+        </button>
+      </PopoverTrigger>
+
+      <PopoverContent
+        side="top"
+        align="start"
+        className="w-auto overflow-hidden rounded-2xl border-border/70 p-0 shadow-premium"
       >
-        <span className="flex min-w-0 items-baseline gap-1.5">
-          <input
-            id={dateId}
-            type="date"
-            aria-label={dateLabel}
-            value={dateValue}
-            min={minDate}
-            onChange={(event) => onDateChange(event.target.value)}
-            className={cn(inputClasses, "w-[7.5rem] flex-1")}
-          />
-          <span className="text-border" aria-hidden>
-            |
-          </span>
-          <input
-            id={timeId}
-            type="time"
-            aria-label={timeLabel}
-            value={timeValue}
-            onChange={(event) => onTimeChange(event.target.value)}
-            className={cn(inputClasses, "w-[4.25rem] shrink-0")}
-          />
-        </span>
-      </SearchSegmentShell>
-    </div>
+        <DateTimePickerPanel
+          dateValue={dateValue}
+          timeValue={timeValue}
+          minDate={minDate}
+          onCommit={(date, time) => {
+            onDateChange(date);
+            onTimeChange(time);
+            setOpen(false);
+          }}
+        />
+      </PopoverContent>
+    </Popover>
   );
 }

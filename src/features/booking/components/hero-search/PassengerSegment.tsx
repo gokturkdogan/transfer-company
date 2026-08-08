@@ -15,29 +15,21 @@ import { cn } from "@/lib/utils";
 type PassengerSegmentProps = {
   adults: number;
   childCount: number;
-  largeLuggage: number;
-  cabinLuggage: number;
   onAdultsChange: (value: number) => void;
   onChildrenChange: (value: number) => void;
-  onLargeLuggageChange: (value: number) => void;
-  onCabinLuggageChange: (value: number) => void;
   className?: string;
   withDivider?: boolean;
 };
 
 /**
- * Collapses four counters into a single segment so the search bar can stay on
- * one row. Trigger shows a short summary; details live in the popover.
+ * Collapses passenger counters into a single segment so the search bar can stay
+ * on one row. Luggage is collected in later booking steps.
  */
 export function PassengerSegment({
   adults,
   childCount,
-  largeLuggage,
-  cabinLuggage,
   onAdultsChange,
   onChildrenChange,
-  onLargeLuggageChange,
-  onCabinLuggageChange,
   className,
   withDivider = true,
 }: PassengerSegmentProps) {
@@ -73,6 +65,7 @@ export function PassengerSegment({
         </button>
       </PopoverTrigger>
       <PopoverContent
+        side="top"
         align="end"
         className="w-[min(20rem,calc(100vw-2rem))] rounded-2xl border-border/70 p-2 shadow-premium"
       >
@@ -89,18 +82,6 @@ export function PassengerSegment({
             value={childCount}
             max={50}
             onChange={onChildrenChange}
-          />
-          <CounterRow
-            label={t("largeLuggage")}
-            value={largeLuggage}
-            max={50}
-            onChange={onLargeLuggageChange}
-          />
-          <CounterRow
-            label={t("cabinLuggage")}
-            value={cabinLuggage}
-            max={50}
-            onChange={onCabinLuggageChange}
           />
         </div>
       </PopoverContent>

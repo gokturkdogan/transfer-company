@@ -8,31 +8,26 @@ import { DateTimeSegment } from "@/features/booking/components/hero-search/DateT
 import { LocationSegment } from "@/features/booking/components/hero-search/LocationSegment";
 import { PassengerSegment } from "@/features/booking/components/hero-search/PassengerSegment";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { todayIsoDateInProjectZone } from "@/features/booking/lib/search-datetime";
 import { cn } from "@/lib/utils";
 
 type HeroSearchBarProps = {
   onSubmit: () => void;
 };
 
-function todayIsoDate() {
-  const now = new Date();
-  const offsetMs = now.getTimezoneOffset() * 60_000;
-  return new Date(now.getTime() - offsetMs).toISOString().slice(0, 10);
-}
-
 /**
  * The hero conversion surface: every field lives on a single row from `lg` up,
  * collapsing to a two-column card on tablets and a stack on phones.
  *
- * Passenger and luggage counters are collapsed behind one popover segment —
- * that is what keeps the row to a single line even for round trips.
+ * Passenger counters are collapsed behind one popover segment — that is what
+ * keeps the row to a single line even for round trips.
  */
 export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
   const t = useTranslations("booking.search");
   const { state, airports, cities, districts, dispatch } = useBookingFlow();
   const { search } = state;
 
-  const minDate = useMemo(() => todayIsoDate(), []);
+  const minDate = useMemo(() => todayIsoDateInProjectZone(), []);
   const isRoundTrip = search.tripType === "ROUND_TRIP";
 
   const airportOptions = useMemo(
@@ -142,8 +137,6 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
 
           <DateTimeSegment
             label={t("outboundDate")}
-            dateLabel={t("outboundDate")}
-            timeLabel={t("outboundTime")}
             dateValue={search.outboundDate}
             timeValue={search.outboundTime}
             minDate={minDate}
@@ -159,8 +152,6 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
           {isRoundTrip && (
             <DateTimeSegment
               label={t("returnDate")}
-              dateLabel={t("returnDate")}
-              timeLabel={t("returnTime")}
               dateValue={search.returnDate}
               timeValue={search.returnTime}
               minDate={search.outboundDate || minDate}
@@ -177,8 +168,6 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
           <PassengerSegment
             adults={search.passengerCount}
             childCount={search.childCount}
-            largeLuggage={search.largeLuggageCount}
-            cabinLuggage={search.cabinLuggageCount}
             withDivider={false}
             className="lg:flex-[0.9_1_0%]"
             onAdultsChange={(value) =>
@@ -186,18 +175,6 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             }
             onChildrenChange={(value) =>
               dispatch({ type: "UPDATE_SEARCH", search: { childCount: value } })
-            }
-            onLargeLuggageChange={(value) =>
-              dispatch({
-                type: "UPDATE_SEARCH",
-                search: { largeLuggageCount: value },
-              })
-            }
-            onCabinLuggageChange={(value) =>
-              dispatch({
-                type: "UPDATE_SEARCH",
-                search: { cabinLuggageCount: value },
-              })
             }
           />
 

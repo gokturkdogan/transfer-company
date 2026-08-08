@@ -298,6 +298,9 @@
       "outboundTime": "Outbound time",
       "returnDate": "Return date",
       "returnTime": "Return time",
+      "selectDateTime": "Select date & time",
+      "pickTime": "Pick a time",
+      "noTimesAvailable": "No available times for this date.",
       "passengers": "Passengers",
       "adults": "Adults",
       "children": "Children",
@@ -390,7 +393,8 @@
   },
   "contact": {
     "call": "Call",
-    "whatsapp": "WhatsApp"
+    "whatsapp": "WhatsApp",
+    "reserve": "Book"
   },
   "trust": {
     "fixedPrice": {
