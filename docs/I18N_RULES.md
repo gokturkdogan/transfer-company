@@ -45,10 +45,19 @@ Admin-editable content uses sibling translation tables:
 - `location_translations`
 - `vehicle_category_translations`
 - `extra_service_translations`
+- `vehicle_category_feature_translations`
 
 Pattern: `(entity_id, locale)` unique constraint.
 
 Query pattern: join parent table with translation for the requested locale, fall back to default locale (`tr`) if translation missing.
+
+## Admin translation input
+
+- Active languages come from `enabled_locales` (`LocaleRepository.listActive()`).
+- Shared UI: `LocaleTextFields` (`src/features/admin/components/LocaleTextFields.tsx`).
+- Server normalization: `normalizeLocaleTranslations()` in `src/features/admin/server/translation-input.ts` — trims values, requires default locale (`tr`), ignores empty optional locales.
+- Applies to: locations (name), extras (name), vehicles (display name + each feature label).
+- Configure languages under `/admin/locales` before entering translations.
 
 ## Navigation
 

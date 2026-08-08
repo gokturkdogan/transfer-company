@@ -11,7 +11,7 @@ globs:
 ## Scope
 
 - Routes live at `/admin/*` — **not** under `[locale]`
-- Single language (English) for admin UI
+- Single language (Turkish) for admin UI
 - Mutations via Server Actions only — no business logic in page components
 
 ## Authentication

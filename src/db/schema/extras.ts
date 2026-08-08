@@ -56,6 +56,30 @@ export const extraServices = pgTable(
   ],
 );
 
+export const extraServicePrices = pgTable(
+  "extra_service_prices",
+  {
+    id: id(),
+    extraServiceId: uuid("extra_service_id")
+      .notNull()
+      .references(() => extraServices.id, { onDelete: "cascade" }),
+    currency: currency(),
+    priceMinor: priceMinor(),
+    ...timestamps,
+    ...softDelete,
+  },
+  (table) => [
+    uniqueIndex("extra_service_prices_extra_currency_unique").on(
+      table.extraServiceId,
+      table.currency,
+    ),
+    check(
+      "extra_service_prices_price_non_negative",
+      sql`${table.priceMinor} >= 0`,
+    ),
+  ],
+);
+
 export const extraServiceTranslations = pgTable(
   "extra_service_translations",
   {

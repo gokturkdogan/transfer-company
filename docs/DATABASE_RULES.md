@@ -50,10 +50,17 @@ Parent entities also carry `default_name` as admin fallback when translation is 
 | Table | Purpose |
 |-------|---------|
 | `locations` | Self-referential hierarchy (`parent_id`) |
-| `vehicle_categories` | Capacity + media reference |
+| `vehicle_categories` | Capacity, brand/model, cover image |
+| `vehicle_category_features` | Ordered feature rows per vehicle |
+| `vehicle_category_feature_translations` | Localized feature labels |
+| `vehicle_category_images` | Up to 4 optional gallery images per vehicle |
 | `routes` | Directed airport → district |
-| `route_prices` | One row per route + vehicle with one-way/round-trip columns |
+| `route_prices` | One row per route + vehicle + currency with one-way/round-trip columns |
+| `enabled_currencies` | Admin-selected currencies shown in pricing matrix |
 | `extra_services` | Configurable extras incl. luggage vehicle |
+| `extra_service_prices` | Per-currency extra prices (admin-managed) |
+| `contact_channels` | Site contact emails, phones, WhatsApp numbers |
+| `enabled_locales` | Admin-enabled site languages for locale switcher |
 | `reservations` | Booking header; district pricing + hotel/custom drop-off |
 | `reservation_items` | Snapshot line items (vehicles + extras) |
 | `admin_users` | Admin credentials (scrypt hash) |
@@ -75,7 +82,7 @@ Parent entities also carry `default_name` as admin fallback when translation is 
 | Index | Rationale |
 |-------|-----------|
 | `routes_origin_destination_unique` | Prevent duplicate route definitions |
-| `route_prices_route_vehicle_unique` | One price row per route + vehicle |
+| `route_prices_route_vehicle_currency_unique` | One price row per route + vehicle + currency |
 | `route_prices_route_active_idx` | Quote lookups filter by route + active |
 | `reservations_status_outbound_idx` | Admin list/filter by status + date |
 | `reservations_reference_unique` | Public reference lookup |
@@ -85,7 +92,11 @@ Parent entities also carry `default_name` as admin fallback when translation is 
 | `locations_parent_type_active_idx` | Scoped district/hotel queries |
 | `reservations_hotel_location_id_idx` | Hotel FK lookups |
 | `extra_services_active_sort_idx` | Ordered extras list |
+| `extra_service_prices_extra_currency_unique` | One price row per extra + currency |
+| `contact_channels_type_active_sort_idx` | Public contact list by type + active + order |
+| `enabled_locales_active_sort_idx` | Active locale list for switcher ordering |
 | `vehicle_categories_active_sort_idx` | Ordered vehicle list |
+| `vehicle_category_images_category_sort_unique` | Gallery slot per vehicle |
 | Translation `(entity_id, locale)` uniques | Per-locale content integrity |
 
 ## Query rules

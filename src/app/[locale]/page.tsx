@@ -18,6 +18,8 @@ import { LocationRepository } from "@/features/locations/server/repository";
 import { LocationService } from "@/features/locations/server/service";
 import { MarketingRepository } from "@/features/marketing/server/repository";
 import { MarketingService } from "@/features/marketing/server/service";
+import { LocaleRepository } from "@/features/locales/server/repository";
+import { resolveSiteLocales } from "@/features/locales/server/resolve-site-locales";
 
 export const dynamic = "force-dynamic";
 
@@ -32,11 +34,13 @@ export default async function HomePage({
   const locationService = new LocationService(new LocationRepository(db));
   const marketingService = new MarketingService(new MarketingRepository(db));
 
-  const [airports, cities, destinations, fleet] = await Promise.all([
+  const [airports, cities, destinations, fleet, enabledLocales] =
+    await Promise.all([
     locationService.getAirports(locale),
     locationService.getCities(locale),
     marketingService.getPopularDestinations(locale),
     marketingService.getFleet(locale),
+    resolveSiteLocales(new LocaleRepository(db)),
   ]);
 
   const cityId =
@@ -53,7 +57,7 @@ export default async function HomePage({
 
   return (
     <>
-      <SiteHeader />
+      <SiteHeader enabledLocales={enabledLocales} />
       <main className="flex flex-1 flex-col pb-20 md:pb-0">
         <HeroSection
           bookingForm={
@@ -84,7 +88,7 @@ export default async function HomePage({
         <FaqSection />
         <FinalCta />
       </main>
-      <SiteFooter />
+      <SiteFooter enabledLocales={enabledLocales} />
       <MobileContactBar />
     </>
   );

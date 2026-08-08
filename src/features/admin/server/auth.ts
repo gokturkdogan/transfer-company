@@ -140,11 +140,11 @@ export async function authenticateAdmin(
     .limit(1);
 
   if (!admin || !admin.isActive) {
-    throw new UnauthorizedError("Invalid email or password");
+    throw new UnauthorizedError("Geçersiz e-posta veya şifre");
   }
 
   if (!verifyPassword(password, admin.passwordHash)) {
-    throw new UnauthorizedError("Invalid email or password");
+    throw new UnauthorizedError("Geçersiz e-posta veya şifre");
   }
 
   await createSession(admin.id);

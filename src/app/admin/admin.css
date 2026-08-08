@@ -1,0 +1,108 @@
+/* Admin panel — corporate dashboard theme (scoped via .admin-root) */
+
+.admin-root {
+  --background: #f0f4f8;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --accent: #1d4ed8;
+  --ring: #2563eb;
+
+  --admin-sidebar: #0f2744;
+  --admin-sidebar-width: 16rem;
+  --admin-sidebar-hover: #1a365d;
+  --admin-sidebar-active: #2563eb;
+  --admin-sidebar-muted: #94a3b8;
+  --admin-success: #16a34a;
+  --admin-warning: #d97706;
+  --admin-danger: #dc2626;
+  --admin-info: #0284c7;
+}
+
+.admin-root .admin-sidebar {
+  border-right: 1px solid rgb(15 23 42 / 0.28);
+  box-shadow:
+    2px 0 0 rgb(15 23 42 / 0.12),
+    4px 0 6px -2px rgb(15 23 42 / 0.35),
+    6px 0 10px -4px rgb(15 23 42 / 0.2);
+}
+
+.admin-root .admin-main {
+  background:
+    radial-gradient(circle at top right, rgb(37 99 235 / 0.06), transparent 40%),
+    var(--background);
+}
+
+.admin-root .admin-content-card {
+  border-color: var(--border);
+  background: var(--card);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.04),
+    0 4px 12px rgb(15 23 42 / 0.03);
+}
+
+.admin-root .admin-form-section {
+  border-color: var(--border);
+  background: var(--card);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.04);
+}
+
+.admin-root .admin-table thead th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.admin-root .admin-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.admin-root .admin-tabs-list {
+  background: #e2e8f0;
+}
+
+.admin-root .admin-tabs-trigger[data-active="true"] {
+  background: #ffffff;
+  color: #1d4ed8;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.06);
+}
+
+/* All interactive controls show pointer cursor */
+.admin-root :is(
+  a[href],
+  area[href],
+  button:not(:disabled),
+  summary,
+  select:not(:disabled),
+  input[type="button"]:not(:disabled),
+  input[type="submit"]:not(:disabled),
+  input[type="reset"]:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  label:has(input[type="checkbox"]:not(:disabled)),
+  label:has(input[type="radio"]:not(:disabled)),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  [role="menuitem"],
+  [role="option"],
+  [role="link"],
+  .admin-tabs-trigger
+) {
+  cursor: pointer;
+}
+
+.admin-root :is(
+  button:disabled,
+  select:disabled,
+  input:disabled,
+  [aria-disabled="true"]
+) {
+  cursor: not-allowed;
+}

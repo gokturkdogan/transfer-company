@@ -54,9 +54,10 @@ export const routePrices = pgTable(
     ...softDelete,
   },
   (table) => [
-    uniqueIndex("route_prices_route_vehicle_unique").on(
+    uniqueIndex("route_prices_route_vehicle_currency_unique").on(
       table.routeId,
       table.vehicleCategoryId,
+      table.currency,
     ),
     index("route_prices_route_active_idx").on(table.routeId, table.isActive),
     check(

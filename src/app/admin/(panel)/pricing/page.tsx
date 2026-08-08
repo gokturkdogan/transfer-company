@@ -1,11 +1,19 @@
+import Link from "next/link";
+import { TableProperties } from "lucide-react";
+
 import { db } from "@/db/client";
 import { LocationAdminRepository } from "@/features/admin/server/location-admin-repository";
 import { PricingAdminRepository } from "@/features/admin/server/pricing-admin-repository";
-import { PricingMatrix } from "@/features/admin/components/PricingMatrix";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PricingEditor } from "@/features/admin/components/PricingEditor";
+import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
+import { adminCopy } from "@/features/admin/copy";
+import { CurrencyRepository } from "@/features/currencies/server/repository";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const locationAdminRepository = new LocationAdminRepository(db);
 const pricingAdminRepository = new PricingAdminRepository(db);
+const currencyRepository = new CurrencyRepository(db);
 
 export default async function AdminPricingPage({
   searchParams,
@@ -13,80 +21,75 @@ export default async function AdminPricingPage({
   searchParams: Promise<{ airport?: string }>;
 }) {
   const params = await searchParams;
-  const airports = await locationAdminRepository.findByType("AIRPORT", {
-    includeInactive: true,
-  });
-  const districts = await locationAdminRepository.findByType("DISTRICT", {
-    includeInactive: true,
-  });
-  const vehicleCategories =
-    await pricingAdminRepository.listVehicleCategories();
+  const [airports, districts, vehicleCategories, enabledCurrencies] =
+    await Promise.all([
+      locationAdminRepository.findByType("AIRPORT", {
+        includeInactive: true,
+      }),
+      locationAdminRepository.findByType("DISTRICT", {
+        includeInactive: true,
+      }),
+      pricingAdminRepository.listVehicleCategories(),
+      currencyRepository.listEnabled(),
+    ]);
 
+  const enabledCurrencyCodes = enabledCurrencies.map(
+    (currency) => currency.code,
+  );
   const selectedAirportId = params.airport ?? airports[0]?.id ?? null;
 
-  const districtRoutes = selectedAirportId
-    ? await pricingAdminRepository.listDistrictRoutePrices(
-        selectedAirportId,
-        districts.map((district) => ({
-          id: district.id,
-          defaultName: district.defaultName,
-          code: district.code,
-        })),
-        vehicleCategories.map((vehicle) => vehicle.id),
-      )
-    : [];
+  const districtRoutes =
+    selectedAirportId && enabledCurrencyCodes.length > 0
+      ? await pricingAdminRepository.listDistrictRoutePrices(
+          selectedAirportId,
+          districts.map((district) => ({
+            id: district.id,
+            defaultName: district.defaultName,
+            code: district.code,
+          })),
+          vehicleCategories.map((vehicle) => vehicle.id),
+          enabledCurrencyCodes,
+        )
+      : [];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Pricing</h1>
-        <p className="text-sm text-muted-foreground">
-          Airport to district route prices by vehicle category.
-        </p>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        title={adminCopy.pricing.title}
+        subtitle={adminCopy.pricing.subtitle}
+        icon={TableProperties}
+      />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Airport</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form method="get" className="flex max-w-md items-end gap-3">
-            <div className="flex-1 space-y-2">
-              <label htmlFor="airport" className="text-sm font-medium">
-                Select airport
-              </label>
-              <select
-                id="airport"
-                name="airport"
-                defaultValue={selectedAirportId ?? ""}
-                className="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-              >
-                {airports.map((airport) => (
-                  <option key={airport.id} value={airport.id}>
-                    {airport.defaultName}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button
-              type="submit"
-              className="inline-flex h-10 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
-            >
-              Load
-            </button>
-          </form>
-        </CardContent>
-      </Card>
+      {enabledCurrencyCodes.length === 0 ? (
+        <Card>
+          <CardContent className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-muted-foreground">
+              {adminCopy.pricing.emptyCurrencies}
+            </p>
+            <Button asChild>
+              <Link href="/admin/currencies">{adminCopy.currencies.open}</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : null}
 
-      {selectedAirportId ? (
-        <PricingMatrix
+      {selectedAirportId && enabledCurrencyCodes.length > 0 ? (
+        <PricingEditor
           airportId={selectedAirportId}
-          vehicleCategories={vehicleCategories}
+          airports={airports.map((airport) => ({
+            id: airport.id,
+            label: airport.defaultName,
+          }))}
+          vehicleCategories={vehicleCategories.map((vehicle) => ({
+            id: vehicle.id,
+            defaultName: vehicle.defaultName,
+          }))}
           districtRoutes={districtRoutes}
+          enabledCurrencies={enabledCurrencyCodes}
         />
-      ) : (
+      ) : selectedAirportId ? null : (
         <p className="text-sm text-muted-foreground">
-          Add an airport location before configuring prices.
+          {adminCopy.pricing.emptyAirport}
         </p>
       )}
     </div>

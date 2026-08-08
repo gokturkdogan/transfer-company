@@ -1,19 +1,15 @@
 import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
-import { LOCALES } from "@/config/constants";
 import { siteConfig } from "@/config/site";
+import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link } from "@/i18n/navigation";
 
-const localeLabels: Record<string, string> = {
-  tr: "Türkçe",
-  en: "English",
-  de: "Deutsch",
-  ru: "Русский",
-  ar: "العربية",
-};
-
-export async function SiteFooter() {
+export async function SiteFooter({
+  enabledLocales,
+}: {
+  enabledLocales: SiteLocaleOption[];
+}) {
   const t = await getTranslations("home.footer");
   const common = await getTranslations("common");
 
@@ -62,14 +58,14 @@ export async function SiteFooter() {
               <li>{siteConfig.supportHours}</li>
             </ul>
             <div className="flex flex-wrap gap-2 pt-2">
-              {LOCALES.map((locale) => (
+              {enabledLocales.map((locale) => (
                 <Link
-                  key={locale}
+                  key={locale.code}
                   href="/"
-                  locale={locale}
+                  locale={locale.code}
                   className="text-xs font-medium uppercase tracking-wide text-white/50 hover:text-accent"
                 >
-                  {localeLabels[locale]}
+                  {locale.label}
                 </Link>
               ))}
             </div>

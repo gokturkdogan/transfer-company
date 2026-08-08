@@ -15,6 +15,8 @@ export const vehicleCategories = pgTable(
     id: id(),
     code: varchar("code", { length: 32 }).notNull(),
     defaultName: varchar("default_name", { length: 255 }).notNull(),
+    brand: varchar("brand", { length: 100 }).notNull().default(""),
+    model: varchar("model", { length: 100 }).notNull().default(""),
     passengerCapacity: integer("passenger_capacity").notNull(),
     largeLuggageCapacity: integer("large_luggage_capacity").notNull(),
     cabinLuggageCapacity: integer("cabin_luggage_capacity").notNull(),
@@ -29,6 +31,64 @@ export const vehicleCategories = pgTable(
       table.isActive,
       table.sortOrder,
     ),
+  ],
+);
+
+export const vehicleCategoryFeatures = pgTable(
+  "vehicle_category_features",
+  {
+    id: id(),
+    vehicleCategoryId: uuid("vehicle_category_id")
+      .notNull()
+      .references(() => vehicleCategories.id, { onDelete: "cascade" }),
+    sortOrder: sortOrder(),
+    ...timestamps,
+  },
+  (table) => [
+    index("vehicle_category_features_category_sort_idx").on(
+      table.vehicleCategoryId,
+      table.sortOrder,
+    ),
+  ],
+);
+
+export const vehicleCategoryFeatureTranslations = pgTable(
+  "vehicle_category_feature_translations",
+  {
+    id: id(),
+    featureId: uuid("feature_id")
+      .notNull()
+      .references(() => vehicleCategoryFeatures.id, { onDelete: "cascade" }),
+    locale: localeColumn(),
+    label: varchar("label", { length: 255 }).notNull(),
+    ...timestamps,
+  },
+  (table) => [
+    uniqueIndex("vehicle_category_feature_translations_feature_locale_unique").on(
+      table.featureId,
+      table.locale,
+    ),
+    index("vehicle_category_feature_translations_locale_idx").on(table.locale),
+  ],
+);
+
+export const vehicleCategoryImages = pgTable(
+  "vehicle_category_images",
+  {
+    id: id(),
+    vehicleCategoryId: uuid("vehicle_category_id")
+      .notNull()
+      .references(() => vehicleCategories.id, { onDelete: "cascade" }),
+    imageKey: varchar("image_key", { length: 255 }).notNull(),
+    sortOrder: sortOrder(),
+    ...timestamps,
+  },
+  (table) => [
+    uniqueIndex("vehicle_category_images_category_sort_unique").on(
+      table.vehicleCategoryId,
+      table.sortOrder,
+    ),
+    index("vehicle_category_images_category_id_idx").on(table.vehicleCategoryId),
   ],
 );
 

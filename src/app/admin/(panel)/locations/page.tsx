@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { MapPin } from "lucide-react";
 
 import { db } from "@/db/client";
 import { LocationAdminRepository } from "@/features/admin/server/location-admin-repository";
+import { AdminContentCard } from "@/features/admin/components/shell/AdminContentCard";
+import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -13,15 +15,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { adminCopy } from "@/features/admin/copy";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const locationAdminRepository = new LocationAdminRepository(db);
 
 const LOCATION_TABS = [
-  { value: "airports", label: "Airports", type: "AIRPORT" as const },
-  { value: "cities", label: "Cities", type: "CITY" as const },
-  { value: "districts", label: "Districts", type: "DISTRICT" as const },
-  { value: "hotels", label: "Hotels", type: "HOTEL" as const },
+  { value: "airports", label: adminCopy.locations.tabs.airports, type: "AIRPORT" as const },
+  { value: "cities", label: adminCopy.locations.tabs.cities, type: "CITY" as const },
+  { value: "districts", label: adminCopy.locations.tabs.districts, type: "DISTRICT" as const },
+  { value: "hotels", label: adminCopy.locations.tabs.hotels, type: "HOTEL" as const },
 ];
 
 export default async function AdminLocationsPage() {
@@ -45,18 +48,17 @@ export default async function AdminLocationsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Locations</h1>
-        <p className="text-sm text-muted-foreground">
-          Manage airports, cities, districts, and hotels.
-        </p>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        title={adminCopy.locations.title}
+        subtitle={adminCopy.locations.subtitle}
+        icon={MapPin}
+      />
 
       <Tabs defaultValue="airports">
-        <TabsList>
+        <TabsList className="admin-tabs-list">
           {LOCATION_TABS.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value}>
+            <TabsTrigger key={tab.value} value={tab.value} className="admin-tabs-trigger">
               {tab.label}
             </TabsTrigger>
           ))}
@@ -64,22 +66,27 @@ export default async function AdminLocationsPage() {
 
         {LOCATION_TABS.map((tab) => (
           <TabsContent key={tab.value} value={tab.value}>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>{tab.label}</CardTitle>
+            <AdminContentCard
+              title={tab.label}
+              action={
                 <Button asChild size="sm">
-                  <Link href={`/admin/locations/${tab.value}/new`}>Add new</Link>
+                  <Link href={`/admin/locations/${tab.value}/new`}>
+                    {adminCopy.locations.addNew}
+                  </Link>
                 </Button>
-              </CardHeader>
-              <CardContent>
-                <Table>
+              }
+              flush
+            >
+              <Table className="admin-table">
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Code</TableHead>
-                      <TableHead>Parent</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead>{adminCopy.locations.table.name}</TableHead>
+                      <TableHead>{adminCopy.locations.table.code}</TableHead>
+                      <TableHead>{adminCopy.locations.table.parent}</TableHead>
+                      <TableHead>{adminCopy.locations.table.status}</TableHead>
+                      <TableHead className="text-right">
+                        {adminCopy.locations.table.actions}
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -103,10 +110,12 @@ export default async function AdminLocationsPage() {
                         <TableCell>
                           <Badge
                             variant={
-                              location.isActive ? "default" : "destructive"
+                              location.isActive ? "success" : "destructive"
                             }
                           >
-                            {location.isActive ? "Active" : "Inactive"}
+                            {location.isActive
+                              ? adminCopy.locations.status.active
+                              : adminCopy.locations.status.inactive}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
@@ -114,7 +123,7 @@ export default async function AdminLocationsPage() {
                             <Link
                               href={`/admin/locations/${tab.value}/${location.id}/edit`}
                             >
-                              Edit
+                              {adminCopy.locations.table.edit}
                             </Link>
                           </Button>
                         </TableCell>
@@ -122,8 +131,7 @@ export default async function AdminLocationsPage() {
                     ))}
                   </TableBody>
                 </Table>
-              </CardContent>
-            </Card>
+            </AdminContentCard>
           </TabsContent>
         ))}
       </Tabs>

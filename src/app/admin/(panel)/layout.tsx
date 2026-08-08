@@ -9,9 +9,11 @@ export default async function AdminPanelLayout({
   const admin = await requireAdminSession();
 
   return (
-    <div className="flex min-h-screen">
+    <>
       <AdminSidebar admin={admin} />
-      <main className="flex-1 p-6">{children}</main>
-    </div>
+      <main className="admin-main ml-[var(--admin-sidebar-width)] min-h-screen overflow-x-hidden">
+        <div className="mx-auto max-w-7xl p-6 lg:p-8">{children}</div>
+      </main>
+    </>
   );
 }

@@ -2,13 +2,18 @@ import { notFound } from "next/navigation";
 
 import { db } from "@/db/client";
 import { LocationForm } from "@/features/admin/components/LocationForm";
+import { AdminFormPage } from "@/features/admin/components/shell/AdminFormPage";
+import { adminCopy } from "@/features/admin/copy";
+import { LOCATION_TYPE_ICONS } from "@/features/admin/location-page-meta";
 import { LocationAdminRepository } from "@/features/admin/server/location-admin-repository";
+import { LocaleRepository } from "@/features/locales/server/repository";
 import {
   isAdminLocationType,
   type AdminLocationType,
 } from "@/features/admin/types/location";
 
 const locationAdminRepository = new LocationAdminRepository(db);
+const localeRepository = new LocaleRepository(db);
 
 const TYPE_BY_SLUG: Record<string, AdminLocationType> = {
   airports: "AIRPORT",
@@ -78,6 +83,7 @@ export default async function EditLocationPage({
 
   const { parentOptions, cityOptions, initialCityId } =
     await loadParentOptions(type);
+  const enabledLocales = await localeRepository.listActive();
 
   let hotelCityId = initialCityId;
 
@@ -87,14 +93,12 @@ export default async function EditLocationPage({
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Edit {location.defaultName}</h1>
-        <p className="text-sm text-muted-foreground">
-          Update location details and hierarchy.
-        </p>
-      </div>
-
+    <AdminFormPage
+      title={`${adminCopy.locations.editTitle} ${location.defaultName}`}
+      subtitle={adminCopy.locations.editSubtitle}
+      icon={LOCATION_TYPE_ICONS[type]}
+      backHref="/admin/locations"
+    >
       <LocationForm
         mode="edit"
         type={type}
@@ -102,7 +106,8 @@ export default async function EditLocationPage({
         parentOptions={parentOptions}
         cityOptions={cityOptions}
         initialCityId={hotelCityId}
+        enabledLocales={enabledLocales}
       />
-    </div>
+    </AdminFormPage>
   );
 }

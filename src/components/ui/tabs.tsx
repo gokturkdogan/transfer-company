@@ -83,13 +83,14 @@ export function TabsTrigger({
     <button
       type="button"
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-50",
         isSelected
           ? "bg-background text-foreground shadow-sm"
           : "hover:text-foreground",
         className,
       )}
       onClick={() => onValueChange(value)}
+      data-active={isSelected ? "true" : "false"}
       {...props}
     />
   );

@@ -58,3 +58,12 @@ export const reservationItemTypeEnum = pgEnum(
   "reservation_item_type",
   RESERVATION_ITEM_TYPES,
 );
+
+export const CONTACT_CHANNEL_TYPES = ["EMAIL", "PHONE", "WHATSAPP"] as const;
+
+export type ContactChannelType = (typeof CONTACT_CHANNEL_TYPES)[number];
+
+export const contactChannelTypeEnum = pgEnum(
+  "contact_channel_type",
+  CONTACT_CHANNEL_TYPES,
+);

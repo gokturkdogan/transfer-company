@@ -2,13 +2,18 @@ import { notFound } from "next/navigation";
 
 import { db } from "@/db/client";
 import { LocationForm } from "@/features/admin/components/LocationForm";
+import { AdminFormPage } from "@/features/admin/components/shell/AdminFormPage";
+import { adminCopy, LOCATION_TYPE_LABELS } from "@/features/admin/copy";
+import { LOCATION_TYPE_ICONS } from "@/features/admin/location-page-meta";
 import { LocationAdminRepository } from "@/features/admin/server/location-admin-repository";
+import { LocaleRepository } from "@/features/locales/server/repository";
 import {
   isAdminLocationType,
   type AdminLocationType,
 } from "@/features/admin/types/location";
 
 const locationAdminRepository = new LocationAdminRepository(db);
+const localeRepository = new LocaleRepository(db);
 
 const TYPE_BY_SLUG: Record<string, AdminLocationType> = {
   airports: "AIRPORT",
@@ -72,23 +77,23 @@ export default async function NewLocationPage({
   const type = getLocationType(typeSlug);
   const { parentOptions, cityOptions, initialCityId } =
     await loadParentOptions(type);
+  const enabledLocales = await localeRepository.listActive();
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">New {type.toLowerCase()}</h1>
-        <p className="text-sm text-muted-foreground">
-          Create a new location record.
-        </p>
-      </div>
-
+    <AdminFormPage
+      title={`${adminCopy.locations.newTitle} ${LOCATION_TYPE_LABELS[type]}`}
+      subtitle={adminCopy.locations.newSubtitle}
+      icon={LOCATION_TYPE_ICONS[type]}
+      backHref="/admin/locations"
+    >
       <LocationForm
         mode="create"
         type={type}
         parentOptions={parentOptions}
         cityOptions={cityOptions}
         initialCityId={initialCityId}
+        enabledLocales={enabledLocales}
       />
-    </div>
+    </AdminFormPage>
   );
 }

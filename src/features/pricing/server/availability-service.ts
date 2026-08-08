@@ -17,6 +17,10 @@ import type {
 import { assertPriceableEndpoints } from "@/features/locations/domain/hierarchy";
 import { LocationDomainError } from "@/features/locations/domain/errors";
 import type { LocationRepository } from "@/features/locations/server/repository";
+import {
+  CurrencyRepository,
+  resolveQuoteCurrency,
+} from "@/features/currencies/server/repository";
 import { PROJECT_TIME_ZONE } from "@/config/constants";
 import { DomainRuleError } from "@/server/errors";
 
@@ -108,6 +112,7 @@ export class AvailabilityService {
     private readonly repository: PricingReader,
     private readonly quoteService?: QuoteService,
     private readonly locationRepository?: LocationRepository,
+    private readonly currencyRepository?: CurrencyRepository,
   ) {}
 
   async getTransferOptions(
@@ -137,9 +142,17 @@ export class AvailabilityService {
 
       assertRouteActive(route);
 
+      const quoteCurrency = this.currencyRepository
+        ? await resolveQuoteCurrency(this.currencyRepository)
+        : "EUR";
+
       const [vehicleOptions, luggageVehicleCandidates, selectableExtras] =
         await Promise.all([
-          this.repository.findVehicleOptionsForRoute(route.id, input.locale),
+          this.repository.findVehicleOptionsForRoute(
+            route.id,
+            input.locale,
+            quoteCurrency,
+          ),
           this.repository.findLuggageVehicleExtras(input.locale),
           this.repository.findCustomerSelectableExtras(input.locale),
         ]);

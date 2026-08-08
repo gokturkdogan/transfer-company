@@ -14,6 +14,7 @@ export type FleetVehicleDto = {
   largeLuggageCapacity: number;
   cabinLuggageCapacity: number;
   imageKey: string | null;
+  features: string[];
   startingFromMinor: number;
   currency: string;
 };

@@ -36,6 +36,7 @@ export type PricingReader = {
   findRoutePrice(
     routeId: string,
     vehicleCategoryId: string,
+    currency: string,
   ): Promise<RoutePriceRecord | null>;
   findVehicleCategoryById(
     vehicleCategoryId: string,
@@ -47,6 +48,7 @@ export type PricingReader = {
   findVehicleOptionsForRoute(
     routeId: string,
     locale: string,
+    currency: string,
   ): Promise<VehicleOptionRecord[]>;
   findExtraServiceById(extraServiceId: string): Promise<ExtraServiceWithTranslation | null>;
   findExtraServiceTranslation(

@@ -562,6 +562,20 @@ async function seed() {
     }
   }
 
+  for (const [index, currencySeed] of [
+    { code: "EUR", label: "Euro (EUR)" },
+    { code: "TRY", label: "Türk Lirası (TRY)" },
+  ].entries()) {
+    await db
+      .insert(schema.enabledCurrencies)
+      .values({
+        code: currencySeed.code,
+        label: currencySeed.label,
+        sortOrder: index,
+      })
+      .onConflictDoNothing();
+  }
+
   console.log("Seed completed successfully");
   await pool.end();
 }

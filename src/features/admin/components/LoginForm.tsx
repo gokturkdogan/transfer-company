@@ -1,14 +1,16 @@
 "use client";
 
+import { LockKeyhole, Mail } from "lucide-react";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { loginAction } from "@/features/admin/server/actions";
+import { adminCopy, translateAdminError } from "@/features/admin/copy";
+import { AdminField } from "@/features/admin/components/shell/AdminField";
+import { AdminFormSection } from "@/features/admin/components/shell/AdminFormSection";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export function LoginForm() {
   const router = useRouter();
@@ -16,11 +18,19 @@ export function LoginForm() {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Admin sign in</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <div className="w-full max-w-md">
+      <div className="mb-8 lg:hidden">
+        <h1 className="text-2xl font-semibold text-slate-900">
+          {adminCopy.brand.title}
+        </h1>
+        <p className="mt-1 text-sm text-slate-500">{adminCopy.login.title}</p>
+      </div>
+
+      <AdminFormSection
+        title={adminCopy.login.title}
+        description="Yönetim paneline erişmek için giriş yapın."
+        icon={LockKeyhole}
+      >
         <form
           className="space-y-4"
           onSubmit={(event) => {
@@ -35,7 +45,7 @@ export function LoginForm() {
               });
 
               if (!result.success) {
-                setError(result.error.message);
+                setError(translateAdminError(result.error.message));
                 return;
               }
 
@@ -45,33 +55,49 @@ export function LoginForm() {
         >
           {error ? <Alert variant="destructive">{error}</Alert> : null}
 
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="username"
-              required
-            />
-          </div>
+          <AdminField label={adminCopy.login.email} htmlFor="email" required>
+            <div className="relative">
+              <Mail
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                aria-hidden
+              />
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="username"
+                className="pl-9"
+                required
+              />
+            </div>
+          </AdminField>
 
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-            />
-          </div>
+          <AdminField
+            label={adminCopy.login.password}
+            htmlFor="password"
+            required
+          >
+            <div className="relative">
+              <LockKeyhole
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                aria-hidden
+              />
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                className="pl-9"
+                required
+              />
+            </div>
+          </AdminField>
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "Signing in..." : "Sign in"}
+            {isPending ? adminCopy.login.submitting : adminCopy.login.submit}
           </Button>
         </form>
-      </CardContent>
-    </Card>
+      </AdminFormSection>
+    </div>
   );
 }

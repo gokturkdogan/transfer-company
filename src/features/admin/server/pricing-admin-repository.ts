@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 
 import { DEFAULT_CURRENCY } from "@/config/constants";
 import type { Database } from "@/db/client";
@@ -15,26 +15,28 @@ export type AdminVehicleCategory = {
   sortOrder: number;
 };
 
+export type AdminRoutePriceCell = {
+  vehicleCategoryId: string;
+  currency: string;
+  oneWayPriceMinor: number | null;
+  roundTripPriceMinor: number | null;
+  isActive: boolean;
+};
+
 export type AdminDistrictRoutePrice = {
   districtId: string;
   districtName: string;
   districtCode: string;
   routeId: string | null;
-  prices: Array<{
-    vehicleCategoryId: string;
-    oneWayPriceMinor: number | null;
-    roundTripPriceMinor: number | null;
-    currency: string;
-    isActive: boolean;
-  }>;
+  prices: AdminRoutePriceCell[];
 };
 
 export type UpsertRoutePriceInput = {
   districtId: string;
   vehicleCategoryId: string;
+  currency: string;
   oneWayPriceMinor: number;
   roundTripPriceMinor?: number | null;
-  currency?: string;
 };
 
 export class PricingAdminRepository {
@@ -57,8 +59,9 @@ export class PricingAdminRepository {
     airportId: string,
     districts: Array<{ id: string; defaultName: string; code: string }>,
     vehicleCategoryIds: string[],
+    enabledCurrencies: string[],
   ): Promise<AdminDistrictRoutePrice[]> {
-    if (districts.length === 0) {
+    if (districts.length === 0 || enabledCurrencies.length === 0) {
       return [];
     }
 
@@ -93,7 +96,13 @@ export class PricingAdminRepository {
               isActive: routePrices.isActive,
             })
             .from(routePrices)
-            .where(eq(routePrices.isActive, true));
+            .where(
+              and(
+                inArray(routePrices.routeId, routeIds),
+                inArray(routePrices.currency, enabledCurrencies),
+                eq(routePrices.isActive, true),
+              ),
+            );
 
     const pricesByRoute = new Map<
       string,
@@ -102,31 +111,40 @@ export class PricingAdminRepository {
 
     for (const price of priceRows) {
       const routePricesMap =
-        pricesByRoute.get(price.routeId) ?? new Map<string, (typeof priceRows)[number]>();
-      routePricesMap.set(price.vehicleCategoryId, price);
+        pricesByRoute.get(price.routeId) ??
+        new Map<string, (typeof priceRows)[number]>();
+      routePricesMap.set(
+        `${price.vehicleCategoryId}:${price.currency}`,
+        price,
+      );
       pricesByRoute.set(price.routeId, routePricesMap);
     }
 
     return districts.map((district) => {
       const routeId = routeByDistrict.get(district.id) ?? null;
       const routePriceMap = routeId ? pricesByRoute.get(routeId) : undefined;
+      const prices: AdminRoutePriceCell[] = [];
+
+      for (const vehicleCategoryId of vehicleCategoryIds) {
+        for (const currency of enabledCurrencies) {
+          const price = routePriceMap?.get(`${vehicleCategoryId}:${currency}`);
+
+          prices.push({
+            vehicleCategoryId,
+            currency,
+            oneWayPriceMinor: price?.oneWayPriceMinor ?? null,
+            roundTripPriceMinor: price?.roundTripPriceMinor ?? null,
+            isActive: price?.isActive ?? false,
+          });
+        }
+      }
 
       return {
         districtId: district.id,
         districtName: district.defaultName,
         districtCode: district.code,
         routeId,
-        prices: vehicleCategoryIds.map((vehicleCategoryId) => {
-          const price = routePriceMap?.get(vehicleCategoryId);
-
-          return {
-            vehicleCategoryId,
-            oneWayPriceMinor: price?.oneWayPriceMinor ?? null,
-            roundTripPriceMinor: price?.roundTripPriceMinor ?? null,
-            currency: price?.currency ?? DEFAULT_CURRENCY,
-            isActive: price?.isActive ?? false,
-          };
-        }),
+        prices,
       };
     });
   }
@@ -183,6 +201,8 @@ export class PricingAdminRepository {
           price.districtId,
         );
 
+        const currency = price.currency || DEFAULT_CURRENCY;
+
         const [existing] = await tx
           .select({ id: routePrices.id })
           .from(routePrices)
@@ -190,6 +210,7 @@ export class PricingAdminRepository {
             and(
               eq(routePrices.routeId, routeId),
               eq(routePrices.vehicleCategoryId, price.vehicleCategoryId),
+              eq(routePrices.currency, currency),
             ),
           )
           .limit(1);
@@ -200,7 +221,7 @@ export class PricingAdminRepository {
             .set({
               oneWayPriceMinor: price.oneWayPriceMinor,
               roundTripPriceMinor: price.roundTripPriceMinor ?? null,
-              currency: price.currency ?? DEFAULT_CURRENCY,
+              currency,
               isActive: true,
               deletedAt: null,
             })
@@ -213,7 +234,7 @@ export class PricingAdminRepository {
           vehicleCategoryId: price.vehicleCategoryId,
           oneWayPriceMinor: price.oneWayPriceMinor,
           roundTripPriceMinor: price.roundTripPriceMinor ?? null,
-          currency: price.currency ?? DEFAULT_CURRENCY,
+          currency,
         });
       }
     });

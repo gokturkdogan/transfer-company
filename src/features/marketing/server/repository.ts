@@ -15,6 +15,7 @@ import type {
   DistrictStartingPriceDto,
   FleetVehicleDto,
 } from "@/features/marketing/types";
+import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
 
 function translatedName(
   defaultName: string,
@@ -24,7 +25,11 @@ function translatedName(
 }
 
 export class MarketingRepository {
-  constructor(private readonly database: Database) {}
+  private readonly vehicleFeatureRepository: VehicleFeatureRepository;
+
+  constructor(private readonly database: Database) {
+    this.vehicleFeatureRepository = new VehicleFeatureRepository(database);
+  }
 
   async findDistrictStartingPrices(
     originAirportCode: string,
@@ -141,6 +146,12 @@ export class MarketingRepository {
       )
       .orderBy(asc(vehicleCategories.sortOrder));
 
+    const featuresByVehicle =
+      await this.vehicleFeatureRepository.listLabelsByVehicleIds(
+        rows.map((row) => row.id),
+        locale,
+      );
+
     return rows.map((row) => ({
       id: row.id,
       name: translatedName(row.defaultName, row.translatedName),
@@ -149,6 +160,7 @@ export class MarketingRepository {
       largeLuggageCapacity: row.largeLuggageCapacity,
       cabinLuggageCapacity: row.cabinLuggageCapacity,
       imageKey: row.imageKey,
+      features: featuresByVehicle.get(row.id) ?? [],
       startingFromMinor: Number(row.startingFromMinor ?? 0),
       currency: row.currency ?? "EUR",
     }));

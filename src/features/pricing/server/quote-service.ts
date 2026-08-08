@@ -19,6 +19,10 @@ import type {
   TransferQuoteResult,
 } from "@/features/pricing/types";
 import type { PricingReader } from "@/features/pricing/server/reader";
+import {
+  CurrencyRepository,
+  resolveQuoteCurrency,
+} from "@/features/currencies/server/repository";
 import { DomainRuleError } from "@/server/errors";
 
 export type TransferQuoteResponse = TransferQuoteResult & {
@@ -55,7 +59,10 @@ function resolveLuggageVehicleExtra(
 }
 
 export class QuoteService {
-  constructor(private readonly repository: PricingReader) {}
+  constructor(
+    private readonly repository: PricingReader,
+    private readonly currencyRepository?: CurrencyRepository,
+  ) {}
 
   async calculateTransferQuote(
     input: TransferQuoteInputDto,
@@ -63,6 +70,10 @@ export class QuoteService {
     try {
       const route = await this.repository.findRouteById(input.routeId);
       assertRouteActive(route);
+
+      const pricingCurrency = this.currencyRepository
+        ? await resolveQuoteCurrency(this.currencyRepository)
+        : "EUR";
 
       const luggageVehicleCandidates =
         await this.repository.findLuggageVehicleExtras(input.locale);
@@ -91,6 +102,7 @@ export class QuoteService {
         const price = await this.repository.findRoutePrice(
           input.routeId,
           selection.vehicleCategoryId,
+          pricingCurrency,
         );
         assertRoutePriceBookable(
           price,

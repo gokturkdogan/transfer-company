@@ -1,6 +1,9 @@
 import "server-only";
 
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, or, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
+
+import { DEFAULT_LOCALE } from "@/config/constants";
 
 import type { Database } from "@/db/client";
 import {
@@ -16,6 +19,11 @@ import type {
   PricingReader,
   VehicleOptionRecord,
 } from "@/features/pricing/server/reader";
+
+const defaultExtraServiceTranslations = alias(
+  extraServiceTranslations,
+  "default_extra_service_translations",
+);
 
 export class PricingRepository implements PricingReader {
   constructor(private readonly database: Database) {}
@@ -70,7 +78,11 @@ export class PricingRepository implements PricingReader {
     );
   }
 
-  async findRoutePrice(routeId: string, vehicleCategoryId: string) {
+  async findRoutePrice(
+    routeId: string,
+    vehicleCategoryId: string,
+    currency: string,
+  ) {
     const [price] = await this.database
       .select({
         routeId: routePrices.routeId,
@@ -85,6 +97,7 @@ export class PricingRepository implements PricingReader {
         and(
           eq(routePrices.routeId, routeId),
           eq(routePrices.vehicleCategoryId, vehicleCategoryId),
+          eq(routePrices.currency, currency),
         ),
       )
       .limit(1);
@@ -130,6 +143,7 @@ export class PricingRepository implements PricingReader {
   async findVehicleOptionsForRoute(
     routeId: string,
     locale: string,
+    currency: string,
   ): Promise<VehicleOptionRecord[]> {
     const rows = await this.database
       .select({
@@ -164,6 +178,7 @@ export class PricingRepository implements PricingReader {
       .where(
         and(
           eq(routePrices.routeId, routeId),
+          eq(routePrices.currency, currency),
           eq(routePrices.isActive, true),
           eq(vehicleCategories.isActive, true),
         ),
@@ -195,18 +210,29 @@ export class PricingRepository implements PricingReader {
   }
 
   async findExtraServiceTranslation(extraServiceId: string, locale: string) {
-    const [translation] = await this.database
-      .select({ name: extraServiceTranslations.name })
+    const rows = await this.database
+      .select({
+        locale: extraServiceTranslations.locale,
+        name: extraServiceTranslations.name,
+      })
       .from(extraServiceTranslations)
       .where(
         and(
           eq(extraServiceTranslations.extraServiceId, extraServiceId),
-          eq(extraServiceTranslations.locale, locale),
+          or(
+            eq(extraServiceTranslations.locale, locale),
+            eq(extraServiceTranslations.locale, DEFAULT_LOCALE),
+          ),
         ),
-      )
-      .limit(1);
+      );
 
-    return translation ?? null;
+    const requested = rows.find((row) => row.locale === locale);
+    if (requested) {
+      return { name: requested.name };
+    }
+
+    const fallback = rows.find((row) => row.locale === DEFAULT_LOCALE);
+    return fallback ? { name: fallback.name } : null;
   }
 
   async findExtraServicesByIds(
@@ -230,7 +256,7 @@ export class PricingRepository implements PricingReader {
         maxQuantity: extraServices.maxQuantity,
         luggageCapacityPerUnit: extraServices.luggageCapacityPerUnit,
         isActive: extraServices.isActive,
-        translatedName: extraServiceTranslations.name,
+        translatedName: sql<string | null>`coalesce(${extraServiceTranslations.name}, ${defaultExtraServiceTranslations.name})`,
       })
       .from(extraServices)
       .leftJoin(
@@ -238,6 +264,16 @@ export class PricingRepository implements PricingReader {
         and(
           eq(extraServiceTranslations.extraServiceId, extraServices.id),
           eq(extraServiceTranslations.locale, locale),
+        ),
+      )
+      .leftJoin(
+        defaultExtraServiceTranslations,
+        and(
+          eq(
+            defaultExtraServiceTranslations.extraServiceId,
+            extraServices.id,
+          ),
+          eq(defaultExtraServiceTranslations.locale, DEFAULT_LOCALE),
         ),
       )
       .where(inArray(extraServices.id, extraServiceIds));
@@ -257,7 +293,7 @@ export class PricingRepository implements PricingReader {
         maxQuantity: extraServices.maxQuantity,
         luggageCapacityPerUnit: extraServices.luggageCapacityPerUnit,
         isActive: extraServices.isActive,
-        translatedName: extraServiceTranslations.name,
+        translatedName: sql<string | null>`coalesce(${extraServiceTranslations.name}, ${defaultExtraServiceTranslations.name})`,
       })
       .from(extraServices)
       .leftJoin(
@@ -265,6 +301,16 @@ export class PricingRepository implements PricingReader {
         and(
           eq(extraServiceTranslations.extraServiceId, extraServices.id),
           eq(extraServiceTranslations.locale, locale),
+        ),
+      )
+      .leftJoin(
+        defaultExtraServiceTranslations,
+        and(
+          eq(
+            defaultExtraServiceTranslations.extraServiceId,
+            extraServices.id,
+          ),
+          eq(defaultExtraServiceTranslations.locale, DEFAULT_LOCALE),
         ),
       )
       .where(
@@ -289,7 +335,7 @@ export class PricingRepository implements PricingReader {
         maxQuantity: extraServices.maxQuantity,
         luggageCapacityPerUnit: extraServices.luggageCapacityPerUnit,
         isActive: extraServices.isActive,
-        translatedName: extraServiceTranslations.name,
+        translatedName: sql<string | null>`coalesce(${extraServiceTranslations.name}, ${defaultExtraServiceTranslations.name})`,
       })
       .from(extraServices)
       .leftJoin(
@@ -297,6 +343,16 @@ export class PricingRepository implements PricingReader {
         and(
           eq(extraServiceTranslations.extraServiceId, extraServices.id),
           eq(extraServiceTranslations.locale, locale),
+        ),
+      )
+      .leftJoin(
+        defaultExtraServiceTranslations,
+        and(
+          eq(
+            defaultExtraServiceTranslations.extraServiceId,
+            extraServices.id,
+          ),
+          eq(defaultExtraServiceTranslations.locale, DEFAULT_LOCALE),
         ),
       )
       .where(

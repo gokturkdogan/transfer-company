@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { adminCopy } from "@/features/admin/copy";
+
 import "../globals.css";
+import "./admin.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Admin | Transfer Company",
+  title: adminCopy.brand.pageTitle,
 };
 
 export default function AdminRootLayout({
@@ -23,10 +26,10 @@ export default function AdminRootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="tr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-background text-foreground font-sans">
+      <body className="admin-root min-h-full bg-background text-foreground font-sans">
         {children}
       </body>
     </html>

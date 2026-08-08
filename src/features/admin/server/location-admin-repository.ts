@@ -2,9 +2,11 @@ import "server-only";
 
 import { and, asc, eq } from "drizzle-orm";
 
+import { DEFAULT_LOCALE } from "@/config/constants";
 import type { Database } from "@/db/client";
 import type { LocationType } from "@/db/schema/enums";
 import { locationTranslations, locations } from "@/db/schema";
+import type { LocaleTranslationMap } from "@/features/admin/server/translation-input";
 import { assertValidParent } from "@/features/locations/domain/hierarchy";
 import { LocationDomainError } from "@/features/locations/domain/errors";
 import { DomainRuleError, NotFoundError } from "@/server/errors";
@@ -22,12 +24,13 @@ export type AdminLocationRecord = {
   longitude: number | null;
   sortOrder: number;
   isActive: boolean;
+  translations?: LocaleTranslationMap;
 };
 
 export type CreateAdminLocationInput = {
   type: LocationType;
   code: string;
-  defaultName: string;
+  translations: LocaleTranslationMap;
   parentId?: string | null;
   address?: string | null;
   latitude?: number | null;
@@ -75,7 +78,24 @@ export class LocationAdminRepository {
       .where(eq(locations.id, id))
       .limit(1);
 
-    return row ?? null;
+    return row
+      ? {
+          ...row,
+          translations: await this.findTranslations(id),
+        }
+      : null;
+  }
+
+  async findTranslations(locationId: string): Promise<LocaleTranslationMap> {
+    const rows = await this.database
+      .select({
+        locale: locationTranslations.locale,
+        name: locationTranslations.name,
+      })
+      .from(locationTranslations)
+      .where(eq(locationTranslations.locationId, locationId));
+
+    return Object.fromEntries(rows.map((row) => [row.locale, row.name]));
   }
 
   async findByType(
@@ -146,43 +166,46 @@ export class LocationAdminRepository {
     }
   }
 
-  private async upsertEnglishTranslation(
+  private async syncLocationTranslations(
     locationId: string,
-    name: string,
     code: string,
+    translations: LocaleTranslationMap,
     executor: DbExecutor,
   ): Promise<void> {
     const slug = slugify(code);
 
-    const [existing] = await executor
-      .select({ id: locationTranslations.id })
-      .from(locationTranslations)
-      .where(
-        and(
-          eq(locationTranslations.locationId, locationId),
-          eq(locationTranslations.locale, "en"),
-        ),
-      )
-      .limit(1);
+    for (const [locale, name] of Object.entries(translations)) {
+      const [existing] = await executor
+        .select({ id: locationTranslations.id })
+        .from(locationTranslations)
+        .where(
+          and(
+            eq(locationTranslations.locationId, locationId),
+            eq(locationTranslations.locale, locale),
+          ),
+        )
+        .limit(1);
 
-    if (existing) {
-      await executor
-        .update(locationTranslations)
-        .set({ name, slug })
-        .where(eq(locationTranslations.id, existing.id));
-      return;
+      if (existing) {
+        await executor
+          .update(locationTranslations)
+          .set({ name, slug })
+          .where(eq(locationTranslations.id, existing.id));
+        continue;
+      }
+
+      await executor.insert(locationTranslations).values({
+        locationId,
+        locale,
+        name,
+        slug,
+      });
     }
-
-    await executor.insert(locationTranslations).values({
-      locationId,
-      locale: "en",
-      name,
-      slug,
-    });
   }
 
   async create(input: CreateAdminLocationInput): Promise<AdminLocationRecord> {
     await this.validateParent(input.type, input.parentId ?? null);
+    const defaultName = input.translations[DEFAULT_LOCALE]!;
 
     const [created] = await this.database.transaction(async (tx) => {
       const [location] = await tx
@@ -190,7 +213,7 @@ export class LocationAdminRepository {
         .values({
           type: input.type,
           code: input.code,
-          defaultName: input.defaultName,
+          defaultName,
           parentId: input.parentId ?? null,
           address: input.address ?? null,
           latitude: input.latitude ?? null,
@@ -211,17 +234,22 @@ export class LocationAdminRepository {
           isActive: locations.isActive,
         });
 
-      await this.upsertEnglishTranslation(
+      await this.syncLocationTranslations(
         location.id,
-        input.defaultName,
         input.code,
+        input.translations,
         tx,
       );
 
       return [location];
     });
 
-    return created;
+    const record = await this.findById(created.id);
+    if (!record) {
+      throw new Error("Failed to load created location");
+    }
+
+    return record;
   }
 
   async update(
@@ -237,16 +265,20 @@ export class LocationAdminRepository {
     const nextType = input.type ?? existing.type;
     const nextParentId =
       input.parentId !== undefined ? input.parentId : existing.parentId;
+    const nextTranslations = input.translations ?? existing.translations ?? {};
+    const nextDefaultName =
+      nextTranslations[DEFAULT_LOCALE] ?? existing.defaultName;
+    const nextCode = input.code ?? existing.code;
 
     await this.validateParent(nextType, nextParentId);
 
-    const [updated] = await this.database.transaction(async (tx) => {
+    await this.database.transaction(async (tx) => {
       const [location] = await tx
         .update(locations)
         .set({
           type: nextType,
-          code: input.code ?? existing.code,
-          defaultName: input.defaultName ?? existing.defaultName,
+          code: nextCode,
+          defaultName: nextDefaultName,
           parentId: nextParentId,
           address:
             input.address !== undefined ? input.address : existing.address,
@@ -268,28 +300,26 @@ export class LocationAdminRepository {
         .where(eq(locations.id, id))
         .returning({
           id: locations.id,
-          type: locations.type,
-          code: locations.code,
-          defaultName: locations.defaultName,
-          parentId: locations.parentId,
-          address: locations.address,
-          latitude: locations.latitude,
-          longitude: locations.longitude,
-          sortOrder: locations.sortOrder,
-          isActive: locations.isActive,
         });
 
-      await this.upsertEnglishTranslation(
-        location.id,
-        location.defaultName,
-        location.code,
+      if (!location) {
+        throw new NotFoundError("Location not found");
+      }
+
+      await this.syncLocationTranslations(
+        id,
+        nextCode,
+        nextTranslations,
         tx,
       );
-
-      return [location];
     });
 
-    return updated;
+    const record = await this.findById(id);
+    if (!record) {
+      throw new NotFoundError("Location not found");
+    }
+
+    return record;
   }
 
   async deactivate(id: string): Promise<void> {

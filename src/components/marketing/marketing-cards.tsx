@@ -57,6 +57,7 @@ type VehicleCardProps = {
   imageSrc: string;
   passengersLabel: string;
   luggageLabel: string;
+  featureLabels?: string[];
   priceLabel: string;
   bookLabel: string;
   href: string;
@@ -67,6 +68,7 @@ export function VehicleCard({
   imageSrc,
   passengersLabel,
   luggageLabel,
+  featureLabels = [],
   priceLabel,
   bookLabel,
   href,
@@ -87,6 +89,11 @@ export function VehicleCard({
         <div className="flex flex-wrap gap-2 text-xs font-medium text-muted-foreground">
           <span className="rounded-full bg-muted px-3 py-1">{passengersLabel}</span>
           <span className="rounded-full bg-muted px-3 py-1">{luggageLabel}</span>
+          {featureLabels.map((feature) => (
+            <span key={feature} className="rounded-full bg-muted px-3 py-1">
+              {feature}
+            </span>
+          ))}
         </div>
         <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
           <p className="text-sm font-semibold">{priceLabel}</p>

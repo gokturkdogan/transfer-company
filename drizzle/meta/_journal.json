@@ -29,6 +29,55 @@
       "when": 1786166100000,
       "tag": "0003_location_hierarchy",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786166200000,
+      "tag": "0004_enabled_currencies",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786166300000,
+      "tag": "0005_extra_service_prices",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786172000000,
+      "tag": "0006_contact_channels",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1786172100000,
+      "tag": "0007_enabled_locales",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1786172200000,
+      "tag": "0008_vehicle_admin_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1786172300000,
+      "tag": "0009_vehicle_category_features",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1786172400000,
+      "tag": "0010_remove_chf_currency",
+      "breakpoints": true
     }
   ]
 }

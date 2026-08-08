@@ -2,22 +2,56 @@
 
 ## Overview
 
-Phase 5 introduces an English-only admin panel at `/admin/*`, **outside** the `[locale]` segment. It manages the hierarchical location model, airport-to-district pricing, and reservation review.
+Phase 5 introduces a Turkish-only admin panel at `/admin/*`, **outside** the `[locale]` segment. It manages the hierarchical location model, airport-to-district pricing, and reservation review.
 
 ## Routes
 
 | Path | Purpose |
 |------|---------|
+| `/admin` | Dashboard — revenue, trends, route/vehicle breakdowns |
 | `/admin/login` | Email + password login |
-| `/admin` | Dashboard |
 | `/admin/locations` | Tabs: Airports, Cities, Districts, Hotels |
 | `/admin/locations/[type]/new` | Create location |
 | `/admin/locations/[type]/[id]/edit` | Edit location |
-| `/admin/pricing` | Airport → district price matrix |
+| `/admin/currencies` | Enabled currency selection |
+| `/admin/extras` | Extra service list |
+| `/admin/extras/new` | Create extra |
+| `/admin/extras/[id]/edit` | Edit extra and per-currency prices |
+| `/admin/vehicles` | Vehicle category list |
+| `/admin/vehicles/new` | Create vehicle |
+| `/admin/vehicles/[id]/edit` | Edit vehicle |
+| `/admin/pricing` | Airport → district price editor (currency + vehicle tabs) |
 | `/admin/reservations` | Reservation list |
 | `/admin/reservations/[id]` | Reservation detail |
+| `/admin/contact` | Contact channels (email, phone, WhatsApp) |
+| `/admin/locales` | Enabled site languages for locale switcher |
 
 `[type]` is one of `airports`, `cities`, `districts`, `hotels` (URL slug maps to `AIRPORT`, `CITY`, `DISTRICT`, `HOTEL`).
+
+## Dashboard (`/admin`)
+
+Operational overview for reservations and quoted revenue (no payment gateway — amounts reflect booking totals).
+
+| Section | Metrics |
+|---------|---------|
+| KPI cards | Total reservations, upcoming vs completed, cancellation rate, passengers, trip type split |
+| Currency cards | One card per supported currency (EUR, TRY, USD, GBP, RUB, AED): total / upcoming / completed / cancelled revenue and counts |
+| Trend chart | Weekly (12 weeks) or monthly (12 months) reservation counts by `created_at` |
+| Vehicle donut | Top vehicle line items (`TRANSFER_VEHICLE` quantities) |
+| Routes bar | Top `snapshot_route_label` counts |
+| Status donut | `PENDING`, `CONFIRMED`, `COMPLETED`, `CANCELLED` |
+| Weekday bar | Outbound date day-of-week density |
+| Currency preference | Share of non-cancelled bookings per currency |
+| Recent table | Last 8 reservations with link to detail |
+
+Data layer: `DashboardAdminRepository` in `src/features/admin/server/dashboard-admin-repository.ts`. Charts: Recharts in `AdminDashboard` client component.
+
+**Classification rules:**
+- **Upcoming:** `status IN (PENDING, CONFIRMED)` and `outbound_at > now()`
+- **Completed:** not cancelled and (`status = COMPLETED` or `outbound_at <= now()`)
+- **Cancelled:** `status = CANCELLED`
+
+No FX conversion — each currency is reported separately.
 
 ## Authentication
 
@@ -56,6 +90,7 @@ CITY (parentId = null)
 - Hotels must have `parentId` pointing to a `DISTRICT` in the selected city
 - District create/edit forms use a city selector; hotel forms use city → filtered district selectors
 - `REGION` type is deprecated — never shown in admin selectors
+- **Translations:** create/edit forms show `LocaleTextFields` for every active row in `enabled_locales`. Default locale (`tr`) name is required; values sync to `location_translations` and `default_name` on the parent row.
 
 ### Hotel list filters
 
@@ -66,9 +101,45 @@ CITY (parentId = null)
 
 ## Pricing editor
 
-- Origin: active airports only
+- Origin: active airports only (select at top; URL `?airport=` persists selection)
 - Destination: active **districts** only — hotels never appear
-- Matrix: district × vehicle category with one-way and round-trip minor-unit prices
+- **Focused editor** (not a giant matrix): pick a **vehicle category** tab, then edit one-way / round-trip prices per district in a compact table
+- Each price cell groups all **enabled currencies** in one bordered block; each row shows a flag emoji + input (EUR 🇪🇺, TRY 🇹🇷, etc.)
+- District search filters the table without changing saved data
+- Tab badges show fill progress (`filled/total` one-way prices across districts × currencies)
+- Save persists all filled combinations for the selected airport across vehicles and currencies
+- Configure visible currencies under `/admin/currencies` before entering route prices
+
+## Extras editor
+
+- List, create, and edit configurable extra services under `/admin/extras`
+- Display names per active locale in `extra_service_translations` (default locale required)
+- Per-currency prices in `extra_service_prices` — one row per extra + enabled currency
+- Configure enabled currencies under `/admin/currencies` before entering extra prices
+- Legacy `extra_services.price_minor` / `currency` columns mirror the first submitted price (booking engine integration pending)
+
+## Vehicle management
+
+- CRUD under `/admin/vehicles` for fleet vehicle categories used in pricing
+- Fields: code, brand, model, localized display name, passenger/luggage capacity, dynamic feature labels (per locale), cover image URL, up to 4 gallery image URLs
+- Display name → `vehicle_category_translations`; feature labels → `vehicle_category_features` + `vehicle_category_feature_translations`
+- Active vehicles appear as tabs in `/admin/pricing` editor
+- Images are stored as public path keys (e.g. `/images/homepage/fleet-vito.jpg`); file upload is not in scope yet
+
+## Contact information
+
+- Manage site contact channels under `/admin/contact`
+- Types: `EMAIL`, `PHONE`, `WHATSAPP` — multiple rows per type
+- Each row has an active toggle; inactive rows are hidden on the public site (when wired)
+- Values stored in `contact_channels` with per-type `sort_order`
+
+## Locale options
+
+- Manage visible languages under `/admin/locales`
+- Catalog of supported locales: `src/config/locales.ts` (`SUPPORTED_LOCALES`) with flag emoji per language
+- Active rows in `enabled_locales` drive header/footer locale switchers
+- Admin UI: fixed grid of all supported languages with active toggle only (no add/remove or label editing from admin)
+- Default locale (`tr`) cannot be deactivated while present in the list
 
 ## Reservation detail
 

@@ -6,23 +6,19 @@ import { Menu, MessageCircle, Phone, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
-import { LOCALES } from "@/config/constants";
 import { siteConfig } from "@/config/site";
+import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-const localeLabels: Record<string, string> = {
-  tr: "TR",
-  en: "EN",
-  de: "DE",
-  ru: "RU",
-  ar: "AR",
+type SiteHeaderProps = {
+  enabledLocales: SiteLocaleOption[];
 };
 
-export function SiteHeader() {
+export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
   const t = useTranslations("home.nav");
   const common = useTranslations("common");
-  const locale = useLocale();
+  const currentLocale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
@@ -58,14 +54,16 @@ export function SiteHeader() {
 
           <nav className="hidden items-center gap-6 md:flex">
             <div className="flex items-center gap-1">
-              {LOCALES.map((code) => (
+              {enabledLocales.map((localeOption) => (
                 <button
-                  key={code}
+                  key={localeOption.code}
                   type="button"
-                  onClick={() => router.replace(pathname, { locale: code })}
+                  onClick={() =>
+                    router.replace(pathname, { locale: localeOption.code })
+                  }
                   className={cn(
                     "rounded-md px-2 py-1 text-xs font-semibold uppercase tracking-wide transition-colors",
-                    locale === code
+                    currentLocale === localeOption.code
                       ? scrolled
                         ? "bg-accent text-white"
                         : "bg-white/20 text-white"
@@ -74,7 +72,7 @@ export function SiteHeader() {
                         : "text-white/70 hover:text-white",
                   )}
                 >
-                  {localeLabels[code]}
+                  {localeOption.shortLabel}
                 </button>
               ))}
             </div>
@@ -126,22 +124,22 @@ export function SiteHeader() {
         <div className="border-t border-border/60 bg-white md:hidden">
           <Container className="flex flex-col gap-4 py-4">
             <div className="flex flex-wrap gap-2">
-              {LOCALES.map((code) => (
+              {enabledLocales.map((localeOption) => (
                 <button
-                  key={code}
+                  key={localeOption.code}
                   type="button"
                   onClick={() => {
-                    router.replace(pathname, { locale: code });
+                    router.replace(pathname, { locale: localeOption.code });
                     setMenuOpen(false);
                   }}
                   className={cn(
                     "rounded-md px-3 py-1.5 text-sm font-medium",
-                    locale === code
+                    currentLocale === localeOption.code
                       ? "bg-accent text-white"
                       : "bg-muted text-foreground",
                   )}
                 >
-                  {localeLabels[code]}
+                  {localeOption.shortLabel}
                 </button>
               ))}
             </div>
