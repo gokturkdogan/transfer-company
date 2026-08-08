@@ -565,6 +565,10 @@ async function seed() {
   for (const [index, currencySeed] of [
     { code: "EUR", label: "Euro (EUR)" },
     { code: "TRY", label: "Türk Lirası (TRY)" },
+    { code: "USD", label: "ABD Doları (USD)" },
+    { code: "GBP", label: "İngiliz Sterlini (GBP)" },
+    { code: "RUB", label: "Rus Rublesi (RUB)" },
+    { code: "AED", label: "BAE Dirhemi (AED)" },
   ].entries()) {
     await db
       .insert(schema.enabledCurrencies)
@@ -572,6 +576,17 @@ async function seed() {
         code: currencySeed.code,
         label: currencySeed.label,
         sortOrder: index,
+      })
+      .onConflictDoNothing();
+  }
+
+  for (const extraRow of await db.select().from(schema.extraServices)) {
+    await db
+      .insert(schema.extraServicePrices)
+      .values({
+        extraServiceId: extraRow.id,
+        currency: "EUR",
+        priceMinor: extraRow.priceMinor,
       })
       .onConflictDoNothing();
   }
