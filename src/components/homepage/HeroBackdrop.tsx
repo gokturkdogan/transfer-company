@@ -7,7 +7,7 @@ export function HeroBackdrop() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
       {/* Ink wash — keeps text legible without flattening the photograph */}
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/88 via-ink/58 to-ink/94" />
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/92 via-ink/72 to-ink/94 lg:from-ink/88 lg:via-ink/58" />
       <div className="absolute inset-0 bg-gradient-to-r from-ink/70 via-transparent to-ink/45" />
 
       {/* Warm overhead spotlight */}

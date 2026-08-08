@@ -34,9 +34,9 @@ export function SearchSegmentShell({
         className,
       )}
     >
-      <div className="flex min-w-0 items-center gap-2.5 px-3 py-2 lg:px-4">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gold/12 text-gold-deep">
-          <Icon className="h-4 w-4" aria-hidden />
+      <div className="flex min-w-0 items-center gap-2 px-3 py-1.5 max-lg:py-2 lg:gap-2.5 lg:px-4 lg:py-2">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gold/12 text-gold-deep lg:h-8 lg:w-8">
+          <Icon className="h-3.5 w-3.5 lg:h-4 lg:w-4" aria-hidden />
         </span>
         <span className="min-w-0 flex-1">
           <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">

@@ -28,7 +28,13 @@
       "fleet": "Filo",
       "howItWorks": "Nasıl Çalışır",
       "faq": "SSS",
-      "menu": "Menü"
+      "menu": "Menü",
+      "close": "Menüyü kapat"
+    },
+    "carousel": {
+      "prev": "Önceki",
+      "next": "Sonraki",
+      "goToSlide": "{index}. slayta git"
     },
     "trustBar": {
       "fixedPrice": "Sabit Fiyat",
@@ -42,7 +48,7 @@
       "title": "Popüler Destinasyonlar",
       "subtitle": "Antalya Havalimanı'ndan en çok tercih edilen transfer rotalarımızı keşfedin.",
       "from": "{price} başlayan",
-      "book": "Rezervasyon Yap"
+      "book": "Hemen Rezervasyon Yaptır"
     },
     "fleet": {
       "eyebrow": "Filomuz",
@@ -162,6 +168,7 @@
       "bookTransfer": "Transfer Rezervasyonu",
       "fullBooking": "Tam Rezervasyon Sayfası",
       "contactTitle": "İletişim",
+      "languagesTitle": "Dil seçenekleri",
       "copyright": "© {year} VIP Transfer. Tüm hakları saklıdır.",
       "exploreTitle": "Keşfet",
       "tagline": "Antalya · Premium VIP Transfer"

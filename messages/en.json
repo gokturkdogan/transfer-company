@@ -28,7 +28,13 @@
       "fleet": "Fleet",
       "howItWorks": "How It Works",
       "faq": "FAQ",
-      "menu": "Menu"
+      "menu": "Menu",
+      "close": "Close menu"
+    },
+    "carousel": {
+      "prev": "Previous",
+      "next": "Next",
+      "goToSlide": "Go to slide {index}"
     },
     "trustBar": {
       "fixedPrice": "Fixed Price",
@@ -42,7 +48,7 @@
       "title": "Popular Destinations",
       "subtitle": "Discover our most requested transfer routes from Antalya Airport.",
       "from": "From {price}",
-      "book": "Book Now"
+      "book": "Book Your Transfer Now"
     },
     "fleet": {
       "eyebrow": "Our Fleet",
@@ -162,6 +168,7 @@
       "bookTransfer": "Book a Transfer",
       "fullBooking": "Full Booking Page",
       "contactTitle": "Contact",
+      "languagesTitle": "Languages",
       "copyright": "© {year} VIP Transfer. All rights reserved.",
       "exploreTitle": "Explore",
       "tagline": "Antalya · Premium VIP Transfer"

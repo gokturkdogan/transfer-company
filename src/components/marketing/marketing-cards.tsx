@@ -12,6 +12,7 @@ type DestinationCardProps = {
   bookLabel: string;
   href: string;
   className?: string;
+  compact?: boolean;
 };
 
 export function DestinationCard({
@@ -21,6 +22,7 @@ export function DestinationCard({
   bookLabel,
   href,
   className,
+  compact = false,
 }: DestinationCardProps) {
   return (
     <Link
@@ -32,7 +34,14 @@ export function DestinationCard({
         className,
       )}
     >
-      <div className="relative aspect-[4/5] sm:aspect-[4/4.4]">
+      <div
+        className={cn(
+          "relative",
+          compact
+            ? "aspect-[16/11] lg:aspect-[4/4.4]"
+            : "aspect-[4/5] sm:aspect-[4/4.4]",
+        )}
+      >
         <Image
           src={imageSrc}
           alt={name}
@@ -47,14 +56,27 @@ export function DestinationCard({
           className="absolute inset-0 rounded-3xl border border-white/12 transition-colors duration-500 group-hover:border-gold/45"
         />
 
-        <div className="absolute inset-x-0 bottom-0 space-y-3 p-6">
-          <h3 className="text-2xl font-bold tracking-tight text-white">
+        <div
+          className={cn(
+            "absolute inset-x-0 bottom-0 space-y-2 p-4 lg:space-y-3 lg:p-6",
+          )}
+        >
+          <h3
+            className={cn(
+              "font-bold tracking-tight text-white",
+              compact ? "text-xl lg:text-2xl" : "text-2xl",
+            )}
+          >
             {name}
           </h3>
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-2.5 sm:flex-row sm:items-end sm:justify-between sm:gap-3">
             <p className="text-sm font-semibold text-gold-light">{priceLabel}</p>
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/12 text-white backdrop-blur-md transition-all duration-500 group-hover:bg-gold-gradient group-hover:text-ink">
-              <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
+            <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/12 px-3 py-2 text-[11px] font-bold text-white backdrop-blur-md transition-all duration-500 group-hover:bg-gold-gradient group-hover:text-ink sm:text-xs lg:px-4 lg:py-2.5 lg:text-sm">
+              {bookLabel}
+              <ArrowRight
+                className="h-3.5 w-3.5 shrink-0 rtl:rotate-180"
+                aria-hidden
+              />
             </span>
           </div>
         </div>
@@ -72,6 +94,7 @@ type VehicleCardProps = {
   priceLabel: string;
   bookLabel: string;
   href: string;
+  compact?: boolean;
 };
 
 export function VehicleCard({
@@ -83,10 +106,16 @@ export function VehicleCard({
   priceLabel,
   bookLabel,
   href,
+  compact = false,
 }: VehicleCardProps) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-float transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/45 hover:shadow-premium">
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-float transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/45 hover:shadow-premium">
+      <div
+        className={cn(
+          "relative overflow-hidden bg-muted",
+          compact ? "aspect-[16/9] lg:aspect-[16/10]" : "aspect-[16/10]",
+        )}
+      >
         <Image
           src={imageSrc}
           alt={name}
@@ -97,10 +126,22 @@ export function VehicleCard({
         <div className="absolute inset-0 bg-gradient-to-t from-ink/45 to-transparent" />
       </div>
 
-      <div className="flex flex-1 flex-col gap-5 p-6">
-        <h3 className="text-xl font-bold tracking-tight">{name}</h3>
+      <div
+        className={cn(
+          "flex flex-1 flex-col",
+          compact ? "gap-3 p-4 lg:gap-5 lg:p-6" : "gap-5 p-6",
+        )}
+      >
+        <h3
+          className={cn(
+            "font-bold tracking-tight",
+            compact ? "text-lg lg:text-xl" : "text-xl",
+          )}
+        >
+          {name}
+        </h3>
 
-        <div className="flex flex-wrap gap-2 text-xs font-semibold text-muted-foreground">
+        <div className="flex flex-wrap gap-1.5 text-xs font-semibold text-muted-foreground lg:gap-2">
           <span className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5">
             <Users className="h-3.5 w-3.5 text-gold-deep" aria-hidden />
             {passengersLabel}

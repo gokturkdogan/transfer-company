@@ -4,7 +4,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { DestinationCard } from "@/components/marketing/marketing-cards";
-import { Reveal } from "@/components/motion/Reveal";
+import { PremiumCarousel } from "@/components/marketing/PremiumCarousel";
 import { getDestinationImage } from "@/config/homepage-images";
 import type { DistrictStartingPriceDto } from "@/features/marketing/types";
 import { formatMoney } from "@/lib/money";
@@ -51,34 +51,34 @@ export async function PopularDestinations({
           title={t("title")}
           subtitle={t("subtitle")}
         />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {allDestinations.map((destination, index) => {
+        <PremiumCarousel label={t("title")}>
+          {allDestinations.map((destination) => {
             const bookingHref =
               destination.id === "lara-static"
                 ? `/booking?airport=${airportId}`
                 : `/booking?airport=${airportId}&district=${destination.id}`;
 
             return (
-              <Reveal key={destination.id} delay={index * 80}>
-                <DestinationCard
-                  name={destination.name}
-                  imageSrc={getDestinationImage(destination.code)}
-                  priceLabel={t("from", {
-                    price: formatMoney(
-                      {
-                        amountMinor: destination.startingFromMinor,
-                        currency: destination.currency,
-                      },
-                      locale,
-                    ),
-                  })}
-                  bookLabel={t("book")}
-                  href={bookingHref}
-                />
-              </Reveal>
+              <DestinationCard
+                key={destination.id}
+                compact
+                name={destination.name}
+                imageSrc={getDestinationImage(destination.code)}
+                priceLabel={t("from", {
+                  price: formatMoney(
+                    {
+                      amountMinor: destination.startingFromMinor,
+                      currency: destination.currency,
+                    },
+                    locale,
+                  ),
+                })}
+                bookLabel={t("book")}
+                href={bookingHref}
+              />
             );
           })}
-        </div>
+        </PremiumCarousel>
       </Container>
     </Section>
   );

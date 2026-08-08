@@ -28,7 +28,13 @@
       "fleet": "أسطولنا",
       "howItWorks": "كيف تعمل",
       "faq": "الأسئلة الشائعة",
-      "menu": "القائمة"
+      "menu": "القائمة",
+      "close": "إغلاق القائمة"
+    },
+    "carousel": {
+      "prev": "السابق",
+      "next": "التالي",
+      "goToSlide": "الانتقال إلى الشريحة {index}"
     },
     "trustBar": {
       "fixedPrice": "Fixed Price",
@@ -42,7 +48,7 @@
       "title": "Popular Destinations",
       "subtitle": "Discover our most requested transfer routes from Antalya Airport.",
       "from": "From {price}",
-      "book": "Book Now"
+      "book": "احجز نقلتك الآن"
     },
     "fleet": {
       "eyebrow": "Our Fleet",
@@ -162,6 +168,7 @@
       "bookTransfer": "Book a Transfer",
       "fullBooking": "Full Booking Page",
       "contactTitle": "Contact",
+      "languagesTitle": "اللغات",
       "copyright": "© {year} VIP Transfer. All rights reserved.",
       "exploreTitle": "استكشف",
       "tagline": "أنطاليا · نقل VIP فاخر"
