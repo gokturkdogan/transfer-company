@@ -1,10 +1,11 @@
 "use client";
 
+import { CheckCircle2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { ContactCta } from "@/components/shared/ContactCta";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { joinWallClockDateTime } from "@/features/booking/lib/search-signature";
-import { ContactCta } from "@/components/shared/ContactCta";
 import { Link } from "@/i18n/navigation";
 
 export function SuccessStep() {
@@ -33,18 +34,23 @@ export function SuccessStep() {
     : state.destination.hotelName;
 
   return (
-    <div className="space-y-6 text-center">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-semibold">{t("title")}</h2>
+    <div className="mx-auto max-w-xl space-y-8 py-4 text-center">
+      <div className="space-y-3">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-gold">
+          <CheckCircle2 className="h-8 w-8" aria-hidden />
+        </span>
+        <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          {t("title")}
+        </h2>
         <p className="text-muted-foreground">{t("subtitle")}</p>
       </div>
 
-      <div className="rounded-xl border border-border p-6 text-start">
+      <div className="rounded-[1.25rem] border border-border/70 bg-muted/35 p-6 text-start shadow-float">
         <p className="text-sm text-muted-foreground">{t("reference")}</p>
-        <p className="text-2xl font-bold tracking-wide">
+        <p className="text-2xl font-bold tracking-wide text-foreground">
           {state.reservation.reference}
         </p>
-        <div className="mt-4 space-y-1 text-sm">
+        <div className="mt-4 space-y-1.5 text-sm text-foreground/85">
           <p>
             {airportName} → {districtName}
           </p>
@@ -55,7 +61,10 @@ export function SuccessStep() {
       </div>
 
       <ContactCta />
-      <Link href="/" className="text-sm font-medium underline">
+      <Link
+        href="/"
+        className="inline-flex text-sm font-semibold text-gold-deep underline-offset-4 hover:underline"
+      >
         {t("backHome")}
       </Link>
     </div>

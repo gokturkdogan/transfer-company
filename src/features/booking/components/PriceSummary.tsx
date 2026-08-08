@@ -24,7 +24,7 @@ export function PriceSummary({
   const totalMinor = selectionTotalMinor ?? option.quote.totalMinor;
 
   return (
-    <div className="space-y-2 rounded-lg border border-border p-4 text-sm">
+    <div className="space-y-3 rounded-[1.25rem] border border-border/70 bg-muted/35 p-5 text-sm shadow-float">
       <div className="flex justify-between gap-4">
         <span>{t("baseTransfer")}</span>
         <span>

@@ -243,8 +243,33 @@
   },
   "booking": {
     "actions": {
-      "back": "Back",
-      "continue": "Continue"
+      "back": "رجوع",
+      "continue": "متابعة"
+    },
+    "page": {
+      "badge": "الحجز",
+      "title": "أكمل حجز النقل",
+      "subtitle": "تم حفظ بياناتك من الصفحة الرئيسية. أكمل الخطوات المتبقية لإرسال طلب الحجز.",
+      "trustTitle": "نقل فاخر",
+      "trustItems": {
+        "0": "سعر ثابت · الدفع عند الوصول",
+        "1": "استقبال مجاني وتتبع الرحلة",
+        "2": "دعم على مدار الساعة"
+      },
+      "searchEyebrow": "الخطوة 1",
+      "searchTitle": "تفاصيل النقل",
+      "searchSubtitle": "أدخل أو حدّث المسار والتواريخ وعدد الركاب.",
+      "vehicleEyebrow": "الخطوة 2",
+      "vehicleSubtitle": "اختر المركبة المناسبة لأمتعتك.",
+      "detailsEyebrow": "الخطوة 3",
+      "detailsTitle": "تفاصيل الحجز",
+      "detailsSubtitle": "اختر الإضافات وأدخل نقطة الوصول وبيانات الاتصال.",
+      "reviewEyebrow": "الخطوة 4"
+    },
+    "summary": {
+      "title": "ملخص الرحلة",
+      "edit": "تعديل",
+      "passengers": "{adults} بالغ · {children} طفل"
     },
     "extras": {
       "title": "Optional extras",
@@ -273,11 +298,11 @@
       "generic": "Something went wrong. Please try again."
     },
     "steps": {
-      "search": "Search",
-      "vehicle": "Vehicle",
-      "extras": "Extras",
-      "customer": "Details",
-      "review": "Review"
+      "progressLabel": "خطوات الحجز",
+      "search": "البحث",
+      "vehicle": "اختيار المركبة",
+      "customer": "التفاصيل",
+      "review": "الملخص"
     },
     "search": {
       "airport": "Airport",
@@ -338,6 +363,17 @@
       "noQuote": "Search for transfers to see vehicle options.",
       "empty": "No vehicles available.",
       "capacity": "Up to {passengers} passengers · {large} large · {cabin} cabin luggage",
+      "passengerRange": "1–{max} راكب",
+      "luggageMax": "حد أقصى {large} كبير · {cabin} يدوي",
+      "includedServicesTitle": "الخدمات المشمولة في السعر",
+      "includedServices": {
+        "0": "استقبال مجاني في المطار",
+        "1": "تتبع الرحلة",
+        "2": "ضمان سعر ثابت",
+        "3": "سائق محترف",
+        "4": "الدفع عند الوصول"
+      },
+      "totalLabel": "الإجمالي",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
       "select": "Select",
@@ -364,17 +400,26 @@
       "customAddress": "Address (optional)"
     },
     "review": {
-      "reservationNotice": "This is a reservation request only. No online payment is taken.",
-      "transfer": "Transfer",
-      "origin": "Origin",
-      "pricingDestination": "Pricing destination",
-      "dropoff": "Actual drop-off",
-      "noDropoff": "Not specified",
-      "passengers": "Passengers",
-      "adultsChildren": "{adults} adults · {children} children",
-      "vehicle": "Vehicle",
-      "customer": "Customer",
-      "luggage": "{large} large · {cabin} cabin luggage",
+      "title": "ملخص الحجز",
+      "reservationNotice": "هذا طلب حجز فقط. لا يتم قبول الدفع عبر الإنترنت.",
+      "transfer": "النقل",
+      "origin": "المغادرة",
+      "pricingDestination": "منطقة التسعير",
+      "dropoff": "نقطة الوصول الفعلية",
+      "noDropoff": "غير محدد",
+      "tripTypeLabel": "نوع الرحلة",
+      "outbound": "الذهاب",
+      "return": "العودة",
+      "passengers": "الركاب",
+      "guests": "الضيوف",
+      "adultsChildren": "{adults} بالغ · {children} طفل",
+      "luggageLabel": "الأمتعة",
+      "vehicle": "المركبة",
+      "customer": "العميل",
+      "name": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "luggage": "{large} كبير · {cabin} يدوي",
       "baseTransfer": "Base transfer",
       "total": "Total",
       "edit": "Edit details",

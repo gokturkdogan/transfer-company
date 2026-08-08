@@ -14,6 +14,17 @@ const messages = {
       select: "Select",
       selected: "Selected",
       capacity: "{passengers} passengers",
+      passengerRange: "1–{max} passengers",
+      luggageMax: "Max. {large} large",
+      includedServicesTitle: "Services included",
+      includedServices: {
+        "0": "Meet & greet",
+        "1": "Flight tracking",
+        "2": "Fixed price",
+        "3": "Chauffeur",
+        "4": "Pay on arrival",
+      },
+      totalLabel: "Total",
       eligibility: {
         ELIGIBLE: "Eligible",
         ELIGIBLE_WITH_EXTRAS: "With extras",
@@ -105,7 +116,7 @@ describe("VehicleRecommendationCard", () => {
     );
 
     expect(within(container).getByRole("button", { name: "Select" })).toBeDisabled();
-    expect(screen.getByText("Too many passengers")).toBeInTheDocument();
+    expect(screen.getByText(/Too many passengers/)).toBeInTheDocument();
   });
 
   it("does not call onSelect when disabled", async () => {

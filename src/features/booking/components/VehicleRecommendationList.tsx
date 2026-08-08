@@ -12,9 +12,9 @@ export function VehicleRecommendationList() {
 
   if (state.isLoadingQuote) {
     return (
-      <div className="space-y-4">
-        <Skeleton className="h-40 w-full" />
-        <Skeleton className="h-40 w-full" />
+      <div className="space-y-6">
+        <Skeleton className="h-52 w-full rounded-[1.35rem]" />
+        <Skeleton className="h-52 w-full rounded-[1.35rem]" />
       </div>
     );
   }
@@ -28,7 +28,7 @@ export function VehicleRecommendationList() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {state.quote.options.map((option) => (
         <VehicleRecommendationCard
           key={option.vehicleCategoryId}

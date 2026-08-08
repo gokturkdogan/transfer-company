@@ -246,6 +246,31 @@
       "back": "Back",
       "continue": "Continue"
     },
+    "page": {
+      "badge": "Reservation",
+      "title": "Complete your transfer",
+      "subtitle": "Your details from the homepage are saved. Fill in the remaining steps to submit your reservation request.",
+      "trustTitle": "Premium transfer",
+      "trustItems": {
+        "0": "Fixed price · pay on arrival",
+        "1": "Free meet & greet and flight tracking",
+        "2": "24/7 support line"
+      },
+      "searchEyebrow": "Step 1",
+      "searchTitle": "Transfer details",
+      "searchSubtitle": "Enter or update your route, dates, and passengers.",
+      "vehicleEyebrow": "Step 2",
+      "vehicleSubtitle": "Choose the vehicle that fits your luggage.",
+      "detailsEyebrow": "Step 3",
+      "detailsTitle": "Reservation details",
+      "detailsSubtitle": "Select extras and enter your drop-off and contact details.",
+      "reviewEyebrow": "Step 4"
+    },
+    "summary": {
+      "title": "Trip summary",
+      "edit": "Edit",
+      "passengers": "{adults} adults · {children} children"
+    },
     "extras": {
       "title": "Optional extras",
       "requiredTitle": "Required extras",
@@ -273,11 +298,11 @@
       "generic": "Something went wrong. Please try again."
     },
     "steps": {
+      "progressLabel": "Reservation steps",
       "search": "Search",
-      "vehicle": "Vehicle",
-      "extras": "Extras",
+      "vehicle": "Vehicle Selection",
       "customer": "Details",
-      "review": "Review"
+      "review": "Summary"
     },
     "search": {
       "airport": "Airport",
@@ -338,6 +363,17 @@
       "noQuote": "Search for transfers to see vehicle options.",
       "empty": "No vehicles available.",
       "capacity": "Up to {passengers} passengers · {large} large · {cabin} cabin luggage",
+      "passengerRange": "1–{max} passengers",
+      "luggageMax": "Max. {large} large · {cabin} cabin",
+      "includedServicesTitle": "Services included in the price",
+      "includedServices": {
+        "0": "Free airport meet & greet",
+        "1": "Flight tracking",
+        "2": "Fixed price guarantee",
+        "3": "Professional chauffeur",
+        "4": "Pay on arrival"
+      },
+      "totalLabel": "Total",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
       "select": "Select",
@@ -364,16 +400,25 @@
       "customAddress": "Address (optional)"
     },
     "review": {
+      "title": "Reservation summary",
       "reservationNotice": "This is a reservation request only. No online payment is taken.",
       "transfer": "Transfer",
       "origin": "Origin",
       "pricingDestination": "Pricing destination",
       "dropoff": "Actual drop-off",
       "noDropoff": "Not specified",
+      "tripTypeLabel": "Trip type",
+      "outbound": "Outbound",
+      "return": "Return",
       "passengers": "Passengers",
+      "guests": "Guests",
       "adultsChildren": "{adults} adults · {children} children",
+      "luggageLabel": "Luggage",
       "vehicle": "Vehicle",
       "customer": "Customer",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
       "luggage": "{large} large · {cabin} cabin luggage",
       "baseTransfer": "Base transfer",
       "total": "Total",

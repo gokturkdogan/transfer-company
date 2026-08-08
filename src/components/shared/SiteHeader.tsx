@@ -98,11 +98,11 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
               scrolled ? "h-[4.5rem]" : "h-24 md:h-32",
             )}
           >
-            <Link href="/" className="group flex min-w-0 items-center">
+            <Link href="/" className="group flex shrink-0 items-center">
               <SiteLogo alt={common("appName")} size="header" />
             </Link>
 
-            <nav className="hidden items-center gap-1 lg:flex">
+            <nav className="hidden items-center gap-1 xl:flex">
               {NAV_SECTIONS.map((section) =>
                 section.type === "route" ? (
                   <Link
@@ -179,7 +179,7 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
 
             <button
               type="button"
-              className="cursor-pointer rounded-xl border border-white/15 bg-white/8 p-2 text-white backdrop-blur-md md:hidden"
+              className="cursor-pointer rounded-xl border border-white/15 bg-white/8 p-2 text-white backdrop-blur-md xl:hidden"
               onClick={() => setMenuOpen(true)}
               aria-label={t("menu")}
               aria-expanded={menuOpen}

@@ -243,8 +243,33 @@
   },
   "booking": {
     "actions": {
-      "back": "Back",
-      "continue": "Continue"
+      "back": "Назад",
+      "continue": "Далее"
+    },
+    "page": {
+      "badge": "Бронирование",
+      "title": "Завершите бронирование трансфера",
+      "subtitle": "Данные с главной страницы сохранены. Заполните оставшиеся шаги, чтобы отправить заявку.",
+      "trustTitle": "Премиум-трансфер",
+      "trustItems": {
+        "0": "Фиксированная цена · оплата по прибытии",
+        "1": "Бесплатная встреча и отслеживание рейса",
+        "2": "Круглосуточная поддержка"
+      },
+      "searchEyebrow": "Шаг 1",
+      "searchTitle": "Детали трансфера",
+      "searchSubtitle": "Введите или обновите маршрут, даты и пассажиров.",
+      "vehicleEyebrow": "Шаг 2",
+      "vehicleSubtitle": "Выберите автомобиль под ваш багаж.",
+      "detailsEyebrow": "Шаг 3",
+      "detailsTitle": "Детали бронирования",
+      "detailsSubtitle": "Выберите доп. услуги и укажите место высадки и контакты.",
+      "reviewEyebrow": "Шаг 4"
+    },
+    "summary": {
+      "title": "Сводка поездки",
+      "edit": "Изменить",
+      "passengers": "{adults} взрослых · {children} детей"
     },
     "extras": {
       "title": "Optional extras",
@@ -273,11 +298,11 @@
       "generic": "Something went wrong. Please try again."
     },
     "steps": {
-      "search": "Search",
-      "vehicle": "Vehicle",
-      "extras": "Extras",
-      "customer": "Details",
-      "review": "Review"
+      "progressLabel": "Шаги бронирования",
+      "search": "Поиск",
+      "vehicle": "Выбор автомобиля",
+      "customer": "Детали",
+      "review": "Итог"
     },
     "search": {
       "airport": "Airport",
@@ -338,6 +363,17 @@
       "noQuote": "Search for transfers to see vehicle options.",
       "empty": "No vehicles available.",
       "capacity": "Up to {passengers} passengers · {large} large · {cabin} cabin luggage",
+      "passengerRange": "1–{max} пассажиров",
+      "luggageMax": "Макс. {large} крупный · {cabin} ручной",
+      "includedServicesTitle": "Услуги, включённые в стоимость",
+      "includedServices": {
+        "0": "Бесплатная встреча в аэропорту",
+        "1": "Отслеживание рейса",
+        "2": "Гарантия фиксированной цены",
+        "3": "Профессиональный водитель",
+        "4": "Оплата по прибытии"
+      },
+      "totalLabel": "Итого",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
       "select": "Select",
@@ -364,17 +400,26 @@
       "customAddress": "Address (optional)"
     },
     "review": {
-      "reservationNotice": "This is a reservation request only. No online payment is taken.",
-      "transfer": "Transfer",
-      "origin": "Origin",
-      "pricingDestination": "Pricing destination",
-      "dropoff": "Actual drop-off",
-      "noDropoff": "Not specified",
-      "passengers": "Passengers",
-      "adultsChildren": "{adults} adults · {children} children",
-      "vehicle": "Vehicle",
-      "customer": "Customer",
-      "luggage": "{large} large · {cabin} cabin luggage",
+      "title": "Сводка бронирования",
+      "reservationNotice": "Это только заявка на бронирование. Онлайн-оплата не принимается.",
+      "transfer": "Трансфер",
+      "origin": "Отправление",
+      "pricingDestination": "Район ценообразования",
+      "dropoff": "Фактическая точка высадки",
+      "noDropoff": "Не указано",
+      "tripTypeLabel": "Тип поездки",
+      "outbound": "Туда",
+      "return": "Обратно",
+      "passengers": "Пассажиры",
+      "guests": "Гости",
+      "adultsChildren": "{adults} взрослых · {children} детей",
+      "luggageLabel": "Багаж",
+      "vehicle": "Автомобиль",
+      "customer": "Клиент",
+      "name": "ФИО",
+      "email": "Email",
+      "phone": "Телефон",
+      "luggage": "{large} крупный · {cabin} ручной багаж",
       "baseTransfer": "Base transfer",
       "total": "Total",
       "edit": "Edit details",

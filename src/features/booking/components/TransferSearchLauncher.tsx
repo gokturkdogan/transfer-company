@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TransferSearchForm } from "@/features/booking/components/TransferSearchForm";
 import { HeroSearchBar } from "@/features/booking/components/hero-search/HeroSearchBar";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { buildBookingSearchParams } from "@/features/booking/lib/booking-search-params";
 
 type TransferSearchLauncherProps = {
   showSecondaryCta?: boolean;
@@ -23,24 +24,7 @@ export function TransferSearchLauncher({
   const { search } = state;
 
   const navigateToBooking = () => {
-    const params = new URLSearchParams({
-      airport: search.originAirportId,
-      city: search.cityId,
-      district: search.destinationDistrictId,
-      tripType: search.tripType,
-      outboundDate: search.outboundDate,
-      outboundTime: search.outboundTime,
-      passengers: String(search.passengerCount),
-      children: String(search.childCount),
-      largeLuggage: String(search.largeLuggageCount),
-      cabinLuggage: String(search.cabinLuggageCount),
-    });
-
-    if (search.tripType === "ROUND_TRIP") {
-      params.set("returnDate", search.returnDate);
-      params.set("returnTime", search.returnTime);
-    }
-
+    const params = buildBookingSearchParams(search);
     router.push(`/booking?${params.toString()}`);
   };
 

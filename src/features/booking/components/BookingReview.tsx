@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 
-import { Button } from "@/components/ui/button";
+import { BookingFlowNavigation } from "@/features/booking/components/BookingFlowNavigation";
+import { BookingStepHeader } from "@/features/booking/components/BookingStepHeader";
 import { PriceSummary } from "@/features/booking/components/PriceSummary";
 import { RequiredExtrasPanel } from "@/features/booking/components/RequiredExtrasPanel";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
@@ -11,6 +12,7 @@ import { track } from "@/lib/analytics";
 
 export function BookingReview() {
   const t = useTranslations("booking.review");
+  const tPage = useTranslations("booking.page");
   const { state, airports, districts, dispatch, submitReservation } =
     useBookingFlow();
 
@@ -45,65 +47,61 @@ export function BookingReview() {
 
   return (
     <div className="space-y-6">
-      <p className="text-sm text-muted-foreground">{t("reservationNotice")}</p>
+      <BookingStepHeader
+        eyebrow={tPage("reviewEyebrow")}
+        title={t("title")}
+        subtitle={t("reservationNotice")}
+      />
 
-      <section className="space-y-2">
-        <h3 className="font-semibold">{t("transfer")}</h3>
-        <p>
-          <span className="text-muted-foreground">{t("origin")}: </span>
-          {airportName}
-        </p>
-        <p>
-          <span className="text-muted-foreground">{t("pricingDestination")}: </span>
-          {districtName}
-        </p>
-        <p>
-          <span className="text-muted-foreground">{t("dropoff")}: </span>
-          {dropoffLabel}
-        </p>
-        <p>{t(`tripType.${state.search.tripType}`)}</p>
-        <p>{outboundAt}</p>
-        {returnAt && <p>{returnAt}</p>}
-      </section>
+      <div className="grid gap-4 md:grid-cols-2">
+        <ReviewSection title={t("transfer")}>
+          <ReviewRow label={t("origin")} value={airportName} />
+          <ReviewRow label={t("pricingDestination")} value={districtName} />
+          <ReviewRow label={t("dropoff")} value={dropoffLabel} />
+          <ReviewRow label={t("tripTypeLabel")} value={t(`tripType.${state.search.tripType}`)} />
+          <ReviewRow label={t("outbound")} value={outboundAt} />
+          {returnAt && <ReviewRow label={t("return")} value={returnAt} />}
+        </ReviewSection>
 
-      <section className="space-y-2">
-        <h3 className="font-semibold">{t("passengers")}</h3>
-        <p>
-          {t("adultsChildren", {
-            adults: state.search.passengerCount,
-            children: state.search.childCount,
-          })}
-        </p>
-        <p>
-          {t("luggage", {
-            large: state.search.largeLuggageCount,
-            cabin: state.search.cabinLuggageCount,
-          })}
-        </p>
-      </section>
+        <ReviewSection title={t("passengers")}>
+          <ReviewRow
+            label={t("guests")}
+            value={t("adultsChildren", {
+              adults: state.search.passengerCount,
+              children: state.search.childCount,
+            })}
+          />
+          <ReviewRow
+            label={t("luggageLabel")}
+            value={t("luggage", {
+              large: state.search.largeLuggageCount,
+              cabin: state.search.cabinLuggageCount,
+            })}
+          />
+          <ReviewRow
+            label={t("vehicle")}
+            value={
+              selectedOption.quantity > 1
+                ? `${selectedOption.quantity} × ${selectedOption.name}`
+                : selectedOption.name
+            }
+          />
+        </ReviewSection>
+      </div>
 
-      <section className="space-y-2">
-        <h3 className="font-semibold">{t("vehicle")}</h3>
-        <p>
-          {selectedOption.quantity > 1
-            ? `${selectedOption.quantity} × ${selectedOption.name}`
-            : selectedOption.name}
-        </p>
-      </section>
+      <ReviewSection title={t("customer")}>
+        <ReviewRow
+          label={t("name")}
+          value={`${state.customer.firstName} ${state.customer.lastName}`}
+        />
+        <ReviewRow label={t("email")} value={state.customer.email} />
+        <ReviewRow label={t("phone")} value={state.customer.phone} />
+      </ReviewSection>
 
       <RequiredExtrasPanel
         extras={selectedOption.requiredExtras}
         currency={state.quote.currency}
       />
-
-      <section className="space-y-2">
-        <h3 className="font-semibold">{t("customer")}</h3>
-        <p>
-          {state.customer.firstName} {state.customer.lastName}
-        </p>
-        <p>{state.customer.email}</p>
-        <p>{state.customer.phone}</p>
-      </section>
 
       <PriceSummary
         option={selectedOption}
@@ -111,25 +109,41 @@ export function BookingReview() {
         currency={state.quote.currency}
       />
 
-      <div className="flex flex-wrap gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => dispatch({ type: "SET_STEP", step: "customer" })}
-        >
-          {t("edit")}
-        </Button>
-        <Button
-          type="button"
-          disabled={state.isSubmitting}
-          onClick={() => {
-            track({ name: "booking_review" });
-            void submitReservation();
-          }}
-        >
-          {state.isSubmitting ? t("submitting") : t("submit")}
-        </Button>
-      </div>
+      <BookingFlowNavigation
+        onBack={() => dispatch({ type: "SET_STEP", step: "customer" })}
+        onContinue={() => {
+          track({ name: "booking_review" });
+          void submitReservation();
+        }}
+        continueLabel={state.isSubmitting ? t("submitting") : t("submit")}
+        continueLoading={state.isSubmitting}
+      />
+    </div>
+  );
+}
+
+function ReviewSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="rounded-xl border border-border/70 bg-muted/35 p-4">
+      <h3 className="mb-3 text-sm font-bold uppercase tracking-[0.12em] text-gold-deep">
+        {title}
+      </h3>
+      <div className="space-y-2">{children}</div>
+    </section>
+  );
+}
+
+function ReviewRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex flex-col gap-0.5 text-sm sm:flex-row sm:justify-between sm:gap-4">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-medium text-foreground sm:text-end">{value}</span>
     </div>
   );
 }

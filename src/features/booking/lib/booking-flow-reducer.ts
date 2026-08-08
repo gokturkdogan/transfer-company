@@ -10,6 +10,7 @@ import type {
 import type { TransferAvailabilityResponseDto } from "@/features/pricing/types/dto";
 import type { ReservationResponseDto } from "@/features/pricing/types/dto";
 import { buildSearchSignature } from "@/features/booking/lib/search-signature";
+import { isLauncherSearchComplete } from "@/features/booking/lib/launcher-search";
 import {
   getDefaultDestinationState,
   getDefaultSearchState,
@@ -65,9 +66,11 @@ function clearDestination(state: BookingFlowState): BookingFlowState {
 export function createInitialBookingFlowState(
   search?: Partial<BookingSearchState>,
 ): BookingFlowState {
+  const mergedSearch = { ...getDefaultSearchState(), ...search };
+
   return {
-    step: "search",
-    search: { ...getDefaultSearchState(), ...search },
+    step: isLauncherSearchComplete(mergedSearch) ? "vehicle" : "search",
+    search: mergedSearch,
     destination: getDefaultDestinationState(),
     quote: null,
     searchSignature: null,
@@ -121,13 +124,18 @@ export function bookingFlowReducer(
 ): BookingFlowState {
   switch (action.type) {
     case "SET_STEP": {
+      const resolvedStep = action.step === "extras" ? "customer" : action.step;
       const next: BookingFlowState = {
         ...state,
-        step: action.step,
+        step: resolvedStep,
         errorKey: null,
       };
 
-      if (action.step === "review" && next.idempotencyKey === null && action.idempotencyKey) {
+      if (
+        resolvedStep === "review" &&
+        next.idempotencyKey === null &&
+        action.idempotencyKey
+      ) {
         next.idempotencyKey = action.idempotencyKey;
       }
 
@@ -227,7 +235,7 @@ export function bookingFlowReducer(
         selectedVehicleCategoryId: action.vehicleCategoryId,
         selectedQuantity: action.quantity,
         selectedExtras: [],
-        step: "extras",
+        step: "customer",
         errorKey: null,
       };
 

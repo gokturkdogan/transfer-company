@@ -246,6 +246,31 @@
       "back": "Geri",
       "continue": "Devam"
     },
+    "page": {
+      "badge": "Rezervasyon",
+      "title": "Transferinizi tamamlayın",
+      "subtitle": "Ana sayfadan gelen bilgileriniz kayıtlı. Kalan adımları doldurarak rezervasyon talebinizi gönderin.",
+      "trustTitle": "Premium transfer",
+      "trustItems": {
+        "0": "Sabit fiyat · ödeme varışta",
+        "1": "Ücretsiz karşılama ve uçuş takibi",
+        "2": "7/24 destek hattı"
+      },
+      "searchEyebrow": "Adım 1",
+      "searchTitle": "Transfer detayları",
+      "searchSubtitle": "Rota, tarih ve yolcu bilgilerinizi girin veya güncelleyin.",
+      "vehicleEyebrow": "Adım 2",
+      "vehicleSubtitle": "Bagajınıza uygun aracı seçin.",
+      "detailsEyebrow": "Adım 3",
+      "detailsTitle": "Rezervasyon detayları",
+      "detailsSubtitle": "Ekstralar, varış noktası ve iletişim bilgilerinizi girin.",
+      "reviewEyebrow": "Adım 4"
+    },
+    "summary": {
+      "title": "Transfer özeti",
+      "edit": "Düzenle",
+      "passengers": "{adults} yetişkin · {children} çocuk"
+    },
     "extras": {
       "title": "İsteğe bağlı ekstralar",
       "requiredTitle": "Zorunlu ekstralar",
@@ -273,10 +298,10 @@
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
     },
     "steps": {
+      "progressLabel": "Rezervasyon adımları",
       "search": "Arama",
-      "vehicle": "Araç",
-      "extras": "Ekstralar",
-      "customer": "Bilgiler",
+      "vehicle": "Araç Seçimi",
+      "customer": "Detaylar",
       "review": "Özet"
     },
     "search": {
@@ -338,6 +363,17 @@
       "noQuote": "Araç seçeneklerini görmek için transfer arayın.",
       "empty": "Uygun araç yok.",
       "capacity": "En fazla {passengers} yolcu · {large} büyük · {cabin} kabin bagajı",
+      "passengerRange": "1–{max} yolcu",
+      "luggageMax": "Max. {large} büyük · {cabin} kabin",
+      "includedServicesTitle": "Fiyata dahil hizmetler",
+      "includedServices": {
+        "0": "Ücretsiz havalimanı karşılama",
+        "1": "Uçuş takibi",
+        "2": "Sabit fiyat garantisi",
+        "3": "Profesyonel şoför",
+        "4": "Ödeme varışta"
+      },
+      "totalLabel": "Toplam",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Bagajınız bu aracın kapasitesini aşıyor. Ek bagaj aracı gereklidir.",
       "select": "Seç",
@@ -364,16 +400,25 @@
       "customAddress": "Adres (isteğe bağlı)"
     },
     "review": {
+      "title": "Rezervasyon özeti",
       "reservationNotice": "Bu yalnızca bir rezervasyon talebidir. Online ödeme alınmaz.",
       "transfer": "Transfer",
       "origin": "Kalkış",
       "pricingDestination": "Fiyatlandırma bölgesi",
       "dropoff": "Gerçek varış noktası",
       "noDropoff": "Belirtilmedi",
+      "tripTypeLabel": "Yolculuk tipi",
+      "outbound": "Gidiş",
+      "return": "Dönüş",
       "passengers": "Yolcular",
+      "guests": "Yolcular",
       "adultsChildren": "{adults} yetişkin · {children} çocuk",
+      "luggageLabel": "Bagaj",
       "vehicle": "Araç",
       "customer": "Müşteri",
+      "name": "Ad soyad",
+      "email": "E-posta",
+      "phone": "Telefon",
       "luggage": "{large} büyük · {cabin} kabin bagajı",
       "baseTransfer": "Transfer ücreti",
       "total": "Toplam",

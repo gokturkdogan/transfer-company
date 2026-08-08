@@ -123,7 +123,7 @@ export function DateTimePickerPanel({
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden p-2 max-lg:p-1.5">
           {timeSlots.length > 0 ? (
-            <div className="grid min-h-0 flex-1 auto-rows-min grid-cols-2 gap-1 overflow-y-auto overscroll-contain pr-0.5 lg:max-h-[14rem] lg:w-fit lg:grid-cols-2">
+            <div className="grid min-h-0 flex-1 auto-rows-min grid-cols-2 gap-1 overflow-y-auto overscroll-contain pe-0.5 lg:max-h-[14rem] lg:w-fit lg:grid-cols-2">
               {timeSlots.map((slot) => {
                 const active = slot === pendingTime;
 

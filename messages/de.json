@@ -243,8 +243,33 @@
   },
   "booking": {
     "actions": {
-      "back": "Back",
-      "continue": "Continue"
+      "back": "Zurück",
+      "continue": "Weiter"
+    },
+    "page": {
+      "badge": "Reservierung",
+      "title": "Transfer abschließen",
+      "subtitle": "Ihre Angaben von der Startseite sind gespeichert. Füllen Sie die restlichen Schritte aus, um Ihre Reservierungsanfrage zu senden.",
+      "trustTitle": "Premium-Transfer",
+      "trustItems": {
+        "0": "Festpreis · Zahlung bei Ankunft",
+        "1": "Kostenloser Meet & Greet und Flugverfolgung",
+        "2": "24/7 Support-Hotline"
+      },
+      "searchEyebrow": "Schritt 1",
+      "searchTitle": "Transferdetails",
+      "searchSubtitle": "Route, Datum und Passagiere eingeben oder aktualisieren.",
+      "vehicleEyebrow": "Schritt 2",
+      "vehicleSubtitle": "Wählen Sie das passende Fahrzeug für Ihr Gepäck.",
+      "detailsEyebrow": "Schritt 3",
+      "detailsTitle": "Reservierungsdetails",
+      "detailsSubtitle": "Extras wählen sowie Ziel und Kontaktdaten eingeben.",
+      "reviewEyebrow": "Schritt 4"
+    },
+    "summary": {
+      "title": "Transferübersicht",
+      "edit": "Bearbeiten",
+      "passengers": "{adults} Erwachsene · {children} Kinder"
     },
     "extras": {
       "title": "Optional extras",
@@ -273,11 +298,11 @@
       "generic": "Something went wrong. Please try again."
     },
     "steps": {
-      "search": "Search",
-      "vehicle": "Vehicle",
-      "extras": "Extras",
+      "progressLabel": "Reservierungsschritte",
+      "search": "Suche",
+      "vehicle": "Fahrzeugauswahl",
       "customer": "Details",
-      "review": "Review"
+      "review": "Zusammenfassung"
     },
     "search": {
       "airport": "Airport",
@@ -338,6 +363,17 @@
       "noQuote": "Search for transfers to see vehicle options.",
       "empty": "No vehicles available.",
       "capacity": "Up to {passengers} passengers · {large} large · {cabin} cabin luggage",
+      "passengerRange": "1–{max} Passagiere",
+      "luggageMax": "Max. {large} groß · {cabin} Handgepäck",
+      "includedServicesTitle": "Im Preis enthaltene Leistungen",
+      "includedServices": {
+        "0": "Kostenloser Flughafen-Meet & Greet",
+        "1": "Flugverfolgung",
+        "2": "Festpreisgarantie",
+        "3": "Professioneller Chauffeur",
+        "4": "Zahlung bei Ankunft"
+      },
+      "totalLabel": "Gesamt",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
       "select": "Select",
@@ -364,17 +400,26 @@
       "customAddress": "Address (optional)"
     },
     "review": {
-      "reservationNotice": "This is a reservation request only. No online payment is taken.",
+      "title": "Reservierungsübersicht",
+      "reservationNotice": "Dies ist nur eine Reservierungsanfrage. Es wird keine Online-Zahlung entgegengenommen.",
       "transfer": "Transfer",
-      "origin": "Origin",
-      "pricingDestination": "Pricing destination",
-      "dropoff": "Actual drop-off",
-      "noDropoff": "Not specified",
-      "passengers": "Passengers",
-      "adultsChildren": "{adults} adults · {children} children",
-      "vehicle": "Vehicle",
-      "customer": "Customer",
-      "luggage": "{large} large · {cabin} cabin luggage",
+      "origin": "Abfahrt",
+      "pricingDestination": "Preisregion",
+      "dropoff": "Tatsächliche Ankunft",
+      "noDropoff": "Nicht angegeben",
+      "tripTypeLabel": "Reiseart",
+      "outbound": "Hinfahrt",
+      "return": "Rückfahrt",
+      "passengers": "Passagiere",
+      "guests": "Gäste",
+      "adultsChildren": "{adults} Erwachsene · {children} Kinder",
+      "luggageLabel": "Gepäck",
+      "vehicle": "Fahrzeug",
+      "customer": "Kunde",
+      "name": "Vollständiger Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "luggage": "{large} groß · {cabin} Handgepäck",
       "baseTransfer": "Base transfer",
       "total": "Total",
       "edit": "Edit details",

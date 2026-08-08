@@ -20,6 +20,10 @@ vi.mock("@/features/booking/lib/api", () => ({
   fetchHotelsForDistrict: vi.fn(),
 }));
 
+vi.mock("@/features/booking/components/BookingInlineSearchBar", () => ({
+  BookingInlineSearchBar: () => null,
+}));
+
 const messages = {
   booking: {
     errors: {
