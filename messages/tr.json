@@ -30,7 +30,8 @@
       "faq": "SSS",
       "about": "Hakkımızda",
       "menu": "Menü",
-      "close": "Menüyü kapat"
+      "close": "Menüyü kapat",
+      "selectLanguage": "Dil seçin"
     },
     "carousel": {
       "prev": "Önceki",
@@ -330,8 +331,6 @@
       "passengers": "Yolcu",
       "adults": "Yetişkin",
       "children": "Çocuk",
-      "largeLuggage": "Büyük bagaj",
-      "cabinLuggage": "Kabin bagajı",
       "submit": "Transfer ara",
       "loading": "Aranıyor...",
       "adultsShort": "{count} yetişkin",
@@ -351,12 +350,6 @@
         "MARINA": "Marina",
         "CUSTOM_LOCATION": "Özel konum"
       }
-    },
-    "luggage": {
-      "title": "Bagaj",
-      "description": "Doğru aracı önerebilmemiz için bagaj miktarınızı belirtin.",
-      "largeLuggage": "Büyük bagaj",
-      "cabinLuggage": "Kabin bagajı"
     },
     "vehicle": {
       "title": "Aracınızı seçin",
@@ -413,13 +406,11 @@
       "passengers": "Yolcular",
       "guests": "Yolcular",
       "adultsChildren": "{adults} yetişkin · {children} çocuk",
-      "luggageLabel": "Bagaj",
       "vehicle": "Araç",
       "customer": "Müşteri",
       "name": "Ad soyad",
       "email": "E-posta",
       "phone": "Telefon",
-      "luggage": "{large} büyük · {cabin} kabin bagajı",
       "baseTransfer": "Transfer ücreti",
       "total": "Toplam",
       "edit": "Düzenle",

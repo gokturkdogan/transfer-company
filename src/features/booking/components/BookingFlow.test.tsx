@@ -48,8 +48,6 @@ const messages = {
       returnDate: "Return date",
       returnTime: "Return time",
       passengers: "Passengers",
-      largeLuggage: "Large",
-      cabinLuggage: "Cabin",
       submit: "Search",
       loading: "Loading",
     },

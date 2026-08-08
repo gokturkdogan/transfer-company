@@ -72,13 +72,6 @@ export function BookingReview() {
             })}
           />
           <ReviewRow
-            label={t("luggageLabel")}
-            value={t("luggage", {
-              large: state.search.largeLuggageCount,
-              cabin: state.search.cabinLuggageCount,
-            })}
-          />
-          <ReviewRow
             label={t("vehicle")}
             value={
               selectedOption.quantity > 1

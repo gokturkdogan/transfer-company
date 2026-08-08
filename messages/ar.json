@@ -30,7 +30,8 @@
       "faq": "الأسئلة الشائعة",
       "about": "من نحن",
       "menu": "القائمة",
-      "close": "إغلاق القائمة"
+      "close": "إغلاق القائمة",
+      "selectLanguage": "اختر اللغة"
     },
     "carousel": {
       "prev": "السابق",
@@ -330,8 +331,6 @@
       "passengers": "Passengers",
       "adults": "Adults",
       "children": "Children",
-      "largeLuggage": "Large luggage",
-      "cabinLuggage": "Cabin luggage",
       "submit": "Search transfers",
       "loading": "Searching...",
       "adultsShort": "{count} بالغين",
@@ -351,12 +350,6 @@
         "MARINA": "Marina",
         "CUSTOM_LOCATION": "Custom location"
       }
-    },
-    "luggage": {
-      "title": "Luggage",
-      "description": "Tell us how much luggage you are bringing so we can recommend the right vehicle.",
-      "largeLuggage": "Large luggage",
-      "cabinLuggage": "Cabin luggage"
     },
     "vehicle": {
       "title": "Choose your vehicle",
@@ -413,13 +406,11 @@
       "passengers": "الركاب",
       "guests": "الضيوف",
       "adultsChildren": "{adults} بالغ · {children} طفل",
-      "luggageLabel": "الأمتعة",
       "vehicle": "المركبة",
       "customer": "العميل",
       "name": "الاسم الكامل",
       "email": "البريد الإلكتروني",
       "phone": "الهاتف",
-      "luggage": "{large} كبير · {cabin} يدوي",
       "baseTransfer": "Base transfer",
       "total": "Total",
       "edit": "Edit details",

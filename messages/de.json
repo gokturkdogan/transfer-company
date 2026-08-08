@@ -30,7 +30,8 @@
       "faq": "FAQ",
       "about": "Über uns",
       "menu": "Menü",
-      "close": "Menü schließen"
+      "close": "Menü schließen",
+      "selectLanguage": "Sprache wählen"
     },
     "carousel": {
       "prev": "Zurück",
@@ -330,8 +331,6 @@
       "passengers": "Passengers",
       "adults": "Adults",
       "children": "Children",
-      "largeLuggage": "Large luggage",
-      "cabinLuggage": "Cabin luggage",
       "submit": "Search transfers",
       "loading": "Searching...",
       "adultsShort": "{count} Erwachsene",
@@ -351,12 +350,6 @@
         "MARINA": "Marina",
         "CUSTOM_LOCATION": "Custom location"
       }
-    },
-    "luggage": {
-      "title": "Luggage",
-      "description": "Tell us how much luggage you are bringing so we can recommend the right vehicle.",
-      "largeLuggage": "Large luggage",
-      "cabinLuggage": "Cabin luggage"
     },
     "vehicle": {
       "title": "Choose your vehicle",
@@ -413,13 +406,11 @@
       "passengers": "Passagiere",
       "guests": "Gäste",
       "adultsChildren": "{adults} Erwachsene · {children} Kinder",
-      "luggageLabel": "Gepäck",
       "vehicle": "Fahrzeug",
       "customer": "Kunde",
       "name": "Vollständiger Name",
       "email": "E-Mail",
       "phone": "Telefon",
-      "luggage": "{large} groß · {cabin} Handgepäck",
       "baseTransfer": "Base transfer",
       "total": "Total",
       "edit": "Edit details",

@@ -12,7 +12,6 @@ import { CustomDestinationFields } from "@/features/booking/components/CustomDes
 import { CustomerDetailsForm } from "@/features/booking/components/CustomerDetailsForm";
 import { FlightDetailsForm } from "@/features/booking/components/FlightDetailsForm";
 import { HotelSelector } from "@/features/booking/components/HotelSelector";
-import { LuggageSelector } from "@/features/booking/components/LuggageSelector";
 import { OptionalExtrasSelector } from "@/features/booking/components/OptionalExtrasSelector";
 import { RequiredExtrasPanel } from "@/features/booking/components/RequiredExtrasPanel";
 import { SuccessStep } from "@/features/booking/components/SuccessStep";
@@ -51,10 +50,7 @@ export function BookingFlow() {
               title={t("vehicle.title")}
               subtitle={t("page.vehicleSubtitle")}
             />
-            <div className="space-y-6">
-              <LuggageSelector />
-              <VehicleRecommendationList />
-            </div>
+            <VehicleRecommendationList />
           </>
         )}
 

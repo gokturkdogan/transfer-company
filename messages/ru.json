@@ -30,7 +30,8 @@
       "faq": "Вопросы",
       "about": "О нас",
       "menu": "Меню",
-      "close": "Закрыть меню"
+      "close": "Закрыть меню",
+      "selectLanguage": "Выберите язык"
     },
     "carousel": {
       "prev": "Назад",
@@ -330,8 +331,6 @@
       "passengers": "Passengers",
       "adults": "Adults",
       "children": "Children",
-      "largeLuggage": "Large luggage",
-      "cabinLuggage": "Cabin luggage",
       "submit": "Search transfers",
       "loading": "Searching...",
       "adultsShort": "{count} взрослых",
@@ -351,12 +350,6 @@
         "MARINA": "Marina",
         "CUSTOM_LOCATION": "Custom location"
       }
-    },
-    "luggage": {
-      "title": "Luggage",
-      "description": "Tell us how much luggage you are bringing so we can recommend the right vehicle.",
-      "largeLuggage": "Large luggage",
-      "cabinLuggage": "Cabin luggage"
     },
     "vehicle": {
       "title": "Choose your vehicle",
@@ -413,13 +406,11 @@
       "passengers": "Пассажиры",
       "guests": "Гости",
       "adultsChildren": "{adults} взрослых · {children} детей",
-      "luggageLabel": "Багаж",
       "vehicle": "Автомобиль",
       "customer": "Клиент",
       "name": "ФИО",
       "email": "Email",
       "phone": "Телефон",
-      "luggage": "{large} крупный · {cabin} ручной багаж",
       "baseTransfer": "Base transfer",
       "total": "Total",
       "edit": "Edit details",

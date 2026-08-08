@@ -5,11 +5,11 @@ import { useLocale, useTranslations } from "next-intl";
 import { ArrowRight, Menu, MessageCircle, Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
+import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { MobileNavDrawer } from "@/components/shared/MobileNavDrawer";
 import { SiteLogo } from "@/components/shared/SiteLogo";
 import type { SiteLocaleOption } from "@/features/locales/types";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import { getLocaleEmoji } from "@/config/locales";
+import { Link, usePathname } from "@/i18n/navigation";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
@@ -41,7 +41,6 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
   const common = useTranslations("common");
   const currentLocale = useLocale();
   const pathname = usePathname();
-  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -125,27 +124,7 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
             </nav>
 
             <div className="hidden items-center gap-2 md:flex">
-              <div className="flex items-center gap-0.5 rounded-full border border-white/15 bg-white/8 p-1 backdrop-blur-md">
-                {enabledLocales.map((localeOption) => (
-                  <button
-                    key={localeOption.code}
-                    type="button"
-                    title={localeOption.label}
-                    onClick={() =>
-                      router.replace(pathname, { locale: localeOption.code })
-                    }
-                    className={cn(
-                      "flex cursor-pointer items-center gap-1 rounded-full px-2 py-1 text-[11px] font-bold uppercase tracking-wide transition-all duration-300",
-                      currentLocale === localeOption.code
-                        ? "bg-gold-gradient text-ink"
-                        : "text-white/65 hover:bg-white/10 hover:text-white",
-                    )}
-                  >
-                    <span aria-hidden>{getLocaleEmoji(localeOption.code)}</span>
-                    {localeOption.shortLabel}
-                  </button>
-                ))}
-              </div>
+              <LocaleSwitcher enabledLocales={enabledLocales} />
 
               <a
                 href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
@@ -177,16 +156,20 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
               </a>
             </div>
 
-            <button
-              type="button"
-              className="cursor-pointer rounded-xl border border-white/15 bg-white/8 p-2 text-white backdrop-blur-md xl:hidden"
-              onClick={() => setMenuOpen(true)}
-              aria-label={t("menu")}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-nav-drawer"
-            >
-              <Menu className="h-5 w-5" aria-hidden />
-            </button>
+            <div className="flex items-center gap-2 md:hidden">
+              <LocaleSwitcher enabledLocales={enabledLocales} />
+
+              <button
+                type="button"
+                className="cursor-pointer rounded-xl border border-white/15 bg-white/8 p-2 text-white backdrop-blur-md"
+                onClick={() => setMenuOpen(true)}
+                aria-label={t("menu")}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-nav-drawer"
+              >
+                <Menu className="h-5 w-5" aria-hidden />
+              </button>
+            </div>
           </div>
         </Container>
       </header>

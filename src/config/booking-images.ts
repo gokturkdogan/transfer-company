@@ -1,6 +1,6 @@
 import { ABOUT_IMAGES } from "@/config/about-images";
 
 export const BOOKING_IMAGES = {
-  heroAccent: ABOUT_IMAGES.chauffeur,
+  hero: "/images/reservation/banner-1.png",
   meetGreet: ABOUT_IMAGES.meetGreet,
 } as const;
