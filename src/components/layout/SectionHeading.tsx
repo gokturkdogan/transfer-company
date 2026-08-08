@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import { cn } from "@/lib/utils";
 
 type SectionHeadingProps = {
@@ -18,9 +19,9 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <div
+    <Reveal
       className={cn(
-        "mb-12 max-w-2xl",
+        "mb-14 max-w-2xl",
         align === "center" && "mx-auto text-center",
         className,
       )}
@@ -28,16 +29,24 @@ export function SectionHeading({
       {eyebrow && (
         <p
           className={cn(
-            "mb-3 text-sm font-semibold uppercase tracking-[0.2em]",
-            dark ? "text-accent" : "text-accent",
+            "mb-4 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.22em] text-gold",
+            align === "center" && "justify-center",
           )}
         >
+          <span
+            aria-hidden
+            className="h-px w-8 bg-gradient-to-r from-transparent to-gold"
+          />
           {eyebrow}
+          <span
+            aria-hidden
+            className="h-px w-8 bg-gradient-to-l from-transparent to-gold"
+          />
         </p>
       )}
       <h2
         className={cn(
-          "text-3xl font-semibold tracking-tight md:text-4xl",
+          "text-3xl font-bold leading-[1.12] tracking-tight sm:text-4xl lg:text-[2.75rem]",
           dark ? "text-white" : "text-foreground",
         )}
       >
@@ -46,13 +55,13 @@ export function SectionHeading({
       {subtitle && (
         <p
           className={cn(
-            "mt-4 text-lg leading-relaxed",
-            dark ? "text-white/70" : "text-muted-foreground",
+            "mt-5 text-base leading-relaxed sm:text-lg",
+            dark ? "text-white/65" : "text-muted-foreground",
           )}
         >
           {subtitle}
         </p>
       )}
-    </div>
+    </Reveal>
   );
 }

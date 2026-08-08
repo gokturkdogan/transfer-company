@@ -75,6 +75,8 @@ export default async function AdminPricingPage({
 
       {selectedAirportId && enabledCurrencyCodes.length > 0 ? (
         <PricingEditor
+          // Remount on data-shape changes so the editor re-derives its drafts.
+          key={`${selectedAirportId}:${enabledCurrencyCodes.join(",")}:${vehicleCategories.length}`}
           airportId={selectedAirportId}
           airports={airports.map((airport) => ({
             id: airport.id,

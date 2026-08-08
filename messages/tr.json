@@ -6,13 +6,29 @@
   "home": {
     "title": "VIP Havalimanı Transfer",
     "description": "Güvenilir, konforlu ve çok dilli VIP transfer rezervasyon platformu.",
-    "cta": "Rezervasyona Başla",
+    "cta": {
+      "title": "Premium transferiniz",
+      "subtitle": "Antalya havalimanı transferinizi iki dakikada rezerve edin.",
+      "button": "Transferinizi Rezerve Edin",
+      "eyebrow": "Rezervasyon",
+      "titleAccent": "60 saniye uzağınızda"
+    },
     "hero": {
-      "title": "Antalya'da Premium Havalimanı Transferi",
-      "subtitle": "Lüks araçlar, sabit fiyatlar ve profesyonel şoförlerle havalimanından otelinize sorunsuz bir yolculuk."
+      "title": "Havalimanından Otelinize",
+      "subtitle": "Sabit fiyat, ücretsiz karşılama ve uçuş takibiyle Antalya Havalimanı'ndan tüm Türk Rivierası'na 7/24 premium VIP transfer. Rezervasyonunuzu 60 saniyede tamamlayın.",
+      "badge": "Antalya'nın Premium VIP Transfer Servisi",
+      "titleAccent": "Kusursuz Lüks Transfer",
+      "rating": "4,9 / 5 · 2.400+ misafir yorumu",
+      "guarantee": "Sabit fiyat garantisi · Ödeme varışta",
+      "scrollHint": "Keşfet"
     },
     "nav": {
-      "reserve": "Hemen Rezervasyon"
+      "reserve": "Hemen Rezervasyon",
+      "destinations": "Destinasyonlar",
+      "fleet": "Filo",
+      "howItWorks": "Nasıl Çalışır",
+      "faq": "SSS",
+      "menu": "Menü"
     },
     "trustBar": {
       "fixedPrice": "Sabit Fiyat",
@@ -137,12 +153,8 @@
           "question": "Uçuşum gecikirse ne olur?",
           "answer": "Uçuşunuzu otomatik takip ederiz. Şoförünüz ek ücret olmadan karşılama saatini ayarlar."
         }
-      ]
-    },
-    "cta": {
-      "title": "Premium Bir Transfere Hazır mısınız?",
-      "subtitle": "Antalya havalimanı transferinizi iki dakikada rezerve edin.",
-      "button": "Transferinizi Rezerve Edin"
+      ],
+      "subtitle": "Rezervasyon, fiyatlar ve karşılama süreci hakkında en çok sorulanlar."
     },
     "footer": {
       "description": "Antalya ve Türk Rivierası'nda premium havalimanı transfer hizmeti.",
@@ -150,7 +162,75 @@
       "bookTransfer": "Transfer Rezervasyonu",
       "fullBooking": "Tam Rezervasyon Sayfası",
       "contactTitle": "İletişim",
-      "copyright": "© {year} VIP Transfer. Tüm hakları saklıdır."
+      "copyright": "© {year} VIP Transfer. Tüm hakları saklıdır.",
+      "exploreTitle": "Keşfet",
+      "tagline": "Antalya · Premium VIP Transfer"
+    },
+    "meta": {
+      "title": "Antalya Havalimanı VIP Transfer | Sabit Fiyat, 7/24 Premium Hizmet",
+      "description": "Antalya Havalimanı'ndan Lara, Kemer, Belek, Side ve Alanya'ya premium VIP transfer. Sabit fiyat, ücretsiz karşılama ve uçuş takibi. 60 saniyede online rezervasyon.",
+      "keywords": "antalya havalimanı transfer, antalya vip transfer, ayt transfer, belek transfer, kemer transfer, side transfer, alanya transfer"
+    },
+    "stats": {
+      "eyebrow": "Rakamlarla Biz",
+      "title": "Türk Rivierası'nın tercih edilen transfer servisi",
+      "items": {
+        "transfers": {
+          "value": "180.000+",
+          "label": "Tamamlanan transfer"
+        },
+        "rating": {
+          "value": "4,9/5",
+          "label": "Misafir memnuniyeti"
+        },
+        "fleet": {
+          "value": "45+",
+          "label": "Premium araç"
+        },
+        "support": {
+          "value": "7/24",
+          "label": "Canlı destek"
+        }
+      }
+    },
+    "seo": {
+      "eyebrow": "Antalya Transfer Rehberi",
+      "title": "Antalya Havalimanı transferi hakkında bilmeniz gereken her şey",
+      "intro": "Antalya Havalimanı (AYT) yılda 35 milyondan fazla yolcu ağırlıyor. Lara'dan Kemer, Belek, Side ve Alanya'ya uzanan sahil şeridine ulaşmanın en konforlu yolu, önceden rezerve edilmiş özel bir VIP transfer.",
+      "imageAlt": "Antalya Havalimanı varış salonunda karşılama hizmeti",
+      "imageCaption": "Varış salonunda isim tabelasıyla karşılama — her transferde ücretsiz",
+      "blocks": {
+        "routes": {
+          "title": "Popüler transfer rotaları ve süreleri",
+          "body": "Antalya Havalimanı'ndan Lara'ya yaklaşık 15 dakika, Belek'e 40 dakika, Kemer'e 45 dakika, Side'ye 65 dakika ve Alanya'ya 2 saat sürüyor. Tüm rotalarda kapıdan kapıya hizmet veriyor, sizi otel resepsiyonunuza kadar bırakıyoruz."
+        },
+        "pricing": {
+          "title": "Sabit fiyat nasıl çalışır?",
+          "body": "Fiyatlar araç sınıfına ve mesafeye göre önceden belirlenir; trafik, bekleme veya gece varışları için ek ücret alınmaz. Rezervasyon ekranında gördüğünüz tutar ödeyeceğiniz son tutardır ve ödemeyi transferden sonra şoförünüze yapabilirsiniz."
+        },
+        "comfort": {
+          "title": "Araç konforu ve karşılama hizmeti",
+          "body": "Filomuz Mercedes Vito, Sprinter ve lüks sedan sınıflarından oluşur; tümü klimalı, ücretsiz su ikramlı ve talep üzerine bebek koltuklu. Şoförünüz uçuşunuzu takip eder ve varış salonunda isminizin yazılı olduğu tabelayla sizi karşılar."
+        }
+      },
+      "highlights": {
+        "duration": {
+          "title": "Ortalama süre",
+          "value": "Havalimanından 15–120 dakika"
+        },
+        "vehicles": {
+          "title": "Araç sınıfları",
+          "value": "Vito, Sprinter ve lüks sedan"
+        },
+        "payment": {
+          "title": "Ödeme",
+          "value": "Nakit veya kart, transfer sonrası"
+        },
+        "coverage": {
+          "title": "Hizmet bölgesi",
+          "value": "Lara, Kemer, Belek, Side, Alanya"
+        }
+      }
     }
   },
   "booking": {
@@ -159,10 +239,20 @@
       "continue": "Devam"
     },
     "extras": {
-      "title": "Ekstralar"
+      "title": "İsteğe bağlı ekstralar",
+      "requiredTitle": "Zorunlu ekstralar",
+      "required": "Zorunlu",
+      "quantity": "Adet: {count}",
+      "quantityLabel": "Adet",
+      "none": "İsteğe bağlı ekstra yok."
     },
     "customer": {
-      "title": "Bilgileriniz"
+      "title": "Müşteri bilgileri",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "whatsapp": "WhatsApp (isteğe bağlı)"
     },
     "errors": {
       "rateLimit": "Çok fazla istek. Lütfen daha sonra tekrar deneyin.",
@@ -207,7 +297,9 @@
       "largeLuggage": "Büyük bagaj",
       "cabinLuggage": "Kabin bagajı",
       "submit": "Transfer ara",
-      "loading": "Aranıyor..."
+      "loading": "Aranıyor...",
+      "adultsShort": "{count} yetişkin",
+      "childrenShort": "{count} çocuk"
     },
     "locations": {
       "placeholder": "Konum seçin",
@@ -244,22 +336,6 @@
         "ELIGIBLE_WITH_EXTRAS": "Ek bagaj ile uygun",
         "INELIGIBLE": "Uygun değil"
       }
-    },
-    "extras": {
-      "title": "İsteğe bağlı ekstralar",
-      "requiredTitle": "Zorunlu ekstralar",
-      "required": "Zorunlu",
-      "quantity": "Adet: {count}",
-      "quantityLabel": "Adet",
-      "none": "İsteğe bağlı ekstra yok."
-    },
-    "customer": {
-      "title": "Müşteri bilgileri",
-      "firstName": "Ad",
-      "lastName": "Soyad",
-      "email": "E-posta",
-      "phone": "Telefon",
-      "whatsapp": "WhatsApp (isteğe bağlı)"
     },
     "flight": {
       "outbound": "Gidiş uçuş numarası (isteğe bağlı)",

@@ -6,13 +6,29 @@
   "home": {
     "title": "VIP Airport Transfer",
     "description": "Reliable, comfortable, and multilingual VIP transfer booking platform.",
-    "cta": "Start Booking",
+    "cta": {
+      "title": "Your premium transfer is",
+      "subtitle": "Book your Antalya airport transfer in under two minutes.",
+      "button": "Book Your Transfer",
+      "eyebrow": "Reservation",
+      "titleAccent": "60 seconds away"
+    },
     "hero": {
-      "title": "Premium Airport Transfers in Antalya",
-      "subtitle": "Luxury vehicles, fixed prices, and professional chauffeurs for a seamless journey from arrival to your hotel."
+      "title": "From the Airport to Your Hotel",
+      "subtitle": "Fixed prices, complimentary meet & greet and free flight tracking — premium VIP transfers from Antalya Airport across the whole Turkish Riviera, 24/7. Book in 60 seconds.",
+      "badge": "Antalya's Premium VIP Transfer Service",
+      "titleAccent": "Flawless Luxury Transfers",
+      "rating": "4.9 / 5 · 2,400+ guest reviews",
+      "guarantee": "Fixed-price guarantee · Pay on arrival",
+      "scrollHint": "Explore"
     },
     "nav": {
-      "reserve": "Reserve Now"
+      "reserve": "Reserve Now",
+      "destinations": "Destinations",
+      "fleet": "Fleet",
+      "howItWorks": "How It Works",
+      "faq": "FAQ",
+      "menu": "Menu"
     },
     "trustBar": {
       "fixedPrice": "Fixed Price",
@@ -137,12 +153,8 @@
           "question": "What if my flight is delayed?",
           "answer": "We track your flight automatically. Your driver will adjust the pickup time at no extra charge."
         }
-      ]
-    },
-    "cta": {
-      "title": "Ready for a Premium Transfer?",
-      "subtitle": "Book your Antalya airport transfer in under two minutes.",
-      "button": "Book Your Transfer"
+      ],
+      "subtitle": "The questions guests ask most about booking, pricing and the meet & greet."
     },
     "footer": {
       "description": "Premium airport transfer service in Antalya and the Turkish Riviera.",
@@ -150,7 +162,75 @@
       "bookTransfer": "Book a Transfer",
       "fullBooking": "Full Booking Page",
       "contactTitle": "Contact",
-      "copyright": "© {year} VIP Transfer. All rights reserved."
+      "copyright": "© {year} VIP Transfer. All rights reserved.",
+      "exploreTitle": "Explore",
+      "tagline": "Antalya · Premium VIP Transfer"
+    },
+    "meta": {
+      "title": "Antalya Airport VIP Transfer | Fixed Prices, Premium 24/7 Service",
+      "description": "Premium VIP transfers from Antalya Airport to Lara, Kemer, Belek, Side and Alanya. Fixed prices, free meet & greet and flight tracking. Book online in 60 seconds.",
+      "keywords": "antalya airport transfer, antalya vip transfer, ayt transfer, belek transfer, kemer transfer, side transfer, alanya transfer"
+    },
+    "stats": {
+      "eyebrow": "By the Numbers",
+      "title": "The Turkish Riviera's preferred transfer service",
+      "items": {
+        "transfers": {
+          "value": "180,000+",
+          "label": "Completed transfers"
+        },
+        "rating": {
+          "value": "4.9/5",
+          "label": "Guest satisfaction"
+        },
+        "fleet": {
+          "value": "45+",
+          "label": "Premium vehicles"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Live support"
+        }
+      }
+    },
+    "seo": {
+      "eyebrow": "Antalya Transfer Guide",
+      "title": "Everything you need to know about Antalya Airport transfers",
+      "intro": "Antalya Airport (AYT) welcomes more than 35 million passengers a year. The most comfortable way to reach the coastline stretching from Lara to Kemer, Belek, Side and Alanya is a pre-booked private VIP transfer.",
+      "imageAlt": "Meet and greet service in the Antalya Airport arrivals hall",
+      "imageCaption": "Name-board greeting in the arrivals hall — included with every transfer",
+      "blocks": {
+        "routes": {
+          "title": "Popular routes and journey times",
+          "body": "From Antalya Airport it takes roughly 15 minutes to Lara, 40 minutes to Belek, 45 minutes to Kemer, 65 minutes to Side and 2 hours to Alanya. Every route is door to door — we drop you off at your hotel reception."
+        },
+        "pricing": {
+          "title": "How fixed pricing works",
+          "body": "Prices are set in advance by vehicle class and distance, with no surcharges for traffic, waiting or night arrivals. The amount you see when booking is the final amount, and you pay your driver after the transfer."
+        },
+        "comfort": {
+          "title": "Vehicle comfort and meet & greet",
+          "body": "Our fleet covers Mercedes Vito, Sprinter and luxury sedan classes — all air-conditioned, with complimentary water and child seats on request. Your driver tracks your flight and waits in the arrivals hall with a name board."
+        }
+      },
+      "highlights": {
+        "duration": {
+          "title": "Average duration",
+          "value": "15–120 min from the airport"
+        },
+        "vehicles": {
+          "title": "Vehicle classes",
+          "value": "Vito, Sprinter and luxury sedan"
+        },
+        "payment": {
+          "title": "Payment",
+          "value": "Cash or card, after the transfer"
+        },
+        "coverage": {
+          "title": "Service area",
+          "value": "Lara, Kemer, Belek, Side, Alanya"
+        }
+      }
     }
   },
   "booking": {
@@ -159,10 +239,20 @@
       "continue": "Continue"
     },
     "extras": {
-      "title": "Extras"
+      "title": "Optional extras",
+      "requiredTitle": "Required extras",
+      "required": "Required",
+      "quantity": "Quantity: {count}",
+      "quantityLabel": "Quantity",
+      "none": "No optional extras available."
     },
     "customer": {
-      "title": "Your details"
+      "title": "Customer information",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp (optional)"
     },
     "errors": {
       "rateLimit": "Too many requests. Please try again later.",
@@ -207,7 +297,9 @@
       "largeLuggage": "Large luggage",
       "cabinLuggage": "Cabin luggage",
       "submit": "Search transfers",
-      "loading": "Searching..."
+      "loading": "Searching...",
+      "adultsShort": "{count} adults",
+      "childrenShort": "{count} children"
     },
     "locations": {
       "placeholder": "Select location",
@@ -244,22 +336,6 @@
         "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
         "INELIGIBLE": "Not suitable"
       }
-    },
-    "extras": {
-      "title": "Optional extras",
-      "requiredTitle": "Required extras",
-      "required": "Required",
-      "quantity": "Quantity: {count}",
-      "quantityLabel": "Quantity",
-      "none": "No optional extras available."
-    },
-    "customer": {
-      "title": "Customer information",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "email": "Email",
-      "phone": "Phone",
-      "whatsapp": "WhatsApp (optional)"
     },
     "flight": {
       "outbound": "Outbound flight number (optional)",

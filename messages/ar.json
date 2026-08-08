@@ -7,16 +7,28 @@
     "title": "VIP Airport Transfer",
     "description": "Reliable, comfortable, and multilingual VIP transfer booking platform.",
     "cta": {
-      "title": "Ready for a Premium Transfer?",
+      "title": "نقلك الفاخر",
       "subtitle": "Book your Antalya airport transfer in under two minutes.",
-      "button": "Book Your Transfer"
+      "button": "Book Your Transfer",
+      "eyebrow": "الحجز",
+      "titleAccent": "على بعد 60 ثانية"
     },
     "hero": {
-      "title": "Premium Airport Transfers in Antalya",
-      "subtitle": "Luxury vehicles, fixed prices, and professional chauffeurs for a seamless journey from arrival to your hotel."
+      "title": "من المطار إلى فندقك",
+      "subtitle": "أسعار ثابتة واستقبال مجاني بلوحة الاسم وتتبع للرحلات — خدمة نقل VIP فاخرة من مطار أنطاليا إلى كامل الريفييرا التركية على مدار الساعة. احجز في 60 ثانية.",
+      "badge": "خدمة النقل الخاص الفاخرة في أنطاليا",
+      "titleAccent": "نقل فاخر بلا أخطاء",
+      "rating": "4.9 / 5 · أكثر من 2400 تقييم",
+      "guarantee": "ضمان السعر الثابت · الدفع عند الوصول",
+      "scrollHint": "استكشف"
     },
     "nav": {
-      "reserve": "Reserve Now"
+      "reserve": "Reserve Now",
+      "destinations": "المقاصد",
+      "fleet": "أسطولنا",
+      "howItWorks": "كيف تعمل",
+      "faq": "الأسئلة الشائعة",
+      "menu": "القائمة"
     },
     "trustBar": {
       "fixedPrice": "Fixed Price",
@@ -141,7 +153,8 @@
           "question": "What if my flight is delayed?",
           "answer": "We track your flight automatically. Your driver will adjust the pickup time at no extra charge."
         }
-      ]
+      ],
+      "subtitle": "أكثر الأسئلة شيوعًا حول الحجز والأسعار والاستقبال."
     },
     "footer": {
       "description": "Premium airport transfer service in Antalya and the Turkish Riviera.",
@@ -149,7 +162,75 @@
       "bookTransfer": "Book a Transfer",
       "fullBooking": "Full Booking Page",
       "contactTitle": "Contact",
-      "copyright": "© {year} VIP Transfer. All rights reserved."
+      "copyright": "© {year} VIP Transfer. All rights reserved.",
+      "exploreTitle": "استكشف",
+      "tagline": "أنطاليا · نقل VIP فاخر"
+    },
+    "meta": {
+      "title": "نقل VIP من مطار أنطاليا | أسعار ثابتة وخدمة 24/7",
+      "description": "خدمة نقل VIP فاخرة من مطار أنطاليا إلى لارا وكيمر وبيليك وسيدي وألانيا. أسعار ثابتة واستقبال مجاني وتتبع الرحلات. احجز أونلاين في 60 ثانية.",
+      "keywords": "نقل مطار أنطاليا, نقل vip أنطاليا, ayt نقل, نقل بيليك, نقل كيمر, نقل سيدي, نقل ألانيا"
+    },
+    "stats": {
+      "eyebrow": "بالأرقام",
+      "title": "خدمة النقل المفضلة في الريفييرا التركية",
+      "items": {
+        "transfers": {
+          "value": "+180,000",
+          "label": "رحلة نقل مكتملة"
+        },
+        "rating": {
+          "value": "4.9/5",
+          "label": "رضا الضيوف"
+        },
+        "fleet": {
+          "value": "+45",
+          "label": "سيارة فاخرة"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "دعم مباشر"
+        }
+      }
+    },
+    "seo": {
+      "eyebrow": "دليل النقل في أنطاليا",
+      "title": "كل ما تحتاج معرفته عن النقل من مطار أنطاليا",
+      "intro": "يستقبل مطار أنطاليا (AYT) أكثر من 35 مليون مسافر سنويًا. وأكثر الطرق راحةً للوصول إلى الساحل من لارا إلى كيمر وبيليك وسيدي وألانيا هي حجز نقل خاص فاخر مسبقًا.",
+      "imageAlt": "خدمة الاستقبال في صالة الوصول بمطار أنطاليا",
+      "imageCaption": "استقبال بلوحة الاسم في صالة الوصول — مجاني في كل رحلة",
+      "blocks": {
+        "routes": {
+          "title": "أشهر المسارات ومدة الرحلة",
+          "body": "من مطار أنطاليا تستغرق الرحلة نحو 15 دقيقة إلى لارا، و40 دقيقة إلى بيليك، و45 دقيقة إلى كيمر، و65 دقيقة إلى سيدي، وساعتين إلى ألانيا. جميع المسارات من الباب إلى الباب حتى استقبال الفندق."
+        },
+        "pricing": {
+          "title": "كيف يعمل السعر الثابت",
+          "body": "تُحدَّد الأسعار مسبقًا حسب فئة السيارة والمسافة، دون رسوم إضافية للزحام أو الانتظار أو الوصول الليلي. المبلغ الذي تراه عند الحجز هو المبلغ النهائي، وتدفعه للسائق بعد الرحلة."
+        },
+        "comfort": {
+          "title": "راحة السيارات وخدمة الاستقبال",
+          "body": "يشمل أسطولنا مرسيدس فيتو وسبرينتر وسيارات السيدان الفاخرة — جميعها مكيَّفة مع مياه مجانية ومقاعد أطفال عند الطلب. يتابع السائق رحلتك وينتظرك في صالة الوصول بلوحة تحمل اسمك."
+        }
+      },
+      "highlights": {
+        "duration": {
+          "title": "المدة المتوسطة",
+          "value": "15–120 دقيقة من المطار"
+        },
+        "vehicles": {
+          "title": "فئات السيارات",
+          "value": "فيتو وسبرينتر وسيدان فاخرة"
+        },
+        "payment": {
+          "title": "الدفع",
+          "value": "نقدًا أو بالبطاقة بعد الرحلة"
+        },
+        "coverage": {
+          "title": "نطاق الخدمة",
+          "value": "لارا، كيمر، بيليك، سيدي، ألانيا"
+        }
+      }
     }
   },
   "booking": {
@@ -216,7 +297,9 @@
       "largeLuggage": "Large luggage",
       "cabinLuggage": "Cabin luggage",
       "submit": "Search transfers",
-      "loading": "Searching..."
+      "loading": "Searching...",
+      "adultsShort": "{count} بالغين",
+      "childrenShort": "{count} أطفال"
     },
     "locations": {
       "placeholder": "Select location",

@@ -4,6 +4,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { DestinationCard } from "@/components/marketing/marketing-cards";
+import { Reveal } from "@/components/motion/Reveal";
 import { getDestinationImage } from "@/config/homepage-images";
 import type { DistrictStartingPriceDto } from "@/features/marketing/types";
 import { formatMoney } from "@/lib/money";
@@ -43,37 +44,38 @@ export async function PopularDestinations({
   ];
 
   return (
-    <Section>
+    <Section id="destinations">
       <Container>
         <SectionHeading
           eyebrow={t("eyebrow")}
           title={t("title")}
           subtitle={t("subtitle")}
         />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {allDestinations.map((destination) => {
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {allDestinations.map((destination, index) => {
             const bookingHref =
               destination.id === "lara-static"
                 ? `/booking?airport=${airportId}`
                 : `/booking?airport=${airportId}&district=${destination.id}`;
 
             return (
-              <DestinationCard
-                key={destination.id}
-                name={destination.name}
-                imageSrc={getDestinationImage(destination.code)}
-                priceLabel={t("from", {
-                  price: formatMoney(
-                    {
-                      amountMinor: destination.startingFromMinor,
-                      currency: destination.currency,
-                    },
-                    locale,
-                  ),
-                })}
-                bookLabel={t("book")}
-                href={bookingHref}
-              />
+              <Reveal key={destination.id} delay={index * 80}>
+                <DestinationCard
+                  name={destination.name}
+                  imageSrc={getDestinationImage(destination.code)}
+                  priceLabel={t("from", {
+                    price: formatMoney(
+                      {
+                        amountMinor: destination.startingFromMinor,
+                        currency: destination.currency,
+                      },
+                      locale,
+                    ),
+                  })}
+                  bookLabel={t("book")}
+                  href={bookingHref}
+                />
+              </Reveal>
             );
           })}
         </div>

@@ -7,16 +7,28 @@
     "title": "VIP Airport Transfer",
     "description": "Reliable, comfortable, and multilingual VIP transfer booking platform.",
     "cta": {
-      "title": "Ready for a Premium Transfer?",
+      "title": "Ihr Premium-Transfer ist",
       "subtitle": "Book your Antalya airport transfer in under two minutes.",
-      "button": "Book Your Transfer"
+      "button": "Book Your Transfer",
+      "eyebrow": "Reservierung",
+      "titleAccent": "60 Sekunden entfernt"
     },
     "hero": {
-      "title": "Premium Airport Transfers in Antalya",
-      "subtitle": "Luxury vehicles, fixed prices, and professional chauffeurs for a seamless journey from arrival to your hotel."
+      "title": "Vom Flughafen zu Ihrem Hotel",
+      "subtitle": "Festpreise, kostenloser Meet & Greet und Flugverfolgung — premium VIP-Transfers vom Flughafen Antalya an die gesamte Türkische Riviera, rund um die Uhr. In 60 Sekunden gebucht.",
+      "badge": "Antalyas Premium VIP-Transferservice",
+      "titleAccent": "Makelloser Luxustransfer",
+      "rating": "4,9 / 5 · 2.400+ Gästebewertungen",
+      "guarantee": "Festpreisgarantie · Zahlung bei Ankunft",
+      "scrollHint": "Entdecken"
     },
     "nav": {
-      "reserve": "Reserve Now"
+      "reserve": "Reserve Now",
+      "destinations": "Reiseziele",
+      "fleet": "Fahrzeuge",
+      "howItWorks": "So funktioniert's",
+      "faq": "FAQ",
+      "menu": "Menü"
     },
     "trustBar": {
       "fixedPrice": "Fixed Price",
@@ -141,7 +153,8 @@
           "question": "What if my flight is delayed?",
           "answer": "We track your flight automatically. Your driver will adjust the pickup time at no extra charge."
         }
-      ]
+      ],
+      "subtitle": "Die häufigsten Fragen zu Buchung, Preisen und Begrüßung am Flughafen."
     },
     "footer": {
       "description": "Premium airport transfer service in Antalya and the Turkish Riviera.",
@@ -149,7 +162,75 @@
       "bookTransfer": "Book a Transfer",
       "fullBooking": "Full Booking Page",
       "contactTitle": "Contact",
-      "copyright": "© {year} VIP Transfer. All rights reserved."
+      "copyright": "© {year} VIP Transfer. All rights reserved.",
+      "exploreTitle": "Entdecken",
+      "tagline": "Antalya · Premium VIP Transfer"
+    },
+    "meta": {
+      "title": "Flughafentransfer Antalya VIP | Festpreise, Premium-Service 24/7",
+      "description": "Premium VIP-Transfers vom Flughafen Antalya nach Lara, Kemer, Belek, Side und Alanya. Festpreise, kostenloser Meet & Greet, Flugverfolgung. Online in 60 Sekunden buchen.",
+      "keywords": "flughafentransfer antalya, antalya vip transfer, ayt transfer, belek transfer, kemer transfer, side transfer, alanya transfer"
+    },
+    "stats": {
+      "eyebrow": "Zahlen & Fakten",
+      "title": "Der beliebteste Transferservice der Türkischen Riviera",
+      "items": {
+        "transfers": {
+          "value": "180.000+",
+          "label": "Durchgeführte Transfers"
+        },
+        "rating": {
+          "value": "4,9/5",
+          "label": "Gästezufriedenheit"
+        },
+        "fleet": {
+          "value": "45+",
+          "label": "Premium-Fahrzeuge"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Live-Support"
+        }
+      }
+    },
+    "seo": {
+      "eyebrow": "Antalya Transfer-Guide",
+      "title": "Alles Wichtige zum Flughafentransfer in Antalya",
+      "intro": "Der Flughafen Antalya (AYT) empfängt jährlich über 35 Millionen Passagiere. Der komfortabelste Weg an die Küste von Lara über Kemer, Belek und Side bis Alanya ist ein vorab gebuchter privater VIP-Transfer.",
+      "imageAlt": "Begrüßungsservice in der Ankunftshalle des Flughafens Antalya",
+      "imageCaption": "Begrüßung mit Namensschild in der Ankunftshalle — bei jedem Transfer inklusive",
+      "blocks": {
+        "routes": {
+          "title": "Beliebte Strecken und Fahrzeiten",
+          "body": "Vom Flughafen Antalya sind es etwa 15 Minuten nach Lara, 40 Minuten nach Belek, 45 Minuten nach Kemer, 65 Minuten nach Side und 2 Stunden nach Alanya. Alle Strecken fahren wir von Tür zu Tür — bis zur Hotelrezeption."
+        },
+        "pricing": {
+          "title": "So funktionieren unsere Festpreise",
+          "body": "Die Preise stehen nach Fahrzeugklasse und Entfernung im Voraus fest, ohne Zuschläge für Verkehr, Wartezeit oder Nachtankünfte. Der Betrag bei der Buchung ist der Endbetrag, und Sie zahlen Ihrem Fahrer nach dem Transfer."
+        },
+        "comfort": {
+          "title": "Fahrzeugkomfort und Meet & Greet",
+          "body": "Unsere Flotte umfasst Mercedes Vito, Sprinter und Luxuslimousinen — alle klimatisiert, mit Wasser und Kindersitzen auf Anfrage. Ihr Fahrer verfolgt Ihren Flug und wartet mit Namensschild in der Ankunftshalle."
+        }
+      },
+      "highlights": {
+        "duration": {
+          "title": "Durchschnittliche Dauer",
+          "value": "15–120 Min. ab Flughafen"
+        },
+        "vehicles": {
+          "title": "Fahrzeugklassen",
+          "value": "Vito, Sprinter und Luxuslimousine"
+        },
+        "payment": {
+          "title": "Zahlung",
+          "value": "Bar oder Karte, nach dem Transfer"
+        },
+        "coverage": {
+          "title": "Servicegebiet",
+          "value": "Lara, Kemer, Belek, Side, Alanya"
+        }
+      }
     }
   },
   "booking": {
@@ -216,7 +297,9 @@
       "largeLuggage": "Large luggage",
       "cabinLuggage": "Cabin luggage",
       "submit": "Search transfers",
-      "loading": "Searching..."
+      "loading": "Searching...",
+      "adultsShort": "{count} Erwachsene",
+      "childrenShort": "{count} Kinder"
     },
     "locations": {
       "placeholder": "Select location",

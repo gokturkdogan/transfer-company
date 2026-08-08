@@ -5,11 +5,12 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { TransferSearchForm } from "@/features/booking/components/TransferSearchForm";
+import { HeroSearchBar } from "@/features/booking/components/hero-search/HeroSearchBar";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 
 type TransferSearchLauncherProps = {
   showSecondaryCta?: boolean;
-  variant?: "default" | "compact";
+  variant?: "default" | "compact" | "hero";
 };
 
 export function TransferSearchLauncher({
@@ -42,6 +43,10 @@ export function TransferSearchLauncher({
 
     router.push(`/booking?${params.toString()}`);
   };
+
+  if (variant === "hero") {
+    return <HeroSearchBar onSubmit={navigateToBooking} />;
+  }
 
   return (
     <div className="space-y-4">

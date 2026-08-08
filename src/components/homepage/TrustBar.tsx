@@ -1,36 +1,60 @@
-import { Check } from "lucide-react";
+import {
+  Gem,
+  Headphones,
+  PlaneLanding,
+  ShieldCheck,
+  UserCheck,
+  type LucideIcon,
+} from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { Container } from "@/components/layout/Container";
+const trustItems: ReadonlyArray<{ key: string; icon: LucideIcon }> = [
+  { key: "fixedPrice", icon: ShieldCheck },
+  { key: "flightTracking", icon: PlaneLanding },
+  { key: "meetGreet", icon: UserCheck },
+  { key: "support", icon: Headphones },
+  { key: "luxuryFleet", icon: Gem },
+];
 
-const trustKeys = [
-  "fixedPrice",
-  "flightTracking",
-  "meetGreet",
-  "support",
-  "luxuryFleet",
-] as const;
-
+/**
+ * Continuous marquee band directly under the hero. The item list is rendered
+ * twice so the -50% translation loops without a visible seam.
+ */
 export async function TrustBar() {
   const t = await getTranslations("home.trustBar");
 
   return (
-    <section className="border-y border-border bg-card py-6">
-      <Container>
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {trustKeys.map((key) => (
-            <li
-              key={key}
-              className="flex items-center gap-3 text-sm font-medium text-foreground"
+    <section className="relative overflow-hidden border-y border-white/8 bg-ink py-5">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_120%_at_50%_50%,rgb(200_164_93/0.12),transparent_70%)]"
+      />
+
+      <div className="relative [mask-image:linear-gradient(90deg,transparent,#000_9%,#000_91%,transparent)]">
+        <div className="flex w-max animate-marquee">
+          {[0, 1].map((copy) => (
+            <ul
+              key={copy}
+              aria-hidden={copy === 1}
+              className="flex shrink-0 items-center"
             >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
-                <Check className="h-4 w-4" />
-              </span>
-              {t(key)}
-            </li>
+              {trustItems.map(({ key, icon: Icon }) => (
+                <li
+                  key={key}
+                  className="flex items-center gap-2.5 px-7 text-sm font-semibold whitespace-nowrap text-white/75"
+                >
+                  <Icon className="h-4 w-4 shrink-0 text-gold" aria-hidden />
+                  {t(key)}
+                  <span
+                    aria-hidden
+                    className="ms-5 h-1 w-1 rounded-full bg-gold/60"
+                  />
+                </li>
+              ))}
+            </ul>
           ))}
-        </ul>
-      </Container>
+        </div>
+      </div>
     </section>
   );
 }

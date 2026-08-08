@@ -1,7 +1,7 @@
+import { ArrowRight, Luggage, Quote, Users } from "lucide-react";
 import Image from "next/image";
 import { type ReactNode } from "react";
 
-import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -23,32 +23,43 @@ export function DestinationCard({
   className,
 }: DestinationCardProps) {
   return (
-    <article
+    <Link
+      href={href}
+      aria-label={`${name} — ${bookLabel}`}
       className={cn(
-        "group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl",
+        "group relative block overflow-hidden rounded-3xl bg-ink shadow-float",
+        "transition-all duration-500 hover:-translate-y-1.5 hover:shadow-premium",
         className,
       )}
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className="relative aspect-[4/5] sm:aspect-[4/4.4]">
         <Image
           src={imageSrc}
           alt={name}
           fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.07]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <h3 className="absolute bottom-4 start-4 text-2xl font-semibold text-white">
-          {name}
-        </h3>
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/35 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gold/22 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <span
+          aria-hidden
+          className="absolute inset-0 rounded-3xl border border-white/12 transition-colors duration-500 group-hover:border-gold/45"
+        />
+
+        <div className="absolute inset-x-0 bottom-0 space-y-3 p-6">
+          <h3 className="text-2xl font-bold tracking-tight text-white">
+            {name}
+          </h3>
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-sm font-semibold text-gold-light">{priceLabel}</p>
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/12 text-white backdrop-blur-md transition-all duration-500 group-hover:bg-gold-gradient group-hover:text-ink">
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
+            </span>
+          </div>
+        </div>
       </div>
-      <div className="flex items-center justify-between gap-4 p-5">
-        <p className="text-sm font-medium text-muted-foreground">{priceLabel}</p>
-        <Button variant="gold" size="sm" asChild>
-          <Link href={href}>{bookLabel}</Link>
-        </Button>
-      </div>
-    </article>
+    </Link>
   );
 }
 
@@ -74,32 +85,52 @@ export function VehicleCard({
   href,
 }: VehicleCardProps) {
   return (
-    <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <article className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-float transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/45 hover:shadow-premium">
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">
         <Image
           src={imageSrc}
           alt={name}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/45 to-transparent" />
       </div>
-      <div className="space-y-4 p-6">
-        <h3 className="text-xl font-semibold">{name}</h3>
-        <div className="flex flex-wrap gap-2 text-xs font-medium text-muted-foreground">
-          <span className="rounded-full bg-muted px-3 py-1">{passengersLabel}</span>
-          <span className="rounded-full bg-muted px-3 py-1">{luggageLabel}</span>
+
+      <div className="flex flex-1 flex-col gap-5 p-6">
+        <h3 className="text-xl font-bold tracking-tight">{name}</h3>
+
+        <div className="flex flex-wrap gap-2 text-xs font-semibold text-muted-foreground">
+          <span className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5">
+            <Users className="h-3.5 w-3.5 text-gold-deep" aria-hidden />
+            {passengersLabel}
+          </span>
+          <span className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5">
+            <Luggage className="h-3.5 w-3.5 text-gold-deep" aria-hidden />
+            {luggageLabel}
+          </span>
           {featureLabels.map((feature) => (
-            <span key={feature} className="rounded-full bg-muted px-3 py-1">
+            <span
+              key={feature}
+              className="rounded-full border border-gold/25 bg-gold/8 px-3 py-1.5 text-gold-deep"
+            >
               {feature}
             </span>
           ))}
         </div>
-        <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
-          <p className="text-sm font-semibold">{priceLabel}</p>
-          <Button variant="gold" size="sm" asChild>
-            <Link href={href}>{bookLabel}</Link>
-          </Button>
+
+        <div className="mt-auto flex items-center justify-between gap-4 border-t border-border pt-5">
+          <p className="text-base font-bold tracking-tight">{priceLabel}</p>
+          <Link
+            href={href}
+            className="group/btn flex h-10 items-center gap-1.5 rounded-full bg-gold-gradient px-4 text-xs font-bold text-ink shadow-gold transition-all duration-300 hover:brightness-110"
+          >
+            {bookLabel}
+            <ArrowRight
+              className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5 rtl:rotate-180"
+              aria-hidden
+            />
+          </Link>
         </div>
       </div>
     </article>
@@ -110,16 +141,56 @@ type FeatureCardProps = {
   icon: ReactNode;
   title: string;
   description: string;
+  dark?: boolean;
 };
 
-export function FeatureCard({ icon, title, description }: FeatureCardProps) {
+export function FeatureCard({
+  icon,
+  title,
+  description,
+  dark = false,
+}: FeatureCardProps) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-8 shadow-sm transition-shadow hover:shadow-md">
-      <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
-        {icon}
+    <div
+      className={cn(
+        "group relative h-full overflow-hidden rounded-3xl p-7 transition-all duration-500 hover:-translate-y-1.5",
+        dark
+          ? "border border-white/10 bg-white/[0.045] backdrop-blur-md hover:border-gold/40 hover:bg-white/[0.07]"
+          : "border border-border bg-card shadow-float hover:border-gold/45 hover:shadow-premium",
+      )}
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -top-16 -end-16 h-40 w-40 rounded-full bg-gold/18 blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      />
+      <div className="relative">
+        <div
+          className={cn(
+            "mb-5 flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-500",
+            dark
+              ? "bg-gold/12 text-gold group-hover:bg-gold-gradient group-hover:text-ink"
+              : "bg-gold/12 text-gold-deep group-hover:bg-gold-gradient group-hover:text-ink",
+          )}
+        >
+          {icon}
+        </div>
+        <h3
+          className={cn(
+            "mb-2.5 text-lg font-bold tracking-tight",
+            dark ? "text-white" : "text-foreground",
+          )}
+        >
+          {title}
+        </h3>
+        <p
+          className={cn(
+            "text-sm leading-relaxed",
+            dark ? "text-white/60" : "text-muted-foreground",
+          )}
+        >
+          {description}
+        </p>
       </div>
-      <h3 className="mb-2 text-lg font-semibold">{title}</h3>
-      <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
     </div>
   );
 }
@@ -132,17 +203,29 @@ type ReviewCardProps = {
 
 export function ReviewCard({ quote, author, rating }: ReviewCardProps) {
   return (
-    <blockquote className="flex h-full flex-col rounded-2xl border border-border bg-card p-8 shadow-sm">
-      <div className="mb-4 flex gap-0.5 text-accent" aria-hidden>
+    <blockquote className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card p-7 shadow-float transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/45 hover:shadow-premium">
+      <Quote
+        className="absolute -top-2 end-4 h-20 w-20 text-gold/8 transition-colors duration-500 group-hover:text-gold/14"
+        aria-hidden
+      />
+      <div className="relative mb-5 flex gap-0.5 text-gold" aria-hidden>
         {Array.from({ length: rating }).map((_, index) => (
-          <span key={index}>★</span>
+          <span key={index} className="text-base">
+            ★
+          </span>
         ))}
       </div>
-      <p className="flex-1 text-base leading-relaxed text-foreground/90">
+      <p className="relative flex-1 text-base leading-relaxed text-foreground/90">
         &ldquo;{quote}&rdquo;
       </p>
-      <footer className="mt-6 text-sm font-medium text-muted-foreground">
-        — {author}
+      <footer className="relative mt-6 flex items-center gap-3 border-t border-border pt-5">
+        <span
+          aria-hidden
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-gold/12 text-sm font-bold text-gold-deep"
+        >
+          {author.charAt(0)}
+        </span>
+        <span className="text-sm font-semibold text-foreground">{author}</span>
       </footer>
     </blockquote>
   );
@@ -157,12 +240,23 @@ type StepCardProps = {
 
 export function StepCard({ step, icon, title, description }: StepCardProps) {
   return (
-    <div className="relative flex flex-col items-center text-center">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-lg font-bold text-white">
-        {step}
+    <div className="group relative flex flex-col items-center text-center">
+      <div className="relative mb-6">
+        <span
+          aria-hidden
+          className="absolute inset-0 animate-glow-pulse rounded-2xl bg-gold/30 blur-xl"
+        />
+        <span className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gold-gradient text-ink shadow-gold transition-transform duration-500 group-hover:-translate-y-1">
+          {icon}
+        </span>
+        <span
+          aria-hidden
+          className="absolute -end-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full border border-gold/40 bg-ink text-[11px] font-bold text-gold-light"
+        >
+          {step}
+        </span>
       </div>
-      <div className="mb-4 text-accent">{icon}</div>
-      <h3 className="mb-2 text-lg font-semibold">{title}</h3>
+      <h3 className="mb-2.5 text-lg font-bold tracking-tight">{title}</h3>
       <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
         {description}
       </p>

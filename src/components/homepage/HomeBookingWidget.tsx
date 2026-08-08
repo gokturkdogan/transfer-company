@@ -25,7 +25,7 @@ export function HomeBookingWidget({
       districts={districts}
       initialSearch={initialSearch}
     >
-      <TransferSearchLauncher showSecondaryCta={false} variant="compact" />
+      <TransferSearchLauncher showSecondaryCta={false} variant="hero" />
     </BookingFlowProvider>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 
@@ -194,18 +194,6 @@ export function PricingEditor({
   const [prices, setPrices] = useState(() =>
     buildInitialPrices(districtRoutes, vehicleCategories, enabledCurrencies),
   );
-
-  useEffect(() => {
-    setPrices(
-      buildInitialPrices(districtRoutes, vehicleCategories, enabledCurrencies),
-    );
-    setSelectedVehicleId((current) =>
-      vehicleCategories.some((vehicle) => vehicle.id === current)
-        ? current
-        : (vehicleCategories[0]?.id ?? ""),
-    );
-    setDistrictQuery("");
-  }, [airportId, districtRoutes, enabledCurrencies, vehicleCategories]);
 
   const filteredDistricts = useMemo(() => {
     const query = districtQuery.trim().toLowerCase();
