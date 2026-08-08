@@ -1,4 +1,5 @@
 import { DEFAULT_CURRENCY } from "@/config/constants";
+import { resolveIntlLocale } from "@/lib/intl-locale";
 
 export type Money = {
   amountMinor: number;
@@ -44,11 +45,22 @@ export function formatMoney(
   locale: string,
   options?: Intl.NumberFormatOptions,
 ): string {
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency: money.currency,
-    ...options,
-  }).format(money.amountMinor / MINOR_UNIT_FACTOR);
+  const intlLocale = resolveIntlLocale(locale);
+  const currency = money.currency?.toUpperCase() || DEFAULT_CURRENCY;
+
+  try {
+    return new Intl.NumberFormat(intlLocale, {
+      style: "currency",
+      currency,
+      ...options,
+    }).format(money.amountMinor / MINOR_UNIT_FACTOR);
+  } catch {
+    return new Intl.NumberFormat("en-GB", {
+      style: "currency",
+      currency: DEFAULT_CURRENCY,
+      ...options,
+    }).format(money.amountMinor / MINOR_UNIT_FACTOR);
+  }
 }
 
 export function minorToMajor(amountMinor: number): number {

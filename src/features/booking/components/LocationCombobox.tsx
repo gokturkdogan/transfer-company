@@ -31,6 +31,7 @@ type LocationComboboxProps = {
   emptyLabel: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  className?: string;
 };
 
 export function LocationCombobox({
@@ -42,13 +43,14 @@ export function LocationCombobox({
   emptyLabel,
   onChange,
   disabled = false,
+  className,
 }: LocationComboboxProps) {
   const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.id === value);
   const groups = [...new Set(options.map((option) => option.group).filter(Boolean))];
 
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", className)}>
       <Label>{label}</Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -58,7 +60,7 @@ export function LocationCombobox({
             role="combobox"
             aria-expanded={open}
             disabled={disabled}
-            className="w-full justify-between"
+            className="h-11 w-full justify-between rounded-xl border-border shadow-sm"
           >
             <span className="truncate">{selected?.label ?? placeholder}</span>
             <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />

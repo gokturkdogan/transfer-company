@@ -140,7 +140,7 @@ export class AvailabilityService {
       const [vehicleOptions, luggageVehicleCandidates, selectableExtras] =
         await Promise.all([
           this.repository.findVehicleOptionsForRoute(route.id, input.locale),
-          this.repository.findLuggageVehicleExtras(),
+          this.repository.findLuggageVehicleExtras(input.locale),
           this.repository.findCustomerSelectableExtras(input.locale),
         ]);
 

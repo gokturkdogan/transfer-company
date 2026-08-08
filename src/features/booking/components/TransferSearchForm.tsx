@@ -1,13 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 
+import { Button } from "@/components/ui/button";
 import { CounterField } from "@/features/booking/components/CounterField";
 import { LocationCombobox } from "@/features/booking/components/LocationCombobox";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { cn } from "@/lib/utils";
 
-export function TransferSearchForm() {
+type TransferSearchFormProps = {
+  variant?: "default" | "compact";
+  onSubmit?: () => void;
+};
+
+export function TransferSearchForm({
+  variant = "default",
+  onSubmit,
+}: TransferSearchFormProps) {
   const t = useTranslations("booking.search");
   const { state, airports, cities, districts, dispatch, requestQuote } =
     useBookingFlow();
@@ -26,6 +36,7 @@ export function TransferSearchForm() {
     }));
 
   const showCitySelector = cityOptions.length > 1;
+  const isCompact = variant === "compact";
 
   useEffect(() => {
     if (search.originAirportId && !search.cityId && cityOptions.length === 1) {
@@ -41,220 +52,418 @@ export function TransferSearchForm() {
     (search.tripType === "ONE_WAY" ||
       (search.returnDate && search.returnTime));
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (onSubmit) {
+      onSubmit();
+      return;
+    }
+
+    void requestQuote();
+  };
+
+  if (isCompact) {
+    return (
+      <form className="space-y-3" onSubmit={handleSubmit}>
+        <div className="flex flex-wrap items-end gap-3 xl:flex-nowrap">
+          <TripTypeToggle
+            tripType={search.tripType}
+            tripTypeLabel={t("tripType")}
+            oneWayLabel={t("oneWay")}
+            roundTripLabel={t("roundTrip")}
+            className="w-full shrink-0 sm:w-auto xl:w-[148px]"
+            compact
+            onChange={(tripType) => dispatch({ type: "SET_TRIP_TYPE", tripType })}
+          />
+
+          <LocationCombobox
+            label={t("airport")}
+            value={search.originAirportId}
+            options={airports.map((airport) => ({
+              id: airport.id,
+              label: airport.name,
+            }))}
+            placeholder={t("selectAirport")}
+            searchPlaceholder={t("searchAirport")}
+            emptyLabel={t("noAirports")}
+            className="min-w-[160px] flex-1"
+            onChange={(airportId) => {
+              const airport = airports.find((item) => item.id === airportId);
+              dispatch({
+                type: "SET_AIRPORT",
+                airportId,
+                cityId: airport?.cityId ?? undefined,
+              });
+            }}
+          />
+
+          {showCitySelector && (
+            <LocationCombobox
+              label={t("city")}
+              value={search.cityId}
+              options={cityOptions}
+              placeholder={t("selectCity")}
+              searchPlaceholder={t("searchCity")}
+              emptyLabel={t("noCities")}
+              className="min-w-[140px] flex-1"
+              onChange={(cityId) => dispatch({ type: "SET_CITY", cityId })}
+            />
+          )}
+
+          <LocationCombobox
+            label={t("district")}
+            value={search.destinationDistrictId}
+            options={districtOptions}
+            placeholder={t("selectDistrict")}
+            searchPlaceholder={t("searchDistrict")}
+            emptyLabel={t("noDistricts")}
+            disabled={!search.cityId && cityOptions.length > 1}
+            className="min-w-[160px] flex-1"
+            onChange={(districtId) =>
+              dispatch({ type: "SET_DISTRICT", districtId })
+            }
+          />
+
+          <DateTimeField
+            dateId="outbound-date"
+            timeId="outbound-time"
+            dateLabel={t("outboundDate")}
+            timeLabel={t("outboundTime")}
+            dateValue={search.outboundDate}
+            timeValue={search.outboundTime}
+            className="min-w-[220px] flex-1"
+            onDateChange={(value) =>
+              dispatch({
+                type: "UPDATE_SEARCH",
+                search: { outboundDate: value },
+              })
+            }
+            onTimeChange={(value) =>
+              dispatch({
+                type: "UPDATE_SEARCH",
+                search: { outboundTime: value },
+              })
+            }
+          />
+
+          {search.tripType === "ROUND_TRIP" && (
+            <DateTimeField
+              dateId="return-date"
+              timeId="return-time"
+              dateLabel={t("returnDate")}
+              timeLabel={t("returnTime")}
+              dateValue={search.returnDate}
+              timeValue={search.returnTime}
+              className="min-w-[220px] flex-1"
+              onDateChange={(value) =>
+                dispatch({
+                  type: "UPDATE_SEARCH",
+                  search: { returnDate: value },
+                })
+              }
+              onTimeChange={(value) =>
+                dispatch({
+                  type: "UPDATE_SEARCH",
+                  search: { returnTime: value },
+                })
+              }
+            />
+          )}
+
+          <PassengerCounters
+            search={search}
+            adultsLabel={t("adults")}
+            childrenLabel={t("children")}
+            compact
+            className="min-w-[280px] shrink-0"
+            onAdultsChange={(value) =>
+              dispatch({ type: "UPDATE_SEARCH", search: { passengerCount: value } })
+            }
+            onChildrenChange={(value) =>
+              dispatch({ type: "UPDATE_SEARCH", search: { childCount: value } })
+            }
+          />
+
+          <Button
+            type="submit"
+            variant="gold"
+            size="lg"
+            disabled={!canSubmit || state.isLoadingQuote}
+            className="h-11 w-full shrink-0 px-6 sm:w-auto xl:w-auto"
+          >
+            {state.isLoadingQuote ? t("loading") : t("submit")}
+          </Button>
+        </div>
+      </form>
+    );
+  }
+
   return (
-    <form
-      className="space-y-6"
-      onSubmit={(event) => {
-        event.preventDefault();
-        void requestQuote();
-      }}
-    >
-      <LocationCombobox
-        label={t("airport")}
-        value={search.originAirportId}
-        options={airports.map((airport) => ({
-          id: airport.id,
-          label: airport.name,
-        }))}
-        placeholder={t("selectAirport")}
-        searchPlaceholder={t("searchAirport")}
-        emptyLabel={t("noAirports")}
-        onChange={(airportId) => {
-          const airport = airports.find((item) => item.id === airportId);
-          dispatch({
-            type: "SET_AIRPORT",
-            airportId,
-            cityId: airport?.cityId ?? undefined,
-          });
-        }}
+    <form className="space-y-5" onSubmit={handleSubmit}>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <LocationCombobox
+          label={t("airport")}
+          value={search.originAirportId}
+          options={airports.map((airport) => ({
+            id: airport.id,
+            label: airport.name,
+          }))}
+          placeholder={t("selectAirport")}
+          searchPlaceholder={t("searchAirport")}
+          emptyLabel={t("noAirports")}
+          onChange={(airportId) => {
+            const airport = airports.find((item) => item.id === airportId);
+            dispatch({
+              type: "SET_AIRPORT",
+              airportId,
+              cityId: airport?.cityId ?? undefined,
+            });
+          }}
+        />
+
+        {showCitySelector && (
+          <LocationCombobox
+            label={t("city")}
+            value={search.cityId}
+            options={cityOptions}
+            placeholder={t("selectCity")}
+            searchPlaceholder={t("searchCity")}
+            emptyLabel={t("noCities")}
+            onChange={(cityId) => dispatch({ type: "SET_CITY", cityId })}
+          />
+        )}
+
+        <LocationCombobox
+          label={t("district")}
+          value={search.destinationDistrictId}
+          options={districtOptions}
+          placeholder={t("selectDistrict")}
+          searchPlaceholder={t("searchDistrict")}
+          emptyLabel={t("noDistricts")}
+          disabled={!search.cityId && cityOptions.length > 1}
+          onChange={(districtId) =>
+            dispatch({ type: "SET_DISTRICT", districtId })
+          }
+        />
+      </div>
+
+      <TripTypeToggle
+        tripType={search.tripType}
+        tripTypeLabel={t("tripType")}
+        oneWayLabel={t("oneWay")}
+        roundTripLabel={t("roundTrip")}
+        onChange={(tripType) => dispatch({ type: "SET_TRIP_TYPE", tripType })}
       />
 
-      {showCitySelector && (
-        <LocationCombobox
-          label={t("city")}
-          value={search.cityId}
-          options={cityOptions}
-          placeholder={t("selectCity")}
-          searchPlaceholder={t("searchCity")}
-          emptyLabel={t("noCities")}
-          onChange={(cityId) => dispatch({ type: "SET_CITY", cityId })}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <DateTimeField
+          dateId="outbound-date"
+          timeId="outbound-time"
+          dateLabel={t("outboundDate")}
+          timeLabel={t("outboundTime")}
+          dateValue={search.outboundDate}
+          timeValue={search.outboundTime}
+          onDateChange={(value) =>
+            dispatch({
+              type: "UPDATE_SEARCH",
+              search: { outboundDate: value },
+            })
+          }
+          onTimeChange={(value) =>
+            dispatch({
+              type: "UPDATE_SEARCH",
+              search: { outboundTime: value },
+            })
+          }
         />
-      )}
 
-      <LocationCombobox
-        label={t("district")}
-        value={search.destinationDistrictId}
-        options={districtOptions}
-        placeholder={t("selectDistrict")}
-        searchPlaceholder={t("searchDistrict")}
-        emptyLabel={t("noDistricts")}
-        disabled={!search.cityId && cityOptions.length > 1}
-        onChange={(districtId) =>
-          dispatch({ type: "SET_DISTRICT", districtId })
+        {search.tripType === "ROUND_TRIP" && (
+          <DateTimeField
+            dateId="return-date"
+            timeId="return-time"
+            dateLabel={t("returnDate")}
+            timeLabel={t("returnTime")}
+            dateValue={search.returnDate}
+            timeValue={search.returnTime}
+            onDateChange={(value) =>
+              dispatch({
+                type: "UPDATE_SEARCH",
+                search: { returnDate: value },
+              })
+            }
+            onTimeChange={(value) =>
+              dispatch({
+                type: "UPDATE_SEARCH",
+                search: { returnTime: value },
+              })
+            }
+          />
+        )}
+      </div>
+
+      <PassengerCounters
+        search={search}
+        adultsLabel={t("adults")}
+        childrenLabel={t("children")}
+        onAdultsChange={(value) =>
+          dispatch({ type: "UPDATE_SEARCH", search: { passengerCount: value } })
+        }
+        onChildrenChange={(value) =>
+          dispatch({ type: "UPDATE_SEARCH", search: { childCount: value } })
         }
       />
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t("tripType")}</label>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <button
-            type="button"
-            className={`rounded-lg border p-3 text-sm font-medium ${
-              search.tripType === "ONE_WAY"
-                ? "border-primary bg-primary/5"
-                : "border-border"
-            }`}
-            onClick={() => dispatch({ type: "SET_TRIP_TYPE", tripType: "ONE_WAY" })}
-          >
-            {t("oneWay")}
-          </button>
-          <button
-            type="button"
-            className={`rounded-lg border p-3 text-sm font-medium ${
-              search.tripType === "ROUND_TRIP"
-                ? "border-primary bg-primary/5"
-                : "border-border"
-            }`}
-            onClick={() =>
-              dispatch({ type: "SET_TRIP_TYPE", tripType: "ROUND_TRIP" })
-            }
-          >
-            {t("roundTrip")}
-          </button>
-        </div>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="outbound-date">
-            {t("outboundDate")}
-          </label>
-          <input
-            id="outbound-date"
-            type="date"
-            className="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-            value={search.outboundDate}
-            onChange={(event) =>
-              dispatch({
-                type: "UPDATE_SEARCH",
-                search: { outboundDate: event.target.value },
-              })
-            }
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="outbound-time">
-            {t("outboundTime")}
-          </label>
-          <input
-            id="outbound-time"
-            type="time"
-            className="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-            value={search.outboundTime}
-            onChange={(event) =>
-              dispatch({
-                type: "UPDATE_SEARCH",
-                search: { outboundTime: event.target.value },
-              })
-            }
-          />
-        </div>
-      </div>
-
-      {search.tripType === "ROUND_TRIP" && (
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="return-date">
-              {t("returnDate")}
-            </label>
-            <input
-              id="return-date"
-              type="date"
-              className="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-              value={search.returnDate}
-              onChange={(event) =>
-                dispatch({
-                  type: "UPDATE_SEARCH",
-                  search: { returnDate: event.target.value },
-                })
-              }
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="return-time">
-              {t("returnTime")}
-            </label>
-            <input
-              id="return-time"
-              type="time"
-              className="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-              value={search.returnTime}
-              onChange={(event) =>
-                dispatch({
-                  type: "UPDATE_SEARCH",
-                  search: { returnTime: event.target.value },
-                })
-              }
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="grid gap-3">
-        <CounterFields search={search} dispatch={dispatch} t={t} />
-      </div>
-
-      <button
+      <Button
         type="submit"
+        variant="gold"
+        size="lg"
         disabled={!canSubmit || state.isLoadingQuote}
-        className="inline-flex h-10 w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground disabled:opacity-50"
+        className="w-full"
       >
         {state.isLoadingQuote ? t("loading") : t("submit")}
-      </button>
+      </Button>
     </form>
   );
 }
 
-function CounterFields({
-  search,
-  dispatch,
-  t,
+function TripTypeToggle({
+  tripType,
+  tripTypeLabel,
+  oneWayLabel,
+  roundTripLabel,
+  onChange,
+  className,
+  compact = false,
 }: {
-  search: ReturnType<typeof useBookingFlow>["state"]["search"];
-  dispatch: ReturnType<typeof useBookingFlow>["dispatch"];
-  t: ReturnType<typeof useTranslations>;
+  tripType: "ONE_WAY" | "ROUND_TRIP";
+  tripTypeLabel: string;
+  oneWayLabel: string;
+  roundTripLabel: string;
+  onChange: (tripType: "ONE_WAY" | "ROUND_TRIP") => void;
+  className?: string;
+  compact?: boolean;
 }) {
   return (
-    <>
+    <div className={cn("space-y-2", className)}>
+      {!compact && <span className="text-sm font-medium">{tripTypeLabel}</span>}
+      <div className={cn("grid gap-2", compact ? "grid-cols-2" : "sm:grid-cols-2")}>
+        <button
+          type="button"
+          className={cn(
+            "rounded-xl border text-sm font-medium transition-colors",
+            compact ? "h-11 px-3" : "p-3.5",
+            tripType === "ONE_WAY"
+              ? "border-accent bg-accent/10 text-foreground"
+              : "border-border hover:border-accent/40",
+          )}
+          onClick={() => onChange("ONE_WAY")}
+        >
+          {oneWayLabel}
+        </button>
+        <button
+          type="button"
+          className={cn(
+            "rounded-xl border text-sm font-medium transition-colors",
+            compact ? "h-11 px-3" : "p-3.5",
+            tripType === "ROUND_TRIP"
+              ? "border-accent bg-accent/10 text-foreground"
+              : "border-border hover:border-accent/40",
+          )}
+          onClick={() => onChange("ROUND_TRIP")}
+        >
+          {roundTripLabel}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function DateTimeField({
+  dateId,
+  timeId,
+  dateLabel,
+  timeLabel,
+  dateValue,
+  timeValue,
+  onDateChange,
+  onTimeChange,
+  className,
+}: {
+  dateId: string;
+  timeId: string;
+  dateLabel: string;
+  timeLabel: string;
+  dateValue: string;
+  timeValue: string;
+  onDateChange: (value: string) => void;
+  onTimeChange: (value: string) => void;
+  className?: string;
+}) {
+  return (
+    <div className={cn("grid grid-cols-2 gap-2", className)}>
+      <div className="space-y-2">
+        <label className="text-sm font-medium" htmlFor={dateId}>
+          {dateLabel}
+        </label>
+        <input
+          id={dateId}
+          type="date"
+          className="flex h-11 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm shadow-sm"
+          value={dateValue}
+          onChange={(event) => onDateChange(event.target.value)}
+        />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium" htmlFor={timeId}>
+          {timeLabel}
+        </label>
+        <input
+          id={timeId}
+          type="time"
+          className="flex h-11 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm shadow-sm"
+          value={timeValue}
+          onChange={(event) => onTimeChange(event.target.value)}
+        />
+      </div>
+    </div>
+  );
+}
+
+function PassengerCounters({
+  search,
+  adultsLabel,
+  childrenLabel,
+  onAdultsChange,
+  onChildrenChange,
+  compact = false,
+  className,
+}: {
+  search: ReturnType<typeof useBookingFlow>["state"]["search"];
+  adultsLabel: string;
+  childrenLabel: string;
+  onAdultsChange: (value: number) => void;
+  onChildrenChange: (value: number) => void;
+  compact?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={cn("grid gap-2 sm:grid-cols-2", className)}>
       <CounterField
-        label={t("passengers")}
+        label={adultsLabel}
         value={search.passengerCount}
         min={1}
         max={50}
-        onChange={(value: number) =>
-          dispatch({ type: "UPDATE_SEARCH", search: { passengerCount: value } })
-        }
+        compact={compact}
+        onChange={onAdultsChange}
       />
       <CounterField
-        label={t("largeLuggage")}
-        value={search.largeLuggageCount}
-        onChange={(value: number) =>
-          dispatch({
-            type: "UPDATE_SEARCH",
-            search: { largeLuggageCount: value },
-          })
-        }
+        label={childrenLabel}
+        value={search.childCount}
+        max={50}
+        compact={compact}
+        onChange={onChildrenChange}
       />
-      <CounterField
-        label={t("cabinLuggage")}
-        value={search.cabinLuggageCount}
-        onChange={(value: number) =>
-          dispatch({
-            type: "UPDATE_SEARCH",
-            search: { cabinLuggageCount: value },
-          })
-        }
-      />
-    </>
+    </div>
   );
 }

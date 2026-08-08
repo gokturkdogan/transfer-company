@@ -186,17 +186,12 @@ export class PricingRepository implements PricingReader {
         maxQuantity: extraServices.maxQuantity,
         luggageCapacityPerUnit: extraServices.luggageCapacityPerUnit,
         isActive: extraServices.isActive,
-        translatedName: extraServiceTranslations.name,
       })
       .from(extraServices)
-      .leftJoin(
-        extraServiceTranslations,
-        eq(extraServiceTranslations.extraServiceId, extraServices.id),
-      )
       .where(eq(extraServices.id, extraServiceId))
       .limit(1);
 
-    return extra ?? null;
+    return extra ? { ...extra, translatedName: null } : null;
   }
 
   async findExtraServiceTranslation(extraServiceId: string, locale: string) {
@@ -280,7 +275,7 @@ export class PricingRepository implements PricingReader {
       );
   }
 
-  async findLuggageVehicleExtras() {
+  async findLuggageVehicleExtras(locale: string) {
     return this.database
       .select({
         id: extraServices.id,
@@ -297,6 +292,13 @@ export class PricingRepository implements PricingReader {
         translatedName: extraServiceTranslations.name,
       })
       .from(extraServices)
+      .leftJoin(
+        extraServiceTranslations,
+        and(
+          eq(extraServiceTranslations.extraServiceId, extraServices.id),
+          eq(extraServiceTranslations.locale, locale),
+        ),
+      )
       .where(
         and(
           eq(extraServices.isActive, true),

@@ -6,7 +6,152 @@
   "home": {
     "title": "VIP Havalimanı Transfer",
     "description": "Güvenilir, konforlu ve çok dilli VIP transfer rezervasyon platformu.",
-    "cta": "Rezervasyona Başla"
+    "cta": "Rezervasyona Başla",
+    "hero": {
+      "title": "Antalya'da Premium Havalimanı Transferi",
+      "subtitle": "Lüks araçlar, sabit fiyatlar ve profesyonel şoförlerle havalimanından otelinize sorunsuz bir yolculuk."
+    },
+    "nav": {
+      "reserve": "Hemen Rezervasyon"
+    },
+    "trustBar": {
+      "fixedPrice": "Sabit Fiyat",
+      "flightTracking": "Uçuş Takibi",
+      "meetGreet": "Karşılama Hizmeti",
+      "support": "7/24 Destek",
+      "luxuryFleet": "Lüks Filo"
+    },
+    "destinations": {
+      "eyebrow": "Destinasyonlar",
+      "title": "Popüler Destinasyonlar",
+      "subtitle": "Antalya Havalimanı'ndan en çok tercih edilen transfer rotalarımızı keşfedin.",
+      "from": "{price} başlayan",
+      "book": "Rezervasyon Yap"
+    },
+    "fleet": {
+      "eyebrow": "Filomuz",
+      "title": "Lüks Araçlar",
+      "subtitle": "Premium Mercedes filomuzla konforlu yolculuk edin.",
+      "passengers": "En fazla {count} yolcu",
+      "luggage": "{large} büyük · {cabin} kabin",
+      "from": "{price} başlayan",
+      "book": "Rezervasyon Yap"
+    },
+    "howItWorks": {
+      "eyebrow": "Süreç",
+      "title": "Nasıl Çalışır",
+      "subtitle": "Premium transferiniz dört basit adımda.",
+      "steps": [
+        {
+          "title": "Online Rezervasyon",
+          "description": "Rotanızı, tarihinizi ve aracınızı dakikalar içinde seçin."
+        },
+        {
+          "title": "Onay",
+          "description": "Transfer detaylarınızla anında onay alın."
+        },
+        {
+          "title": "Havalimanı Karşılama",
+          "description": "Şoförünüz varış salonunda isim tabelasıyla sizi bekler."
+        },
+        {
+          "title": "Yolculuğun Tadını Çıkarın",
+          "description": "Hedefinize lüks bir araçla rahatça ulaşın."
+        }
+      ]
+    },
+    "whyUs": {
+      "eyebrow": "Neden Biz",
+      "title": "Neden Bizi Seçmelisiniz",
+      "subtitle": "Yolculuğunuzun her detayında premium fark.",
+      "features": [
+        {
+          "title": "Lüks Deneyim",
+          "description": "Her transfer için premium araçlar ve kusursuz iç mekanlar."
+        },
+        {
+          "title": "Sabit Fiyat",
+          "description": "Rezervasyon öncesi fiyatınızı bilin — gizli ücret yok."
+        },
+        {
+          "title": "7/24 Hizmet",
+          "description": "Erken uçuşlar ve geç varışlar için kesintisiz destek."
+        },
+        {
+          "title": "Profesyonel Şoförler",
+          "description": "Bölgeyi iyi bilen deneyimli ve nazik şoförler."
+        },
+        {
+          "title": "Online Ödeme Yok",
+          "description": "Güvenle rezervasyon yapın — ödemeyi varışta yapın."
+        },
+        {
+          "title": "Uçuş Takibi",
+          "description": "Uçuşunuzu takip eder, karşılama saatini otomatik ayarlarız."
+        }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "Yorumlar",
+      "title": "Misafirlerimiz Ne Diyor",
+      "items": [
+        {
+          "quote": "Havalimanından otele kusursuz hizmet. Vito tertemizdi ve şoför son derece profesyoneldi.",
+          "author": "Sarah M., Birleşik Krallık"
+        },
+        {
+          "quote": "Antalya'daki en iyi transfer deneyimi. Sabit fiyat, sürpriz yok ve geciken uçuşumuzu beklediler.",
+          "author": "Thomas K., Almanya"
+        },
+        {
+          "quote": "Uygun fiyata lüks. Belek'e her gelişimizde tercih ediyoruz. Kesinlikle tavsiye ederim.",
+          "author": "Elena R., Rusya"
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "SSS",
+      "title": "Sıkça Sorulan Sorular",
+      "items": [
+        {
+          "question": "Transfer nasıl rezerve edilir?",
+          "answer": "Bu sayfadaki rezervasyon formundan havalimanı, destinasyon, tarih ve aracınızı seçin. Talebinizi gönderin, kısa sürede onaylayalım."
+        },
+        {
+          "question": "Fiyat sabit mi?",
+          "answer": "Evet. Rezervasyon sırasında gösterilen fiyat, rotanız ve aracınız için nihai fiyattır. Gizli ücret veya dalgalı fiyat yoktur."
+        },
+        {
+          "question": "Şoför beni nerede karşılayacak?",
+          "answer": "Şoförünüz varış salonunda isim tabelasıyla bekler. Uçuşunuzu takip eder, gecikmelere göre ayarlama yaparız."
+        },
+        {
+          "question": "Dönüş transferi rezerve edebilir miyim?",
+          "answer": "Evet. Rezervasyon sırasında gidiş-dönüş seçin ve dönüş tarihi ile uçuş bilgilerinizi girin."
+        },
+        {
+          "question": "Online ödeme yapılır mı?",
+          "answer": "Online ödeme gerekmez. Transfer sonrası şoförünüze doğrudan ödeme yaparsınız."
+        },
+        {
+          "question": "Uçuşum gecikirse ne olur?",
+          "answer": "Uçuşunuzu otomatik takip ederiz. Şoförünüz ek ücret olmadan karşılama saatini ayarlar."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Premium Bir Transfere Hazır mısınız?",
+      "subtitle": "Antalya havalimanı transferinizi iki dakikada rezerve edin.",
+      "button": "Transferinizi Rezerve Edin"
+    },
+    "footer": {
+      "description": "Antalya ve Türk Rivierası'nda premium havalimanı transfer hizmeti.",
+      "linksTitle": "Hızlı Bağlantılar",
+      "bookTransfer": "Transfer Rezervasyonu",
+      "fullBooking": "Tam Rezervasyon Sayfası",
+      "contactTitle": "İletişim",
+      "copyright": "© {year} VIP Transfer. Tüm hakları saklıdır."
+    }
   },
   "booking": {
     "actions": {
@@ -57,6 +202,8 @@
       "returnDate": "Dönüş tarihi",
       "returnTime": "Dönüş saati",
       "passengers": "Yolcu",
+      "adults": "Yetişkin",
+      "children": "Çocuk",
       "largeLuggage": "Büyük bagaj",
       "cabinLuggage": "Kabin bagajı",
       "submit": "Transfer ara",
@@ -76,6 +223,12 @@
         "MARINA": "Marina",
         "CUSTOM_LOCATION": "Özel konum"
       }
+    },
+    "luggage": {
+      "title": "Bagaj",
+      "description": "Doğru aracı önerebilmemiz için bagaj miktarınızı belirtin.",
+      "largeLuggage": "Büyük bagaj",
+      "cabinLuggage": "Kabin bagajı"
     },
     "vehicle": {
       "title": "Aracınızı seçin",
@@ -131,6 +284,7 @@
       "dropoff": "Gerçek varış noktası",
       "noDropoff": "Belirtilmedi",
       "passengers": "Yolcular",
+      "adultsChildren": "{adults} yetişkin · {children} çocuk",
       "vehicle": "Araç",
       "customer": "Müşteri",
       "luggage": "{large} büyük · {cabin} kabin bagajı",
@@ -152,6 +306,7 @@
     }
   },
   "contact": {
+    "call": "Ara",
     "whatsapp": "WhatsApp"
   },
   "trust": {

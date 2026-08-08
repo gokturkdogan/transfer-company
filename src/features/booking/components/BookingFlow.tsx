@@ -10,6 +10,7 @@ import { CustomDestinationFields } from "@/features/booking/components/CustomDes
 import { CustomerDetailsForm } from "@/features/booking/components/CustomerDetailsForm";
 import { HotelSelector } from "@/features/booking/components/HotelSelector";
 import { FlightDetailsForm } from "@/features/booking/components/FlightDetailsForm";
+import { LuggageSelector } from "@/features/booking/components/LuggageSelector";
 import { OptionalExtrasSelector } from "@/features/booking/components/OptionalExtrasSelector";
 import { RequiredExtrasPanel } from "@/features/booking/components/RequiredExtrasPanel";
 import { SuccessStep } from "@/features/booking/components/SuccessStep";
@@ -40,6 +41,7 @@ export function BookingFlow() {
       {state.step === "vehicle" && (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">{t("vehicle.title")}</h2>
+          <LuggageSelector />
           <VehicleRecommendationList />
           <Button
             type="button"

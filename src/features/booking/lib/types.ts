@@ -21,6 +21,7 @@ export type BookingSearchState = {
   returnDate: string;
   returnTime: string;
   passengerCount: number;
+  childCount: number;
   largeLuggageCount: number;
   cabinLuggageCount: number;
 };

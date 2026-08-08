@@ -44,6 +44,8 @@ const messages = {
       returnDate: "Return date",
       returnTime: "Return time",
       passengers: "Passengers",
+      adults: "Adults",
+      children: "Children",
       largeLuggage: "Large luggage",
       cabinLuggage: "Cabin luggage",
       submit: "Search",

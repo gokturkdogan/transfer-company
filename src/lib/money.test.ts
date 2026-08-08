@@ -42,4 +42,9 @@ describe("money", () => {
     const formatted = formatMoney(createMoney(4500, "EUR"), "en-US");
     expect(formatted).toContain("45");
   });
+
+  it("falls back when locale is empty", () => {
+    const formatted = formatMoney(createMoney(4500, "EUR"), "");
+    expect(formatted).toContain("45");
+  });
 });

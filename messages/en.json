@@ -6,7 +6,152 @@
   "home": {
     "title": "VIP Airport Transfer",
     "description": "Reliable, comfortable, and multilingual VIP transfer booking platform.",
-    "cta": "Start Booking"
+    "cta": "Start Booking",
+    "hero": {
+      "title": "Premium Airport Transfers in Antalya",
+      "subtitle": "Luxury vehicles, fixed prices, and professional chauffeurs for a seamless journey from arrival to your hotel."
+    },
+    "nav": {
+      "reserve": "Reserve Now"
+    },
+    "trustBar": {
+      "fixedPrice": "Fixed Price",
+      "flightTracking": "Flight Tracking",
+      "meetGreet": "Meet & Greet",
+      "support": "24/7 Support",
+      "luxuryFleet": "Luxury Fleet"
+    },
+    "destinations": {
+      "eyebrow": "Destinations",
+      "title": "Popular Destinations",
+      "subtitle": "Discover our most requested transfer routes from Antalya Airport.",
+      "from": "From {price}",
+      "book": "Book Now"
+    },
+    "fleet": {
+      "eyebrow": "Our Fleet",
+      "title": "Luxury Vehicles",
+      "subtitle": "Travel in comfort with our premium Mercedes fleet.",
+      "passengers": "Up to {count} passengers",
+      "luggage": "{large} large · {cabin} cabin",
+      "from": "From {price}",
+      "book": "Book Now"
+    },
+    "howItWorks": {
+      "eyebrow": "Process",
+      "title": "How It Works",
+      "subtitle": "Your premium transfer in four simple steps.",
+      "steps": [
+        {
+          "title": "Book Online",
+          "description": "Select your route, date, and vehicle in minutes."
+        },
+        {
+          "title": "Confirmation",
+          "description": "Receive instant confirmation with your transfer details."
+        },
+        {
+          "title": "Airport Meet",
+          "description": "Your chauffeur waits at arrivals with a name sign."
+        },
+        {
+          "title": "Enjoy the Ride",
+          "description": "Relax in a luxury vehicle to your destination."
+        }
+      ]
+    },
+    "whyUs": {
+      "eyebrow": "Why Us",
+      "title": "Why Choose Us",
+      "subtitle": "The premium difference in every detail of your journey.",
+      "features": [
+        {
+          "title": "Luxury Experience",
+          "description": "Premium vehicles and immaculate interiors for every transfer."
+        },
+        {
+          "title": "Fixed Pricing",
+          "description": "Know your price before you book — no hidden fees."
+        },
+        {
+          "title": "24/7 Availability",
+          "description": "Round-the-clock support for early flights and late arrivals."
+        },
+        {
+          "title": "Professional Chauffeurs",
+          "description": "Experienced, courteous drivers who know the region."
+        },
+        {
+          "title": "No Online Payment",
+          "description": "Reserve securely — pay your driver on arrival."
+        },
+        {
+          "title": "Flight Monitoring",
+          "description": "We track your flight and adjust pickup times automatically."
+        }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "Reviews",
+      "title": "What Our Guests Say",
+      "items": [
+        {
+          "quote": "Impeccable service from airport to hotel. The Vito was spotless and the driver was incredibly professional.",
+          "author": "Sarah M., United Kingdom"
+        },
+        {
+          "quote": "Best transfer experience in Antalya. Fixed price, no surprises, and they waited despite our delayed flight.",
+          "author": "Thomas K., Germany"
+        },
+        {
+          "quote": "Luxury at a fair price. We use them every time we visit Belek. Highly recommended.",
+          "author": "Elena R., Russia"
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "How do I book a transfer?",
+          "answer": "Use the booking widget on this page to select your airport, destination, date, and vehicle. Submit your reservation request and we will confirm shortly."
+        },
+        {
+          "question": "Is the price fixed?",
+          "answer": "Yes. The price shown during booking is the final price for your route and vehicle. No hidden fees or surge pricing."
+        },
+        {
+          "question": "Where will the driver meet me?",
+          "answer": "Your chauffeur will wait in the arrivals hall with a name sign. We monitor your flight and adjust for delays."
+        },
+        {
+          "question": "Can I book a return transfer?",
+          "answer": "Yes. Select round-trip when booking and provide your return date and flight details."
+        },
+        {
+          "question": "Do I pay online?",
+          "answer": "No online payment is required. You pay your driver directly after the transfer."
+        },
+        {
+          "question": "What if my flight is delayed?",
+          "answer": "We track your flight automatically. Your driver will adjust the pickup time at no extra charge."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready for a Premium Transfer?",
+      "subtitle": "Book your Antalya airport transfer in under two minutes.",
+      "button": "Book Your Transfer"
+    },
+    "footer": {
+      "description": "Premium airport transfer service in Antalya and the Turkish Riviera.",
+      "linksTitle": "Quick Links",
+      "bookTransfer": "Book a Transfer",
+      "fullBooking": "Full Booking Page",
+      "contactTitle": "Contact",
+      "copyright": "© {year} VIP Transfer. All rights reserved."
+    }
   },
   "booking": {
     "actions": {
@@ -57,6 +202,8 @@
       "returnDate": "Return date",
       "returnTime": "Return time",
       "passengers": "Passengers",
+      "adults": "Adults",
+      "children": "Children",
       "largeLuggage": "Large luggage",
       "cabinLuggage": "Cabin luggage",
       "submit": "Search transfers",
@@ -76,6 +223,12 @@
         "MARINA": "Marina",
         "CUSTOM_LOCATION": "Custom location"
       }
+    },
+    "luggage": {
+      "title": "Luggage",
+      "description": "Tell us how much luggage you are bringing so we can recommend the right vehicle.",
+      "largeLuggage": "Large luggage",
+      "cabinLuggage": "Cabin luggage"
     },
     "vehicle": {
       "title": "Choose your vehicle",
@@ -131,6 +284,7 @@
       "dropoff": "Actual drop-off",
       "noDropoff": "Not specified",
       "passengers": "Passengers",
+      "adultsChildren": "{adults} adults · {children} children",
       "vehicle": "Vehicle",
       "customer": "Customer",
       "luggage": "{large} large · {cabin} cabin luggage",
@@ -152,6 +306,7 @@
     }
   },
   "contact": {
+    "call": "Call",
     "whatsapp": "WhatsApp"
   },
   "trust": {

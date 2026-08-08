@@ -58,5 +58,5 @@ export type PricingReader = {
     locale: string,
   ): Promise<ExtraServiceWithTranslation[]>;
   findCustomerSelectableExtras(locale: string): Promise<ExtraServiceWithTranslation[]>;
-  findLuggageVehicleExtras(): Promise<ExtraServiceWithTranslation[]>;
+  findLuggageVehicleExtras(locale: string): Promise<ExtraServiceWithTranslation[]>;
 };

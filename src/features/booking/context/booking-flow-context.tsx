@@ -17,6 +17,7 @@ import {
 } from "@/features/booking/lib/booking-flow-reducer";
 import { fetchReservation, fetchTransferQuote } from "@/features/booking/lib/api";
 import { mapApiErrorToKey } from "@/features/booking/lib/error-messages";
+import { getTotalPassengerCount } from "@/features/booking/lib/passenger-count";
 import {
   buildQuoteRequest,
   buildSearchSignature,
@@ -42,7 +43,7 @@ type BookingFlowContextValue = {
   cities: CityDto[];
   districts: DistrictDto[];
   dispatch: React.Dispatch<BookingFlowAction>;
-  requestQuote: () => Promise<void>;
+  requestQuote: (searchOverride?: Partial<BookingSearchState>) => Promise<void>;
   requestRequote: (extras: SelectedExtra[]) => Promise<void>;
   submitReservation: () => Promise<void>;
 };
@@ -68,27 +69,36 @@ export function BookingFlowProvider({
     createInitialBookingFlowState(initialSearch),
   );
 
-  const requestQuote = useCallback(async () => {
-    dispatch({ type: "QUOTE_LOADING" });
-    track({ name: "booking_search" });
+  const requestQuote = useCallback(
+    async (searchOverride?: Partial<BookingSearchState>) => {
+      const search = { ...state.search, ...searchOverride };
 
-    const body = buildQuoteRequest(state.search, locale);
-    const result = await fetchTransferQuote(body);
+      if (searchOverride) {
+        dispatch({ type: "UPDATE_SEARCH", search: searchOverride });
+      }
 
-    if (!result.success) {
+      dispatch({ type: "QUOTE_LOADING" });
+      track({ name: "booking_search" });
+
+      const body = buildQuoteRequest(search, locale);
+      const result = await fetchTransferQuote(body);
+
+      if (!result.success) {
+        dispatch({
+          type: "QUOTE_ERROR",
+          errorKey: mapApiErrorToKey(result.error, result.status),
+        });
+        return;
+      }
+
       dispatch({
-        type: "QUOTE_ERROR",
-        errorKey: mapApiErrorToKey(result.error, result.status),
+        type: "QUOTE_SUCCESS",
+        quote: result.data,
+        searchSignature: buildSearchSignature(search),
       });
-      return;
-    }
-
-    dispatch({
-      type: "QUOTE_SUCCESS",
-      quote: result.data,
-      searchSignature: buildSearchSignature(state.search),
-    });
-  }, [locale, state.search]);
+    },
+    [locale, state.search],
+  );
 
   const requestRequote = useCallback(
     async (extras: SelectedExtra[]) => {
@@ -179,7 +189,7 @@ export function BookingFlowProvider({
         state.search.tripType === "ROUND_TRIP"
           ? state.flight.returnFlightNumber || undefined
           : undefined,
-      passengerCount: state.search.passengerCount,
+      passengerCount: getTotalPassengerCount(state.search),
       largeLuggageCount: state.search.largeLuggageCount,
       cabinLuggageCount: state.search.cabinLuggageCount,
       vehicles: [

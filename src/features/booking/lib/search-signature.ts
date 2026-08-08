@@ -1,3 +1,4 @@
+import { getTotalPassengerCount } from "@/features/booking/lib/passenger-count";
 import type { BookingSearchState } from "@/features/booking/lib/types";
 
 export function joinWallClockDateTime(date: string, time: string): string {
@@ -14,6 +15,7 @@ export function buildSearchSignature(search: BookingSearchState): string {
     search.tripType === "ROUND_TRIP" ? search.returnDate : "",
     search.tripType === "ROUND_TRIP" ? search.returnTime : "",
     String(search.passengerCount),
+    String(search.childCount),
     String(search.largeLuggageCount),
     String(search.cabinLuggageCount),
   ];
@@ -46,7 +48,7 @@ export function buildQuoteRequest(
     tripType: search.tripType,
     outboundAt,
     returnAt,
-    passengerCount: search.passengerCount,
+    passengerCount: getTotalPassengerCount(search),
     largeLuggageCount: search.largeLuggageCount,
     cabinLuggageCount: search.cabinLuggageCount,
     locale,

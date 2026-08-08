@@ -90,7 +90,7 @@ export function createPricingReaderFake(
     findExtraServicesByIds: async (ids) =>
       [luggageExtra, optionalExtra].filter((extra) => ids.includes(extra.id)),
     findCustomerSelectableExtras: async () => [optionalExtra],
-    findLuggageVehicleExtras: async () => [luggageExtra],
+    findLuggageVehicleExtras: async (_locale: string) => [luggageExtra],
     ...overrides,
   };
 }

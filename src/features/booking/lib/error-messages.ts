@@ -47,6 +47,7 @@ export function getDefaultSearchState(): BookingSearchState {
     returnDate: "",
     returnTime: "10:00",
     passengerCount: 2,
+    childCount: 0,
     largeLuggageCount: 0,
     cabinLuggageCount: 0,
   };

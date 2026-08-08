@@ -65,7 +65,7 @@ export class QuoteService {
       assertRouteActive(route);
 
       const luggageVehicleCandidates =
-        await this.repository.findLuggageVehicleExtras();
+        await this.repository.findLuggageVehicleExtras(input.locale);
       const luggageVehicleExtra = resolveLuggageVehicleExtra(
         luggageVehicleCandidates,
       );

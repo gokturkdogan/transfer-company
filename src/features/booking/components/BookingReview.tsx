@@ -68,7 +68,12 @@ export function BookingReview() {
 
       <section className="space-y-2">
         <h3 className="font-semibold">{t("passengers")}</h3>
-        <p>{state.search.passengerCount}</p>
+        <p>
+          {t("adultsChildren", {
+            adults: state.search.passengerCount,
+            children: state.search.childCount,
+          })}
+        </p>
         <p>
           {t("luggage", {
             large: state.search.largeLuggageCount,
