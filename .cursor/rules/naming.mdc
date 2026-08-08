@@ -1,0 +1,36 @@
+---
+description: Naming conventions across the codebase
+alwaysApply: true
+---
+
+# Naming Rules
+
+## Files
+
+- kebab-case: `booking-draft.ts`, `route-prices.ts`
+- React components: PascalCase file: `BookingForm.tsx`
+- Test files: `<name>.test.ts` colocated with source
+
+## Code
+
+| Kind | Convention | Example |
+|------|-----------|---------|
+| Functions | camelCase | `calculatePrice` |
+| Types/Interfaces | PascalCase | `PriceQuote` |
+| Constants | SCREAMING_SNAKE | `DEFAULT_CURRENCY` |
+| Enums (TS) | PascalCase type, SCREAMING values | `ReservationStatus = "PENDING"` |
+| DB tables | snake_case | `route_prices` |
+| DB columns | snake_case | `price_minor` |
+| React components | PascalCase | `VehicleSelector` |
+
+## Import paths
+
+- Use `@/` alias for all internal imports
+- Feature imports: `@/features/booking/server/service`
+
+## Forbidden
+
+- Abbreviations without context (`calc`, `mgr`, `tmp`)
+- Single-letter variables (except loop indices)
+- Hungarian notation
+- Default exports for utilities

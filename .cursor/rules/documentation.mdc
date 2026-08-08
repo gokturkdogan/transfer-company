@@ -1,0 +1,53 @@
+---
+description: Documentation maintenance rules — mandatory for all AI agents
+alwaysApply: true
+---
+
+# Documentation Rules
+
+## Mandatory: read before modifying
+
+Before modifying any domain, the AI **must** read:
+
+1. Relevant `/docs/*.md` documents
+2. Applicable `.cursor/rules/*.mdc` files
+
+Domain → docs mapping:
+
+| Domain | Required reading |
+|--------|-----------------|
+| Architecture | `ARCHITECTURE.md`, `DECISIONS.md` |
+| Database | `DATABASE_RULES.md`, `DOMAIN_MODEL.md` |
+| Booking | `BOOKING_ENGINE.md`, `DOMAIN_MODEL.md` |
+| Pricing | `PRICE_ENGINE.md`, `DOMAIN_MODEL.md` |
+| i18n | `I18N_RULES.md` |
+| Security | `SECURITY.md` |
+| Performance | `PERFORMANCE.md` |
+| Any code | `CODING_STANDARDS.md`, `PROJECT_RULES.md` |
+
+## Mandatory: update after changing
+
+After introducing or materially changing:
+
+- Domain rules
+- Architecture decisions
+- Database behavior or schema
+- Pricing rules
+- Reusable component contracts
+
+The AI **must** update the relevant `/docs/*.md` file.
+
+**No undocumented domain behavior is allowed.**
+
+## Documentation location
+
+- Engineering docs: `/docs/`
+- AI agent rules: `.cursor/rules/`
+- Architecture decisions: `/docs/DECISIONS.md` (ADR format)
+
+## Writing standards
+
+- Be specific to this codebase, not generic
+- Include examples where useful
+- Document what is allowed AND what is forbidden
+- Keep docs in sync with code — stale docs are worse than no docs

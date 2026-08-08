@@ -1,0 +1,38 @@
+---
+description: Testing conventions
+globs: **/*.test.ts,**/*.test.tsx,vitest.config.ts
+---
+
+# Testing Rules
+
+## Framework
+
+Vitest with Node environment.
+
+## Allowed
+
+- Unit tests for pure business logic (pricing, money, capacity rules)
+- Tests colocated with source: `src/lib/money.test.ts`
+- `pnpm test` / `pnpm test:watch`
+
+## Forbidden
+
+- Meaningless coverage-padding tests
+- Testing framework internals
+- Snapshot tests for business logic
+- Tests that require a live database (use mocks)
+
+## Priority test targets (Phase 2+)
+
+- Pricing engine calculations
+- Luggage/passenger capacity validation
+- Vehicle eligibility rules
+- Extra service total calculation
+- Round-trip pricing behavior
+- Money arithmetic (implemented in Phase 1)
+
+## Run tests
+
+```bash
+pnpm test
+```

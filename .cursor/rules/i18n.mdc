@@ -1,0 +1,36 @@
+---
+description: Internationalization conventions
+globs: src/i18n/**,messages/**,src/app/[locale]/**
+---
+
+# i18n Rules
+
+## Locales
+
+`tr` (default), `en`, `de`, `ru`, `ar`
+
+## Allowed
+
+- `getTranslations()` in Server Components
+- `useTranslations()` in Client Components
+- `Link`, `redirect` from `@/i18n/navigation`
+- Translation tables for DB content
+- RTL `dir` attribute for Arabic
+
+## Forbidden
+
+- Hardcoded user-facing strings
+- `next/link` for locale-aware navigation
+- `next/navigation` redirect for locale routes
+- Physical CSS directions (`ml-`, `mr-`) — use logical (`ms-`, `me-`)
+- JSONB for translatable DB content
+
+## Adding a locale
+
+1. `LOCALES` in `src/config/constants.ts`
+2. `messages/<locale>.json`
+3. Update `/docs/I18N_RULES.md`
+
+## Before modifying i18n
+
+Read `/docs/I18N_RULES.md`.

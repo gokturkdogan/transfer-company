@@ -1,0 +1,36 @@
+---
+description: Core architecture rules for the VIP Transfer platform
+alwaysApply: true
+---
+
+# Architecture Rules
+
+## Layering (mandatory)
+
+UI → Server Action/Route Handler → Zod Validation → Domain Service → Repository → Database
+
+## Allowed
+
+- Server Components by default
+- Feature-colocated services in `src/features/<domain>/server/`
+- Pure domain logic in `src/features/<domain>/domain/` (no DB, React, or server imports)
+- Cross-cutting server code in `src/server/`
+- Pure utilities in `src/lib/`
+- Typed env access via `src/config/env.ts`
+
+## Forbidden
+
+- Database imports in React components
+- Business logic in route handlers, Server Actions, or repositories
+- Business logic in JSX
+- Microservice patterns
+- Premature abstractions
+- Dumping domain code into `src/lib/`
+
+## Before modifying any domain
+
+Read the relevant `/docs/*.md` documents and applicable `.cursor/rules/*.mdc` files.
+
+## After materially changing architecture
+
+Update `/docs/ARCHITECTURE.md` and `/docs/DECISIONS.md`.

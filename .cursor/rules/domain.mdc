@@ -1,0 +1,58 @@
+---
+description: Domain model and business rule conventions
+globs: src/features/**
+---
+
+# Domain Rules
+
+## Domains
+
+| Domain | Path | Responsibility |
+|--------|------|----------------|
+| booking | `features/booking/` | Reservation request orchestration |
+| capacity | `features/capacity/` | Passenger/luggage eligibility and recommendations |
+| pricing | `features/pricing/` | Price calculation and quotes |
+| locations | `features/locations/` | Regions, airports, hotels, transfer points |
+| vehicles | `features/vehicles/` | Vehicle categories and capacity |
+| extras | `features/extras/` | Optional add-on services |
+| customers | `features/customers/` | Customer contact management |
+| admin | `features/admin/` | Admin operations (future) |
+
+## Module structure
+
+Each domain follows:
+```
+features/<domain>/
+  components/
+  domain/      # pure logic — no DB, React, or server imports
+  schemas/     # Zod validation schemas
+  server/
+    service.ts     # orchestration
+    repository.ts  # persistence
+  types/
+  utils/
+```
+
+## Allowed
+
+- Pure functions in `features/<domain>/domain/`
+- Domain services orchestrating repositories
+- Zod schemas colocated with domain
+- Snapshot pattern for historical data
+- Enum constants from `src/db/schema/enums.ts`
+
+## Forbidden
+
+- Cross-domain direct repository access (go through service)
+- Undocumented business rules
+- Hard-coded status strings
+- Capacity logic inside pricing service
+- Hardcoded luggage vehicle prices or codes
+
+## Before modifying a domain
+
+Read `/docs/DOMAIN_MODEL.md`, `/docs/BOOKING_ENGINE.md`, `/docs/PRICE_ENGINE.md` as applicable.
+
+## After changing domain rules
+
+Update the relevant `/docs/*.md` file. No undocumented behavior.

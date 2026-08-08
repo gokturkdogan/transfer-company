@@ -1,0 +1,63 @@
+---
+description: Backend server infrastructure conventions
+globs: src/server/**,src/features/**/server/**,src/app/api/**
+---
+
+# Backend Rules
+
+## Allowed
+
+- `AppError` hierarchy for typed errors
+- `createAction()` wrapper for Server Actions
+- `createRouteHandler()` wrapper for Route Handlers
+- `ActionResult<T>` return type (shared by actions and API routes)
+- `logger` for structured logging
+- `import "server-only"` in server modules
+- Zod validation before service calls
+- Rate limiting in Route Handlers only (not in domain services)
+
+## Forbidden
+
+- Throwing raw errors across action/route boundaries
+- `console.log` in production code
+- Silent catch blocks
+- Business logic in `src/server/` (only cross-cutting infra)
+- Business logic in Route Handlers (`src/app/api/`)
+- Exposing stack traces or SQL errors to clients
+- Trusting client-supplied prices or entity IDs
+
+## Error types
+
+- `ValidationError` (400) — Zod/input failures
+- `NotFoundError` (404) — missing resources
+- `DomainRuleError` (422) — business rule violations
+- `ConflictError` (409) — idempotency key mismatch
+- `UnauthorizedError` (401) — auth failures
+- `InfrastructureError` (500) — internal, not exposed
+
+## Route Handler pattern
+
+```typescript
+// src/app/api/reservations/route.ts
+export const POST = createRouteHandler({
+  schema: createReservationInputSchema,
+  rateLimit: { limiter, policy, buildBucketKey },
+  handler: async (input, request) => {
+    // delegate to service only — no business rules here
+    return bookingService.createReservation(input, { idempotencyKey });
+  },
+});
+```
+
+## Service pattern
+
+```typescript
+// features/booking/server/service.ts
+export class BookingService {
+  constructor(
+    private readonly repository: BookingWriter,
+    private readonly quoteService: QuoteService,
+  ) {}
+  // domain behavior here
+}
+```

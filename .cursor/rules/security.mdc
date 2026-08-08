@@ -1,0 +1,44 @@
+---
+description: Security conventions
+alwaysApply: true
+---
+
+# Security Rules
+
+## Mandatory
+
+- Server-side Zod validation on all inputs
+- Server-side price calculation — never trust client prices
+- `clientQuotedTotalMinor` is informational only
+- Verify entity IDs exist and are active before use
+- `assertExtraCustomerSelectable` for customer-requested extras
+- Use `serverEnv` / `clientEnv` — never bare `process.env`
+- `toPublicError()` before sending errors to client
+- `import "server-only"` on server modules
+- `Idempotency-Key` header required for reservation creation
+
+## Forbidden
+
+- Exposing secrets in client bundles
+- Leaking stack traces, SQL errors, or internal paths
+- Trusting client-supplied entity relationships
+- Skipping validation because "the client already validated"
+- Business logic in Route Handlers
+- Notification calls inside DB transactions
+- Returning customer PII in public reservation responses
+
+## Rate limiting
+
+- Postgres-backed via `rate_limit_buckets`
+- Applied in Route Handlers only
+- Quote: 30/min/IP; Reservation: 10/hr/IP + 5/hr/email
+
+## Anti-spam
+
+- Honeypot field (`website` must be empty)
+- Minimum form fill time (3 seconds)
+- Turnstile extension point (not mandatory in Phase 3)
+
+## Before modifying security-sensitive code
+
+Read `/docs/SECURITY.md`.

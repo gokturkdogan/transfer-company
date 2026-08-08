@@ -1,0 +1,41 @@
+---
+description: Database and Drizzle ORM conventions
+globs: src/db/**,drizzle/**,drizzle.config.ts
+---
+
+# Database Rules
+
+## Allowed
+
+- Drizzle schema in `src/db/schema/`
+- Repositories in `features/*/server/repository.ts`
+- Module-scope Pool in `src/db/client.ts`
+- `db.transaction()` for multi-table writes
+- Soft delete via `isActive` + `deletedAt`
+- UUID primary keys with `defaultRandom()`
+- Integer minor units for money
+
+## Forbidden
+
+- `drizzle-kit push` in production
+- New connection per request
+- Hard-deleting entities referenced by reservations
+- `SELECT *` without reason
+- N+1 query patterns
+- Business logic in schema or repository files
+- Bare `process.env.DATABASE_URL` access
+
+## Migration workflow
+
+1. Modify `src/db/schema/`
+2. `pnpm db:generate`
+3. Review generated SQL in `drizzle/`
+4. `pnpm db:migrate`
+
+## Before modifying schema
+
+Read `/docs/DATABASE_RULES.md` and `/docs/DOMAIN_MODEL.md`.
+
+## After schema changes
+
+Update `/docs/DATABASE_RULES.md` and `/docs/DOMAIN_MODEL.md` if behavior changes.

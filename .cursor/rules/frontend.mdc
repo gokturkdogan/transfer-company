@@ -1,0 +1,48 @@
+---
+description: Frontend component and UI conventions
+globs: src/app/**,src/components/**,src/features/**/components/**
+---
+
+# Frontend Rules
+
+## Allowed
+
+- Server Components by default
+- shadcn/ui primitives in `src/components/ui/`
+- Shared presentation components in `src/components/shared/`
+- Feature-specific components in `src/features/<domain>/components/`
+- Scoped booking flow context (`BookingFlowProvider`) — not global state
+- Pure reducer for booking state (`booking-flow-reducer.ts`)
+- `getTranslations()` in Server Components
+- `useTranslations()` in Client Components
+- Logical CSS properties for RTL (`ms-`, `me-`, `ps-`, `pe-`)
+- `formatMoney()` for price display only
+- Tailwind CSS utility classes
+- `cn()` from `src/lib/utils.ts` for class merging
+
+## Forbidden
+
+- `"use client"` without a clear interaction need
+- Database or repository imports in components
+- Business logic in JSX (pricing, capacity, eligibility)
+- Client-side price or total calculation
+- Hardcoded user-facing strings (use next-intl)
+- `next/link` or `next/navigation` for locale routes (use `@/i18n/navigation`)
+- Physical direction CSS in booking components (`ml-`, `mr-`, `left-`, `right-`)
+- Giant components (>150 lines without extraction)
+- Unnecessary `useEffect`
+- Client-side data fetching when SSR works
+- PII in URL query parameters
+
+## Booking UI patterns
+
+- Locations loaded in Server Component, passed as props
+- Quote via `POST /api/quote`; requote with `selection` field
+- Reservation via `POST /api/reservations` + `Idempotency-Key`
+- See `/docs/BOOKING_UI.md`
+
+## Component placement
+
+- UI primitives → `src/components/ui/`
+- Cross-feature shared → `src/components/shared/`
+- Domain-specific → `src/features/<domain>/components/`

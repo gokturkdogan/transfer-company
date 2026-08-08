@@ -1,0 +1,47 @@
+---
+description: Admin panel conventions and auth
+globs:
+  - src/app/admin/**
+  - src/features/admin/**
+  - scripts/create-admin.ts
+---
+
+# Admin Panel Rules
+
+## Scope
+
+- Routes live at `/admin/*` — **not** under `[locale]`
+- Single language (English) for admin UI
+- Mutations via Server Actions only — no business logic in page components
+
+## Authentication
+
+- `requireAdminSession()` on all panel routes (except `/admin/login`)
+- scrypt password hashing — `src/features/admin/server/password.ts`
+- Sessions in `admin_sessions` with hashed token; HttpOnly signed cookie
+- `ADMIN_SESSION_SECRET` via `serverEnv` — never bare `process.env`
+- Bootstrap first user: `pnpm admin:create`
+
+## Location CRUD
+
+- Re-validate hierarchy with `assertValidParent()` on every save
+- Hotel forms: city selector drives filtered district selector
+- Hotel list: support search, city filter, district filter, active/inactive
+- Never expose `REGION` type in admin UI
+
+## Pricing
+
+- Matrix shows **districts only** as destinations
+- Hotels must not appear in pricing editor
+
+## Reservations
+
+- Display origin, pricing destination (district), and actual drop-off separately
+- Drop-off label comes from `snapshot_dropoff_label`
+
+## Forbidden
+
+- Adding third-party auth libraries without ADR
+- Admin routes inside `[locale]`
+- Skipping session check on destructive actions
+- Returning customer PII in public APIs from admin code paths

@@ -1,0 +1,57 @@
+---
+description: Hierarchical location model and pricing invariant
+globs:
+  - src/features/locations/**
+  - src/features/booking/**
+  - src/features/pricing/**
+  - src/db/schema/locations.ts
+  - src/db/schema/reservations.ts
+---
+
+# Location Hierarchy Rules
+
+## Structure
+
+Self-referential `locations.parent_id`:
+
+```
+CITY → AIRPORT | DISTRICT → HOTEL
+```
+
+Allowed parents are defined in `ALLOWED_PARENTS` (`src/features/locations/domain/hierarchy.ts`). Always call `assertValidParent()` before persisting hierarchy changes.
+
+## Pricing invariant (permanent)
+
+```
+QUOTE PRICE   = Airport → District   (routes + route_prices)
+FINAL DROPOFF = Hotel in district, or custom destination in district
+```
+
+- Hotels are **never** route endpoints
+- Hotel choice does **not** affect price in V1
+- `originAirportId` / `destinationDistrictId` in API and services
+- DB columns `pickup_location_id` / `dropoff_location_id` retain legacy names (airport / district)
+
+## Deprecated
+
+- `REGION` location type — remains in PG enum only; excluded from all selectors
+- `regions` table — legacy; not the hierarchy mechanism
+- `SelectableLocationDto` — deprecated; use `AirportDto`, `CityDto`, `DistrictDto`, `HotelDto`
+
+## Validation
+
+- `assertHotelInDistrict()` on reservation create when `hotelLocationId` is present
+- `assertPriceableEndpoints()` on quote — origin must be `AIRPORT`, destination must be `DISTRICT`
+- Changing district in booking UI must clear selected hotel (`SET_DISTRICT`)
+
+## Queries
+
+- `findDistrictsForCity(cityId)` — scoped to parent city
+- `findHotelsForDistrict(districtId)` — active hotels only
+- `GET /api/locations/hotels?districtId=` — client fetch after district selection
+
+## Forbidden
+
+- Flattening the hierarchy back to a single location picker
+- Using hotels or regions as `route_prices` destinations
+- Trusting client-supplied hotel/district relationships without server validation

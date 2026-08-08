@@ -1,0 +1,175 @@
+{
+  "common": {
+    "appName": "VIP Transfer",
+    "tagline": "Premium airport transfer booking"
+  },
+  "home": {
+    "title": "VIP Airport Transfer",
+    "description": "Reliable, comfortable, and multilingual VIP transfer booking platform.",
+    "cta": "Start Booking"
+  },
+  "booking": {
+    "actions": {
+      "back": "Back",
+      "continue": "Continue"
+    },
+    "extras": {
+      "title": "Extras"
+    },
+    "customer": {
+      "title": "Your details"
+    },
+    "errors": {
+      "rateLimit": "Too many requests. Please try again later.",
+      "quoteChanged": "Pricing has been updated. Please review the new total.",
+      "validation": "Please check the highlighted fields.",
+      "noVehicles": "No suitable vehicles are available for this search.",
+      "noRoute": "No transfer is currently available for this route.",
+      "vehicleUnavailable": "This vehicle is no longer available. Please select another option.",
+      "network": "Network error. Please check your connection and try again.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "steps": {
+      "search": "Search",
+      "vehicle": "Vehicle",
+      "extras": "Extras",
+      "customer": "Details",
+      "review": "Review"
+    },
+    "search": {
+      "airport": "Airport",
+      "city": "City",
+      "district": "Destination district",
+      "selectAirport": "Select airport",
+      "selectCity": "Select city",
+      "selectDistrict": "Select district",
+      "searchAirport": "Search airports...",
+      "searchCity": "Search cities...",
+      "searchDistrict": "Search districts...",
+      "noAirports": "No airports found.",
+      "noCities": "No cities found.",
+      "noDistricts": "No districts found.",
+      "tripType": "Trip type",
+      "oneWay": "One way",
+      "roundTrip": "Round trip",
+      "outboundDate": "Outbound date",
+      "outboundTime": "Outbound time",
+      "returnDate": "Return date",
+      "returnTime": "Return time",
+      "passengers": "Passengers",
+      "largeLuggage": "Large luggage",
+      "cabinLuggage": "Cabin luggage",
+      "submit": "Search transfers",
+      "loading": "Searching..."
+    },
+    "locations": {
+      "placeholder": "Select location",
+      "search": "Search locations...",
+      "empty": "No locations found.",
+      "types": {
+        "AIRPORT": "Airport",
+        "CITY": "City",
+        "DISTRICT": "District",
+        "HOTEL": "Hotel",
+        "REGION": "Region",
+        "TRANSFER_POINT": "Transfer point",
+        "MARINA": "Marina",
+        "CUSTOM_LOCATION": "Custom location"
+      }
+    },
+    "vehicle": {
+      "title": "Choose your vehicle",
+      "noQuote": "Search for transfers to see vehicle options.",
+      "empty": "No vehicles available.",
+      "capacity": "Up to {passengers} passengers · {large} large · {cabin} cabin luggage",
+      "multiVehicle": "{quantity} × {name}",
+      "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
+      "select": "Select",
+      "selected": "Selected",
+      "eligibility": {
+        "ELIGIBLE": "Suitable",
+        "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
+        "INELIGIBLE": "Not suitable"
+      }
+    },
+    "extras": {
+      "title": "Optional extras",
+      "requiredTitle": "Required extras",
+      "required": "Required",
+      "quantity": "Quantity: {count}",
+      "quantityLabel": "Quantity",
+      "none": "No optional extras available."
+    },
+    "customer": {
+      "title": "Customer information",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp (optional)"
+    },
+    "flight": {
+      "outbound": "Outbound flight number (optional)",
+      "return": "Return flight number (optional)",
+      "notes": "Notes (optional)"
+    },
+    "hotel": {
+      "title": "Hotel / drop-off",
+      "selectHotel": "Select your hotel",
+      "searchHotel": "Search hotels...",
+      "empty": "No hotels found for this district.",
+      "loading": "Loading hotels...",
+      "notListed": "Hotel not listed",
+      "customName": "Property name",
+      "customAddress": "Address (optional)"
+    },
+    "review": {
+      "reservationNotice": "This is a reservation request only. No online payment is taken.",
+      "transfer": "Transfer",
+      "origin": "Origin",
+      "pricingDestination": "Pricing destination",
+      "dropoff": "Actual drop-off",
+      "noDropoff": "Not specified",
+      "passengers": "Passengers",
+      "vehicle": "Vehicle",
+      "customer": "Customer",
+      "luggage": "{large} large · {cabin} cabin luggage",
+      "baseTransfer": "Base transfer",
+      "total": "Total",
+      "edit": "Edit details",
+      "submit": "Submit Reservation Request",
+      "submitting": "Submitting...",
+      "tripType": {
+        "ONE_WAY": "One way",
+        "ROUND_TRIP": "Round trip"
+      }
+    },
+    "success": {
+      "title": "Reservation Request Received",
+      "subtitle": "Your reservation is awaiting confirmation.",
+      "reference": "Reference",
+      "backHome": "Back to homepage"
+    }
+  },
+  "contact": {
+    "whatsapp": "WhatsApp"
+  },
+  "trust": {
+    "fixedPrice": {
+      "title": "Fixed Price",
+      "description": "Know your transfer price before you book."
+    },
+    "support": {
+      "title": "24/7 Support",
+      "description": "We are here whenever you need help."
+    },
+    "professional": {
+      "title": "Professional Driver",
+      "description": "Experienced drivers for a premium journey."
+    },
+    "noPayment": {
+      "title": "No Online Payment",
+      "description": "Submit a secure reservation request without paying online."
+    }
+  }
+}

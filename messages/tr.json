@@ -1,0 +1,175 @@
+{
+  "common": {
+    "appName": "VIP Transfer",
+    "tagline": "Premium havalimanı transfer rezervasyonu"
+  },
+  "home": {
+    "title": "VIP Havalimanı Transfer",
+    "description": "Güvenilir, konforlu ve çok dilli VIP transfer rezervasyon platformu.",
+    "cta": "Rezervasyona Başla"
+  },
+  "booking": {
+    "actions": {
+      "back": "Geri",
+      "continue": "Devam"
+    },
+    "extras": {
+      "title": "Ekstralar"
+    },
+    "customer": {
+      "title": "Bilgileriniz"
+    },
+    "errors": {
+      "rateLimit": "Çok fazla istek. Lütfen daha sonra tekrar deneyin.",
+      "quoteChanged": "Fiyat güncellendi. Lütfen yeni toplamı kontrol edin.",
+      "validation": "Lütfen işaretli alanları kontrol edin.",
+      "noVehicles": "Bu arama için uygun araç bulunamadı.",
+      "noRoute": "Bu rota için transfer şu anda mevcut değil.",
+      "vehicleUnavailable": "Bu araç artık müsait değil. Lütfen başka bir seçenek seçin.",
+      "network": "Ağ hatası. Bağlantınızı kontrol edip tekrar deneyin.",
+      "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+    },
+    "steps": {
+      "search": "Arama",
+      "vehicle": "Araç",
+      "extras": "Ekstralar",
+      "customer": "Bilgiler",
+      "review": "Özet"
+    },
+    "search": {
+      "airport": "Havalimanı",
+      "city": "Şehir",
+      "district": "Varış bölgesi",
+      "selectAirport": "Havalimanı seçin",
+      "selectCity": "Şehir seçin",
+      "selectDistrict": "Bölge seçin",
+      "searchAirport": "Havalimanı ara...",
+      "searchCity": "Şehir ara...",
+      "searchDistrict": "Bölge ara...",
+      "noAirports": "Havalimanı bulunamadı.",
+      "noCities": "Şehir bulunamadı.",
+      "noDistricts": "Bölge bulunamadı.",
+      "tripType": "Yolculuk tipi",
+      "oneWay": "Tek yön",
+      "roundTrip": "Gidiş-dönüş",
+      "outboundDate": "Gidiş tarihi",
+      "outboundTime": "Gidiş saati",
+      "returnDate": "Dönüş tarihi",
+      "returnTime": "Dönüş saati",
+      "passengers": "Yolcu",
+      "largeLuggage": "Büyük bagaj",
+      "cabinLuggage": "Kabin bagajı",
+      "submit": "Transfer ara",
+      "loading": "Aranıyor..."
+    },
+    "locations": {
+      "placeholder": "Konum seçin",
+      "search": "Konum ara...",
+      "empty": "Konum bulunamadı.",
+      "types": {
+        "AIRPORT": "Havalimanı",
+        "CITY": "Şehir",
+        "DISTRICT": "Bölge",
+        "HOTEL": "Otel",
+        "REGION": "Bölge",
+        "TRANSFER_POINT": "Transfer noktası",
+        "MARINA": "Marina",
+        "CUSTOM_LOCATION": "Özel konum"
+      }
+    },
+    "vehicle": {
+      "title": "Aracınızı seçin",
+      "noQuote": "Araç seçeneklerini görmek için transfer arayın.",
+      "empty": "Uygun araç yok.",
+      "capacity": "En fazla {passengers} yolcu · {large} büyük · {cabin} kabin bagajı",
+      "multiVehicle": "{quantity} × {name}",
+      "luggageVehicleRequired": "Bagajınız bu aracın kapasitesini aşıyor. Ek bagaj aracı gereklidir.",
+      "select": "Seç",
+      "selected": "Seçildi",
+      "eligibility": {
+        "ELIGIBLE": "Uygun",
+        "ELIGIBLE_WITH_EXTRAS": "Ek bagaj ile uygun",
+        "INELIGIBLE": "Uygun değil"
+      }
+    },
+    "extras": {
+      "title": "İsteğe bağlı ekstralar",
+      "requiredTitle": "Zorunlu ekstralar",
+      "required": "Zorunlu",
+      "quantity": "Adet: {count}",
+      "quantityLabel": "Adet",
+      "none": "İsteğe bağlı ekstra yok."
+    },
+    "customer": {
+      "title": "Müşteri bilgileri",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "whatsapp": "WhatsApp (isteğe bağlı)"
+    },
+    "flight": {
+      "outbound": "Gidiş uçuş numarası (isteğe bağlı)",
+      "return": "Dönüş uçuş numarası (isteğe bağlı)",
+      "notes": "Notlar (isteğe bağlı)"
+    },
+    "hotel": {
+      "title": "Otel / varış noktası",
+      "selectHotel": "Otelinizi seçin",
+      "searchHotel": "Otel ara...",
+      "empty": "Bu bölge için otel bulunamadı.",
+      "loading": "Oteller yükleniyor...",
+      "notListed": "Otel listede yok",
+      "customName": "Konaklama adı",
+      "customAddress": "Adres (isteğe bağlı)"
+    },
+    "review": {
+      "reservationNotice": "Bu yalnızca bir rezervasyon talebidir. Online ödeme alınmaz.",
+      "transfer": "Transfer",
+      "origin": "Kalkış",
+      "pricingDestination": "Fiyatlandırma bölgesi",
+      "dropoff": "Gerçek varış noktası",
+      "noDropoff": "Belirtilmedi",
+      "passengers": "Yolcular",
+      "vehicle": "Araç",
+      "customer": "Müşteri",
+      "luggage": "{large} büyük · {cabin} kabin bagajı",
+      "baseTransfer": "Transfer ücreti",
+      "total": "Toplam",
+      "edit": "Düzenle",
+      "submit": "Rezervasyon Talebi Gönder",
+      "submitting": "Gönderiliyor...",
+      "tripType": {
+        "ONE_WAY": "Tek yön",
+        "ROUND_TRIP": "Gidiş-dönüş"
+      }
+    },
+    "success": {
+      "title": "Rezervasyon Talebi Alındı",
+      "subtitle": "Rezervasyonunuz onay bekliyor.",
+      "reference": "Referans",
+      "backHome": "Ana sayfaya dön"
+    }
+  },
+  "contact": {
+    "whatsapp": "WhatsApp"
+  },
+  "trust": {
+    "fixedPrice": {
+      "title": "Sabit Fiyat",
+      "description": "Rezervasyon öncesi fiyatınızı bilin."
+    },
+    "support": {
+      "title": "7/24 Destek",
+      "description": "İhtiyacınız olduğunda yanınızdayız."
+    },
+    "professional": {
+      "title": "Profesyonel Şoför",
+      "description": "Premium yolculuk için deneyimli şoförler."
+    },
+    "noPayment": {
+      "title": "Online Ödeme Yok",
+      "description": "Online ödeme yapmadan güvenli rezervasyon talebi gönderin."
+    }
+  }
+}

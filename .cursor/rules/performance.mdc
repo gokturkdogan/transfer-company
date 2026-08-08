@@ -1,0 +1,29 @@
+---
+description: Performance conventions
+globs: src/app/**,src/features/**,src/db/**
+---
+
+# Performance Rules
+
+## Allowed
+
+- Server Components for data fetching
+- Module-scope DB Pool
+- Select only required columns
+- Database indexes on FKs and filter columns
+- `next/image` for images
+- Lazy loading heavy client components
+
+## Forbidden
+
+- Unnecessary `"use client"` boundaries
+- N+1 queries
+- New DB connection per request
+- Client-side fetching for SSR-able data
+- Giant client state trees
+- Unnecessary Context providers
+- Unbounded queries without pagination
+
+## Before optimizing
+
+Read `/docs/PERFORMANCE.md`.

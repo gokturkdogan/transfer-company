@@ -1,0 +1,99 @@
+# Booking UI
+
+## Overview
+
+The public booking experience is a progressive multi-step flow at `/[locale]/booking`, with a search launcher on the home page. All pricing, eligibility, and capacity decisions come from the server — the UI never duplicates domain logic.
+
+## Steps
+
+| Step | Component | Purpose |
+|------|-----------|---------|
+| 1 Search | `TransferSearchForm` | Airport, city, district, trip type, dates/times, passengers, luggage |
+| 2 Vehicle | `VehicleRecommendationList` | Server-provided options with eligibility states |
+| 3 Extras | `RequiredExtrasPanel`, `OptionalExtrasSelector` | Locked required extras + debounced requote for optional |
+| 4 Customer | `HotelSelector`, `CustomDestinationFields`, `CustomerDetailsForm`, `FlightDetailsForm` | Drop-off detail, contact and flight info |
+| 5 Review | `BookingReview` | Summary and reservation request submission |
+| 6 Success | `SuccessStep` | Reference and awaiting-confirmation messaging |
+
+## State ownership
+
+- **Reducer:** `booking-flow-reducer.ts` — pure state machine for step, search, quote, selection, extras, customer, idempotency
+- **Context:** `booking-flow-context.tsx` — scoped provider, API calls, no global store
+- **Forms:** controlled via reducer dispatch (RHF-ready structure; counters and selectors use reducer)
+
+## Server data sources
+
+| Data | Source |
+|------|--------|
+| Airports, cities, districts | `LocationService` in Server Component, passed as props |
+| Hotels | `GET /api/locations/hotels?districtId=` (client fetch after district selection) |
+| Vehicle options | `POST /api/quote` |
+| Priced selection (extras) | `POST /api/quote` with `selection` field |
+| Reservation | `POST /api/reservations` with `Idempotency-Key` header |
+
+## Quote invalidation
+
+`buildSearchSignature()` hashes: `originAirportId`, `destinationDistrictId`, trip type, outbound/return date-time, passenger and luggage counts.
+
+Hotel and custom destination are **excluded** from the signature — changing drop-off does not invalidate the quote.
+
+When the signature changes after a quote exists:
+- Quote cleared
+- Vehicle selection cleared
+- Optional extras cleared
+- User returned to vehicle step
+
+## Idempotency
+
+- Key generated via `crypto.randomUUID()` when review submission starts
+- Reused across retries for the same booking attempt
+- Regenerated when search signature changes or after success
+
+## Required vs optional extras
+
+- **Required:** from `option.requiredExtras` or `selection.requiredExtras` — rendered locked, no quantity control
+- **Optional:** from `option.optionalExtras` — editable; changes trigger debounced `POST /api/quote` with `selection`
+
+## Error states
+
+Mapped via `mapApiErrorToKey()` to translation keys under `booking.errors.*`. No raw server messages or stack traces shown.
+
+## RTL
+
+- Logical CSS properties (`ms-`, `me-`, `ps-`, `pe-`, `text-start`)
+- `dir` on `<html>` from locale layout
+- Automated test scans booking components for forbidden physical-direction classes
+
+## Frontend forbidden calculations
+
+The UI must **never** calculate:
+
+- Luggage overflow or required luggage vehicles
+- Vehicle suitability / eligibility
+- One-way vs round-trip pricing
+- Extra totals or reservation total
+- Extra service eligibility
+
+Only `formatMoney()` for display formatting is permitted.
+
+## Location selectors
+
+- `LocationCombobox` — reusable searchable combobox (Command + Popover)
+- Search step: airport → city (hidden when only one active city) → district
+- Step 4: `HotelSelector` loads hotels for selected district; "Hotel not listed" reveals `CustomDestinationFields`
+- `SET_DISTRICT` always clears hotel and custom destination state
+- Review and success steps show pricing destination (district) and actual drop-off separately
+
+## Known limitations
+
+- Vehicle `imageKey` and `shortDescription` not yet exposed in availability DTO — cards use placeholder icon
+- Success step is in-memory only (no public reservation lookup endpoint)
+
+## Pages
+
+- `/[locale]` — hero + `TransferSearchLauncher` → navigates to booking with query params
+- `/[locale]/booking` — full `BookingFlow` (dynamic, requires DB for locations)
+
+## Seed data
+
+Run `pnpm db:seed` after migration to populate Antalya-region sample data for end-to-end testing.
