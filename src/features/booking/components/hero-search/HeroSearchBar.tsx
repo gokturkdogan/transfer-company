@@ -85,16 +85,16 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
         onChange={(tripType) => dispatch({ type: "SET_TRIP_TYPE", tripType })}
       />
 
-      <div className="rounded-[20px] border border-white/30 bg-white/14 p-1 shadow-[0_12px_48px_rgb(0_0_0/0.38)] backdrop-blur-2xl max-lg:ring-1 max-lg:ring-gold/25 lg:rounded-[28px] lg:border-white/25 lg:bg-white/12 lg:p-1.5 lg:shadow-premium lg:ring-0">
+      <div className="rounded-[24px] border border-white/30 bg-white/14 p-2 shadow-[0_12px_48px_rgb(0_0_0/0.38)] backdrop-blur-2xl max-lg:ring-1 max-lg:ring-gold/30 lg:rounded-[28px] lg:border-white/25 lg:bg-white/12 lg:p-1.5 lg:shadow-premium lg:ring-0">
         <TripTypeToggle
           tripType={search.tripType}
           oneWayLabel={t("oneWay")}
           roundTripLabel={t("roundTrip")}
-          className="mb-1.5 w-fit justify-start lg:hidden"
+          className="mb-2 w-full justify-center lg:hidden"
           onChange={(tripType) => dispatch({ type: "SET_TRIP_TYPE", tripType })}
         />
 
-        <div className="grid grid-cols-1 gap-0.5 rounded-[16px] bg-card/98 p-1 max-lg:divide-y max-lg:divide-border/40 sm:grid-cols-2 sm:max-lg:divide-y-0 sm:max-lg:gap-1 lg:flex lg:items-center lg:gap-0 lg:rounded-[22px] lg:bg-card/95 lg:p-1.5">
+        <div className="grid grid-cols-1 gap-2 rounded-[18px] bg-card/98 p-2 max-lg:gap-2 sm:grid-cols-2 sm:max-lg:gap-1.5 lg:flex lg:items-center lg:gap-0 lg:rounded-[22px] lg:bg-card/95 lg:p-1.5">
           <LocationSegment
             icon={PlaneLanding}
             label={t("airport")}
@@ -182,12 +182,12 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             type="submit"
             disabled={!canSubmit || state.isLoadingQuote}
             className={cn(
-              "group relative flex h-[3.25rem] w-full shrink-0 cursor-pointer items-center justify-center gap-2",
-              "overflow-hidden rounded-xl bg-gold-gradient px-6 text-sm font-bold tracking-tight text-ink",
+              "group relative flex h-14 w-full shrink-0 cursor-pointer items-center justify-center gap-2",
+              "overflow-hidden rounded-xl bg-gold-gradient px-6 text-base font-bold tracking-tight text-ink",
               "shadow-gold transition-all duration-300 hover:brightness-110 active:scale-[0.98]",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
               "disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none",
-              "max-lg:mt-0.5 sm:col-span-2 lg:col-span-1 lg:h-[52px] lg:w-auto lg:rounded-2xl",
+              "max-lg:mt-1 sm:col-span-2 lg:col-span-1 lg:h-[52px] lg:w-auto lg:rounded-2xl lg:text-sm",
             )}
           >
             <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
@@ -234,7 +234,7 @@ function TripTypeToggle({
     <div
       role="radiogroup"
       className={cn(
-        "inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 p-1 backdrop-blur-xl",
+        "inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 p-1 backdrop-blur-xl max-lg:w-full max-lg:justify-center",
         className,
       )}
     >
@@ -249,7 +249,7 @@ function TripTypeToggle({
             aria-checked={active}
             onClick={() => onChange(option.value)}
             className={cn(
-              "cursor-pointer rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all duration-300",
+              "cursor-pointer rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-300 max-lg:flex-1 max-lg:py-2.5",
               active
                 ? "bg-gold-gradient text-ink shadow-gold"
                 : "text-white/75 hover:bg-white/10 hover:text-white",

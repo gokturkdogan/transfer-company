@@ -98,18 +98,18 @@ export function DateTimePickerPanel({
   };
 
   return (
-    <div className="datetime-picker w-fit max-w-[calc(100vw-2rem)]">
-      <div className="border-b border-border/60 px-3 py-2.5">
+    <div className="datetime-picker w-fit max-w-[calc(100vw-2rem)] max-lg:w-full max-lg:max-w-none">
+      <div className="border-b border-border/60 px-3 py-2.5 max-lg:px-2.5 max-lg:py-2">
         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
           {t("pickTime")}
         </p>
-        <p className="mt-0.5 text-sm font-semibold text-foreground">
+        <p className="mt-0.5 truncate text-sm font-semibold text-foreground">
           {formatDateTimeLabel(pendingDate, pendingTime, locale)}
         </p>
       </div>
 
-      <div className="flex w-fit flex-col sm:flex-row sm:items-start">
-        <div className="w-fit shrink-0 border-b border-border/60 p-1.5 sm:border-b-0 sm:border-e">
+      <div className="flex w-fit flex-row items-stretch max-lg:w-full max-lg:max-h-[16rem]">
+        <div className="w-fit shrink-0 border-e border-border/60 p-1.5 max-lg:p-1">
           <Calendar
             mode="single"
             locale={dayPickerLocale}
@@ -121,9 +121,9 @@ export function DateTimePickerPanel({
           />
         </div>
 
-        <div className="w-fit shrink-0 p-2">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden p-2 max-lg:p-1.5">
           {timeSlots.length > 0 ? (
-            <div className="grid max-h-[14rem] w-fit grid-cols-3 gap-1 overflow-y-auto sm:grid-cols-2">
+            <div className="grid min-h-0 flex-1 auto-rows-min grid-cols-2 gap-1 overflow-y-auto overscroll-contain pr-0.5 lg:max-h-[14rem] lg:w-fit lg:grid-cols-2">
               {timeSlots.map((slot) => {
                 const active = slot === pendingTime;
 
@@ -133,7 +133,7 @@ export function DateTimePickerPanel({
                     type="button"
                     onClick={() => handleTimeSelect(slot)}
                     className={cn(
-                      "min-w-[2.75rem] cursor-pointer rounded-lg px-1.5 py-1.5 text-center text-xs font-semibold transition-colors",
+                      "min-w-0 cursor-pointer rounded-lg px-1 py-1.5 text-center text-[11px] font-semibold transition-colors lg:min-w-[2.75rem] lg:px-1.5 lg:text-xs",
                       "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold/40",
                       active
                         ? "bg-gold-gradient text-ink shadow-[0_2px_10px_rgb(200_164_93/0.28)]"

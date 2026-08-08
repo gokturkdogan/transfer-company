@@ -26,7 +26,7 @@ export async function HeroSection({ bookingForm }: HeroSectionProps) {
       />
       <HeroBackdrop />
 
-      <Container className="relative flex flex-col gap-3 pt-[4.75rem] pb-8 max-lg:min-h-0 max-lg:justify-start lg:min-h-[100svh] lg:justify-center lg:gap-8 lg:pt-28 lg:pb-20">
+      <Container className="relative flex flex-col gap-4 pt-[4.75rem] pb-24 max-lg:min-h-[calc(100dvh-3.5rem)] max-lg:justify-center max-lg:gap-5 lg:min-h-[100svh] lg:justify-center lg:gap-8 lg:pt-28 lg:pb-20">
         <p
           className="ring-gold-hairline order-1 hidden w-fit animate-fade-up items-center gap-2 self-start rounded-full bg-white/8 py-1.5 ps-3 pe-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-light backdrop-blur-md sm:text-xs lg:inline-flex"
           style={{ animationDelay: "80ms" }}
@@ -36,12 +36,35 @@ export async function HeroSection({ bookingForm }: HeroSectionProps) {
         </p>
 
         <h1
-          className="order-1 max-w-3xl animate-fade-up text-xl font-bold leading-snug tracking-tight text-white max-lg:text-start lg:order-2 lg:text-[3.5rem] lg:leading-[1.06] xl:text-6xl"
+          className="order-1 max-w-3xl animate-fade-up text-2xl font-bold leading-tight tracking-tight text-white max-lg:text-start sm:text-[1.65rem] lg:order-2 lg:max-w-3xl lg:text-[3.5rem] lg:leading-[1.06] xl:text-6xl"
           style={{ animationDelay: "160ms" }}
         >
           {t("title")}
-          <span className="block text-gold-shimmer">{t("titleAccent")}</span>
+          <span className="mt-0.5 block text-gold-shimmer max-lg:text-[1.35rem] sm:max-lg:text-[1.5rem] lg:mt-0">
+            {t("titleAccent")}
+          </span>
         </h1>
+
+        <div
+          className="order-3 flex max-w-3xl animate-fade-up flex-col gap-3 max-lg:mt-1 lg:hidden"
+          style={{ animationDelay: "220ms" }}
+        >
+          <p className="text-sm leading-relaxed text-white/72">{t("subtitle")}</p>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="flex items-center gap-1.5 text-xs font-medium text-white/85">
+              <span className="flex gap-0.5 text-gold" aria-hidden>
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Star key={index} className="h-3 w-3 fill-current" />
+                ))}
+              </span>
+              {t("rating")}
+            </span>
+            <span className="flex items-center gap-1.5 text-xs font-medium text-white/70">
+              <ShieldCheck className="h-3.5 w-3.5 text-gold" aria-hidden />
+              {t("guarantee")}
+            </span>
+          </div>
+        </div>
 
         <p
           className="order-3 hidden max-w-xl animate-fade-up text-sm leading-relaxed text-white/75 sm:text-base lg:block lg:max-w-2xl lg:text-lg"

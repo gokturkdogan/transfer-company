@@ -28,18 +28,18 @@ export function SearchSegmentShell({
   return (
     <div
       className={cn(
-        "relative min-w-0 rounded-2xl transition-colors lg:rounded-xl",
+        "relative min-w-0 rounded-2xl transition-colors max-lg:min-h-[4.25rem] max-lg:border max-lg:border-border/45 max-lg:bg-muted/30 lg:rounded-xl",
         withDivider &&
           "lg:before:absolute lg:before:inset-y-2.5 lg:before:end-0 lg:before:w-px lg:before:bg-border/70",
         className,
       )}
     >
-      <div className="flex min-w-0 items-center gap-2 px-3 py-1.5 max-lg:py-2 lg:gap-2.5 lg:px-4 lg:py-2">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gold/12 text-gold-deep lg:h-8 lg:w-8">
-          <Icon className="h-3.5 w-3.5 lg:h-4 lg:w-4" aria-hidden />
+      <div className="flex min-w-0 items-center gap-3 px-3.5 py-3 max-lg:py-3.5 lg:gap-2.5 lg:px-4 lg:py-2">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold/14 text-gold-deep lg:h-8 lg:w-8 lg:rounded-lg lg:bg-gold/12">
+          <Icon className="h-4 w-4 lg:h-4 lg:w-4" aria-hidden />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground lg:text-[10px]">
             {label}
           </span>
           {children}
@@ -60,7 +60,7 @@ export function SegmentValue({
   return (
     <span
       className={cn(
-        "block truncate text-sm font-semibold leading-tight",
+        "block truncate text-[15px] font-semibold leading-snug lg:text-sm lg:leading-tight",
         placeholder ? "text-muted-foreground/70" : "text-foreground",
       )}
     >
