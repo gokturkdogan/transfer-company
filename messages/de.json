@@ -28,6 +28,7 @@
       "fleet": "Fahrzeuge",
       "howItWorks": "So funktioniert's",
       "faq": "FAQ",
+      "about": "Über uns",
       "menu": "Menü",
       "close": "Menü schließen"
     },
@@ -389,6 +390,71 @@
       "subtitle": "Your reservation is awaiting confirmation.",
       "reference": "Reference",
       "backHome": "Back to homepage"
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "Über uns | VIP Transfer",
+      "description": "Lernen Sie unser Team für Premium-VIP-Flughafentransfers in Antalya und an der Türkischen Riviera kennen."
+    },
+    "hero": {
+      "badge": "Antalya Premium Transfer",
+      "title": "Vertrauenswürdige VIP-Transfers",
+      "titleAccent": "Mit Erfahrung & Leidenschaft",
+      "subtitle": "Als lokales Team bieten wir komfortable, transparente Premium-Transfers vom Flughafen Antalya an die gesamte Türkische Riviera.",
+      "stats": {
+        "support": "24/7 Support",
+        "rating": "4,9 / 5 Gästebewertung",
+        "booking": "Buchung in 60 Sekunden"
+      }
+    },
+    "story": {
+      "eyebrow": "Unsere Geschichte",
+      "title": "Einfache, nahtlose Transfers für jeden Gast",
+      "paragraphs": {
+        "0": "Unser Ziel ist es, die Buchung so einfach wie möglich zu machen. Festpreise, kostenloser Meet & Greet und Flugverfolgung sorgen für entspannte Fahrten.",
+        "1": "Mit erfahrenen Chauffeurs und einer gepflegten Flotte liefern wir denselben Premium-Standard von Lara bis Alanya. Zahlung bei Ankunft — kein Online-Zahlungsdruck."
+      },
+      "imageAlt": "Professioneller VIP-Chauffeur neben einem Luxus-Transferfahrzeug",
+      "imageBadge": "Professionelles Team"
+    },
+    "values": {
+      "eyebrow": "Unsere Werte",
+      "title": "Derselbe Standard bei jeder Fahrt",
+      "subtitle": "Klar, zuverlässig und konsequent gästeorientiert.",
+      "items": {
+        "0": {
+          "badge": "Premium",
+          "title": "Komfort & Qualität",
+          "description": "Gepflegte Fahrzeuge, saubere Innenräume und eine durchdachte Reise."
+        },
+        "1": {
+          "badge": "Vertrauen",
+          "title": "Transparente Preise",
+          "description": "Festpreis vor der Buchung. Keine versteckten Gebühren."
+        },
+        "2": {
+          "badge": "24/7",
+          "title": "Immer erreichbar",
+          "description": "Flugverspätungen, späte Ankünfte oder kurzfristige Änderungen — wir sind da."
+        }
+      }
+    },
+    "promise": {
+      "eyebrow": "Unser Versprechen",
+      "title": "Premium-Service von Tür zu Tür",
+      "description": "Wir begrüßen Sie am Flughafen mit Namensschild, helfen mit dem Gepäck und bringen Sie bequem zu Ihrem Hotel oder Ihrer Villa.",
+      "imageAlt": "VIP Meet & Greet am Flughafen",
+      "badges": {
+        "0": "Kostenloser Meet & Greet",
+        "1": "Flugverfolgung",
+        "2": "Zahlung bei Ankunft"
+      }
+    },
+    "cta": {
+      "title": "Bereit für Ihren Transfer?",
+      "subtitle": "Senden Sie in wenigen Schritten eine Reservierungsanfrage — wir kümmern uns um den Rest.",
+      "button": "Transfer buchen"
     }
   },
   "contact": {

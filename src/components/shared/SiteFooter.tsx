@@ -2,6 +2,7 @@ import { Clock, Mail, MessageCircle, Phone } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
+import { SiteLogo } from "@/components/shared/SiteLogo";
 import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
 import type { SiteLocaleOption } from "@/features/locales/types";
@@ -37,16 +38,8 @@ export async function SiteFooter({
       <Container className="relative py-16 md:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div className="space-y-5">
-            <div className="flex items-center gap-2.5">
-              <span
-                aria-hidden
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-gradient text-sm font-bold text-ink"
-              >
-                VT
-              </span>
-              <span className="text-lg font-bold tracking-tight">
-                {common("appName")}
-              </span>
+            <div className="flex items-center">
+              <SiteLogo alt={common("appName")} size="header" />
             </div>
             <p className="max-w-sm text-sm leading-relaxed text-white/55">
               {t("description")}
@@ -80,6 +73,11 @@ export async function SiteFooter({
           </FooterColumn>
 
           <FooterColumn title={t("linksTitle")}>
+            <li>
+              <Link href="/about" className="transition-colors hover:text-gold-light">
+                {nav("about")}
+              </Link>
+            </li>
             <li>
               <a href="#booking" className="transition-colors hover:text-gold-light">
                 {t("bookTransfer")}

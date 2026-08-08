@@ -28,6 +28,7 @@
       "fleet": "Filo",
       "howItWorks": "Nasıl Çalışır",
       "faq": "SSS",
+      "about": "Hakkımızda",
       "menu": "Menü",
       "close": "Menüyü kapat"
     },
@@ -389,6 +390,71 @@
       "subtitle": "Rezervasyonunuz onay bekliyor.",
       "reference": "Referans",
       "backHome": "Ana sayfaya dön"
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "Hakkımızda | VIP Transfer",
+      "description": "Antalya ve Türk Rivierası'nda premium VIP havalimanı transfer hizmeti sunan ekibimizi, değerlerimizi ve misafir odaklı yaklaşımımızı keşfedin."
+    },
+    "hero": {
+      "badge": "Antalya Premium Transfer",
+      "title": "Güvenilir VIP Transfer",
+      "titleAccent": "Deneyimi ve Tutku",
+      "subtitle": "Yerel bir ekip olarak Antalya Havalimanı'ndan Türk Rivierası'nın her noktasına konforlu, şeffaf ve premium transfer hizmeti sunuyoruz.",
+      "stats": {
+        "support": "7/24 Destek",
+        "rating": "4,9 / 5 Misafir Puanı",
+        "booking": "60 Saniyede Rezervasyon"
+      }
+    },
+    "story": {
+      "eyebrow": "Hikayemiz",
+      "title": "Misafirlerimiz için sade ve kusursuz transfer",
+      "paragraphs": {
+        "0": "VIP Transfer olarak amacımız karmaşık rezervasyon süreçlerini ortadan kaldırmak. Sabit fiyat, ücretsiz karşılama ve uçuş takibiyle yolculuğunuzun her adımında yanınızdayız.",
+        "1": "Deneyimli şoförlerimiz ve bakımlı filomuzla Lara'dan Alanya'ya kadar her rotada aynı premium standardı sunuyoruz. Ödeme varışta — online ödeme stresi yok."
+      },
+      "imageAlt": "Profesyonel VIP şoför ve lüks transfer aracı",
+      "imageBadge": "Profesyonel Ekip"
+    },
+    "values": {
+      "eyebrow": "Değerlerimiz",
+      "title": "Her yolculukta aynı standart",
+      "subtitle": "Kısa, net ve güven veren bir hizmet anlayışıyla çalışıyoruz.",
+      "items": {
+        "0": {
+          "badge": "Premium",
+          "title": "Konfor ve Kalite",
+          "description": "Bakımlı araçlar, temiz iç mekanlar ve her detayı düşünülmüş bir yolculuk deneyimi."
+        },
+        "1": {
+          "badge": "Güven",
+          "title": "Şeffaf Fiyatlandırma",
+          "description": "Rezervasyon öncesi net fiyat. Gizli ücret yok, sürpriz maliyet yok."
+        },
+        "2": {
+          "badge": "7/24",
+          "title": "Her An Yanınızda",
+          "description": "Uçuş gecikmeleri, gece varışları veya son dakika değişiklikleri — destek ekibimiz hazır."
+        }
+      }
+    },
+    "promise": {
+      "eyebrow": "Sözümüz",
+      "title": "Kapıdan kapıya premium hizmet",
+      "description": "Havalimanında sizi isim tabelasıyla karşılıyor, bagajlarınıza yardımcı oluyor ve doğrudan otelinize veya villanıza konforlu bir şekilde ulaştırıyoruz.",
+      "imageAlt": "Havalimanında VIP karşılama hizmeti",
+      "badges": {
+        "0": "Ücretsiz Karşılama",
+        "1": "Uçuş Takibi",
+        "2": "Ödeme Varışta"
+      }
+    },
+    "cta": {
+      "title": "Transferinizi planlamaya hazır mısınız?",
+      "subtitle": "Birkaç adımda rezervasyon talebinizi gönderin; gerisini biz halledelim.",
+      "button": "Rezervasyon Yap"
     }
   },
   "contact": {

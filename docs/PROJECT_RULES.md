@@ -27,7 +27,8 @@ This is a production-grade multilingual VIP airport transfer booking platform. C
 ## Development workflow
 
 1. Read relevant `/docs/*.md` and `.cursor/rules/*.mdc` before modifying a domain
-2. Implement following the layering rules in [ARCHITECTURE.md](./ARCHITECTURE.md)
+2. For new **marketing/landing pages**, read [MARKETING_PAGE_DESIGN.md](./MARKETING_PAGE_DESIGN.md) first
+3. Implement following the layering rules in [ARCHITECTURE.md](./ARCHITECTURE.md)
 3. Update documentation after materially changing domain rules, architecture, or DB behavior
 4. Run `pnpm typecheck && pnpm lint && pnpm test && pnpm build` before considering work complete
 

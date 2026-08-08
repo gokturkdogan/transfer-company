@@ -26,7 +26,7 @@ export async function HeroSection({ bookingForm }: HeroSectionProps) {
       />
       <HeroBackdrop />
 
-      <Container className="relative flex flex-col gap-4 pt-[4.75rem] pb-24 max-lg:min-h-[calc(100dvh-3.5rem)] max-lg:justify-center max-lg:gap-5 lg:min-h-[100svh] lg:justify-center lg:gap-8 lg:pt-28 lg:pb-20">
+      <Container className="relative flex flex-col gap-4 pt-20 pb-24 max-lg:min-h-[calc(100dvh-3.5rem)] max-lg:justify-center max-lg:gap-5 lg:min-h-[100svh] lg:justify-center lg:gap-8 lg:pt-28 lg:pb-20">
         <p
           className="ring-gold-hairline order-1 hidden w-fit animate-fade-up items-center gap-2 self-start rounded-full bg-white/8 py-1.5 ps-3 pe-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-light backdrop-blur-md sm:text-xs lg:inline-flex"
           style={{ animationDelay: "80ms" }}

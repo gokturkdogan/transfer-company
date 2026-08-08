@@ -6,6 +6,7 @@ import { ArrowRight, Menu, MessageCircle, Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
 import { MobileNavDrawer } from "@/components/shared/MobileNavDrawer";
+import { SiteLogo } from "@/components/shared/SiteLogo";
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { getLocaleEmoji } from "@/config/locales";
@@ -17,11 +18,23 @@ type SiteHeaderProps = {
 };
 
 const NAV_SECTIONS = [
-  { key: "destinations", href: "#destinations" },
-  { key: "fleet", href: "#fleet" },
-  { key: "howItWorks", href: "#how-it-works" },
-  { key: "faq", href: "#faq" },
+  { key: "about", href: "/about", type: "route" },
+  { key: "destinations", href: "#destinations", type: "hash" },
+  { key: "fleet", href: "#fleet", type: "hash" },
+  { key: "howItWorks", href: "#how-it-works", type: "hash" },
+  { key: "faq", href: "#faq", type: "hash" },
 ] as const;
+
+function resolveNavHref(
+  pathname: string,
+  section: (typeof NAV_SECTIONS)[number],
+): string {
+  if (section.type === "route") {
+    return section.href;
+  }
+
+  return pathname === "/" ? section.href : `/${section.href}`;
+}
 
 export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
   const t = useTranslations("home.nav");
@@ -82,31 +95,33 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
           <div
             className={cn(
               "flex items-center justify-between transition-all duration-500",
-              scrolled ? "h-16" : "h-20 md:h-24",
+              scrolled ? "h-[4.5rem]" : "h-24 md:h-32",
             )}
           >
-            <Link href="/" className="group flex items-center gap-2.5">
-              <span
-                aria-hidden
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-gold-gradient text-sm font-bold text-ink shadow-gold transition-transform duration-300 group-hover:scale-105"
-              >
-                VT
-              </span>
-              <span className="text-base font-bold tracking-tight text-white sm:text-lg">
-                {common("appName")}
-              </span>
+            <Link href="/" className="group flex min-w-0 items-center">
+              <SiteLogo alt={common("appName")} size="header" />
             </Link>
 
             <nav className="hidden items-center gap-1 lg:flex">
-              {NAV_SECTIONS.map((section) => (
-                <a
-                  key={section.key}
-                  href={section.href}
-                  className="rounded-full px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  {t(section.key)}
-                </a>
-              ))}
+              {NAV_SECTIONS.map((section) =>
+                section.type === "route" ? (
+                  <Link
+                    key={section.key}
+                    href={section.href}
+                    className="rounded-full px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  >
+                    {t(section.key)}
+                  </Link>
+                ) : (
+                  <a
+                    key={section.key}
+                    href={resolveNavHref(pathname, section)}
+                    className="rounded-full px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  >
+                    {t(section.key)}
+                  </a>
+                ),
+              )}
             </nav>
 
             <div className="hidden items-center gap-2 md:flex">

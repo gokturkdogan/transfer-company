@@ -5,6 +5,7 @@ import { clientEnv } from "@/config/env";
 
 const ROUTES = [
   { path: "", changeFrequency: "daily" as const, priority: 1 },
+  { path: "/about", changeFrequency: "monthly" as const, priority: 0.7 },
   { path: "/booking", changeFrequency: "weekly" as const, priority: 0.8 },
 ];
 

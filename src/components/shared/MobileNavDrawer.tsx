@@ -6,15 +6,28 @@ import { useTranslations } from "next-intl";
 import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
 import type { SiteLocaleOption } from "@/features/locales/types";
+import { SiteLogo } from "@/components/shared/SiteLogo";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV_SECTIONS = [
-  { key: "destinations", href: "#destinations" },
-  { key: "fleet", href: "#fleet" },
-  { key: "howItWorks", href: "#how-it-works" },
-  { key: "faq", href: "#faq" },
+  { key: "about", href: "/about", type: "route" },
+  { key: "destinations", href: "#destinations", type: "hash" },
+  { key: "fleet", href: "#fleet", type: "hash" },
+  { key: "howItWorks", href: "#how-it-works", type: "hash" },
+  { key: "faq", href: "#faq", type: "hash" },
 ] as const;
+
+function resolveNavHref(
+  pathname: string,
+  section: (typeof NAV_SECTIONS)[number],
+): string {
+  if (section.type === "route") {
+    return section.href;
+  }
+
+  return pathname === "/" ? section.href : `/${section.href}`;
+}
 
 type MobileNavDrawerProps = {
   open: boolean;
@@ -80,17 +93,9 @@ export function MobileNavDrawer({
           <Link
             href="/"
             onClick={onClose}
-            className="group flex min-w-0 items-center gap-2.5"
+            className="group flex min-w-0 items-center"
           >
-            <span
-              aria-hidden
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold-gradient text-sm font-bold text-ink shadow-gold"
-            >
-              VT
-            </span>
-            <span className="truncate text-base font-bold tracking-tight">
-              {common("appName")}
-            </span>
+            <SiteLogo alt={common("appName")} size="header" />
           </Link>
           <button
             type="button"
@@ -107,17 +112,31 @@ export function MobileNavDrawer({
           <ul className="space-y-1">
             {NAV_SECTIONS.map((section) => (
               <li key={section.key}>
-                <a
-                  href={section.href}
-                  onClick={onClose}
-                  className="flex items-center justify-between rounded-xl px-3 py-3.5 text-sm font-semibold text-white/85 transition-colors hover:bg-white/8 hover:text-white"
-                >
-                  {t(section.key)}
-                  <ArrowRight
-                    className="h-4 w-4 text-gold rtl:rotate-180"
-                    aria-hidden
-                  />
-                </a>
+                {section.type === "route" ? (
+                  <Link
+                    href={section.href}
+                    onClick={onClose}
+                    className="flex items-center justify-between rounded-xl px-3 py-3.5 text-sm font-semibold text-white/85 transition-colors hover:bg-white/8 hover:text-white"
+                  >
+                    {t(section.key)}
+                    <ArrowRight
+                      className="h-4 w-4 text-gold rtl:rotate-180"
+                      aria-hidden
+                    />
+                  </Link>
+                ) : (
+                  <a
+                    href={resolveNavHref(pathname, section)}
+                    onClick={onClose}
+                    className="flex items-center justify-between rounded-xl px-3 py-3.5 text-sm font-semibold text-white/85 transition-colors hover:bg-white/8 hover:text-white"
+                  >
+                    {t(section.key)}
+                    <ArrowRight
+                      className="h-4 w-4 text-gold rtl:rotate-180"
+                      aria-hidden
+                    />
+                  </a>
+                )}
               </li>
             ))}
           </ul>

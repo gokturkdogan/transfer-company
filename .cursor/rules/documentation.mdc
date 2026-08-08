@@ -21,6 +21,7 @@ Domain → docs mapping:
 | Booking | `BOOKING_ENGINE.md`, `DOMAIN_MODEL.md` |
 | Pricing | `PRICE_ENGINE.md`, `DOMAIN_MODEL.md` |
 | i18n | `I18N_RULES.md` |
+| Marketing / public pages | `MARKETING_PAGE_DESIGN.md` |
 | Security | `SECURITY.md` |
 | Performance | `PERFORMANCE.md` |
 | Any code | `CODING_STANDARDS.md`, `PROJECT_RULES.md` |
