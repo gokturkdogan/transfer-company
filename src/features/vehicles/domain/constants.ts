@@ -1,0 +1,2 @@
+export const MAX_VEHICLE_FEATURES = 5;
+export const MAX_VEHICLE_GALLERY_IMAGES = 3;

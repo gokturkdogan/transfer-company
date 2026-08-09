@@ -298,6 +298,8 @@
       "phone": "رقم الهاتف",
       "phonePlaceholder": "5X XXX XXXX",
       "countryCode": "رمز الدولة",
+      "searchCountry": "ابحث عن دولة...",
+      "noCountryFound": "لم يتم العثور على دولة",
       "whatsapp": "واتساب (اختياري)"
     },
     "passengers": {
@@ -360,6 +362,15 @@
       "mobileEditSearchClose": "إغلاق",
       "adultsShort": "{count} بالغين",
       "childrenShort": "{count} أطفال"
+    },
+    "searchPrompt": {
+      "eyebrow": "ابدأ الآن",
+      "title": "املأ النموذج ثم ابحث",
+      "description": "أدخل المسار وتاريخ السفر وبيانات الركاب في النموذج أعلاه، ثم اضغط بحث لعرض المركبات المتاحة.",
+      "stepLabel": "الخطوة {step}",
+      "stepRoute": "اختر المطار ووجهة الوصول",
+      "stepSchedule": "حدد التاريخ والوقت وعدد الركاب",
+      "stepSearch": "ابحث لعرض المركبات"
     },
     "locations": {
       "placeholder": "Select location",

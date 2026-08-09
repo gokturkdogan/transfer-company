@@ -59,6 +59,9 @@ function createOption(
   return {
     vehicleCategoryId: "vehicle-1",
     name: "Mercedes Vito",
+    code: "VITO",
+    imageKey: null,
+    galleryImageKeys: [],
     quantity: 1,
     passengerCapacity: 8,
     largeLuggageCapacity: 8,

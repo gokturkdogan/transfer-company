@@ -3,6 +3,8 @@ import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
 
+import { PublicContactProvider } from "@/features/contact/components/PublicContactProvider";
+import { testContactChannels } from "@/features/contact/test/contact-test-fixtures";
 import { BookingFlow } from "@/features/booking/components/BookingFlow";
 import {
   BookingFlowProvider,
@@ -78,13 +80,15 @@ describe("BookingFlow", () => {
   it("renders mapped validation error message", async () => {
     render(
       <NextIntlClientProvider locale="en" messages={messages}>
-        <BookingFlowProvider
-          airports={testAirports}
-          cities={testCities}
-          districts={testDistricts}
-        >
-          <ErrorHarness />
-        </BookingFlowProvider>
+        <PublicContactProvider channels={testContactChannels}>
+          <BookingFlowProvider
+            airports={testAirports}
+            cities={testCities}
+            districts={testDistricts}
+          >
+            <ErrorHarness />
+          </BookingFlowProvider>
+        </PublicContactProvider>
       </NextIntlClientProvider>,
     );
 

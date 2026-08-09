@@ -86,7 +86,7 @@ Only `formatMoney()` for display formatting is permitted.
 
 ## Known limitations
 
-- Vehicle `imageKey` and `shortDescription` not yet exposed in availability DTO — cards use placeholder icon
+- Vehicle `shortDescription` not yet exposed in availability DTO
 - Success step is in-memory only (no public reservation lookup endpoint)
 
 ## Pages

@@ -298,6 +298,8 @@
       "phone": "Telefon",
       "phonePlaceholder": "5XX XXX XX XX",
       "countryCode": "Ülke kodu",
+      "searchCountry": "Ülke ara...",
+      "noCountryFound": "Ülke bulunamadı",
       "whatsapp": "WhatsApp (isteğe bağlı)"
     },
     "passengers": {
@@ -360,6 +362,15 @@
       "mobileEditSearchClose": "Kapat",
       "adultsShort": "{count} yetişkin",
       "childrenShort": "{count} çocuk"
+    },
+    "searchPrompt": {
+      "eyebrow": "Başlayın",
+      "title": "Formu doldurup arama yapın",
+      "description": "Yukarıdaki formda rota, tarih ve yolcu bilgilerinizi girin; ardından Ara butonuna basarak uygun araçları görüntüleyin.",
+      "stepLabel": "Adım {step}",
+      "stepRoute": "Havalimanı ve varış noktasını seçin",
+      "stepSchedule": "Tarih, saat ve yolcu sayısını belirleyin",
+      "stepSearch": "Araçları görmek için arama yapın"
     },
     "locations": {
       "placeholder": "Konum seçin",

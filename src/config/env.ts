@@ -8,6 +8,11 @@ const serverSchema = z.object({
     .string()
     .min(32, "ADMIN_SESSION_SECRET must be at least 32 characters")
     .optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1, "CLOUDINARY_CLOUD_NAME is required"),
+  CLOUDINARY_API_KEY: z.string().min(1, "CLOUDINARY_API_KEY is required"),
+  CLOUDINARY_API_SECRET: z
+    .string()
+    .min(1, "CLOUDINARY_API_SECRET is required"),
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
@@ -30,6 +35,11 @@ function createServerEnv(): ServerEnv {
       ADMIN_SESSION_SECRET:
         process.env.ADMIN_SESSION_SECRET ??
         "dev-only-admin-session-secret-32chars!",
+      CLOUDINARY_CLOUD_NAME:
+        process.env.CLOUDINARY_CLOUD_NAME ?? "pdyhhkjq",
+      CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY ?? "dev-cloudinary-key",
+      CLOUDINARY_API_SECRET:
+        process.env.CLOUDINARY_API_SECRET ?? "dev-cloudinary-secret",
       NODE_ENV:
         (process.env.NODE_ENV as ServerEnv["NODE_ENV"] | undefined) ??
         "development",
@@ -41,6 +51,9 @@ function createServerEnv(): ServerEnv {
   return serverSchema.parse({
     DATABASE_URL: process.env.DATABASE_URL,
     ADMIN_SESSION_SECRET: process.env.ADMIN_SESSION_SECRET,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     NODE_ENV: process.env.NODE_ENV,
     LOG_LEVEL: process.env.LOG_LEVEL,
   });

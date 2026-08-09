@@ -6,7 +6,9 @@ import type {
 } from "@/features/pricing/domain/guards";
 
 export type VehicleOptionRecord = VehicleCategoryRecord & {
+  code: string;
   defaultName: string;
+  imageKey: string | null;
   passengerCapacity: number;
   largeLuggageCapacity: number;
   cabinLuggageCapacity: number;

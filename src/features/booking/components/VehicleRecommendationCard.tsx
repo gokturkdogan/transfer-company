@@ -16,7 +16,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { VehicleImageGallery } from "@/features/booking/components/VehicleImageGallery";
 import { formatPrice } from "@/features/booking/lib/format-price";
-import { getVehicleImagesForName } from "@/features/booking/lib/vehicle-image";
+import { MAX_VEHICLE_FEATURES } from "@/features/vehicles/domain/constants";
+import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import type { TransferVehicleOptionDto } from "@/features/pricing/types/dto";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
@@ -58,11 +59,12 @@ export function VehicleRecommendationCard({
 }: VehicleRecommendationCardProps) {
   const t = useTranslations("booking.vehicle");
   const locale = useLocale();
-  const images = getVehicleImagesForName(option.name);
+  const coverImage = resolveVehicleCoverImage(option.imageKey, option.code);
   const displayName =
     option.quantity > 1
       ? t("multiVehicle", { quantity: option.quantity, name: option.name })
       : option.name;
+  const vehicleFeatures = option.features.slice(0, MAX_VEHICLE_FEATURES);
 
   return (
     <article
@@ -75,7 +77,12 @@ export function VehicleRecommendationCard({
     >
       <div className="grid gap-0 lg:grid-cols-[minmax(0,34%)_minmax(0,1fr)_11.5rem]">
         <div className="border-b border-border/60 p-4 lg:border-b-0 lg:border-e">
-          <VehicleImageGallery images={images} alt={displayName} />
+          <VehicleImageGallery
+            key={`${option.vehicleCategoryId}-${coverImage}-${option.galleryImageKeys.join("|")}`}
+            coverImage={coverImage}
+            galleryImages={option.galleryImageKeys}
+            alt={displayName}
+          />
         </div>
 
         <div className="space-y-4 p-4 sm:p-5 lg:border-e lg:border-border/60">
@@ -106,7 +113,7 @@ export function VehicleRecommendationCard({
           <div
             className={cn(
               "grid gap-6",
-              option.features.length > 0 ? "sm:grid-cols-2" : "grid-cols-1",
+              vehicleFeatures.length > 0 ? "sm:grid-cols-2" : "grid-cols-1",
             )}
           >
             <div className="space-y-2.5">
@@ -128,13 +135,13 @@ export function VehicleRecommendationCard({
               </ul>
             </div>
 
-            {option.features.length > 0 && (
+            {vehicleFeatures.length > 0 && (
               <div className="space-y-2.5">
                 <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold-deep">
                   {t("vehicleFeaturesTitle")}
                 </p>
                 <ul className="flex flex-col gap-2">
-                  {option.features.map((feature) => (
+                  {vehicleFeatures.map((feature) => (
                     <li
                       key={feature}
                       className="flex items-center gap-2 text-sm text-foreground/85"

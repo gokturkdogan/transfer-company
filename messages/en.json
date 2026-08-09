@@ -298,6 +298,8 @@
       "phone": "Phone",
       "phonePlaceholder": "7XX XXX XXXX",
       "countryCode": "Country code",
+      "searchCountry": "Search country...",
+      "noCountryFound": "No country found",
       "whatsapp": "WhatsApp (optional)"
     },
     "passengers": {
@@ -360,6 +362,15 @@
       "mobileEditSearchClose": "Close",
       "adultsShort": "{count} adults",
       "childrenShort": "{count} children"
+    },
+    "searchPrompt": {
+      "eyebrow": "Get started",
+      "title": "Fill in the form and search",
+      "description": "Enter your route, travel date, and passenger details in the form above, then tap Search to see available vehicles.",
+      "stepLabel": "Step {step}",
+      "stepRoute": "Choose airport and destination",
+      "stepSchedule": "Set date, time and passengers",
+      "stepSearch": "Search to view vehicles"
     },
     "locations": {
       "placeholder": "Select location",

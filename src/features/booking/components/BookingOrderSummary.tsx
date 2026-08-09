@@ -16,7 +16,7 @@ import { useMemo, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
-import { getVehicleImageForName } from "@/features/booking/lib/vehicle-image";
+import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { cn } from "@/lib/utils";
 
@@ -126,7 +126,10 @@ export function BookingOrderSummary({
       ? t("roundTripTransfer")
       : t("oneWayTransfer");
 
-  const vehicleImage = getVehicleImageForName(selectedOption.name);
+  const vehicleImage = resolveVehicleCoverImage(
+    selectedOption.imageKey,
+    selectedOption.code,
+  );
 
   return (
     <div
@@ -139,12 +142,7 @@ export function BookingOrderSummary({
         className,
       )}
     >
-      <div
-        className={cn(
-          "relative bg-muted/20",
-          compact ? "aspect-[16/9]" : "aspect-[16/10]",
-        )}
-      >
+      <div className="relative aspect-video bg-muted/20">
         <Image
           src={vehicleImage}
           alt={selectedOption.name}

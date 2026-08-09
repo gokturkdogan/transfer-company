@@ -298,6 +298,8 @@
       "phone": "Telefon",
       "phonePlaceholder": "1XX XXXXXXX",
       "countryCode": "Ländervorwahl",
+      "searchCountry": "Land suchen...",
+      "noCountryFound": "Kein Land gefunden",
       "whatsapp": "WhatsApp (optional)"
     },
     "passengers": {
@@ -360,6 +362,15 @@
       "mobileEditSearchClose": "Schließen",
       "adultsShort": "{count} Erwachsene",
       "childrenShort": "{count} Kinder"
+    },
+    "searchPrompt": {
+      "eyebrow": "Loslegen",
+      "title": "Formular ausfüllen und suchen",
+      "description": "Geben Sie oben im Formular Route, Reisedatum und Passagierdaten ein und tippen Sie auf Suchen, um verfügbare Fahrzeuge zu sehen.",
+      "stepLabel": "Schritt {step}",
+      "stepRoute": "Flughafen und Ziel wählen",
+      "stepSchedule": "Datum, Uhrzeit und Passagiere festlegen",
+      "stepSearch": "Suchen, um Fahrzeuge anzuzeigen"
     },
     "locations": {
       "placeholder": "Select location",

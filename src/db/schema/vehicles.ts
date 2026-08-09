@@ -20,7 +20,7 @@ export const vehicleCategories = pgTable(
     passengerCapacity: integer("passenger_capacity").notNull(),
     largeLuggageCapacity: integer("large_luggage_capacity").notNull(),
     cabinLuggageCapacity: integer("cabin_luggage_capacity").notNull(),
-    imageKey: varchar("image_key", { length: 255 }),
+    imageKey: varchar("image_key", { length: 512 }),
     sortOrder: sortOrder(),
     ...timestamps,
     ...softDelete,
@@ -79,7 +79,7 @@ export const vehicleCategoryImages = pgTable(
     vehicleCategoryId: uuid("vehicle_category_id")
       .notNull()
       .references(() => vehicleCategories.id, { onDelete: "cascade" }),
-    imageKey: varchar("image_key", { length: 255 }).notNull(),
+    imageKey: varchar("image_key", { length: 512 }).notNull(),
     sortOrder: sortOrder(),
     ...timestamps,
   },

@@ -9,6 +9,7 @@ import { AvailabilityService } from "@/features/pricing/server/availability-serv
 import { PricingRepository } from "@/features/pricing/server/repository";
 import { QuoteService } from "@/features/pricing/server/quote-service";
 import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
+import { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
 import { notificationService } from "@/server/notifications/logging-notification-service";
 
 const pricingRepository = new PricingRepository(db);
@@ -26,6 +27,7 @@ export const availabilityService = new AvailabilityService(
   locationRepository,
   currencyRepository,
   new VehicleFeatureRepository(db),
+  new VehicleGalleryRepository(db),
 );
 export const bookingService = new BookingService(
   bookingRepository,

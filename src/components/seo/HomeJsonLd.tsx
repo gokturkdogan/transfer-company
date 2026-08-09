@@ -1,8 +1,9 @@
 import { getTranslations } from "next-intl/server";
 
 import { clientEnv } from "@/config/env";
-import { siteConfig } from "@/config/site";
 import { LOCALES } from "@/config/constants";
+import { pickPrimaryChannel } from "@/features/contact/domain/contact-links";
+import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 
 const FAQ_INDEXES = [0, 1, 2, 3, 4, 5] as const;
 
@@ -15,11 +16,15 @@ type HomeJsonLdProps = {
  * service surface and the FAQ block rendered further down the page.
  */
 export async function HomeJsonLd({ locale }: HomeJsonLdProps) {
-  const [common, meta, faq] = await Promise.all([
+  const [common, meta, faq, contactChannels] = await Promise.all([
     getTranslations("common"),
     getTranslations("home.meta"),
     getTranslations("home.faq"),
+    getPublicContactChannels(),
   ]);
+
+  const primaryPhone = pickPrimaryChannel(contactChannels.phones, "");
+  const primaryEmail = pickPrimaryChannel(contactChannels.emails, "");
 
   const baseUrl = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
   const pageUrl = `${baseUrl}/${locale}`;
@@ -32,8 +37,8 @@ export async function HomeJsonLd({ locale }: HomeJsonLdProps) {
       description: meta("description"),
       url: pageUrl,
       image: `${baseUrl}/images/homepage/hero-airport-transfer.jpg`,
-      telephone: siteConfig.phone,
-      email: siteConfig.email,
+      telephone: primaryPhone,
+      email: primaryEmail,
       priceRange: "€€",
       areaServed: [
         "Antalya",

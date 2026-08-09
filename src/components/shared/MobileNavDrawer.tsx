@@ -4,7 +4,12 @@ import { ArrowRight, Mail, MessageCircle, Phone, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { getLocaleEmoji } from "@/config/locales";
-import { siteConfig } from "@/config/site";
+import { usePublicContactChannels } from "@/features/contact/components/PublicContactProvider";
+import {
+  toMailtoHref,
+  toTelHref,
+  toWhatsappHref,
+} from "@/features/contact/domain/contact-links";
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { SiteLogo } from "@/components/shared/SiteLogo";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -48,6 +53,7 @@ export function MobileNavDrawer({
   const common = useTranslations("common");
   const pathname = usePathname();
   const switchLocale = useLocaleSwitch();
+  const contactChannels = usePublicContactChannels();
 
   return (
     <div
@@ -147,29 +153,38 @@ export function MobileNavDrawer({
 
         {/* Footer */}
         <div className="space-y-3 border-t border-white/10 px-5 py-4">
-          <a
-            href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-            className="flex items-center gap-2.5 text-sm font-medium text-white/80 transition-colors hover:text-gold-light"
-          >
-            <Phone className="h-4 w-4 text-gold" aria-hidden />
-            {siteConfig.phone}
-          </a>
-          <a
-            href={`https://wa.me/${siteConfig.whatsapp.replace(/\D/g, "")}`}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2.5 text-sm font-medium text-white/80 transition-colors hover:text-gold-light"
-          >
-            <MessageCircle className="h-4 w-4 text-gold" aria-hidden />
-            WhatsApp
-          </a>
-          <a
-            href={`mailto:${siteConfig.email}`}
-            className="flex items-center gap-2.5 text-sm font-medium text-white/80 transition-colors hover:text-gold-light"
-          >
-            <Mail className="h-4 w-4 text-gold" aria-hidden />
-            {siteConfig.email}
-          </a>
+          {contactChannels.phones.map((phone) => (
+            <a
+              key={`phone-${phone}`}
+              href={toTelHref(phone)}
+              className="flex items-center gap-2.5 text-sm font-medium text-white/80 transition-colors hover:text-gold-light"
+            >
+              <Phone className="h-4 w-4 text-gold" aria-hidden />
+              {phone}
+            </a>
+          ))}
+          {contactChannels.whatsapps.map((whatsapp) => (
+            <a
+              key={`whatsapp-${whatsapp}`}
+              href={toWhatsappHref(whatsapp)}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2.5 text-sm font-medium text-white/80 transition-colors hover:text-gold-light"
+            >
+              <MessageCircle className="h-4 w-4 text-gold" aria-hidden />
+              {whatsapp}
+            </a>
+          ))}
+          {contactChannels.emails.map((email) => (
+            <a
+              key={`email-${email}`}
+              href={toMailtoHref(email)}
+              className="flex items-center gap-2.5 text-sm font-medium text-white/80 transition-colors hover:text-gold-light"
+            >
+              <Mail className="h-4 w-4 text-gold" aria-hidden />
+              {email}
+            </a>
+          ))}
 
           <div
             className="flex gap-1"

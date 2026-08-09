@@ -5,6 +5,12 @@ import { Container } from "@/components/layout/Container";
 import { SiteLogo } from "@/components/shared/SiteLogo";
 import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
+import {
+  toMailtoHref,
+  toTelHref,
+  toWhatsappHref,
+} from "@/features/contact/domain/contact-links";
+import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link } from "@/i18n/navigation";
 
@@ -23,6 +29,7 @@ export async function SiteFooter({
   const t = await getTranslations("home.footer");
   const nav = await getTranslations("home.nav");
   const common = await getTranslations("common");
+  const contactChannels = await getPublicContactChannels();
 
   return (
     <footer className="relative overflow-hidden border-t border-white/10 surface-ink text-white">
@@ -94,35 +101,41 @@ export async function SiteFooter({
           </FooterColumn>
 
           <FooterColumn title={t("contactTitle")}>
-            <li>
-              <a
-                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
-              >
-                <Phone className="h-4 w-4 text-gold" aria-hidden />
-                {siteConfig.phone}
-              </a>
-            </li>
-            <li>
-              <a
-                href={`https://wa.me/${siteConfig.whatsapp.replace(/\D/g, "")}`}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
-              >
-                <MessageCircle className="h-4 w-4 text-gold" aria-hidden />
-                WhatsApp
-              </a>
-            </li>
-            <li>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
-              >
-                <Mail className="h-4 w-4 text-gold" aria-hidden />
-                {siteConfig.email}
-              </a>
-            </li>
+            {contactChannels.phones.map((phone) => (
+              <li key={`phone-${phone}`}>
+                <a
+                  href={toTelHref(phone)}
+                  className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
+                >
+                  <Phone className="h-4 w-4 text-gold" aria-hidden />
+                  {phone}
+                </a>
+              </li>
+            ))}
+            {contactChannels.whatsapps.map((whatsapp) => (
+              <li key={`whatsapp-${whatsapp}`}>
+                <a
+                  href={toWhatsappHref(whatsapp)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
+                >
+                  <MessageCircle className="h-4 w-4 text-gold" aria-hidden />
+                  {whatsapp}
+                </a>
+              </li>
+            ))}
+            {contactChannels.emails.map((email) => (
+              <li key={`email-${email}`}>
+                <a
+                  href={toMailtoHref(email)}
+                  className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
+                >
+                  <Mail className="h-4 w-4 text-gold" aria-hidden />
+                  {email}
+                </a>
+              </li>
+            ))}
             <li className="flex items-center gap-2.5">
               <Clock className="h-4 w-4 text-gold" aria-hidden />
               {siteConfig.supportHours}

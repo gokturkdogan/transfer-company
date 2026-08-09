@@ -38,6 +38,7 @@ import {
   VehicleAdminRepository,
   type UpsertAdminVehicleInput,
 } from "@/features/admin/server/vehicle-admin-repository";
+import { MAX_VEHICLE_FEATURES, MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
 import type { ContactChannelType } from "@/db/schema/enums";
 import { createAction } from "@/server/action";
 import { DomainRuleError } from "@/server/errors";
@@ -236,9 +237,9 @@ const vehicleSchema = z.object({
   passengerCapacity: z.coerce.number().int().min(1),
   largeLuggageCapacity: z.coerce.number().int().min(0),
   cabinLuggageCapacity: z.coerce.number().int().min(0),
-  features: z.array(vehicleFeatureSchema),
-  coverImageKey: z.string().trim().max(255).nullable().optional(),
-  galleryImageKeys: z.array(z.string().trim().max(255)).max(4),
+  features: z.array(vehicleFeatureSchema).max(MAX_VEHICLE_FEATURES),
+  coverImageKey: z.string().trim().max(512).nullable().optional(),
+  galleryImageKeys: z.array(z.string().trim().max(512)).max(MAX_VEHICLE_GALLERY_IMAGES),
   sortOrder: z.coerce.number().int().min(0).default(0),
   isActive: z.boolean(),
 });
@@ -258,6 +259,7 @@ function mapVehicleInput(
 
   const features = input.features
     .filter((feature) => feature.labels[DEFAULT_LOCALE]?.trim())
+    .slice(0, MAX_VEHICLE_FEATURES)
     .map((feature) => ({
       labels: normalizeLocaleTranslations(feature.labels, enabledLocaleCodes),
     }));
@@ -272,7 +274,7 @@ function mapVehicleInput(
     nameTranslations,
     features,
     coverImageKey: input.coverImageKey ?? null,
-    galleryImageKeys: input.galleryImageKeys,
+    galleryImageKeys: input.galleryImageKeys.slice(0, MAX_VEHICLE_GALLERY_IMAGES),
     sortOrder: input.sortOrder,
     isActive: input.isActive,
   };

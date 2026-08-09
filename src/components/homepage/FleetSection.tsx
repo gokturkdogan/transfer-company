@@ -5,8 +5,8 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { VehicleCard } from "@/components/marketing/marketing-cards";
 import { PremiumCarousel } from "@/components/marketing/PremiumCarousel";
-import { getFleetImage } from "@/config/homepage-images";
 import type { FleetVehicleDto } from "@/features/marketing/types";
+import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { formatMoney } from "@/lib/money";
 
 type FleetSectionProps = {
@@ -35,7 +35,7 @@ export async function FleetSection({
               key={vehicle.id}
               compact
               name={vehicle.name}
-              imageSrc={getFleetImage(vehicle.code)}
+              imageSrc={resolveVehicleCoverImage(vehicle.imageKey, vehicle.code)}
               passengersLabel={t("passengers", {
                 count: vehicle.passengerCapacity,
               })}

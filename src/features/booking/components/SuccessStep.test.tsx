@@ -3,6 +3,8 @@ import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
 
+import { PublicContactProvider } from "@/features/contact/components/PublicContactProvider";
+import { testContactChannels } from "@/features/contact/test/contact-test-fixtures";
 import { SuccessStep } from "@/features/booking/components/SuccessStep";
 import {
   BookingFlowProvider,
@@ -66,19 +68,21 @@ describe("SuccessStep", () => {
   it("shows reservation reference from server response", async () => {
     render(
       <NextIntlClientProvider locale="en" messages={messages}>
-        <BookingFlowProvider
-          airports={testAirports}
-          cities={testCities}
-          districts={testDistricts}
-          initialSearch={{
-            originAirportId: "loc-a",
-            destinationDistrictId: "loc-b",
-            outboundDate: "2026-08-10",
-            outboundTime: "10:00",
-          }}
-        >
-          <SuccessHarness />
-        </BookingFlowProvider>
+        <PublicContactProvider channels={testContactChannels}>
+          <BookingFlowProvider
+            airports={testAirports}
+            cities={testCities}
+            districts={testDistricts}
+            initialSearch={{
+              originAirportId: "loc-a",
+              destinationDistrictId: "loc-b",
+              outboundDate: "2026-08-10",
+              outboundTime: "10:00",
+            }}
+          >
+            <SuccessHarness />
+          </BookingFlowProvider>
+        </PublicContactProvider>
       </NextIntlClientProvider>,
     );
 

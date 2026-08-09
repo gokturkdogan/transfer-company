@@ -6,8 +6,11 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 
 import { isRtlLocale } from "@/config/constants";
+import { PublicContactProvider } from "@/features/contact/components/PublicContactProvider";
+import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 import { routing } from "@/i18n/routing";
 
+import "flag-icons/css/flag-icons.min.css";
 import "../globals.css";
 
 const manrope = Manrope({
@@ -39,7 +42,10 @@ export default async function LocaleLayout({
   }
 
   setRequestLocale(locale);
-  const messages = await getMessages();
+  const [messages, contactChannels] = await Promise.all([
+    getMessages(),
+    getPublicContactChannels(),
+  ]);
 
   return (
     <html
@@ -49,7 +55,9 @@ export default async function LocaleLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <PublicContactProvider channels={contactChannels}>
+            {children}
+          </PublicContactProvider>
         </NextIntlClientProvider>
       </body>
     </html>

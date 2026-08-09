@@ -121,10 +121,11 @@ CITY (parentId = null)
 ## Vehicle management
 
 - CRUD under `/admin/vehicles` for fleet vehicle categories used in pricing
-- Fields: code, brand, model, localized display name, passenger/luggage capacity, dynamic feature labels (per locale), cover image URL, up to 4 gallery image URLs
+- Fields: code, brand, model, localized display name, passenger/luggage capacity, dynamic feature labels (per locale), cover image, up to 4 gallery images
 - Display name → `vehicle_category_translations`; feature labels → `vehicle_category_features` + `vehicle_category_feature_translations`
 - Active vehicles appear as tabs in `/admin/pricing` editor
-- Images are stored as public path keys (e.g. `/images/homepage/fleet-vito.jpg`); file upload is not in scope yet
+- Images upload to Cloudinary under `Home/Cars/{code-brand-model}/` with 16:9 crop in admin UI; returned `secure_url` is stored in `image_key` (cover + gallery)
+- Requires server env: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
 
 ## Contact information
 

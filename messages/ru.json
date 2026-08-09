@@ -298,6 +298,8 @@
       "phone": "Телефон",
       "phonePlaceholder": "9XX XXX XX XX",
       "countryCode": "Код страны",
+      "searchCountry": "Поиск страны...",
+      "noCountryFound": "Страна не найдена",
       "whatsapp": "WhatsApp (необязательно)"
     },
     "passengers": {
@@ -360,6 +362,15 @@
       "mobileEditSearchClose": "Закрыть",
       "adultsShort": "{count} взрослых",
       "childrenShort": "{count} детей"
+    },
+    "searchPrompt": {
+      "eyebrow": "Начните",
+      "title": "Заполните форму и выполните поиск",
+      "description": "Укажите маршрут, дату поездки и данные пассажиров в форме выше, затем нажмите «Поиск», чтобы увидеть доступные автомобили.",
+      "stepLabel": "Шаг {step}",
+      "stepRoute": "Выберите аэропорт и пункт назначения",
+      "stepSchedule": "Укажите дату, время и пассажиров",
+      "stepSearch": "Выполните поиск, чтобы увидеть автомобили"
     },
     "locations": {
       "placeholder": "Select location",

@@ -10,6 +10,7 @@ import {
   vehicleCategoryTranslations,
 } from "@/db/schema";
 import type { LocaleTranslationMap } from "@/features/admin/server/translation-input";
+import { MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
 import {
   AdminVehicleFeatureInput,
   VehicleFeatureRepository,
@@ -257,7 +258,7 @@ export class VehicleAdminRepository {
     const keys = galleryImageKeys
       .map((key) => key.trim())
       .filter(Boolean)
-      .slice(0, 4);
+      .slice(0, MAX_VEHICLE_GALLERY_IMAGES);
 
     for (const [index, imageKey] of keys.entries()) {
       await executor.insert(vehicleCategoryImages).values({

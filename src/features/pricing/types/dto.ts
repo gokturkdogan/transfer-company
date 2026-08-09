@@ -15,6 +15,9 @@ export type TransferOptionExtraDto = {
 export type TransferVehicleOptionDto = {
   vehicleCategoryId: string;
   name: string;
+  code: string;
+  imageKey: string | null;
+  galleryImageKeys: string[];
   quantity: number;
   passengerCapacity: number;
   largeLuggageCapacity: number;

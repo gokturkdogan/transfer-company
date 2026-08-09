@@ -110,12 +110,7 @@ export function VehicleCard({
 }: VehicleCardProps) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-float transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/45 hover:shadow-premium">
-      <div
-        className={cn(
-          "relative overflow-hidden bg-muted",
-          compact ? "aspect-[16/9] lg:aspect-[16/10]" : "aspect-[16/10]",
-        )}
-      >
+      <div className="relative aspect-video overflow-hidden bg-muted">
         <Image
           src={imageSrc}
           alt={name}

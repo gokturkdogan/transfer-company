@@ -27,7 +27,7 @@
 ## Images
 
 - Use `next/image` for optimized image delivery
-- Cloudinary or storage abstraction planned for later
+- Cloudinary hosts admin-uploaded vehicle images (`Home/Cars/{code-brand-model}/`); public pages should prefer DB `imageKey` over static fallbacks when available
 
 ## Build
 

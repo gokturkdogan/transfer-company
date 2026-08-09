@@ -1,7 +1,7 @@
 "use client";
 
 import { Car, ImageIcon, ListChecks, Settings2, Users } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import {
@@ -21,10 +21,18 @@ import { AdminFormSection } from "@/features/admin/components/shell/AdminFormSec
 import { AdminFormShell } from "@/features/admin/components/shell/AdminFormShell";
 import { AdminToggleField } from "@/features/admin/components/shell/AdminToggleField";
 import type { EnabledLocaleRecord } from "@/features/locales/server/repository";
+import { VehicleImageUploadField } from "@/features/admin/components/VehicleImageUploadField";
+import type { VehicleImageAssetName } from "@/features/admin/components/VehicleImageUploadField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MAX_VEHICLE_FEATURES } from "@/features/vehicles/domain/constants";
 
-const GALLERY_SLOT_COUNT = 4;
+const GALLERY_SLOT_COUNT = 3;
+const GALLERY_ASSET_NAMES: VehicleImageAssetName[] = [
+  "gallery-1",
+  "gallery-2",
+  "gallery-3",
+];
 
 type VehicleFormProps = {
   mode: "create" | "edit";
@@ -74,8 +82,12 @@ function normalizeGalleryKeys(keys: string[] | undefined): string[] {
 
 export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps) {
   const router = useRouter();
+  const codeInputRef = useRef<HTMLInputElement>(null);
+  const brandInputRef = useRef<HTMLInputElement>(null);
+  const modelInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [coverImageKey, setCoverImageKey] = useState(vehicle?.coverImageKey ?? "");
   const [galleryKeys, setGalleryKeys] = useState<string[]>(
     normalizeGalleryKeys(vehicle?.galleryImageKeys),
   );
@@ -85,6 +97,12 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
   const [featureRows, setFeatureRows] = useState<FeatureRowState[]>(() =>
     toFeatureRows(enabledLocales, vehicle?.features),
   );
+
+  const getVehicleIdentity = () => ({
+    code: codeInputRef.current?.value ?? "",
+    brand: brandInputRef.current?.value ?? "",
+    model: modelInputRef.current?.value ?? "",
+  });
 
   return (
     <AdminFormShell
@@ -102,7 +120,7 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
           largeLuggageCapacity: formData.get("largeLuggageCapacity"),
           cabinLuggageCapacity: vehicle?.cabinLuggageCapacity ?? 0,
           features: featureRows.map((row) => ({ labels: row.labels })),
-          coverImageKey: formData.get("coverImageKey") || null,
+          coverImageKey: coverImageKey || null,
           galleryImageKeys: galleryKeys,
           sortOrder: formData.get("sortOrder"),
           isActive: formData.get("isActive") === "on",
@@ -157,13 +175,31 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
           >
             <AdminFormGrid cols={4}>
               <AdminField label={adminCopy.vehicles.form.code} htmlFor="code" required>
-                <Input id="code" name="code" defaultValue={vehicle?.code} required />
+                <Input
+                  id="code"
+                  name="code"
+                  ref={codeInputRef}
+                  defaultValue={vehicle?.code}
+                  required
+                />
               </AdminField>
               <AdminField label={adminCopy.vehicles.form.brand} htmlFor="brand" required>
-                <Input id="brand" name="brand" defaultValue={vehicle?.brand} required />
+                <Input
+                  id="brand"
+                  name="brand"
+                  ref={brandInputRef}
+                  defaultValue={vehicle?.brand}
+                  required
+                />
               </AdminField>
               <AdminField label={adminCopy.vehicles.form.model} htmlFor="model" required>
-                <Input id="model" name="model" defaultValue={vehicle?.model} required />
+                <Input
+                  id="model"
+                  name="model"
+                  ref={modelInputRef}
+                  defaultValue={vehicle?.model}
+                  required
+                />
               </AdminField>
               <AdminField label={adminCopy.vehicles.form.sortOrder} htmlFor="sortOrder">
                 <Input
@@ -231,44 +267,19 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
 
         <AdminFormStack>
           <AdminFormSection
-            title="Görseller"
-            description="Kapak ve galeri görsel yolları."
+            title="Kapak görseli"
+            description="16:9 oranında kırpılarak Cloudinary'ye yüklenir."
             icon={ImageIcon}
             compact
           >
-            <AdminField
+            <VehicleImageUploadField
               label={adminCopy.vehicles.form.coverImage}
-              htmlFor="coverImageKey"
               hint={adminCopy.vehicles.form.coverImageHint}
-            >
-              <Input
-                id="coverImageKey"
-                name="coverImageKey"
-                defaultValue={vehicle?.coverImageKey ?? ""}
-                placeholder={adminCopy.vehicles.form.coverImageHint}
-              />
-            </AdminField>
-
-            <AdminFormGrid cols={4}>
-              {galleryKeys.map((value, index) => (
-                <AdminField
-                  key={index}
-                  label={adminCopy.vehicles.form.galleryImageLabel(index + 1)}
-                  htmlFor={`gallery-${index}`}
-                >
-                  <Input
-                    id={`gallery-${index}`}
-                    value={value}
-                    onChange={(event) => {
-                      const next = [...galleryKeys];
-                      next[index] = event.target.value;
-                      setGalleryKeys(normalizeGalleryKeys(next));
-                    }}
-                    placeholder={adminCopy.vehicles.form.coverImageHint}
-                  />
-                </AdminField>
-              ))}
-            </AdminFormGrid>
+              value={coverImageKey}
+              assetName="cover"
+              getVehicleIdentity={getVehicleIdentity}
+              onChange={setCoverImageKey}
+            />
           </AdminFormSection>
 
           <AdminFormSection
@@ -287,25 +298,62 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
       </AdminFormRow>
 
       <AdminFormSection
+        title={adminCopy.vehicles.form.galleryImages}
+        description={adminCopy.vehicles.form.coverImageHint}
+        icon={ImageIcon}
+        compact
+        contentClassName="space-y-0"
+      >
+        <AdminFormGrid cols={3} className="sm:grid-cols-2 lg:grid-cols-3">
+          {galleryKeys.map((value, index) => (
+            <VehicleImageUploadField
+              key={index}
+              compact
+              label={adminCopy.vehicles.form.galleryImageLabel(index + 1)}
+              value={value}
+              assetName={GALLERY_ASSET_NAMES[index]!}
+              getVehicleIdentity={getVehicleIdentity}
+              onChange={(nextValue) => {
+                const next = [...galleryKeys];
+                next[index] = nextValue;
+                setGalleryKeys(normalizeGalleryKeys(next));
+              }}
+            />
+          ))}
+        </AdminFormGrid>
+      </AdminFormSection>
+
+      <AdminFormSection
         title={adminCopy.vehicles.form.featuresTitle}
         description={adminCopy.vehicles.form.featuresHint}
         icon={ListChecks}
         compact
       >
-        <div className="flex justify-end">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs text-slate-500">
+            {adminCopy.vehicles.form.featuresLimit(
+              featureRows.length,
+              MAX_VEHICLE_FEATURES,
+            )}
+          </p>
           <Button
             type="button"
             variant="outline"
             size="sm"
-            onClick={() =>
+            disabled={featureRows.length >= MAX_VEHICLE_FEATURES}
+            onClick={() => {
+              if (featureRows.length >= MAX_VEHICLE_FEATURES) {
+                return;
+              }
+
               setFeatureRows((current) => [
                 ...current,
                 {
                   clientId: createClientId(),
                   labels: buildTranslationState(enabledLocales),
                 },
-              ])
-            }
+              ]);
+            }}
           >
             {adminCopy.vehicles.form.addFeature}
           </Button>

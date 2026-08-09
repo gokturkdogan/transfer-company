@@ -41,6 +41,9 @@ const quoteFixture: TransferAvailabilityResponseDto = {
     {
       vehicleCategoryId: "vehicle-1",
       name: "Vito",
+      code: "VITO",
+      imageKey: null,
+      galleryImageKeys: [],
       quantity: 1,
       passengerCapacity: 8,
       largeLuggageCapacity: 8,

@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { BookingFlowShell } from "@/features/booking/components/BookingFlowShell";
+import { BookingSearchPrompt } from "@/features/booking/components/BookingSearchPrompt";
 import { BookingReview } from "@/features/booking/components/BookingReview";
 import { BookingSidebar } from "@/features/booking/components/BookingSidebar";
 import { BookingStepCard } from "@/features/booking/components/BookingStepCard";
@@ -42,11 +43,16 @@ export function BookingFlow() {
       {showStepCard && (
         <BookingStepCard>
           {state.step === "search" && (
-            <BookingStepHeader
-              eyebrow={t("page.searchEyebrow")}
-              title={t("page.searchTitle")}
-              subtitle={t("page.searchSubtitle")}
-            />
+            <>
+              <BookingStepHeader
+                eyebrow={t("page.searchEyebrow")}
+                title={t("page.searchTitle")}
+                subtitle={t("page.searchSubtitle")}
+              />
+              <div className="mt-8">
+                <BookingSearchPrompt />
+              </div>
+            </>
           )}
 
           {state.step === "customer" && selectedOption && (

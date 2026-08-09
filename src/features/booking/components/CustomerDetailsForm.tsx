@@ -24,7 +24,7 @@ export function CustomerDetailsForm() {
       description={t("subtitle")}
       icon={<UserRound className="h-4 w-4" aria-hidden />}
     >
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <BookingFormField label={t("fullName")} htmlFor="full-name">
           <BookingInput
             id="full-name"
@@ -56,11 +56,11 @@ export function CustomerDetailsForm() {
         </BookingFormField>
         <PhoneNumberField
           id="phone"
+          className="sm:col-span-2 lg:col-span-1"
           label={t("phone")}
           countryCode={customer.phoneCountryCode}
           nationalNumber={customer.phone}
           placeholder={t("phonePlaceholder")}
-          compact
           onCountryCodeChange={(phoneCountryCode) =>
             dispatch({
               type: "UPDATE_CUSTOMER",

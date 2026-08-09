@@ -1,27 +1,48 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
+import { MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
 import { cn } from "@/lib/utils";
 
 type VehicleImageGalleryProps = {
-  images: string[];
+  coverImage: string;
+  galleryImages?: string[];
   alt: string;
   className?: string;
 };
 
-export function VehicleImageGallery({ images, alt, className }: VehicleImageGalleryProps) {
-  const galleryImages = images.length > 0 ? images : [images[0]];
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeImage = galleryImages[activeIndex] ?? galleryImages[0];
+export function VehicleImageGallery({
+  coverImage,
+  galleryImages = [],
+  alt,
+  className,
+}: VehicleImageGalleryProps) {
+  const gallery = useMemo(
+    () =>
+      galleryImages
+        .map((image) => image.trim())
+        .filter((image) => image.length > 0 && image !== coverImage)
+        .slice(0, MAX_VEHICLE_GALLERY_IMAGES),
+    [coverImage, galleryImages],
+  );
+
+  const allImages = useMemo(() => [coverImage, ...gallery], [coverImage, gallery]);
+
+  const [activeImage, setActiveImage] = useState(coverImage);
+  const resolvedActiveImage = allImages.includes(activeImage)
+    ? activeImage
+    : coverImage;
+
+  const thumbnails = allImages.filter((image) => image !== resolvedActiveImage);
 
   return (
-    <div className={cn("flex h-full flex-col gap-2", className)}>
-      <div className="relative min-h-[11rem] flex-1 overflow-hidden rounded-xl bg-muted sm:min-h-[13.5rem]">
+    <div className={cn("flex w-full flex-col gap-2", className)}>
+      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted">
         <Image
-          key={activeImage}
-          src={activeImage}
+          key={resolvedActiveImage}
+          src={resolvedActiveImage}
           alt={alt}
           fill
           sizes="(max-width: 1024px) 100vw, 320px"
@@ -33,27 +54,24 @@ export function VehicleImageGallery({ images, alt, className }: VehicleImageGall
         />
       </div>
 
-      {galleryImages.length > 1 && (
+      {thumbnails.length > 0 ? (
         <div className="grid grid-cols-3 gap-2">
-          {galleryImages.map((image, index) => (
+          {thumbnails.map((image) => (
             <button
-              key={`${image}-${index}`}
+              key={image}
               type="button"
-              onClick={() => setActiveIndex(index)}
+              onClick={() => setActiveImage(image)}
               className={cn(
-                "relative aspect-[4/3] overflow-hidden rounded-lg border-2 transition-colors",
-                index === activeIndex
-                  ? "border-gold shadow-[0_0_0_1px_rgb(200_164_93/0.35)]"
-                  : "border-transparent opacity-75 hover:border-gold/35 hover:opacity-100",
+                "relative aspect-video cursor-pointer overflow-hidden rounded-lg border-2 border-transparent opacity-90 transition-all",
+                "hover:border-gold/35 hover:opacity-100",
               )}
-              aria-label={`${alt} ${index + 1}`}
-              aria-pressed={index === activeIndex}
+              aria-label={`${alt} — ${image === coverImage ? "cover" : "gallery"}`}
             >
               <Image src={image} alt="" fill sizes="96px" className="object-cover" />
             </button>
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

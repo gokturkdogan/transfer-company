@@ -148,11 +148,13 @@ export class PricingRepository implements PricingReader {
     const rows = await this.database
       .select({
         id: vehicleCategories.id,
+        code: vehicleCategories.code,
         isActive: vehicleCategories.isActive,
         defaultName: vehicleCategories.defaultName,
         passengerCapacity: vehicleCategories.passengerCapacity,
         largeLuggageCapacity: vehicleCategories.largeLuggageCapacity,
         cabinLuggageCapacity: vehicleCategories.cabinLuggageCapacity,
+        imageKey: vehicleCategories.imageKey,
         sortOrder: vehicleCategories.sortOrder,
         translatedName: vehicleCategoryTranslations.name,
         oneWayPriceMinor: routePrices.oneWayPriceMinor,

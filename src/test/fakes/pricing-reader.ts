@@ -12,8 +12,10 @@ export function createPricingReaderFake(
 
   const vehicle = {
     id: "vehicle-1",
+    code: "SEDAN",
     isActive: true,
     defaultName: "Sedan",
+    imageKey: null,
     passengerCapacity: 4,
     largeLuggageCapacity: 4,
     cabinLuggageCapacity: 2,

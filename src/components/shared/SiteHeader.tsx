@@ -9,8 +9,13 @@ import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { MobileNavDrawer } from "@/components/shared/MobileNavDrawer";
 import { SiteLogo } from "@/components/shared/SiteLogo";
 import type { SiteLocaleOption } from "@/features/locales/types";
+import {
+  pickPrimaryChannel,
+  toTelHref,
+  toWhatsappHref,
+} from "@/features/contact/domain/contact-links";
+import { usePublicContactChannels } from "@/features/contact/components/PublicContactProvider";
 import { Link, usePathname } from "@/i18n/navigation";
-import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 type SiteHeaderProps = {
@@ -41,6 +46,9 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
   const common = useTranslations("common");
   const currentLocale = useLocale();
   const pathname = usePathname();
+  const contactChannels = usePublicContactChannels();
+  const primaryPhone = pickPrimaryChannel(contactChannels.phones, "");
+  const primaryWhatsapp = pickPrimaryChannel(contactChannels.whatsapps, "");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -127,15 +135,15 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
               <LocaleSwitcher enabledLocales={enabledLocales} />
 
               <a
-                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-                aria-label={siteConfig.phone}
+                href={toTelHref(primaryPhone)}
+                aria-label={primaryPhone}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/8 text-white/80 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold-light"
               >
                 <Phone className="h-4 w-4" aria-hidden />
               </a>
 
               <a
-                href={`https://wa.me/${siteConfig.whatsapp.replace(/\D/g, "")}`}
+                href={toWhatsappHref(primaryWhatsapp)}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="WhatsApp"

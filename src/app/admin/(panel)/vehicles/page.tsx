@@ -57,15 +57,17 @@ export default async function AdminVehiclesPage() {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       {vehicle.coverImageKey ? (
-                        <Image
-                          src={vehicle.coverImageKey}
-                          alt={`${vehicle.brand} ${vehicle.model}`}
-                          width={56}
-                          height={40}
-                          className="h-10 w-14 rounded object-cover"
-                        />
+                        <div className="relative aspect-video w-14 shrink-0 overflow-hidden rounded">
+                          <Image
+                            src={vehicle.coverImageKey}
+                            alt={`${vehicle.brand} ${vehicle.model}`}
+                            fill
+                            className="object-cover"
+                            sizes="56px"
+                          />
+                        </div>
                       ) : (
-                        <div className="flex h-10 w-14 items-center justify-center rounded bg-muted text-xs text-muted-foreground">
+                        <div className="flex aspect-video w-14 shrink-0 items-center justify-center rounded bg-muted text-xs text-muted-foreground">
                           —
                         </div>
                       )}

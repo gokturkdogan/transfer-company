@@ -3,10 +3,18 @@ import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
 import { Reveal } from "@/components/motion/Reveal";
-import { siteConfig } from "@/config/site";
+import {
+  pickPrimaryChannel,
+  toTelHref,
+} from "@/features/contact/domain/contact-links";
+import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 
 export async function FinalCta() {
-  const t = await getTranslations("home.cta");
+  const [t, contactChannels] = await Promise.all([
+    getTranslations("home.cta"),
+    getPublicContactChannels(),
+  ]);
+  const primaryPhone = pickPrimaryChannel(contactChannels.phones, "");
 
   return (
     <section className="relative isolate overflow-hidden surface-ink py-24 text-white md:py-32">
@@ -56,11 +64,11 @@ export async function FinalCta() {
               />
             </a>
             <a
-              href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+              href={toTelHref(primaryPhone)}
               className="flex h-13 w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/8 px-8 text-sm font-semibold text-white backdrop-blur-md transition-colors duration-300 hover:border-gold/50 hover:text-gold-light sm:w-auto"
             >
               <Phone className="h-4 w-4" aria-hidden />
-              {siteConfig.phone}
+              {primaryPhone}
             </a>
           </div>
         </Reveal>

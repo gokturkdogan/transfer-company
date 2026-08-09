@@ -3,18 +3,6 @@ import {
   getPhoneCountryByIso2,
 } from "@/lib/phone/countries";
 
-export function getFlagEmoji(iso2: string): string {
-  const code = iso2.toUpperCase();
-
-  if (code.length !== 2) {
-    return "";
-  }
-
-  return String.fromCodePoint(
-    ...[...code].map((char) => 0x1f1e5 + char.charCodeAt(0) - 65),
-  );
-}
-
 export function sanitizeNationalPhoneNumber(value: string): string {
   return value.replace(/\D/g, "");
 }

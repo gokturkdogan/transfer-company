@@ -22,6 +22,8 @@ import {
   resolveQuoteCurrency,
 } from "@/features/currencies/server/repository";
 import type { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
+import type { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
+import { MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
 import { PROJECT_TIME_ZONE } from "@/config/constants";
 import { DomainRuleError } from "@/server/errors";
 
@@ -115,6 +117,7 @@ export class AvailabilityService {
     private readonly locationRepository?: LocationRepository,
     private readonly currencyRepository?: CurrencyRepository,
     private readonly featureRepository?: VehicleFeatureRepository,
+    private readonly galleryRepository?: VehicleGalleryRepository,
   ) {}
 
   async getTransferOptions(
@@ -159,12 +162,16 @@ export class AvailabilityService {
           this.repository.findCustomerSelectableExtras(input.locale),
         ]);
 
-      const featuresByVehicle = this.featureRepository
-        ? await this.featureRepository.listLabelsByVehicleIds(
-            vehicleOptions.map((option) => option.id),
-            input.locale,
-          )
-        : new Map<string, string[]>();
+      const vehicleIds = vehicleOptions.map((option) => option.id);
+
+      const [featuresByVehicle, galleryByVehicle] = await Promise.all([
+        this.featureRepository
+          ? this.featureRepository.listLabelsByVehicleIds(vehicleIds, input.locale)
+          : Promise.resolve(new Map<string, string[]>()),
+        this.galleryRepository
+          ? this.galleryRepository.listImageKeysByVehicleIds(vehicleIds)
+          : Promise.resolve(new Map<string, string[]>()),
+      ]);
 
       const luggageVehicleExtra = resolveLuggageVehicleExtra(
         luggageVehicleCandidates,
@@ -260,6 +267,12 @@ export class AvailabilityService {
         options.push({
           vehicleCategoryId: vehicleOption.id,
           name: vehicleOption.translatedName ?? vehicleOption.defaultName,
+          code: vehicleOption.code,
+          imageKey: vehicleOption.imageKey,
+          galleryImageKeys: (galleryByVehicle.get(vehicleOption.id) ?? []).slice(
+            0,
+            MAX_VEHICLE_GALLERY_IMAGES,
+          ),
           quantity: recommendation.quantity,
           passengerCapacity: vehicleOption.passengerCapacity,
           largeLuggageCapacity: vehicleOption.largeLuggageCapacity,

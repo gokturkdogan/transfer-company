@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { BookingSearchPrompt } from "@/features/booking/components/BookingSearchPrompt";
 import { VehicleRecommendationCard } from "@/features/booking/components/VehicleRecommendationCard";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 
@@ -24,7 +25,7 @@ export function VehicleRecommendationList() {
   }
 
   if (!state.quote) {
-    return <p className="text-sm text-muted-foreground">{t("noQuote")}</p>;
+    return <BookingSearchPrompt />;
   }
 
   if (state.quote.options.length === 0) {
