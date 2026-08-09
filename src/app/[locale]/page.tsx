@@ -28,6 +28,8 @@ import { MarketingRepository } from "@/features/marketing/server/repository";
 import { MarketingService } from "@/features/marketing/server/service";
 import { LocaleRepository } from "@/features/locales/server/repository";
 import { resolveSiteLocales } from "@/features/locales/server/resolve-site-locales";
+import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
+import { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
 
 export const dynamic = "force-dynamic";
 
@@ -88,7 +90,11 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const locationService = new LocationService(new LocationRepository(db));
-  const marketingService = new MarketingService(new MarketingRepository(db));
+  const marketingService = new MarketingService(
+    new MarketingRepository(db),
+    new VehicleFeatureRepository(db),
+    new VehicleGalleryRepository(db),
+  );
   const currencyRepository = new CurrencyRepository(db);
   const displayCurrency = await resolveQuoteCurrency(currencyRepository);
 
@@ -135,9 +141,7 @@ export default async function HomePage({
           />
         )}
         <StatsBand />
-        {defaultAirport && (
-          <FleetSection fleet={fleet} airportId={defaultAirport.id} />
-        )}
+        <FleetSection fleet={fleet} />
         <HowItWorks />
         <WhyChooseUs />
         <SeoContent />

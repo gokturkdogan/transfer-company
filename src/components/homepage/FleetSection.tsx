@@ -6,18 +6,16 @@ import { SectionHeading } from "@/components/layout/SectionHeading";
 import { VehicleCard } from "@/components/marketing/marketing-cards";
 import { PremiumCarousel } from "@/components/marketing/PremiumCarousel";
 import type { FleetVehicleDto } from "@/features/marketing/types";
+import { toFleetVehiclePath } from "@/features/marketing/lib/fleet-vehicle-slug";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
+import { Link } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 
 type FleetSectionProps = {
   fleet: FleetVehicleDto[];
-  airportId: string;
 };
 
-export async function FleetSection({
-  fleet,
-  airportId,
-}: FleetSectionProps) {
+export async function FleetSection({ fleet }: FleetSectionProps) {
   const t = await getTranslations("home.fleet");
   const locale = await getLocale();
 
@@ -29,6 +27,14 @@ export async function FleetSection({
           title={t("title")}
           subtitle={t("subtitle")}
         />
+        <div className="mb-8 flex justify-center">
+          <Link
+            href="/fleet"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground shadow-float transition-all duration-300 hover:border-gold/45 hover:text-gold-deep"
+          >
+            {t("viewAll")}
+          </Link>
+        </div>
         <PremiumCarousel label={t("title")}>
           {fleet.map((vehicle, index) => (
             <VehicleCard
@@ -52,8 +58,8 @@ export async function FleetSection({
                   locale,
                 ),
               })}
-              bookLabel={t("book")}
-              href={`/booking?airport=${airportId}`}
+              bookLabel={t("details")}
+              href={toFleetVehiclePath(vehicle.code)}
             />
           ))}
         </PremiumCarousel>

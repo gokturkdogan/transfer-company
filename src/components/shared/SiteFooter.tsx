@@ -16,7 +16,7 @@ import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link } from "@/i18n/navigation";
 
 const EXPLORE_LINKS = [
-  { key: "fleet", href: "#fleet", type: "hash" },
+  { key: "fleet", href: "/fleet", type: "route" },
   { key: "createReservation", href: "/booking", type: "route" },
 ] as const;
 

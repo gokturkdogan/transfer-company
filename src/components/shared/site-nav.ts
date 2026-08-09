@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export const SITE_NAV_SECTIONS = [
   { key: "about", href: "/about", type: "route" },
-  { key: "fleet", href: "#fleet", type: "hash" },
+  { key: "fleet", href: "/fleet", type: "route" },
   { key: "createReservation", href: "/booking", type: "route" },
 ] as const;
 

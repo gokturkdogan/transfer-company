@@ -19,6 +19,15 @@ export type FleetVehicleDto = {
   currency: string;
 };
 
+export type FleetVehicleDetailDto = FleetVehicleDto & {
+  brand: string;
+  model: string;
+  shortDescription: string | null;
+  description: string | null;
+  features: string[];
+  galleryImageKeys: string[];
+};
+
 export type StaticDestinationDto = {
   code: string;
   name: string;

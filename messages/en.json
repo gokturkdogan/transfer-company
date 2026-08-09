@@ -58,7 +58,9 @@
       "passengers": "Up to {count} passengers",
       "luggage": "{large} luggage",
       "from": "From {price}",
-      "book": "Book Now"
+      "book": "Book Now",
+      "viewAll": "View Full Fleet",
+      "details": "Details"
     },
     "howItWorks": {
       "eyebrow": "Process",
@@ -538,6 +540,81 @@
       "title": "Ready to plan your transfer?",
       "subtitle": "Send a reservation request in a few steps — we'll handle the rest.",
       "button": "Book a Transfer"
+    }
+  },
+  "fleet": {
+    "meta": {
+      "title": "Premium Fleet | VIP Transfer",
+      "description": "Explore our Mercedes-based premium VIP transfer fleet. Sedan, Vito and Sprinter options for comfortable Antalya Airport transfers."
+    },
+    "hero": {
+      "badge": "Premium Fleet",
+      "title": "The Future of",
+      "titleAccent": "Luxury Transfer",
+      "subtitle": "Well-maintained Mercedes vehicles, experienced chauffeurs and refined comfort details deliver a premium experience on every journey.",
+      "stats": {
+        "vehicles": "45+ Premium Vehicles",
+        "comfort": "Climate-Controlled Cabins",
+        "support": "24/7 Fleet Support"
+      }
+    },
+    "highlights": {
+      "eyebrow": "Why Our Fleet",
+      "title": "Premium standard in every detail",
+      "subtitle": "More than vehicles — we deliver trust, comfort and consistent service.",
+      "items": {
+        "0": {
+          "title": "Luxury Mercedes Vehicles",
+          "description": "Sedan, Vito and Sprinter classes — clean, modern and regularly maintained."
+        },
+        "1": {
+          "title": "Safe & Fully Insured",
+          "description": "Professional drivers, scheduled maintenance and full insurance for peace of mind."
+        },
+        "2": {
+          "title": "Tailored Comfort",
+          "description": "Generous luggage space, air-conditioned cabins and capacity options for your group."
+        }
+      }
+    },
+    "showcase": {
+      "eyebrow": "Our Vehicles",
+      "title": "Choose your vehicle",
+      "subtitle": "Select the best fit for your passengers and luggage during booking.",
+      "vehicleHint": "{code} class — ideal for Antalya Airport transfers."
+    },
+    "experience": {
+      "eyebrow": "Journey Experience",
+      "title": "Door-to-door premium feel",
+      "paragraphs": {
+        "0": "Meet & greet at arrivals, flight tracking and fixed pricing come together in a fleet built for Antalya transfers that exceed expectations.",
+        "1": "Every vehicle receives regular interior and exterior care. Spacious seating, a quiet cabin and ample luggage room keep you comfortable from the first minute."
+      },
+      "imageAlt": "Premium VIP transfer vehicle interior",
+      "imageBadge": "Premium Comfort",
+      "badges": {
+        "0": "Free Meet & Greet",
+        "1": "Flight Tracking",
+        "2": "Fixed Price"
+      }
+    },
+    "cta": {
+      "title": "Pick your vehicle and go",
+      "subtitle": "Book online in 60 seconds — pay your chauffeur after the transfer.",
+      "button": "Create Reservation"
+    },
+    "vehicleDetail": {
+      "metaTitle": "{name} | VIP Transfer Fleet",
+      "backToFleet": "Back to fleet",
+      "overviewTitle": "Overview",
+      "featuresTitle": "Highlights",
+      "book": "Book Now",
+      "from": "From {price}",
+      "passengers": "Up to {count} passengers",
+      "largeLuggage": "{count} large bags",
+      "cabinLuggage": "{count} cabin bags",
+      "fallbackShortDescription": "{name} — premium comfort and generous space for Antalya Airport transfers.",
+      "fallbackDescription": "Travel in comfort and style with the {name} — a reliable choice for families and groups."
     }
   },
   "privacy": {

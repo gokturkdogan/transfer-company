@@ -58,7 +58,9 @@
       "passengers": "En fazla {count} yolcu",
       "luggage": "{large} bagaj",
       "from": "{price} başlayan",
-      "book": "Rezervasyon Yap"
+      "book": "Rezervasyon Yap",
+      "viewAll": "Tüm Filoyu Gör",
+      "details": "Detay"
     },
     "howItWorks": {
       "eyebrow": "Süreç",
@@ -538,6 +540,81 @@
       "title": "Transferinizi planlamaya hazır mısınız?",
       "subtitle": "Birkaç adımda rezervasyon talebinizi gönderin; gerisini biz halledelim.",
       "button": "Rezervasyon Yap"
+    }
+  },
+  "fleet": {
+    "meta": {
+      "title": "Premium Filo | VIP Transfer",
+      "description": "Mercedes tabanlı premium VIP transfer filomuzu keşfedin. Sedan, Vito ve Sprinter seçenekleriyle Antalya Havalimanı transferlerinde konfor ve stil."
+    },
+    "hero": {
+      "badge": "Premium Filo",
+      "title": "Geleceğin Konforu",
+      "titleAccent": "Lüks Transfer Filosu",
+      "subtitle": "Bakımlı Mercedes araçlarımız, deneyimli şoförlerimiz ve futuristik konfor detaylarıyla her yolculukta premium bir deneyim sunuyoruz.",
+      "stats": {
+        "vehicles": "45+ Premium Araç",
+        "comfort": "Klimalı & Geniş İç Mekan",
+        "support": "7/24 Filo Desteği"
+      }
+    },
+    "highlights": {
+      "eyebrow": "Neden Bizim Filomuz",
+      "title": "Her detayda premium standart",
+      "subtitle": "Sadece araç değil; güven, konfor ve tutarlı hizmet sunuyoruz.",
+      "items": {
+        "0": {
+          "title": "Lüks Mercedes Araçlar",
+          "description": "Sedan, Vito ve Sprinter sınıflarında düzenli bakımlı, temiz ve modern araçlar."
+        },
+        "1": {
+          "title": "Güvenli & Sigortalı",
+          "description": "Profesyonel şoförler, düzenli bakım ve tam sigorta kapsamıyla huzurlu yolculuk."
+        },
+        "2": {
+          "title": "Kişiye Özel Konfor",
+          "description": "Geniş bagaj hacmi, klimalı kabin ve grubunuza uygun kapasite seçenekleri."
+        }
+      }
+    },
+    "showcase": {
+      "eyebrow": "Araçlarımız",
+      "title": "Filonuzdan birini seçin",
+      "subtitle": "Yolcu ve bagaj ihtiyacınıza göre en uygun aracı rezervasyon sırasında seçebilirsiniz.",
+      "vehicleHint": "{code} sınıfı — Antalya Havalimanı transferleri için ideal."
+    },
+    "experience": {
+      "eyebrow": "Yolculuk Deneyimi",
+      "title": "Kapıdan kapıya premium his",
+      "paragraphs": {
+        "0": "Varış salonunda isim tabelasıyla karşılama, uçuş takibi ve sabit fiyatla birleşen filomuz; Antalya transferlerinde beklediğinizden fazlasını sunar.",
+        "1": "Her araç düzenli iç-dış bakımdan geçer. Geniş koltuklar, sessiz kabin ve yeterli bagaj alanıyla yolculuğunuz başladığı andan itibaren rahat edersiniz."
+      },
+      "imageAlt": "Premium VIP transfer aracı iç mekanı",
+      "imageBadge": "Premium Konfor",
+      "badges": {
+        "0": "Ücretsiz Karşılama",
+        "1": "Uçuş Takibi",
+        "2": "Sabit Fiyat"
+      }
+    },
+    "cta": {
+      "title": "Aracınızı seçin, yola çıkın",
+      "subtitle": "60 saniyede online rezervasyon yapın; ödemeyi transfer sonrası şoförünüze yapın.",
+      "button": "Rezervasyon Oluştur"
+    },
+    "vehicleDetail": {
+      "metaTitle": "{name} | VIP Transfer Filo",
+      "backToFleet": "Filoya dön",
+      "overviewTitle": "Genel bakış",
+      "featuresTitle": "Öne çıkan özellikler",
+      "book": "Rezervasyon Yap",
+      "from": "{price} başlayan",
+      "passengers": "En fazla {count} yolcu",
+      "largeLuggage": "{count} büyük bagaj",
+      "cabinLuggage": "{count} kabin bagajı",
+      "fallbackShortDescription": "{name} — Antalya Havalimanı transferlerinde premium konfor ve geniş iç mekan.",
+      "fallbackDescription": "{name} ile grup ve aile transferlerinde konforlu, şık ve güvenilir bir yolculuk deneyimi yaşayın."
     }
   },
   "privacy": {
