@@ -37,6 +37,7 @@ import type {
   CityDto,
   DistrictDto,
 } from "@/features/locations/types";
+import type { AcceptedPaymentCurrency } from "@/features/currencies/types";
 import { track } from "@/lib/analytics";
 
 type BookingFlowContextValue = {
@@ -44,6 +45,7 @@ type BookingFlowContextValue = {
   airports: AirportDto[];
   cities: CityDto[];
   districts: DistrictDto[];
+  acceptedPaymentCurrencies: AcceptedPaymentCurrency[];
   dispatch: React.Dispatch<BookingFlowAction>;
   requestQuote: (
     searchOverride?: Partial<BookingSearchState>,
@@ -64,12 +66,14 @@ export function BookingFlowProvider({
   airports,
   cities,
   districts,
+  acceptedPaymentCurrencies,
   initialSearch,
 }: {
   children: ReactNode;
   airports: AirportDto[];
   cities: CityDto[];
   districts: DistrictDto[];
+  acceptedPaymentCurrencies: AcceptedPaymentCurrency[];
   initialSearch?: Partial<BookingSearchState>;
 }) {
   const locale = useLocale();
@@ -308,6 +312,7 @@ export function BookingFlowProvider({
       airports,
       cities,
       districts,
+      acceptedPaymentCurrencies,
       dispatch,
       requestQuote,
       requestRequote,
@@ -319,6 +324,7 @@ export function BookingFlowProvider({
       airports,
       cities,
       districts,
+      acceptedPaymentCurrencies,
       requestQuote,
       requestRequote,
       updateOutboundSchedule,

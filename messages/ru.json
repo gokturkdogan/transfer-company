@@ -325,6 +325,10 @@
       "network": "Network error. Please check your connection and try again.",
       "generic": "Something went wrong. Please try again."
     },
+    "paymentCurrencies": {
+      "title": "Варианты оплаты наличными",
+      "notice": "Все цены указаны в EUR. В день трансфера вы также можете оплатить наличными в автомобиле в валютах ниже; сумма пересчитывается по курсу на этот день."
+    },
     "steps": {
       "progressLabel": "Шаги бронирования",
       "search": "Поиск",

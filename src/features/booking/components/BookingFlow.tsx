@@ -9,6 +9,7 @@ import { BookingReview } from "@/features/booking/components/BookingReview";
 import { BookingSidebar } from "@/features/booking/components/BookingSidebar";
 import { BookingStepCard } from "@/features/booking/components/BookingStepCard";
 import { BookingFormSections } from "@/features/booking/components/BookingFormSections";
+import { AcceptedPaymentCurrenciesNotice } from "@/features/booking/components/AcceptedPaymentCurrenciesNotice";
 import { BookingNotesField } from "@/features/booking/components/BookingNotesField";
 import { CustomerDetailsForm } from "@/features/booking/components/CustomerDetailsForm";
 import { ExtrasSection } from "@/features/booking/components/ExtrasSection";
@@ -51,6 +52,7 @@ export function BookingFlow() {
               <PassengerDetailsForm />
               <ExtrasSection />
               <BookingNotesField />
+              <AcceptedPaymentCurrenciesNotice />
             </BookingFormSections>
           )}
 

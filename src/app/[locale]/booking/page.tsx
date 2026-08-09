@@ -6,6 +6,8 @@ import { BookingFlowWithInit } from "@/features/booking/components/BookingFlowWi
 import { BookingFlowProvider } from "@/features/booking/context/booking-flow-context";
 import { parseBookingSearchParams } from "@/features/booking/lib/parse-search-params";
 import { db } from "@/db/client";
+import { buildAcceptedPaymentCurrencies } from "@/features/currencies/lib/build-accepted-payment-currencies";
+import { CurrencyRepository } from "@/features/currencies/server/repository";
 import { LocationRepository } from "@/features/locations/server/repository";
 import { LocationService } from "@/features/locations/server/service";
 import { LocaleRepository } from "@/features/locales/server/repository";
@@ -27,6 +29,10 @@ export default async function BookingPage({
   const enabledLocales = await resolveSiteLocales(new LocaleRepository(db));
 
   const locationService = new LocationService(new LocationRepository(db));
+  const enabledPaymentCurrencies = await new CurrencyRepository(db).listEnabled();
+  const acceptedPaymentCurrencies = buildAcceptedPaymentCurrencies(
+    enabledPaymentCurrencies,
+  );
   const airports = await locationService.getAirports(locale);
   const cities = await locationService.getCities(locale);
   const initialSearch = parseBookingSearchParams(query);
@@ -51,6 +57,7 @@ export default async function BookingPage({
           airports={airports}
           cities={cities}
           districts={districts}
+          acceptedPaymentCurrencies={acceptedPaymentCurrencies}
           initialSearch={{ ...initialSearch, cityId: cityId ?? "" }}
         >
           <BookingFlowWithInit initialSearch={initialSearch} />

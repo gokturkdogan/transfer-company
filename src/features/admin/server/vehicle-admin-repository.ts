@@ -8,6 +8,7 @@ import {
   vehicleCategories,
   vehicleCategoryImages,
   vehicleCategoryTranslations,
+  vehicleDisplayPrices,
 } from "@/db/schema";
 import type { LocaleTranslationMap } from "@/features/admin/server/translation-input";
 import {
@@ -26,6 +27,8 @@ export type AdminVehicleGalleryImage = {
   showInBookingPreview: boolean;
 };
 
+export type VehicleDisplayStartingPrices = Record<string, number>;
+
 export type AdminVehicleRecord = {
   id: string;
   code: string;
@@ -41,6 +44,7 @@ export type AdminVehicleRecord = {
   galleryImages: AdminVehicleGalleryImage[];
   sortOrder: number;
   isActive: boolean;
+  displayStartingPrices: VehicleDisplayStartingPrices;
 };
 
 export type UpsertAdminVehicleInput = {
@@ -56,6 +60,7 @@ export type UpsertAdminVehicleInput = {
   galleryImages: AdminVehicleGalleryImage[];
   sortOrder: number;
   isActive: boolean;
+  displayStartingPrices?: VehicleDisplayStartingPrices;
 };
 
 export class VehicleAdminRepository {
@@ -63,6 +68,78 @@ export class VehicleAdminRepository {
 
   constructor(private readonly database: Database) {
     this.featureRepository = new VehicleFeatureRepository(database);
+  }
+
+  async findDisplayStartingPrices(
+    vehicleCategoryId: string,
+  ): Promise<VehicleDisplayStartingPrices> {
+    const rows = await this.database
+      .select({
+        currency: vehicleDisplayPrices.currency,
+        startingFromMinor: vehicleDisplayPrices.startingFromMinor,
+      })
+      .from(vehicleDisplayPrices)
+      .where(eq(vehicleDisplayPrices.vehicleCategoryId, vehicleCategoryId));
+
+    return Object.fromEntries(
+      rows.map((row) => [row.currency, row.startingFromMinor]),
+    );
+  }
+
+  private async loadDisplayStartingPrices(
+    vehicleCategoryIds: string[],
+  ): Promise<Map<string, VehicleDisplayStartingPrices>> {
+    if (vehicleCategoryIds.length === 0) {
+      return new Map();
+    }
+
+    const rows = await this.database
+      .select({
+        vehicleCategoryId: vehicleDisplayPrices.vehicleCategoryId,
+        currency: vehicleDisplayPrices.currency,
+        startingFromMinor: vehicleDisplayPrices.startingFromMinor,
+      })
+      .from(vehicleDisplayPrices)
+      .where(inArray(vehicleDisplayPrices.vehicleCategoryId, vehicleCategoryIds));
+
+    const result = new Map<string, VehicleDisplayStartingPrices>();
+    for (const row of rows) {
+      const current = result.get(row.vehicleCategoryId) ?? {};
+      current[row.currency] = row.startingFromMinor;
+      result.set(row.vehicleCategoryId, current);
+    }
+
+    return result;
+  }
+
+  private async syncDisplayStartingPrices(
+    executor: DbExecutor,
+    vehicleCategoryId: string,
+    prices: VehicleDisplayStartingPrices | undefined,
+  ): Promise<void> {
+    await executor
+      .delete(vehicleDisplayPrices)
+      .where(eq(vehicleDisplayPrices.vehicleCategoryId, vehicleCategoryId));
+
+    if (!prices) {
+      return;
+    }
+
+    const entries = Object.entries(prices).filter(
+      ([, amountMinor]) => amountMinor > 0,
+    );
+
+    if (entries.length === 0) {
+      return;
+    }
+
+    await executor.insert(vehicleDisplayPrices).values(
+      entries.map(([currency, startingFromMinor]) => ({
+        vehicleCategoryId,
+        currency,
+        startingFromMinor,
+      })),
+    );
   }
 
   async list(includeInactive = true): Promise<AdminVehicleRecord[]> {
@@ -89,7 +166,7 @@ export class VehicleAdminRepository {
     }
 
     const vehicleIds = rows.map((row) => row.id);
-    const [galleryRows, featuresByVehicle, nameTranslationsByVehicle] =
+    const [galleryRows, featuresByVehicle, nameTranslationsByVehicle, displayPricesByVehicle] =
       await Promise.all([
         this.database
           .select({
@@ -109,6 +186,7 @@ export class VehicleAdminRepository {
           })),
         ),
         this.loadNameTranslations(vehicleIds),
+        this.loadDisplayStartingPrices(vehicleIds),
       ]);
 
     const galleryByVehicle = new Map<string, AdminVehicleGalleryImage[]>();
@@ -140,6 +218,7 @@ export class VehicleAdminRepository {
       galleryImages: galleryByVehicle.get(row.id) ?? [],
       sortOrder: row.sortOrder,
       isActive: row.isActive,
+      displayStartingPrices: displayPricesByVehicle.get(row.id) ?? {},
     }));
   }
 
@@ -166,7 +245,8 @@ export class VehicleAdminRepository {
       return null;
     }
 
-    const [galleryRows, features, nameTranslations] = await Promise.all([
+    const [galleryRows, features, nameTranslations, displayStartingPrices] =
+      await Promise.all([
       this.database
         .select({
           imageKey: vehicleCategoryImages.imageKey,
@@ -177,6 +257,7 @@ export class VehicleAdminRepository {
         .orderBy(asc(vehicleCategoryImages.sortOrder)),
       this.featureRepository.listAdminFeaturesByVehicleId(id),
       this.loadNameTranslations([id]),
+      this.findDisplayStartingPrices(id),
     ]);
 
     return {
@@ -197,6 +278,7 @@ export class VehicleAdminRepository {
       })),
       sortOrder: row.sortOrder,
       isActive: row.isActive,
+      displayStartingPrices,
     };
   }
 
@@ -315,6 +397,11 @@ export class VehicleAdminRepository {
       await this.syncNameTranslations(tx, created.id, input.nameTranslations);
       await this.featureRepository.syncFeatures(tx, created.id, input.features);
       await this.syncGalleryImages(tx, created.id, input.galleryImages);
+      await this.syncDisplayStartingPrices(
+        tx,
+        created.id,
+        input.displayStartingPrices,
+      );
       return created.id;
     });
 
@@ -358,6 +445,11 @@ export class VehicleAdminRepository {
       await this.syncNameTranslations(tx, id, input.nameTranslations);
       await this.featureRepository.syncFeatures(tx, id, input.features);
       await this.syncGalleryImages(tx, id, input.galleryImages);
+      await this.syncDisplayStartingPrices(
+        tx,
+        id,
+        input.displayStartingPrices,
+      );
     });
 
     const vehicle = await this.findById(id);

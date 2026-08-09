@@ -87,10 +87,45 @@
       "breakpoints": true
     },
     {
+      "idx": 12,
+      "version": "7",
+      "when": 1786172600000,
+      "tag": "0012_district_homepage_featured",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1786172700000,
+      "tag": "0013_vehicle_gallery_booking_preview",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1786172800000,
+      "tag": "0014_eur_only_pricing",
+      "breakpoints": true
+    },
+    {
       "idx": 15,
       "version": "7",
       "when": 1786172900000,
       "tag": "0015_extra_included_quantity",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1786173000000,
+      "tag": "0016_vehicle_display_prices",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1786173100000,
+      "tag": "0017_cash_payment_currencies_only",
       "breakpoints": true
     }
   ]

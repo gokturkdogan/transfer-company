@@ -22,7 +22,7 @@ export function CurrencySettingsForm({
   enabledCurrencies,
 }: CurrencySettingsFormProps) {
   const router = useRouter();
-  const [selectedCodes, setSelectedCodes] = useState<string[]>(
+  const [selectedCodes, setSelectedCodes] = useState<string[]>(() =>
     enabledCurrencies.map((currency) => currency.code),
   );
   const [error, setError] = useState<string | null>(null);
@@ -133,7 +133,7 @@ export function CurrencySettingsForm({
 
         <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50/80 px-4 py-3 sm:px-5">
           <p className="text-xs text-slate-500">{adminCopy.currencies.saveHint}</p>
-          <Button type="submit" disabled={isPending || selectedCodes.length === 0}>
+          <Button type="submit" disabled={isPending}>
             {isPending ? adminCopy.currencies.saving : adminCopy.currencies.save}
           </Button>
         </div>

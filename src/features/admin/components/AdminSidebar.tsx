@@ -4,6 +4,7 @@ import {
   Banknote,
   CalendarCheck,
   Car,
+  Coins,
   Languages,
   LayoutDashboard,
   LogOut,
@@ -48,6 +49,11 @@ const NAV_ITEMS = [
     href: "/admin/pricing",
     label: adminCopy.sidebar.pricing,
     icon: TableProperties,
+  },
+  {
+    href: "/admin/currencies",
+    label: adminCopy.sidebar.currencies,
+    icon: Coins,
   },
   {
     href: "/admin/reservations",

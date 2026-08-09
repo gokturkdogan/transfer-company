@@ -325,6 +325,10 @@
       "network": "Network error. Please check your connection and try again.",
       "generic": "Something went wrong. Please try again."
     },
+    "paymentCurrencies": {
+      "title": "Bargeldzahlungsoptionen",
+      "notice": "Alle Preise werden in EUR angezeigt. Am Transfertag können Sie am Fahrzeug auch bar in den unten genannten Währungen zahlen; der Betrag wird zum Tageskurs umgerechnet."
+    },
     "steps": {
       "progressLabel": "Reservierungsschritte",
       "search": "Suche",

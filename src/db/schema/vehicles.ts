@@ -1,4 +1,5 @@
-import { boolean, index, integer, pgTable, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { boolean, char, check, index, integer, pgTable, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import { uuid } from "drizzle-orm/pg-core";
 
 import {
@@ -33,6 +34,32 @@ export const vehicleCategories = pgTable(
     index("vehicle_categories_active_sort_idx").on(
       table.isActive,
       table.sortOrder,
+    ),
+  ],
+);
+
+export const vehicleDisplayPrices = pgTable(
+  "vehicle_display_prices",
+  {
+    id: id(),
+    vehicleCategoryId: uuid("vehicle_category_id")
+      .notNull()
+      .references(() => vehicleCategories.id, { onDelete: "cascade" }),
+    currency: char("currency", { length: 3 }).notNull(),
+    startingFromMinor: integer("starting_from_minor").notNull(),
+    ...timestamps,
+  },
+  (table) => [
+    uniqueIndex("vehicle_display_prices_vehicle_currency_unique").on(
+      table.vehicleCategoryId,
+      table.currency,
+    ),
+    index("vehicle_display_prices_vehicle_category_id_idx").on(
+      table.vehicleCategoryId,
+    ),
+    check(
+      "vehicle_display_prices_non_negative",
+      sql`${table.startingFromMinor} >= 0`,
     ),
   ],
 );

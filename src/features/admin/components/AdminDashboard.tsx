@@ -18,7 +18,7 @@ import {
   YAxis,
 } from "recharts";
 
-import { getCurrencyEmoji } from "@/config/currencies";
+import { ACCOUNTING_CURRENCY } from "@/config/currencies";
 import { adminCopy, ADMIN_LOCALE, formatReservationStatus } from "@/features/admin/copy";
 import type { DashboardData } from "@/features/admin/server/dashboard-admin-repository";
 import { Badge } from "@/components/ui/badge";
@@ -68,12 +68,7 @@ function ChartEmptyState() {
   );
 }
 
-function formatCurrencyDisplay(code: string): string {
-  return `${getCurrencyEmoji(code)} ${code}`;
-}
-
-function CurrencyCard({
-  currency,
+function RevenueSummaryCard({
   totalMinor,
   upcomingMinor,
   completedMinor,
@@ -82,84 +77,76 @@ function CurrencyCard({
   upcomingCount,
   completedCount,
   cancelledCount,
-}: DashboardData["currencyStats"][number]) {
+}: DashboardData["revenueStats"]) {
   const activeTotal = upcomingMinor + completedMinor;
   const upcomingShare =
     activeTotal > 0 ? Math.round((upcomingMinor / activeTotal) * 100) : 0;
   const completedShare =
     activeTotal > 0 ? Math.round((completedMinor / activeTotal) * 100) : 0;
-  const totalFormatted = formatMinor(totalMinor, currency);
 
   return (
-    <div className="admin-content-card min-w-0 rounded-lg border p-2.5">
-      <div className="flex items-center gap-1.5">
-        <span className="text-sm leading-none" aria-hidden>
-          {getCurrencyEmoji(currency)}
+    <div className="admin-content-card rounded-lg border p-4 sm:p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-lg leading-none" aria-hidden>
+          🇪🇺
         </span>
-        <span className="text-xs font-semibold">{currency}</span>
-        <span className="ms-auto text-[10px] tabular-nums text-muted-foreground">
-          {totalCount}
+        <span className="text-sm font-semibold">
+          {adminCopy.dashboard.revenueSection.title}
+        </span>
+        <span className="ms-auto text-xs tabular-nums text-muted-foreground">
+          {adminCopy.dashboard.revenueSection.reservations(totalCount)}
         </span>
       </div>
 
-      <p
-        className="mt-1 truncate text-base font-semibold leading-tight"
-        title={totalFormatted}
-      >
-        {totalFormatted}
+      <p className="mt-2 text-2xl font-semibold leading-tight">
+        {formatMinor(totalMinor, ACCOUNTING_CURRENCY)}
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        {adminCopy.dashboard.revenueSection.hint}
       </p>
 
-      <div className="mt-2 flex h-1 overflow-hidden rounded-full bg-muted">
+      <div className="mt-4 flex h-1.5 overflow-hidden rounded-full bg-muted">
         {upcomingShare > 0 ? (
           <div
             className="bg-accent"
             style={{ width: `${upcomingShare}%` }}
-            title={adminCopy.dashboard.currencySection.upcoming}
+            title={adminCopy.dashboard.revenueSection.upcoming}
           />
         ) : null}
         {completedShare > 0 ? (
           <div
             className="bg-foreground/70"
             style={{ width: `${completedShare}%` }}
-            title={adminCopy.dashboard.currencySection.completed}
+            title={adminCopy.dashboard.revenueSection.completed}
           />
         ) : null}
       </div>
 
-      <dl className="mt-2 grid grid-cols-3 gap-1 text-[10px] leading-tight">
+      <dl className="mt-4 grid grid-cols-3 gap-3 text-xs">
         <div className="min-w-0">
           <dt className="truncate text-muted-foreground">
-            {adminCopy.dashboard.currencySection.upcoming}
+            {adminCopy.dashboard.revenueSection.upcoming}
           </dt>
-          <dd
-            className="truncate font-medium"
-            title={formatMinor(upcomingMinor, currency)}
-          >
-            {formatMinor(upcomingMinor, currency)}
+          <dd className="truncate font-medium">
+            {formatMinor(upcomingMinor, ACCOUNTING_CURRENCY)}
           </dd>
           <dd className="text-muted-foreground">{upcomingCount}</dd>
         </div>
         <div className="min-w-0">
           <dt className="truncate text-muted-foreground">
-            {adminCopy.dashboard.currencySection.completed}
+            {adminCopy.dashboard.revenueSection.completed}
           </dt>
-          <dd
-            className="truncate font-medium"
-            title={formatMinor(completedMinor, currency)}
-          >
-            {formatMinor(completedMinor, currency)}
+          <dd className="truncate font-medium">
+            {formatMinor(completedMinor, ACCOUNTING_CURRENCY)}
           </dd>
           <dd className="text-muted-foreground">{completedCount}</dd>
         </div>
         <div className="min-w-0">
           <dt className="truncate text-muted-foreground">
-            {adminCopy.dashboard.currencySection.cancelled}
+            {adminCopy.dashboard.revenueSection.cancelled}
           </dt>
-          <dd
-            className="truncate font-medium"
-            title={formatMinor(cancelledMinor, currency)}
-          >
-            {formatMinor(cancelledMinor, currency)}
+          <dd className="truncate font-medium">
+            {formatMinor(cancelledMinor, ACCOUNTING_CURRENCY)}
           </dd>
           <dd className="text-muted-foreground">{cancelledCount}</dd>
         </div>
@@ -191,15 +178,6 @@ export function AdminDashboard({ data }: { data: DashboardData }) {
         value: item.count,
       })),
     [data.vehicleBreakdown],
-  );
-
-  const currencyChartData = useMemo(
-    () =>
-      data.currencyDistribution.map((item) => ({
-        name: formatCurrencyDisplay(item.name),
-        value: item.count,
-      })),
-    [data.currencyDistribution],
   );
 
   const routeChartData = useMemo(
@@ -287,21 +265,7 @@ export function AdminDashboard({ data }: { data: DashboardData }) {
         </Card>
       </div>
 
-      <section className="space-y-4">
-        <div>
-          <h2 className="text-lg font-semibold">
-            {adminCopy.dashboard.currencySection.title}
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            {adminCopy.dashboard.currencySection.hint}
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
-          {data.currencyStats.map((currencyStat) => (
-            <CurrencyCard key={currencyStat.currency} {...currencyStat} />
-          ))}
-        </div>
-      </section>
+      <RevenueSummaryCard {...data.revenueStats} />
 
       <div className="grid gap-6 xl:grid-cols-2">
         <Card className="admin-content-card">
@@ -502,44 +466,6 @@ export function AdminDashboard({ data }: { data: DashboardData }) {
             )}
           </CardContent>
         </Card>
-
-        <Card className="admin-content-card">
-          <CardHeader>
-            <CardTitle className="text-base">
-              {adminCopy.dashboard.charts.currencyTitle}
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              {adminCopy.dashboard.charts.currencyHint}
-            </p>
-          </CardHeader>
-          <CardContent>
-            {currencyChartData.length === 0 ? (
-              <ChartEmptyState />
-            ) : (
-              <ResponsiveContainer width="100%" height={280}>
-                <PieChart>
-                  <Pie
-                    data={currencyChartData}
-                    dataKey="value"
-                    nameKey="name"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={2}
-                  >
-                    {currencyChartData.map((entry, index) => (
-                      <Cell
-                        key={entry.name}
-                        fill={CHART_COLORS[index % CHART_COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-          </CardContent>
-        </Card>
       </div>
 
       <Card>
@@ -601,7 +527,7 @@ export function AdminDashboard({ data }: { data: DashboardData }) {
                     <TableCell className="text-right">
                       {formatMinor(
                         reservation.totalMinor,
-                        reservation.currency,
+                        ACCOUNTING_CURRENCY,
                       )}
                     </TableCell>
                   </TableRow>

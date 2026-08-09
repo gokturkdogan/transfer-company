@@ -325,6 +325,10 @@
       "network": "Network error. Please check your connection and try again.",
       "generic": "Something went wrong. Please try again."
     },
+    "paymentCurrencies": {
+      "title": "خيارات الدفع نقداً",
+      "notice": "جميع الأسعار معروضة باليورو. في يوم النقل يمكنك أيضاً الدفع نقداً في المركبة بالعملات أدناه؛ يُحوَّل المبلغ بسعر الصرف في ذلك اليوم."
+    },
     "steps": {
       "progressLabel": "خطوات الحجز",
       "search": "البحث",

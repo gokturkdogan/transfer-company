@@ -109,6 +109,7 @@ function renderExtrasStep() {
         airports={testAirports}
         cities={testCities}
         districts={testDistricts}
+        acceptedPaymentCurrencies={[]}
         initialSearch={{
           originAirportId: "loc-a",
           destinationDistrictId: "loc-b",

@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Car } from "lucide-react";
 
-import { DEFAULT_LOCALE } from "@/config/constants";
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "@/config/constants";
 import { db } from "@/db/client";
 import { VehicleAdminRepository } from "@/features/admin/server/vehicle-admin-repository";
 import { AdminContentCard } from "@/features/admin/components/shell/AdminContentCard";
@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { adminCopy } from "@/features/admin/copy";
+import { formatMoney } from "@/lib/money";
 
 const vehicleAdminRepository = new VehicleAdminRepository(db);
 
@@ -45,6 +46,7 @@ export default async function AdminVehiclesPage() {
                 <TableHead>{adminCopy.vehicles.table.code}</TableHead>
                 <TableHead>{adminCopy.vehicles.table.capacity}</TableHead>
                 <TableHead>{adminCopy.vehicles.table.features}</TableHead>
+                <TableHead>{adminCopy.vehicles.table.startingPrice}</TableHead>
                 <TableHead>{adminCopy.vehicles.table.status}</TableHead>
                 <TableHead className="text-right">
                   {adminCopy.vehicles.table.actions}
@@ -103,6 +105,18 @@ export default async function AdminVehiclesPage() {
                       })}
                       {vehicle.features.length === 0 ? "—" : null}
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    {vehicle.displayStartingPrices[DEFAULT_CURRENCY]
+                      ? formatMoney(
+                          {
+                            amountMinor:
+                              vehicle.displayStartingPrices[DEFAULT_CURRENCY]!,
+                            currency: DEFAULT_CURRENCY,
+                          },
+                          DEFAULT_LOCALE,
+                        )
+                      : "—"}
                   </TableCell>
                   <TableCell>
                     <Badge

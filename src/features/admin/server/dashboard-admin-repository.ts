@@ -2,7 +2,7 @@ import "server-only";
 
 import { and, count, desc, eq, ne, sql } from "drizzle-orm";
 
-import { SUPPORTED_CURRENCIES } from "@/config/currencies";
+import { DEFAULT_CURRENCY } from "@/config/constants";
 import type { Database } from "@/db/client";
 import {
   customers,
@@ -10,9 +10,7 @@ import {
   reservations,
 } from "@/db/schema";
 
-export type DashboardCurrencyStats = {
-  currency: string;
-  label: string;
+export type DashboardRevenueStats = {
   totalMinor: number;
   upcomingMinor: number;
   completedMinor: number;
@@ -56,13 +54,12 @@ export type DashboardData = {
     oneWayCount: number;
     roundTripCount: number;
   };
-  currencyStats: DashboardCurrencyStats[];
+  revenueStats: DashboardRevenueStats;
   vehicleBreakdown: DashboardBreakdownItem[];
   routeBreakdown: DashboardBreakdownItem[];
   weeklyTrend: DashboardTrendPoint[];
   monthlyTrend: DashboardTrendPoint[];
   statusBreakdown: DashboardBreakdownItem[];
-  currencyDistribution: DashboardBreakdownItem[];
   weekdayBreakdown: DashboardBreakdownItem[];
   recentReservations: DashboardRecentReservation[];
 };
@@ -115,24 +112,22 @@ export class DashboardAdminRepository {
   async getDashboardData(): Promise<DashboardData> {
     const [
       summaryRow,
-      currencyRows,
+      revenueStats,
       vehicleRows,
       routeRows,
       weeklyRows,
       monthlyRows,
       statusRows,
-      currencyDistributionRows,
       weekdayRows,
       recentRows,
     ] = await Promise.all([
       this.loadSummary(),
-      this.loadCurrencyStats(),
+      this.loadRevenueStats(),
       this.loadVehicleBreakdown(),
       this.loadRouteBreakdown(),
       this.loadWeeklyTrend(),
       this.loadMonthlyTrend(),
       this.loadStatusBreakdown(),
-      this.loadCurrencyDistribution(),
       this.loadWeekdayBreakdown(),
       this.loadRecentReservations(),
     ]);
@@ -155,7 +150,7 @@ export class DashboardAdminRepository {
         oneWayCount: toNumber(summaryRow?.oneWayCount),
         roundTripCount: toNumber(summaryRow?.roundTripCount),
       },
-      currencyStats: this.mergeCurrencyStats(currencyRows),
+      revenueStats,
       vehicleBreakdown: vehicleRows.map((row) => ({
         name: row.name,
         count: toNumber(row.count),
@@ -176,10 +171,6 @@ export class DashboardAdminRepository {
       })),
       statusBreakdown: statusRows.map((row) => ({
         name: row.status,
-        count: toNumber(row.count),
-      })),
-      currencyDistribution: currencyDistributionRows.map((row) => ({
-        name: row.currency,
         count: toNumber(row.count),
       })),
       weekdayBreakdown: weekdayRows.map((row) => ({
@@ -206,65 +197,30 @@ export class DashboardAdminRepository {
     return row;
   }
 
-  private async loadCurrencyStats() {
-    return this.database
+  private async loadRevenueStats(): Promise<DashboardRevenueStats> {
+    const [row] = await this.database
       .select({
-        currency: reservations.currency,
-        totalMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED'), 0)`,
-        upcomingMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} in ('PENDING', 'CONFIRMED') and ${reservations.outboundAt} > now()), 0)`,
-        completedMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED' and (${reservations.status} = 'COMPLETED' or ${reservations.outboundAt} <= now())), 0)`,
-        cancelledMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} = 'CANCELLED'), 0)`,
-        totalCount: sql<number>`count(*) filter (where ${reservations.status} <> 'CANCELLED')`,
-        upcomingCount: sql<number>`count(*) filter (where ${reservations.status} in ('PENDING', 'CONFIRMED') and ${reservations.outboundAt} > now())`,
-        completedCount: sql<number>`count(*) filter (where ${reservations.status} <> 'CANCELLED' and (${reservations.status} = 'COMPLETED' or ${reservations.outboundAt} <= now()))`,
-        cancelledCount: sql<number>`count(*) filter (where ${reservations.status} = 'CANCELLED')`,
+        totalMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED' and ${reservations.currency} = ${DEFAULT_CURRENCY}), 0)`,
+        upcomingMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} in ('PENDING', 'CONFIRMED') and ${reservations.outboundAt} > now() and ${reservations.currency} = ${DEFAULT_CURRENCY}), 0)`,
+        completedMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED' and (${reservations.status} = 'COMPLETED' or ${reservations.outboundAt} <= now()) and ${reservations.currency} = ${DEFAULT_CURRENCY}), 0)`,
+        cancelledMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} = 'CANCELLED' and ${reservations.currency} = ${DEFAULT_CURRENCY}), 0)`,
+        totalCount: sql<number>`count(*) filter (where ${reservations.status} <> 'CANCELLED' and ${reservations.currency} = ${DEFAULT_CURRENCY})`,
+        upcomingCount: sql<number>`count(*) filter (where ${reservations.status} in ('PENDING', 'CONFIRMED') and ${reservations.outboundAt} > now() and ${reservations.currency} = ${DEFAULT_CURRENCY})`,
+        completedCount: sql<number>`count(*) filter (where ${reservations.status} <> 'CANCELLED' and (${reservations.status} = 'COMPLETED' or ${reservations.outboundAt} <= now()) and ${reservations.currency} = ${DEFAULT_CURRENCY})`,
+        cancelledCount: sql<number>`count(*) filter (where ${reservations.status} = 'CANCELLED' and ${reservations.currency} = ${DEFAULT_CURRENCY})`,
       })
-      .from(reservations)
-      .groupBy(reservations.currency);
-  }
+      .from(reservations);
 
-  private mergeCurrencyStats(
-    rows: Awaited<ReturnType<DashboardAdminRepository["loadCurrencyStats"]>>,
-  ): DashboardCurrencyStats[] {
-    const byCurrency = new Map(
-      rows.map((row) => [
-        row.currency,
-        {
-          currency: row.currency,
-          label:
-            SUPPORTED_CURRENCIES.find((currency) => currency.code === row.currency)
-              ?.label ?? row.currency,
-          totalMinor: toNumber(row.totalMinor),
-          upcomingMinor: toNumber(row.upcomingMinor),
-          completedMinor: toNumber(row.completedMinor),
-          cancelledMinor: toNumber(row.cancelledMinor),
-          totalCount: toNumber(row.totalCount),
-          upcomingCount: toNumber(row.upcomingCount),
-          completedCount: toNumber(row.completedCount),
-          cancelledCount: toNumber(row.cancelledCount),
-        },
-      ]),
-    );
-
-    return SUPPORTED_CURRENCIES.map((supported) => {
-      const existing = byCurrency.get(supported.code);
-      if (existing) {
-        return existing;
-      }
-
-      return {
-        currency: supported.code,
-        label: supported.label,
-        totalMinor: 0,
-        upcomingMinor: 0,
-        completedMinor: 0,
-        cancelledMinor: 0,
-        totalCount: 0,
-        upcomingCount: 0,
-        completedCount: 0,
-        cancelledCount: 0,
-      };
-    });
+    return {
+      totalMinor: toNumber(row?.totalMinor),
+      upcomingMinor: toNumber(row?.upcomingMinor),
+      completedMinor: toNumber(row?.completedMinor),
+      cancelledMinor: toNumber(row?.cancelledMinor),
+      totalCount: toNumber(row?.totalCount),
+      upcomingCount: toNumber(row?.upcomingCount),
+      completedCount: toNumber(row?.completedCount),
+      cancelledCount: toNumber(row?.cancelledCount),
+    };
   }
 
   private async loadVehicleBreakdown() {
@@ -304,7 +260,7 @@ export class DashboardAdminRepository {
       .select({
         period: sql<string>`date_trunc('week', ${reservations.createdAt})::text`,
         count: sql<number>`count(*) filter (where ${reservations.status} <> 'CANCELLED')`,
-        revenueMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED'), 0)`,
+        revenueMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED' and ${reservations.currency} = ${DEFAULT_CURRENCY}), 0)`,
       })
       .from(reservations)
       .where(
@@ -319,7 +275,7 @@ export class DashboardAdminRepository {
       .select({
         period: sql<string>`date_trunc('month', ${reservations.createdAt})::text`,
         count: sql<number>`count(*) filter (where ${reservations.status} <> 'CANCELLED')`,
-        revenueMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED'), 0)`,
+        revenueMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED' and ${reservations.currency} = ${DEFAULT_CURRENCY}), 0)`,
       })
       .from(reservations)
       .where(
@@ -337,18 +293,6 @@ export class DashboardAdminRepository {
       })
       .from(reservations)
       .groupBy(reservations.status)
-      .orderBy(desc(count()));
-  }
-
-  private async loadCurrencyDistribution() {
-    return this.database
-      .select({
-        currency: reservations.currency,
-        count: count(),
-      })
-      .from(reservations)
-      .where(ne(reservations.status, "CANCELLED"))
-      .groupBy(reservations.currency)
       .orderBy(desc(count()));
   }
 
@@ -384,6 +328,7 @@ export class DashboardAdminRepository {
       })
       .from(reservations)
       .innerJoin(customers, eq(reservations.customerId, customers.id))
+      .where(eq(reservations.currency, DEFAULT_CURRENCY))
       .orderBy(desc(reservations.createdAt))
       .limit(8);
 

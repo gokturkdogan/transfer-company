@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 
+import { AcceptedPaymentCurrenciesNotice } from "@/features/booking/components/AcceptedPaymentCurrenciesNotice";
 import { BookingStepHeader } from "@/features/booking/components/BookingStepHeader";
 import { PriceSummary } from "@/features/booking/components/PriceSummary";
 import { RequiredExtrasPanel } from "@/features/booking/components/RequiredExtrasPanel";
@@ -135,6 +136,8 @@ export function BookingReview() {
         selectionTotalMinor={state.quote.selection?.quote.totalMinor}
         currency={state.quote.currency}
       />
+
+      <AcceptedPaymentCurrenciesNotice />
     </div>
   );
 }

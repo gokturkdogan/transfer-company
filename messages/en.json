@@ -325,6 +325,10 @@
       "network": "Network error. Please check your connection and try again.",
       "generic": "Something went wrong. Please try again."
     },
+    "paymentCurrencies": {
+      "title": "Cash payment options",
+      "notice": "All prices are shown in EUR. On your transfer day you can also pay in cash at the vehicle in the currencies below; the amount will be converted using that day's exchange rate."
+    },
     "steps": {
       "progressLabel": "Reservation steps",
       "search": "Search",

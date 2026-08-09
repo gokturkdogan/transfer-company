@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, min, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, min, sql } from "drizzle-orm";
 
 import { DEFAULT_CURRENCY } from "@/config/constants";
 
@@ -12,6 +12,7 @@ import {
   routePrices,
   vehicleCategories,
   vehicleCategoryTranslations,
+  vehicleDisplayPrices,
 } from "@/db/schema";
 import type {
   DistrictStartingPriceDto,
@@ -125,6 +126,10 @@ export class MarketingRepository {
       )
       .orderBy(asc(vehicleCategories.sortOrder));
 
+    const displayPrices = await this.loadVehicleDisplayPrices(
+      rows.map((row) => row.id),
+    );
+
     return rows.map((row) => ({
       id: row.id,
       name: translatedName(row.defaultName, row.translatedName),
@@ -133,9 +138,35 @@ export class MarketingRepository {
       largeLuggageCapacity: row.largeLuggageCapacity,
       cabinLuggageCapacity: row.cabinLuggageCapacity,
       imageKey: row.imageKey,
-      startingFromMinor: Number(row.startingFromMinor ?? 0),
+      startingFromMinor:
+        displayPrices.get(row.id) ?? Number(row.startingFromMinor ?? 0),
       currency: DEFAULT_CURRENCY,
     }));
+  }
+
+  private async loadVehicleDisplayPrices(
+    vehicleCategoryIds: string[],
+  ): Promise<Map<string, number>> {
+    if (vehicleCategoryIds.length === 0) {
+      return new Map();
+    }
+
+    const priceRows = await this.database
+      .select({
+        vehicleCategoryId: vehicleDisplayPrices.vehicleCategoryId,
+        startingFromMinor: vehicleDisplayPrices.startingFromMinor,
+      })
+      .from(vehicleDisplayPrices)
+      .where(
+        and(
+          inArray(vehicleDisplayPrices.vehicleCategoryId, vehicleCategoryIds),
+          eq(vehicleDisplayPrices.currency, DEFAULT_CURRENCY),
+        ),
+      );
+
+    return new Map(
+      priceRows.map((row) => [row.vehicleCategoryId, row.startingFromMinor]),
+    );
   }
 
   async findActiveFleetCodes(): Promise<string[]> {
@@ -216,6 +247,8 @@ export class MarketingRepository {
       return null;
     }
 
+    const displayPrices = await this.loadVehicleDisplayPrices([row.id]);
+
     return {
       id: row.id,
       name: translatedName(row.defaultName, row.translatedName),
@@ -228,7 +261,8 @@ export class MarketingRepository {
       largeLuggageCapacity: row.largeLuggageCapacity,
       cabinLuggageCapacity: row.cabinLuggageCapacity,
       imageKey: row.imageKey,
-      startingFromMinor: Number(row.startingFromMinor ?? 0),
+      startingFromMinor:
+        displayPrices.get(row.id) ?? Number(row.startingFromMinor ?? 0),
       currency: DEFAULT_CURRENCY,
     };
   }

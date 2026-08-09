@@ -325,6 +325,10 @@
       "network": "Ağ hatası. Bağlantınızı kontrol edip tekrar deneyin.",
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
     },
+    "paymentCurrencies": {
+      "title": "Nakit ödeme seçenekleri",
+      "notice": "Tüm fiyatlar EUR olarak gösterilir. Transfer gününde araç başında aşağıdaki para birimleri ile de nakit ödeme yapabilirsiniz; tutar o günkü kur üzerinden çevrilir."
+    },
     "steps": {
       "progressLabel": "Rezervasyon adımları",
       "search": "Arama",

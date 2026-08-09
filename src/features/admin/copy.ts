@@ -17,7 +17,7 @@ export const adminCopy = {
   sidebar: {
     dashboard: "Genel bakış",
     locations: "Konumlar",
-    currencies: "Kurlar",
+    currencies: "Nakit ödeme kurları",
     extras: "Extralar",
     vehicles: "Araçlar",
     pricing: "Fiyatlandırma",
@@ -115,8 +115,6 @@ export const adminCopy = {
       "Kaydet tüm havalimanı, bölge ve araç kombinasyonlarındaki dolu EUR fiyatlarını günceller.",
     load: "Yükle",
     emptyAirport: "Fiyat tanımlamadan önce bir havalimanı konumu ekleyin.",
-    emptyCurrencies:
-      "Fiyat girebilmek için önce Kurlar sayfasından en az bir para birimi seçin.",
     district: "Bölge",
     oneWay: "Tek yön",
     roundTrip: "Gidiş-dönüş",
@@ -125,26 +123,25 @@ export const adminCopy = {
     saved: "Fiyatlar kaydedildi.",
   },
   currencies: {
-    title: "Kurlar",
+    title: "Nakit ödeme kurları",
     subtitle:
-      "Sistemde görünecek para birimlerini seçin. Seçilen kurlar fiyatlandırma matrisinde kullanılır.",
-    formTitle: "Desteklenen para birimleri",
-    hint: "En az bir para birimi seçili olmalıdır. Her rota için seçili her kurda ayrı fiyat girilir.",
-    saveHint: "Değişiklikler kaydedildiğinde fiyatlandırma ve extra formları güncellenir.",
+      "Araç başında nakit olarak kabul edilen para birimleri. Fiyatlandırmayı etkilemez; sitede yalnızca bilgilendirme amaçlı gösterilir.",
+    formTitle: "Kabul edilen nakit para birimleri",
+    hint: "Tüm fiyatlar EUR olarak hesaplanır. Seçilen kurlar rezervasyon sayfasında nakit ödeme seçenekleri olarak gösterilir.",
+    saveHint:
+      "Değişiklikler rezervasyon akışındaki nakit ödeme bilgilendirmesini günceller.",
     activeCount: (active: number, total: number) => `${active}/${total} seçili`,
     activeLabel: "Seçili",
-    save: "Kurları kaydet",
+    save: "Kaydet",
     saving: "Kaydediliyor...",
-    saved: "Para birimleri güncellendi.",
-    open: "Kurları yönet",
+    saved: "Nakit ödeme kurları güncellendi.",
+    open: "Nakit ödeme kurlarını yönet",
   },
   extras: {
     title: "Extralar",
     subtitle:
       "Ek hizmetleri ve para birimine göre fiyatlarını yönetin. Müşteri seçilebilir veya otomatik önerilen extralar tanımlayabilirsiniz.",
     addNew: "Yeni extra",
-    emptyCurrencies:
-      "Fiyat girebilmek için önce Kurlar sayfasından en az bir para birimi seçin.",
     newTitle: "Yeni extra",
     editTitle: "Extra düzenle",
     newSubtitle: "Yeni bir ek hizmet kaydı oluşturun.",
@@ -268,6 +265,7 @@ export const adminCopy = {
       capacity: "Kapasite",
       features: "Özellikler",
       status: "Durum",
+      startingPrice: "Başlangıç fiyatı",
       actions: "İşlemler",
       edit: "Düzenle",
       passengers: (count: number) => `${count} kişi`,
@@ -317,6 +315,9 @@ export const adminCopy = {
       uploadFailed: "Görsel yüklenemedi. Lütfen tekrar deneyin.",
       sortOrder: "Sıralama",
       active: "Aktif",
+      startingPrice: "Başlangıç fiyatı",
+      startingPriceHint:
+        "Sitede \"X €'dan başlayan\" metni olarak gösterilir. Boş bırakılırsa rota fiyatlarından otomatik hesaplanır.",
       create: "Oluştur",
       save: "Kaydet",
       saving: "Kaydediliyor...",
@@ -326,7 +327,7 @@ export const adminCopy = {
   dashboard: {
     title: "Genel bakış",
     subtitle:
-      "Rezervasyon, gelir ve operasyonel özet — para birimi bazında kırılımlar.",
+      "Rezervasyon, gelir ve operasyonel özet — tüm gelirler EUR cinsinden.",
     kpi: {
       totalReservations: "Toplam rezervasyon",
       upcoming: "Gelecek seferler",
@@ -337,10 +338,9 @@ export const adminCopy = {
       oneWay: "Tek yön",
       roundTrip: "Gidiş-dönüş",
     },
-    currencySection: {
-      title: "Para birimi özeti",
-      hint: "Her para birimi için özet gelir ve rezervasyon durumu.",
-      totalRevenue: "Toplam gelir",
+    revenueSection: {
+      title: "Toplam gelir (EUR)",
+      hint: "Muhasebe kayıtları yalnızca EUR cinsinden gösterilir.",
       upcoming: "Gelecek",
       completed: "Tamamlanan",
       cancelled: "İptal",

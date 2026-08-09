@@ -77,6 +77,7 @@ function renderForm(ui: React.ReactNode) {
         airports={testAirports}
         cities={testCities}
         districts={testDistricts}
+        acceptedPaymentCurrencies={[]}
       >
         {ui}
       </BookingFlowProvider>
@@ -100,6 +101,7 @@ describe("TransferSearchForm", () => {
         airports={testAirports}
         cities={testCities}
         districts={testDistricts}
+        acceptedPaymentCurrencies={[]}
         initialSearch={{ tripType: "ROUND_TRIP", returnDate: "2026-08-12" }}
       >
         <TransferSearchForm />

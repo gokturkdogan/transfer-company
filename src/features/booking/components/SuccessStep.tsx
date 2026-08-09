@@ -3,6 +3,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { AcceptedPaymentCurrenciesNotice } from "@/features/booking/components/AcceptedPaymentCurrenciesNotice";
 import { ContactCta } from "@/components/shared/ContactCta";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { buildSearchRouteLabel } from "@/features/booking/lib/build-search-summary";
@@ -72,6 +73,8 @@ export function SuccessStep() {
           <p>{state.customer.email}</p>
         </div>
       </div>
+
+      <AcceptedPaymentCurrenciesNotice className="text-start" />
 
       <ContactCta />
       <Link

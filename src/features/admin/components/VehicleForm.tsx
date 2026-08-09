@@ -28,10 +28,12 @@ import {
 import { VehicleImageUploadField } from "@/features/admin/components/VehicleImageUploadField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DEFAULT_CURRENCY } from "@/config/constants";
 import {
   MAX_VEHICLE_BOOKING_PREVIEW_IMAGES,
   MAX_VEHICLE_FEATURES,
 } from "@/features/vehicles/domain/constants";
+import { minorToMajor } from "@/lib/money";
 
 type VehicleFormProps = {
   mode: "create" | "edit";
@@ -104,6 +106,10 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
   const [featureRows, setFeatureRows] = useState<FeatureRowState[]>(() =>
     toFeatureRows(enabledLocales, vehicle?.features),
   );
+  const [displayStartingPrice, setDisplayStartingPrice] = useState(() => {
+    const priceMinor = vehicle?.displayStartingPrices[DEFAULT_CURRENCY];
+    return priceMinor ? String(minorToMajor(priceMinor)) : "";
+  });
 
   const bookingPreviewCount = useMemo(
     () => countBookingPreviewSelections(galleryImages),
@@ -142,6 +148,11 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
           })),
           sortOrder: formData.get("sortOrder"),
           isActive: formData.get("isActive") === "on",
+          displayStartingPrices: displayStartingPrice
+            ? {
+                [DEFAULT_CURRENCY]: Number(displayStartingPrice),
+              }
+            : {},
         };
 
         startTransition(async () => {
@@ -304,8 +315,32 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
             title="Yayın ayarları"
             icon={Settings2}
             compact
-            contentClassName="space-y-0"
+            contentClassName="space-y-4"
           >
+            <div className="space-y-3">
+              <p className="text-xs text-slate-500">
+                {adminCopy.vehicles.form.startingPriceHint}
+              </p>
+              <AdminFormGrid cols={2}>
+                <AdminField
+                  label={`${adminCopy.vehicles.form.startingPrice} (${DEFAULT_CURRENCY})`}
+                  htmlFor="display-starting-price"
+                >
+                  <Input
+                    id="display-starting-price"
+                    type="number"
+                    min={0}
+                    step="0.01"
+                    inputMode="decimal"
+                    value={displayStartingPrice}
+                    onChange={(event) =>
+                      setDisplayStartingPrice(event.target.value)
+                    }
+                  />
+                </AdminField>
+              </AdminFormGrid>
+            </div>
+
             <AdminToggleField
               name="isActive"
               label={adminCopy.vehicles.form.active}

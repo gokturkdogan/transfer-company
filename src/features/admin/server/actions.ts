@@ -14,7 +14,7 @@ import {
   PricingAdminRepository,
   type UpsertRoutePriceInput,
 } from "@/features/admin/server/pricing-admin-repository";
-import { findSupportedCurrency, isSupportedCurrencyCode } from "@/config/currencies";
+import { findCashPaymentCurrency, isCashPaymentCurrencyCode } from "@/config/currencies";
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "@/config/constants";
 import {
   normalizeLocaleTranslations,
@@ -99,7 +99,7 @@ const priceUpdateSchema = z.object({
 });
 
 const enabledCurrenciesSchema = z.object({
-  codes: z.array(z.string().length(3)).min(1),
+  codes: z.array(z.string().length(3)),
 });
 
 const extraPriceSchema = z.object({
@@ -256,6 +256,9 @@ const vehicleSchema = z.object({
     .max(MAX_VEHICLE_GALLERY_IMAGES),
   sortOrder: z.coerce.number().int().min(0).default(0),
   isActive: z.boolean(),
+  displayStartingPrices: z
+    .record(z.string(), z.coerce.number().min(0))
+    .optional(),
 });
 
 const updateVehicleSchema = vehicleSchema.extend({
@@ -311,6 +314,9 @@ function mapVehicleInput(
       })),
     sortOrder: input.sortOrder,
     isActive: input.isActive,
+    displayStartingPrices: mapFeaturedStartingPricesToMinor(
+      input.displayStartingPrices,
+    ),
   };
 }
 
@@ -592,19 +598,15 @@ export async function updateEnabledCurrenciesAction(rawInput: unknown) {
   return createAction(enabledCurrenciesSchema, async (input) => {
     const currencies = input.codes
       .map((code) => code.toUpperCase())
-      .filter(isSupportedCurrencyCode)
+      .filter(isCashPaymentCurrencyCode)
       .map((code) => {
-        const supported = findSupportedCurrency(code)!;
+        const supported = findCashPaymentCurrency(code)!;
         return { code: supported.code, label: supported.label };
       });
 
-    if (currencies.length === 0) {
-      throw new DomainRuleError("En az bir para birimi seçmelisiniz");
-    }
-
     await currencyRepository.setEnabled(currencies);
     revalidatePath("/admin/currencies");
-    revalidatePath("/admin/pricing");
+    revalidatePath("/", "layout");
     return { success: true };
   }, rawInput);
 }

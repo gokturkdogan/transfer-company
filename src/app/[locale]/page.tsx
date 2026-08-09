@@ -21,6 +21,8 @@ import { LOCALES } from "@/config/constants";
 import { clientEnv } from "@/config/env";
 import { HOMEPAGE_IMAGES } from "@/config/homepage-images";
 import { db } from "@/db/client";
+import { buildAcceptedPaymentCurrencies } from "@/features/currencies/lib/build-accepted-payment-currencies";
+import { CurrencyRepository } from "@/features/currencies/server/repository";
 import { LocationRepository } from "@/features/locations/server/repository";
 import { LocationService } from "@/features/locations/server/service";
 import { MarketingRepository } from "@/features/marketing/server/repository";
@@ -95,13 +97,14 @@ export default async function HomePage({
     new VehicleGalleryRepository(db),
   );
 
-  const [airports, cities, destinations, fleet, enabledLocales] =
+  const [airports, cities, destinations, fleet, enabledLocales, enabledPaymentCurrencies] =
     await Promise.all([
       locationService.getAirports(locale),
       locationService.getCities(locale),
       marketingService.getPopularDestinations(locale),
       marketingService.getFleet(locale),
       resolveSiteLocales(new LocaleRepository(db)),
+      new CurrencyRepository(db).listEnabled(),
     ]);
 
   const cityId = cities.length === 1 ? (cities[0]?.id ?? "") : "";
@@ -115,6 +118,10 @@ export default async function HomePage({
   const defaultAirport =
     airports.find((airport) => airport.code === "AYT") ?? airports[0];
 
+  const acceptedPaymentCurrencies = buildAcceptedPaymentCurrencies(
+    enabledPaymentCurrencies,
+  );
+
   return (
     <>
       <HomeJsonLd locale={locale} />
@@ -126,6 +133,7 @@ export default async function HomePage({
               airports={airports}
               cities={cities}
               districts={districts}
+              acceptedPaymentCurrencies={acceptedPaymentCurrencies}
               initialSearch={{ cityId }}
             />
           }

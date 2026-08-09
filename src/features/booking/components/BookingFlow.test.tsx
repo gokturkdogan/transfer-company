@@ -85,6 +85,7 @@ describe("BookingFlow", () => {
             airports={testAirports}
             cities={testCities}
             districts={testDistricts}
+            acceptedPaymentCurrencies={[]}
           >
             <ErrorHarness />
           </BookingFlowProvider>
