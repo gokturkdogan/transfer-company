@@ -13,6 +13,7 @@ type DestinationCardProps = {
   href: string;
   className?: string;
   compact?: boolean;
+  priority?: boolean;
 };
 
 export function DestinationCard({
@@ -23,6 +24,7 @@ export function DestinationCard({
   href,
   className,
   compact = false,
+  priority = false,
 }: DestinationCardProps) {
   return (
     <Link
@@ -37,15 +39,14 @@ export function DestinationCard({
       <div
         className={cn(
           "relative",
-          compact
-            ? "aspect-[16/11] lg:aspect-[4/4.4]"
-            : "aspect-[4/5] sm:aspect-[4/4.4]",
+          compact ? "aspect-square" : "aspect-[4/5] sm:aspect-[4/4.4]",
         )}
       >
         <Image
           src={imageSrc}
           alt={name}
           fill
+          priority={priority}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.07]"
         />
@@ -90,11 +91,11 @@ type VehicleCardProps = {
   imageSrc: string;
   passengersLabel: string;
   luggageLabel: string;
-  featureLabels?: string[];
   priceLabel: string;
   bookLabel: string;
   href: string;
   compact?: boolean;
+  priority?: boolean;
 };
 
 export function VehicleCard({
@@ -102,11 +103,11 @@ export function VehicleCard({
   imageSrc,
   passengersLabel,
   luggageLabel,
-  featureLabels = [],
   priceLabel,
   bookLabel,
   href,
   compact = false,
+  priority = false,
 }: VehicleCardProps) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-float transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/45 hover:shadow-premium">
@@ -115,6 +116,7 @@ export function VehicleCard({
           src={imageSrc}
           alt={name}
           fill
+          priority={priority}
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
         />
@@ -145,14 +147,6 @@ export function VehicleCard({
             <Luggage className="h-3.5 w-3.5 text-gold-deep" aria-hidden />
             {luggageLabel}
           </span>
-          {featureLabels.map((feature) => (
-            <span
-              key={feature}
-              className="rounded-full border border-gold/25 bg-gold/8 px-3 py-1.5 text-gold-deep"
-            >
-              {feature}
-            </span>
-          ))}
         </div>
 
         <div className="mt-auto flex items-center justify-between gap-4 border-t border-border pt-5">

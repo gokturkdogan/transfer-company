@@ -1,8 +1,11 @@
 import { sql } from "drizzle-orm";
 import {
+  boolean,
+  char,
   check,
   doublePrecision,
   index,
+  integer,
   pgTable,
   text,
   uniqueIndex,
@@ -67,6 +70,10 @@ export const locations = pgTable(
     address: text("address"),
     latitude: doublePrecision("latitude"),
     longitude: doublePrecision("longitude"),
+    imageKey: varchar("image_key", { length: 512 }),
+    isFeaturedOnHomepage: boolean("is_featured_on_homepage")
+      .notNull()
+      .default(false),
     sortOrder: sortOrder(),
     ...timestamps,
     ...softDelete,
@@ -88,6 +95,30 @@ export const locations = pgTable(
     check(
       "locations_longitude_bounds",
       sql`${table.longitude} IS NULL OR (${table.longitude} >= -180 AND ${table.longitude} <= 180)`,
+    ),
+  ],
+);
+
+export const locationFeaturedPrices = pgTable(
+  "location_featured_prices",
+  {
+    id: id(),
+    locationId: uuid("location_id")
+      .notNull()
+      .references(() => locations.id, { onDelete: "cascade" }),
+    currency: char("currency", { length: 3 }).notNull(),
+    startingFromMinor: integer("starting_from_minor").notNull(),
+    ...timestamps,
+  },
+  (table) => [
+    uniqueIndex("location_featured_prices_location_currency_unique").on(
+      table.locationId,
+      table.currency,
+    ),
+    index("location_featured_prices_location_id_idx").on(table.locationId),
+    check(
+      "location_featured_prices_non_negative",
+      sql`${table.startingFromMinor} >= 0`,
     ),
   ],
 );

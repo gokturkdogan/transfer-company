@@ -6,6 +6,7 @@ import { AdminFormPage } from "@/features/admin/components/shell/AdminFormPage";
 import { adminCopy } from "@/features/admin/copy";
 import { LOCATION_TYPE_ICONS } from "@/features/admin/location-page-meta";
 import { LocationAdminRepository } from "@/features/admin/server/location-admin-repository";
+import { CurrencyRepository } from "@/features/currencies/server/repository";
 import { LocaleRepository } from "@/features/locales/server/repository";
 import {
   isAdminLocationType,
@@ -14,6 +15,7 @@ import {
 
 const locationAdminRepository = new LocationAdminRepository(db);
 const localeRepository = new LocaleRepository(db);
+const currencyRepository = new CurrencyRepository(db);
 
 const TYPE_BY_SLUG: Record<string, AdminLocationType> = {
   airports: "AIRPORT",
@@ -84,6 +86,8 @@ export default async function EditLocationPage({
   const { parentOptions, cityOptions, initialCityId } =
     await loadParentOptions(type);
   const enabledLocales = await localeRepository.listActive();
+  const enabledCurrencies =
+    type === "DISTRICT" ? await currencyRepository.listEnabled() : [];
 
   let hotelCityId = initialCityId;
 
@@ -107,6 +111,7 @@ export default async function EditLocationPage({
         cityOptions={cityOptions}
         initialCityId={hotelCityId}
         enabledLocales={enabledLocales}
+        enabledCurrencies={enabledCurrencies}
       />
     </AdminFormPage>
   );

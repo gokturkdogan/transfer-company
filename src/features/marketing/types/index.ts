@@ -2,6 +2,7 @@ export type DistrictStartingPriceDto = {
   id: string;
   name: string;
   code: string;
+  imageKey: string;
   startingFromMinor: number;
   currency: string;
 };
@@ -14,7 +15,6 @@ export type FleetVehicleDto = {
   largeLuggageCapacity: number;
   cabinLuggageCapacity: number;
   imageKey: string | null;
-  features: string[];
   startingFromMinor: number;
   currency: string;
 };

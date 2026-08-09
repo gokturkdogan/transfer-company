@@ -4,6 +4,7 @@ import { and, asc, eq, min, sql } from "drizzle-orm";
 
 import type { Database } from "@/db/client";
 import {
+  locationFeaturedPrices,
   locationTranslations,
   locations,
   routePrices,
@@ -15,7 +16,6 @@ import type {
   DistrictStartingPriceDto,
   FleetVehicleDto,
 } from "@/features/marketing/types";
-import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
 
 function translatedName(
   defaultName: string,
@@ -25,46 +25,28 @@ function translatedName(
 }
 
 export class MarketingRepository {
-  private readonly vehicleFeatureRepository: VehicleFeatureRepository;
+  constructor(private readonly database: Database) {}
 
-  constructor(private readonly database: Database) {
-    this.vehicleFeatureRepository = new VehicleFeatureRepository(database);
-  }
-
-  async findDistrictStartingPrices(
-    originAirportCode: string,
+  async findFeaturedDistricts(
     locale: string,
+    currency: string,
   ): Promise<DistrictStartingPriceDto[]> {
-    const originAirport = this.database
-      .select({ id: locations.id })
-      .from(locations)
-      .where(
-        and(
-          eq(locations.code, originAirportCode),
-          eq(locations.type, "AIRPORT"),
-          eq(locations.isActive, true),
-        ),
-      )
-      .as("origin_airport");
-
     const rows = await this.database
       .select({
         id: locations.id,
         code: locations.code,
         defaultName: locations.defaultName,
         translatedName: locationTranslations.name,
-        startingFromMinor: min(routePrices.oneWayPriceMinor),
-        currency: sql<string>`min(${routePrices.currency})`,
+        imageKey: locations.imageKey,
+        startingFromMinor: locationFeaturedPrices.startingFromMinor,
         sortOrder: locations.sortOrder,
       })
-      .from(routes)
-      .innerJoin(originAirport, eq(routes.originLocationId, originAirport.id))
-      .innerJoin(locations, eq(routes.destinationLocationId, locations.id))
+      .from(locations)
       .innerJoin(
-        routePrices,
+        locationFeaturedPrices,
         and(
-          eq(routePrices.routeId, routes.id),
-          eq(routePrices.isActive, true),
+          eq(locationFeaturedPrices.locationId, locations.id),
+          eq(locationFeaturedPrices.currency, currency),
         ),
       )
       .leftJoin(
@@ -76,26 +58,22 @@ export class MarketingRepository {
       )
       .where(
         and(
-          eq(routes.isActive, true),
           eq(locations.type, "DISTRICT"),
           eq(locations.isActive, true),
+          eq(locations.isFeaturedOnHomepage, true),
+          sql`${locations.imageKey} IS NOT NULL`,
+          sql`trim(${locations.imageKey}) <> ''`,
         ),
       )
-      .groupBy(
-        locations.id,
-        locations.code,
-        locations.defaultName,
-        locationTranslations.name,
-        locations.sortOrder,
-      )
-      .orderBy(asc(locations.sortOrder));
+      .orderBy(asc(locations.sortOrder), asc(locations.defaultName));
 
     return rows.map((row) => ({
       id: row.id,
       name: translatedName(row.defaultName, row.translatedName),
       code: row.code,
-      startingFromMinor: Number(row.startingFromMinor ?? 0),
-      currency: row.currency ?? "EUR",
+      imageKey: row.imageKey!.trim(),
+      startingFromMinor: row.startingFromMinor,
+      currency,
     }));
   }
 
@@ -146,12 +124,6 @@ export class MarketingRepository {
       )
       .orderBy(asc(vehicleCategories.sortOrder));
 
-    const featuresByVehicle =
-      await this.vehicleFeatureRepository.listLabelsByVehicleIds(
-        rows.map((row) => row.id),
-        locale,
-      );
-
     return rows.map((row) => ({
       id: row.id,
       name: translatedName(row.defaultName, row.translatedName),
@@ -160,7 +132,6 @@ export class MarketingRepository {
       largeLuggageCapacity: row.largeLuggageCapacity,
       cabinLuggageCapacity: row.cabinLuggageCapacity,
       imageKey: row.imageKey,
-      features: featuresByVehicle.get(row.id) ?? [],
       startingFromMinor: Number(row.startingFromMinor ?? 0),
       currency: row.currency ?? "EUR",
     }));

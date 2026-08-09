@@ -47,9 +47,14 @@ export const adminCopy = {
       name: "Ad",
       code: "Kod",
       parent: "Üst konum",
+      homepageFeatured: "Anasayfa vitrini",
       status: "Durum",
       actions: "İşlemler",
       edit: "Düzenle",
+    },
+    featuredStatus: {
+      shown: "Gösteriliyor",
+      hidden: "Gösterilmiyor",
     },
     status: {
       active: "Aktif",
@@ -74,6 +79,23 @@ export const adminCopy = {
     save: "Kaydet",
     saving: "Kaydediliyor...",
     cancel: "İptal",
+    featured: {
+      sectionTitle: "Anasayfa vitrini",
+      sectionDescription:
+        "İşaretlenen bölgeler ana sayfadaki popüler destinasyonlar carousel'inde görünür.",
+      showOnHomepage: "Anasayfada göster",
+      uploadImage: "Görsel yükle",
+      changeImage: "Görseli değiştir",
+      removeImage: "Görseli kaldır",
+      imageRequiredHint: "Anasayfada gösterilecek bölgeler için görsel zorunludur.",
+      cropTitle: "Destinasyon görselini kırp",
+      cropHint: "Görsel kare (1:1) olarak kırpılır ve CDN'e yüklenir.",
+      codeRequiredForImage: "Görsel yüklemeden önce bölge kodunu girin.",
+      uploadFailed: "Görsel yüklenemedi. Lütfen tekrar deneyin.",
+      startingPrice: "Başlangıç fiyatı",
+      startingPriceHint:
+        "Anasayfada gösterilecek her para birimi için başlangıç fiyatı zorunludur.",
+    },
   },
   pricing: {
     title: "Fiyatlandırma",
@@ -422,6 +444,11 @@ const ADMIN_ERROR_MESSAGES: Record<string, string> = {
   IMAGE_TOO_LARGE: "Görsel boyutu çok büyük (en fazla 10 MB)",
   EMPTY_IMAGE: "Boş görsel yüklenemez",
   VEHICLE_IDENTITY_REQUIRED: "Kod, marka ve model zorunludur",
+  FEATURED_IMAGE_REQUIRED:
+    "Anasayfada gösterilecek bölgeler için görsel zorunludur",
+  FEATURED_PRICE_REQUIRED:
+    "Anasayfada gösterilecek bölgeler için tüm para birimlerinde başlangıç fiyatı girilmelidir",
+  LOCATION_NOT_FOUND: "Konum bulunamadı",
 };
 
 export function formatReservationStatus(status: string): string {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 import {
   isSiteNavItemActive,
@@ -8,26 +8,28 @@ import {
 } from "@/components/shared/site-nav";
 import { usePathname } from "@/i18n/navigation";
 
-function readLocationHash(): string {
-  if (typeof window === "undefined") {
-    return "";
-  }
+function subscribeToHash(onStoreChange: () => void) {
+  window.addEventListener("hashchange", onStoreChange);
+  return () => window.removeEventListener("hashchange", onStoreChange);
+}
 
+function getHashSnapshot() {
   return window.location.hash;
+}
+
+function getServerHashSnapshot() {
+  return "";
 }
 
 export function useActiveSiteNavKey(): string | null {
   const pathname = usePathname();
-  const [hash, setHash] = useState(readLocationHash);
-
-  useEffect(() => {
-    const syncHash = () => setHash(readLocationHash());
-
-    syncHash();
-    window.addEventListener("hashchange", syncHash);
-
-    return () => window.removeEventListener("hashchange", syncHash);
-  }, []);
+  const urlHash = useSyncExternalStore(
+    subscribeToHash,
+    getHashSnapshot,
+    getServerHashSnapshot,
+  );
+  const [scrollHash, setScrollHash] = useState("");
+  const hash = urlHash || scrollHash;
 
   useEffect(() => {
     if (pathname !== "/") {
@@ -52,15 +54,15 @@ export function useActiveSiteNavKey(): string | null {
           }
 
           if (entry.isIntersecting) {
-            setHash(item.href);
+            setScrollHash(item.href);
             return;
           }
 
-          if (readLocationHash() === item.href) {
+          if (urlHash === item.href) {
             return;
           }
 
-          setHash((current) => (current === item.href ? "" : current));
+          setScrollHash((current) => (current === item.href ? "" : current));
         },
         { rootMargin: "-30% 0px -55% 0px", threshold: 0.12 },
       );
@@ -70,7 +72,7 @@ export function useActiveSiteNavKey(): string | null {
     });
 
     return () => observers.forEach((observer) => observer.disconnect());
-  }, [pathname]);
+  }, [pathname, urlHash]);
 
   const activeSection = SITE_NAV_SECTIONS.find((section) =>
     isSiteNavItemActive(pathname, hash, section),

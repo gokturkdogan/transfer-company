@@ -15,6 +15,8 @@ type VehicleImageCropDialogProps = {
   imageSrc: string;
   title: string;
   isUploading: boolean;
+  aspectRatio?: number;
+  hint?: string;
   onClose: () => void;
   onConfirm: (croppedDataUrl: string) => void;
 };
@@ -24,6 +26,8 @@ export function VehicleImageCropDialog({
   imageSrc,
   title,
   isUploading,
+  aspectRatio = ASPECT_RATIO,
+  hint = adminCopy.vehicles.form.cropHint,
   onClose,
   onConfirm,
 }: VehicleImageCropDialogProps) {
@@ -88,9 +92,7 @@ export function VehicleImageCropDialog({
           >
             {title}
           </h2>
-          <p className="mt-1 text-xs text-slate-500">
-            {adminCopy.vehicles.form.cropHint}
-          </p>
+          <p className="mt-1 text-xs text-slate-500">{hint}</p>
         </div>
 
         <div key={imageSrc} className="relative h-[min(52vh,24rem)] bg-slate-950">
@@ -98,7 +100,7 @@ export function VehicleImageCropDialog({
             image={imageSrc}
             crop={crop}
             zoom={zoom}
-            aspect={ASPECT_RATIO}
+            aspect={aspectRatio}
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={onCropComplete}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Hash, MapPin, Settings2 } from "lucide-react";
+import { Hash, MapPin, Settings2, Sparkles } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
@@ -10,6 +10,7 @@ import {
 } from "@/features/admin/server/actions";
 import type { AdminLocationRecord } from "@/features/admin/server/location-admin-repository";
 import { adminCopy, translateAdminError } from "@/features/admin/copy";
+import { DistrictImageUploadField } from "@/features/admin/components/DistrictImageUploadField";
 import { LocaleTextFields } from "@/features/admin/components/LocaleTextFields";
 import { AdminField } from "@/features/admin/components/shell/AdminField";
 import {
@@ -22,6 +23,7 @@ import { AdminFormShell } from "@/features/admin/components/shell/AdminFormShell
 import { AdminSelect } from "@/features/admin/components/shell/AdminSelect";
 import { AdminToggleField } from "@/features/admin/components/shell/AdminToggleField";
 import type { EnabledLocaleRecord } from "@/features/locales/server/repository";
+import { minorToMajor } from "@/lib/money";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,6 +34,11 @@ type SelectOption = {
   cityId?: string;
 };
 
+type EnabledCurrency = {
+  code: string;
+  label: string;
+};
+
 type LocationFormProps = {
   mode: "create" | "edit";
   type: "AIRPORT" | "CITY" | "DISTRICT" | "HOTEL";
@@ -40,6 +47,7 @@ type LocationFormProps = {
   cityOptions?: SelectOption[];
   initialCityId?: string | null;
   enabledLocales: EnabledLocaleRecord[];
+  enabledCurrencies?: EnabledCurrency[];
 };
 
 function buildTranslationState(
@@ -59,10 +67,27 @@ export function LocationForm({
   cityOptions = [],
   initialCityId = null,
   enabledLocales,
+  enabledCurrencies = [],
 }: LocationFormProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [code, setCode] = useState(location?.code ?? "");
+  const [imageKey, setImageKey] = useState(location?.imageKey ?? "");
+  const [isFeaturedOnHomepage, setIsFeaturedOnHomepage] = useState(
+    location?.isFeaturedOnHomepage ?? false,
+  );
+  const [featuredPrices, setFeaturedPrices] = useState<Record<string, string>>(
+    () =>
+      Object.fromEntries(
+        enabledCurrencies.map((currency) => [
+          currency.code,
+          location?.featuredStartingPrices[currency.code]
+            ? String(minorToMajor(location.featuredStartingPrices[currency.code]!))
+            : "",
+        ]),
+      ),
+  );
   const [selectedCityId, setSelectedCityId] = useState(
     initialCityId ?? cityOptions[0]?.id ?? "",
   );
@@ -193,6 +218,66 @@ export function LocationForm({
     </AdminFormSection>
   );
 
+  const homepageSection =
+    type === "DISTRICT" ? (
+      <AdminFormSection
+        title={adminCopy.locationForm.featured.sectionTitle}
+        description={adminCopy.locationForm.featured.sectionDescription}
+        icon={Sparkles}
+        compact
+      >
+        <AdminToggleField
+          name="isFeaturedOnHomepage"
+          label={adminCopy.locationForm.featured.showOnHomepage}
+          checked={isFeaturedOnHomepage}
+          onCheckedChange={setIsFeaturedOnHomepage}
+        />
+
+        {isFeaturedOnHomepage ? (
+          <div className="mt-4 space-y-4">
+            <DistrictImageUploadField
+              value={imageKey}
+              required
+              getDistrictCode={() => code}
+              onChange={setImageKey}
+            />
+
+            <div className="space-y-3">
+              <p className="text-xs text-slate-500">
+                {adminCopy.locationForm.featured.startingPriceHint}
+              </p>
+              <AdminFormGrid cols={2}>
+                {enabledCurrencies.map((currency) => (
+                  <AdminField
+                    key={currency.code}
+                    label={`${adminCopy.locationForm.featured.startingPrice} (${currency.code})`}
+                    htmlFor={`featured-price-${currency.code}`}
+                    required
+                  >
+                    <Input
+                      id={`featured-price-${currency.code}`}
+                      type="number"
+                      min={0}
+                      step="0.01"
+                      inputMode="decimal"
+                      required
+                      value={featuredPrices[currency.code] ?? ""}
+                      onChange={(event) =>
+                        setFeaturedPrices((current) => ({
+                          ...current,
+                          [currency.code]: event.target.value,
+                        }))
+                      }
+                    />
+                  </AdminField>
+                ))}
+              </AdminFormGrid>
+            </div>
+          </div>
+        ) : null}
+      </AdminFormSection>
+    ) : null;
+
   return (
     <AdminFormShell
       error={error}
@@ -209,6 +294,18 @@ export function LocationForm({
           address: formData.get("address") || null,
           sortOrder: formData.get("sortOrder"),
           isActive: formData.get("isActive") === "on",
+          ...(type === "DISTRICT"
+            ? {
+                imageKey: imageKey.trim() || null,
+                isFeaturedOnHomepage,
+                featuredStartingPrices: Object.fromEntries(
+                  enabledCurrencies.map((currency) => [
+                    currency.code,
+                    Number(featuredPrices[currency.code] || 0),
+                  ]),
+                ),
+              }
+            : {}),
         };
 
         startTransition(async () => {
@@ -263,7 +360,8 @@ export function LocationForm({
               <Input
                 id="code"
                 name="code"
-                defaultValue={location?.code}
+                value={code}
+                onChange={(event) => setCode(event.target.value.toUpperCase())}
                 required
               />
             </AdminField>
@@ -287,6 +385,8 @@ export function LocationForm({
           {hierarchySection ? publishSection : null}
         </AdminFormStack>
       </AdminFormRow>
+
+      {homepageSection}
     </AdminFormShell>
   );
 }

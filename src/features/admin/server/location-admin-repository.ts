@@ -5,13 +5,15 @@ import { and, asc, eq } from "drizzle-orm";
 import { DEFAULT_LOCALE } from "@/config/constants";
 import type { Database } from "@/db/client";
 import type { LocationType } from "@/db/schema/enums";
-import { locationTranslations, locations } from "@/db/schema";
+import { locationFeaturedPrices, locationTranslations, locations } from "@/db/schema";
 import type { LocaleTranslationMap } from "@/features/admin/server/translation-input";
 import { assertValidParent } from "@/features/locations/domain/hierarchy";
 import { LocationDomainError } from "@/features/locations/domain/errors";
 import { DomainRuleError, NotFoundError } from "@/server/errors";
 
 type DbExecutor = Database | Parameters<Parameters<Database["transaction"]>[0]>[0];
+
+export type FeaturedStartingPrices = Record<string, number>;
 
 export type AdminLocationRecord = {
   id: string;
@@ -22,6 +24,9 @@ export type AdminLocationRecord = {
   address: string | null;
   latitude: number | null;
   longitude: number | null;
+  imageKey: string | null;
+  isFeaturedOnHomepage: boolean;
+  featuredStartingPrices: FeaturedStartingPrices;
   sortOrder: number;
   isActive: boolean;
   translations?: LocaleTranslationMap;
@@ -35,6 +40,9 @@ export type CreateAdminLocationInput = {
   address?: string | null;
   latitude?: number | null;
   longitude?: number | null;
+  imageKey?: string | null;
+  isFeaturedOnHomepage?: boolean;
+  featuredStartingPrices?: FeaturedStartingPrices;
   sortOrder?: number;
   isActive?: boolean;
 };
@@ -57,8 +65,45 @@ function toDomainError(error: unknown): never {
   throw error;
 }
 
+function mapLocationRow(
+  row: {
+    id: string;
+    type: LocationType;
+    code: string;
+    defaultName: string;
+    parentId: string | null;
+    address: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    imageKey: string | null;
+    isFeaturedOnHomepage: boolean;
+    sortOrder: number;
+    isActive: boolean;
+  },
+  featuredStartingPrices: FeaturedStartingPrices = {},
+): AdminLocationRecord {
+  return {
+    ...row,
+    featuredStartingPrices,
+  };
+}
+
 export class LocationAdminRepository {
   constructor(private readonly database: Database) {}
+
+  async findFeaturedPrices(locationId: string): Promise<FeaturedStartingPrices> {
+    const rows = await this.database
+      .select({
+        currency: locationFeaturedPrices.currency,
+        startingFromMinor: locationFeaturedPrices.startingFromMinor,
+      })
+      .from(locationFeaturedPrices)
+      .where(eq(locationFeaturedPrices.locationId, locationId));
+
+    return Object.fromEntries(
+      rows.map((row) => [row.currency, row.startingFromMinor]),
+    );
+  }
 
   async findById(id: string): Promise<AdminLocationRecord | null> {
     const [row] = await this.database
@@ -71,6 +116,8 @@ export class LocationAdminRepository {
         address: locations.address,
         latitude: locations.latitude,
         longitude: locations.longitude,
+        imageKey: locations.imageKey,
+        isFeaturedOnHomepage: locations.isFeaturedOnHomepage,
         sortOrder: locations.sortOrder,
         isActive: locations.isActive,
       })
@@ -78,12 +125,16 @@ export class LocationAdminRepository {
       .where(eq(locations.id, id))
       .limit(1);
 
-    return row
-      ? {
-          ...row,
-          translations: await this.findTranslations(id),
-        }
-      : null;
+    if (!row) {
+      return null;
+    }
+
+    const featuredStartingPrices = await this.findFeaturedPrices(id);
+
+    return {
+      ...mapLocationRow(row, featuredStartingPrices),
+      translations: await this.findTranslations(id),
+    };
   }
 
   async findTranslations(locationId: string): Promise<LocaleTranslationMap> {
@@ -122,12 +173,15 @@ export class LocationAdminRepository {
         address: locations.address,
         latitude: locations.latitude,
         longitude: locations.longitude,
+        imageKey: locations.imageKey,
+        isFeaturedOnHomepage: locations.isFeaturedOnHomepage,
         sortOrder: locations.sortOrder,
         isActive: locations.isActive,
       })
       .from(locations)
       .where(and(...conditions))
-      .orderBy(asc(locations.sortOrder), asc(locations.defaultName));
+      .orderBy(asc(locations.sortOrder), asc(locations.defaultName))
+      .then((rows) => rows.map((row) => mapLocationRow(row)));
   }
 
   async findDistrictsForCity(cityId: string): Promise<AdminLocationRecord[]> {
@@ -203,6 +257,36 @@ export class LocationAdminRepository {
     }
   }
 
+  private async syncFeaturedPrices(
+    locationId: string,
+    prices: FeaturedStartingPrices | undefined,
+    executor: DbExecutor,
+  ): Promise<void> {
+    await executor
+      .delete(locationFeaturedPrices)
+      .where(eq(locationFeaturedPrices.locationId, locationId));
+
+    if (!prices) {
+      return;
+    }
+
+    const entries = Object.entries(prices).filter(
+      ([, amountMinor]) => amountMinor > 0,
+    );
+
+    if (entries.length === 0) {
+      return;
+    }
+
+    await executor.insert(locationFeaturedPrices).values(
+      entries.map(([currency, startingFromMinor]) => ({
+        locationId,
+        currency,
+        startingFromMinor,
+      })),
+    );
+  }
+
   async create(input: CreateAdminLocationInput): Promise<AdminLocationRecord> {
     await this.validateParent(input.type, input.parentId ?? null);
     const defaultName = input.translations[DEFAULT_LOCALE]!;
@@ -218,6 +302,8 @@ export class LocationAdminRepository {
           address: input.address ?? null,
           latitude: input.latitude ?? null,
           longitude: input.longitude ?? null,
+          imageKey: input.imageKey ?? null,
+          isFeaturedOnHomepage: input.isFeaturedOnHomepage ?? false,
           sortOrder: input.sortOrder ?? 0,
           isActive: input.isActive ?? true,
         })
@@ -230,6 +316,8 @@ export class LocationAdminRepository {
           address: locations.address,
           latitude: locations.latitude,
           longitude: locations.longitude,
+          imageKey: locations.imageKey,
+          isFeaturedOnHomepage: locations.isFeaturedOnHomepage,
           sortOrder: locations.sortOrder,
           isActive: locations.isActive,
         });
@@ -238,6 +326,12 @@ export class LocationAdminRepository {
         location.id,
         input.code,
         input.translations,
+        tx,
+      );
+
+      await this.syncFeaturedPrices(
+        location.id,
+        input.featuredStartingPrices,
         tx,
       );
 
@@ -272,6 +366,11 @@ export class LocationAdminRepository {
 
     await this.validateParent(nextType, nextParentId);
 
+    const nextImageKey =
+      input.imageKey !== undefined ? input.imageKey : existing.imageKey;
+    const nextIsFeaturedOnHomepage =
+      input.isFeaturedOnHomepage ?? existing.isFeaturedOnHomepage;
+
     await this.database.transaction(async (tx) => {
       const [location] = await tx
         .update(locations)
@@ -288,6 +387,8 @@ export class LocationAdminRepository {
             input.longitude !== undefined
               ? input.longitude
               : existing.longitude,
+          imageKey: nextImageKey,
+          isFeaturedOnHomepage: nextIsFeaturedOnHomepage,
           sortOrder: input.sortOrder ?? existing.sortOrder,
           isActive: input.isActive ?? existing.isActive,
           deletedAt:
@@ -312,6 +413,10 @@ export class LocationAdminRepository {
         nextTranslations,
         tx,
       );
+
+      if (input.featuredStartingPrices !== undefined) {
+        await this.syncFeaturedPrices(id, input.featuredStartingPrices, tx);
+      }
     });
 
     const record = await this.findById(id);

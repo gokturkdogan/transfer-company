@@ -83,6 +83,11 @@ export default async function AdminLocationsPage() {
                       <TableHead>{adminCopy.locations.table.name}</TableHead>
                       <TableHead>{adminCopy.locations.table.code}</TableHead>
                       <TableHead>{adminCopy.locations.table.parent}</TableHead>
+                      {tab.type === "DISTRICT" ? (
+                        <TableHead>
+                          {adminCopy.locations.table.homepageFeatured}
+                        </TableHead>
+                      ) : null}
                       <TableHead>{adminCopy.locations.table.status}</TableHead>
                       <TableHead className="text-right">
                         {adminCopy.locations.table.actions}
@@ -107,6 +112,21 @@ export default async function AdminLocationsPage() {
                                   "—")
                                 : "—"}
                         </TableCell>
+                        {tab.type === "DISTRICT" ? (
+                          <TableCell>
+                            <Badge
+                              variant={
+                                location.isFeaturedOnHomepage
+                                  ? "success"
+                                  : "secondary"
+                              }
+                            >
+                              {location.isFeaturedOnHomepage
+                                ? adminCopy.locations.featuredStatus.shown
+                                : adminCopy.locations.featuredStatus.hidden}
+                            </Badge>
+                          </TableCell>
+                        ) : null}
                         <TableCell>
                           <Badge
                             variant={

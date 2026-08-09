@@ -5,6 +5,8 @@ type AdminToggleFieldProps = {
   description?: string;
   name: string;
   defaultChecked?: boolean;
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
   className?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -14,9 +16,13 @@ export function AdminToggleField({
   description,
   name,
   defaultChecked,
+  checked,
+  onCheckedChange,
   className,
   onChange,
 }: AdminToggleFieldProps) {
+  const isControlled = checked !== undefined;
+
   return (
     <label
       className={cn(
@@ -27,8 +33,12 @@ export function AdminToggleField({
       <input
         type="checkbox"
         name={name}
-        defaultChecked={defaultChecked}
-        onChange={onChange}
+        defaultChecked={isControlled ? undefined : defaultChecked}
+        checked={isControlled ? checked : undefined}
+        onChange={(event) => {
+          onChange?.(event);
+          onCheckedChange?.(event.target.checked);
+        }}
         className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
       />
       <span>

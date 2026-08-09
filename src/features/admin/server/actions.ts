@@ -44,6 +44,7 @@ import { createAction } from "@/server/action";
 import { DomainRuleError } from "@/server/errors";
 import { failure } from "@/server/result";
 import { toPublicError } from "@/server/errors";
+import { majorToMinor, minorToMajor } from "@/lib/money";
 
 const locationAdminRepository = new LocationAdminRepository(db);
 const pricingAdminRepository = new PricingAdminRepository(db);
@@ -73,6 +74,11 @@ const locationSchema = z.object({
   longitude: z.coerce.number().min(-180).max(180).nullable().optional(),
   sortOrder: z.coerce.number().int().min(0).default(0),
   isActive: z.coerce.boolean().default(true),
+  imageKey: z.string().max(512).nullable().optional(),
+  isFeaturedOnHomepage: z.coerce.boolean().default(false),
+  featuredStartingPrices: z
+    .record(z.string().length(3), z.coerce.number().min(0))
+    .optional(),
 });
 
 const updateLocationSchema = locationSchema.partial().extend({
@@ -337,6 +343,71 @@ function resolveParentId(
   return input.parentId ?? null;
 }
 
+async function assertDistrictFeaturedInput(input: {
+  type: string;
+  isFeaturedOnHomepage?: boolean;
+  imageKey?: string | null;
+  featuredStartingPrices?: Record<string, number>;
+}): Promise<void> {
+  if (input.type !== "DISTRICT" || !input.isFeaturedOnHomepage) {
+    return;
+  }
+
+  if (!input.imageKey?.trim()) {
+    throw new DomainRuleError("FEATURED_IMAGE_REQUIRED");
+  }
+
+  const enabledCurrencies = await currencyRepository.listEnabledCodes();
+
+  for (const currency of enabledCurrencies) {
+    const priceMajor = input.featuredStartingPrices?.[currency];
+
+    if (priceMajor === undefined || priceMajor <= 0) {
+      throw new DomainRuleError("FEATURED_PRICE_REQUIRED");
+    }
+  }
+}
+
+function mapFeaturedStartingPricesToMinor(
+  prices: Record<string, number> | undefined,
+): Record<string, number> | undefined {
+  if (!prices) {
+    return undefined;
+  }
+
+  return Object.fromEntries(
+    Object.entries(prices).map(([currency, amountMajor]) => [
+      currency,
+      majorToMinor(amountMajor),
+    ]),
+  );
+}
+
+function buildDistrictFeaturedPayload(input: {
+  type: string;
+  imageKey?: string | null;
+  isFeaturedOnHomepage?: boolean;
+  featuredStartingPrices?: Record<string, number>;
+}): {
+  imageKey?: string | null;
+  isFeaturedOnHomepage?: boolean;
+  featuredStartingPrices?: Record<string, number>;
+} {
+  if (input.type !== "DISTRICT") {
+    return {};
+  }
+
+  const isFeaturedOnHomepage = input.isFeaturedOnHomepage ?? false;
+
+  return {
+    imageKey: input.imageKey?.trim() || null,
+    isFeaturedOnHomepage,
+    featuredStartingPrices: isFeaturedOnHomepage
+      ? mapFeaturedStartingPricesToMinor(input.featuredStartingPrices) ?? {}
+      : {},
+  };
+}
+
 export async function loginAction(rawInput: unknown) {
   const parsed = loginSchema.safeParse(rawInput);
 
@@ -367,7 +438,9 @@ export async function logoutAction() {
 
 export async function createLocationAction(rawInput: unknown) {
   return createAction(locationSchema, async (input) => {
+    await assertDistrictFeaturedInput(input);
     const enabledLocaleCodes = await localeRepository.listActiveCodes();
+    const featuredPayload = buildDistrictFeaturedPayload(input);
     const location = await locationAdminRepository.create({
       type: input.type,
       code: input.code.toUpperCase(),
@@ -381,9 +454,11 @@ export async function createLocationAction(rawInput: unknown) {
       longitude: input.longitude ?? null,
       sortOrder: input.sortOrder,
       isActive: input.isActive,
+      ...featuredPayload,
     });
 
     revalidatePath("/admin/locations");
+    revalidatePath("/");
     return location;
   }, rawInput);
 }
@@ -391,7 +466,44 @@ export async function createLocationAction(rawInput: unknown) {
 export async function updateLocationAction(rawInput: unknown) {
   return createAction(updateLocationSchema, async (input) => {
     const { id, type, parentId, translations, ...rest } = input;
+    const existing = await locationAdminRepository.findById(id);
+    const resolvedType = type ?? existing?.type;
+
+    if (!resolvedType || !existing) {
+      throw new DomainRuleError("LOCATION_NOT_FOUND");
+    }
+
+    const existingFeaturedPricesMajor = Object.fromEntries(
+      Object.entries(existing.featuredStartingPrices).map(
+        ([currency, amountMinor]) => [currency, minorToMajor(amountMinor)],
+      ),
+    );
+
+    await assertDistrictFeaturedInput({
+      type: resolvedType,
+      isFeaturedOnHomepage:
+        rest.isFeaturedOnHomepage ?? existing.isFeaturedOnHomepage ?? false,
+      imageKey:
+        rest.imageKey !== undefined ? rest.imageKey : existing.imageKey ?? null,
+      featuredStartingPrices:
+        rest.featuredStartingPrices ?? existingFeaturedPricesMajor,
+    });
+
     const enabledLocaleCodes = await localeRepository.listActiveCodes();
+    const featuredPayload =
+      resolvedType === "DISTRICT"
+        ? buildDistrictFeaturedPayload({
+            type: resolvedType,
+            imageKey:
+              rest.imageKey !== undefined
+                ? rest.imageKey
+                : existing.imageKey ?? null,
+            isFeaturedOnHomepage:
+              rest.isFeaturedOnHomepage ?? existing.isFeaturedOnHomepage ?? false,
+            featuredStartingPrices:
+              rest.featuredStartingPrices ?? existingFeaturedPricesMajor,
+          })
+        : {};
 
     const location = await locationAdminRepository.update(id, {
       ...rest,
@@ -407,9 +519,11 @@ export async function updateLocationAction(rawInput: unknown) {
           : parentId !== undefined
             ? parentId
             : undefined,
+      ...featuredPayload,
     });
 
     revalidatePath("/admin/locations");
+    revalidatePath("/");
     revalidatePath(`/admin/locations/${location.type.toLowerCase()}/${id}/edit`);
     return location;
   }, rawInput);

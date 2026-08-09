@@ -78,6 +78,20 @@
       "when": 1786172400000,
       "tag": "0010_remove_chf_currency",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1786172500000,
+      "tag": "0011_vehicle_image_url_length",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1786172600000,
+      "tag": "0012_district_homepage_featured",
+      "breakpoints": true
     }
   ]
 }

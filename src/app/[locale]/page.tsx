@@ -21,6 +21,7 @@ import { LOCALES } from "@/config/constants";
 import { clientEnv } from "@/config/env";
 import { HOMEPAGE_IMAGES } from "@/config/homepage-images";
 import { db } from "@/db/client";
+import { CurrencyRepository, resolveQuoteCurrency } from "@/features/currencies/server/repository";
 import { LocationRepository } from "@/features/locations/server/repository";
 import { LocationService } from "@/features/locations/server/service";
 import { MarketingRepository } from "@/features/marketing/server/repository";
@@ -88,12 +89,14 @@ export default async function HomePage({
 
   const locationService = new LocationService(new LocationRepository(db));
   const marketingService = new MarketingService(new MarketingRepository(db));
+  const currencyRepository = new CurrencyRepository(db);
+  const displayCurrency = await resolveQuoteCurrency(currencyRepository);
 
   const [airports, cities, destinations, fleet, enabledLocales] =
     await Promise.all([
       locationService.getAirports(locale),
       locationService.getCities(locale),
-      marketingService.getPopularDestinations(locale),
+      marketingService.getPopularDestinations(locale, displayCurrency),
       marketingService.getFleet(locale),
       resolveSiteLocales(new LocaleRepository(db)),
     ]);

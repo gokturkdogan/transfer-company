@@ -6,16 +6,14 @@ import type {
   FleetVehicleDto,
 } from "@/features/marketing/types";
 
-const DEFAULT_ORIGIN_AIRPORT_CODE = "AYT";
-
 export class MarketingService {
   constructor(private readonly repository: MarketingRepository) {}
 
-  getPopularDestinations(locale: string): Promise<DistrictStartingPriceDto[]> {
-    return this.repository.findDistrictStartingPrices(
-      DEFAULT_ORIGIN_AIRPORT_CODE,
-      locale,
-    );
+  getPopularDestinations(
+    locale: string,
+    displayCurrency: string,
+  ): Promise<DistrictStartingPriceDto[]> {
+    return this.repository.findFeaturedDistricts(locale, displayCurrency);
   }
 
   getFleet(locale: string): Promise<FleetVehicleDto[]> {

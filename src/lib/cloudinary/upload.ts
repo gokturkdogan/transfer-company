@@ -3,6 +3,7 @@ import "server-only";
 import { v2 as cloudinary } from "cloudinary";
 
 import { serverEnv } from "@/config/env";
+import { buildDestinationImageFolderPath } from "@/lib/cloudinary/destination-folder";
 import { buildVehicleImageFolderPath } from "@/lib/cloudinary/vehicle-folder";
 import { DomainRuleError } from "@/server/errors";
 
@@ -71,23 +72,28 @@ export type UploadVehicleImageResult = {
   folder: string;
 };
 
-export async function uploadVehicleImageToCloudinary(
-  input: UploadVehicleImageInput,
+export type UploadDestinationImageInput = {
+  imageDataUrl: string;
+  code: string;
+  assetName?: string;
+};
+
+export type UploadDestinationImageResult = UploadVehicleImageResult;
+
+async function uploadImageToCloudinary(
+  imageDataUrl: string,
+  folder: string,
+  assetName: string,
 ): Promise<UploadVehicleImageResult> {
   ensureCloudinaryConfigured();
 
-  const { buffer } = parseDataUrl(input.imageDataUrl);
-  const folder = buildVehicleImageFolderPath(
-    input.code,
-    input.brand,
-    input.model,
-  );
+  const { buffer } = parseDataUrl(imageDataUrl);
 
   const result = await cloudinary.uploader.upload(
     `data:image/jpeg;base64,${buffer.toString("base64")}`,
     {
       folder,
-      public_id: input.assetName,
+      public_id: assetName,
       overwrite: true,
       invalidate: true,
       resource_type: "image",
@@ -100,4 +106,28 @@ export async function uploadVehicleImageToCloudinary(
     publicId: result.public_id,
     folder,
   };
+}
+
+export async function uploadVehicleImageToCloudinary(
+  input: UploadVehicleImageInput,
+): Promise<UploadVehicleImageResult> {
+  const folder = buildVehicleImageFolderPath(
+    input.code,
+    input.brand,
+    input.model,
+  );
+
+  return uploadImageToCloudinary(input.imageDataUrl, folder, input.assetName);
+}
+
+export async function uploadDestinationImageToCloudinary(
+  input: UploadDestinationImageInput,
+): Promise<UploadDestinationImageResult> {
+  const folder = buildDestinationImageFolderPath(input.code);
+
+  return uploadImageToCloudinary(
+    input.imageDataUrl,
+    folder,
+    input.assetName ?? "cover",
+  );
 }

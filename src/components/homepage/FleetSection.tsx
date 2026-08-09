@@ -30,10 +30,11 @@ export async function FleetSection({
           subtitle={t("subtitle")}
         />
         <PremiumCarousel label={t("title")}>
-          {fleet.map((vehicle) => (
+          {fleet.map((vehicle, index) => (
             <VehicleCard
               key={vehicle.id}
               compact
+              priority={index < 3}
               name={vehicle.name}
               imageSrc={resolveVehicleCoverImage(vehicle.imageKey, vehicle.code)}
               passengersLabel={t("passengers", {
@@ -42,7 +43,6 @@ export async function FleetSection({
               luggageLabel={t("luggage", {
                 large: vehicle.largeLuggageCapacity,
               })}
-              featureLabels={vehicle.features}
               priceLabel={t("from", {
                 price: formatMoney(
                   {
