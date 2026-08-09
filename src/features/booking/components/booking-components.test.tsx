@@ -202,6 +202,7 @@ describe("PriceSummary", () => {
           pricingMode: "PER_UNIT",
           quantity: 1,
           maxQuantity: 1,
+          includedQuantity: 0,
           unitPriceMinor: 2500,
           totalPriceMinor: 2500,
           required: true,

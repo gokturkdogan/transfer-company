@@ -12,6 +12,7 @@ const baseExtra = {
   currency: "EUR",
   minQuantity: 1,
   maxQuantity: 5,
+  includedQuantity: 0,
   customerSelectable: true,
 };
 
