@@ -1,8 +1,9 @@
-import { Clock, Mail, MessageCircle, Phone } from "lucide-react";
+import { Clock, Mail, Phone } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
 import { SiteLogo } from "@/components/shared/SiteLogo";
+import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
 import {
@@ -15,10 +16,8 @@ import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link } from "@/i18n/navigation";
 
 const EXPLORE_LINKS = [
-  { key: "destinations", href: "#destinations" },
-  { key: "fleet", href: "#fleet" },
-  { key: "howItWorks", href: "#how-it-works" },
-  { key: "faq", href: "#faq" },
+  { key: "fleet", href: "#fleet", type: "hash" },
+  { key: "createReservation", href: "/booking", type: "route" },
 ] as const;
 
 export async function SiteFooter({
@@ -69,12 +68,21 @@ export async function SiteFooter({
           <FooterColumn title={t("exploreTitle")}>
             {EXPLORE_LINKS.map((link) => (
               <li key={link.key}>
-                <a
-                  href={link.href}
-                  className="transition-colors hover:text-gold-light"
-                >
-                  {nav(link.key)}
-                </a>
+                {link.type === "route" ? (
+                  <Link
+                    href={link.href}
+                    className="transition-colors hover:text-gold-light"
+                  >
+                    {nav(link.key)}
+                  </Link>
+                ) : (
+                  <a
+                    href={link.href}
+                    className="transition-colors hover:text-gold-light"
+                  >
+                    {nav(link.key)}
+                  </a>
+                )}
               </li>
             ))}
           </FooterColumn>
@@ -86,9 +94,12 @@ export async function SiteFooter({
               </Link>
             </li>
             <li>
-              <a href="#booking" className="transition-colors hover:text-gold-light">
+              <Link
+                href="/booking"
+                className="transition-colors hover:text-gold-light"
+              >
                 {t("bookTransfer")}
-              </a>
+              </Link>
             </li>
             <li>
               <Link
@@ -120,7 +131,7 @@ export async function SiteFooter({
                   rel="noreferrer"
                   className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
                 >
-                  <MessageCircle className="h-4 w-4 text-gold" aria-hidden />
+                  <WhatsAppIcon className="h-4 w-4 text-gold" aria-hidden />
                   {whatsapp}
                 </a>
               </li>

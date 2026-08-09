@@ -1,3 +1,4 @@
+import type { ComponentType } from "react";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -6,7 +7,7 @@ import { cn } from "@/lib/utils";
 type AdminFormSectionProps = {
   title: string;
   description?: string;
-  icon?: LucideIcon;
+  icon?: LucideIcon | ComponentType<{ className?: string }>;
   children: ReactNode;
   className?: string;
   contentClassName?: string;

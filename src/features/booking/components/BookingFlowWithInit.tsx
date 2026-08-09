@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 import { BookingFlow } from "@/features/booking/components/BookingFlow";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { isLauncherSearchComplete } from "@/features/booking/lib/launcher-search";
 import type { BookingSearchState } from "@/features/booking/lib/types";
 
 export function BookingFlowWithInit({
@@ -17,8 +18,7 @@ export function BookingFlowWithInit({
   useEffect(() => {
     if (
       initialized.current ||
-      !initialSearch?.originAirportId ||
-      !initialSearch.destinationDistrictId
+      !isLauncherSearchComplete(initialSearch)
     ) {
       return;
     }

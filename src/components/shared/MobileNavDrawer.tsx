@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Mail, MessageCircle, Phone, X } from "lucide-react";
+import { ArrowRight, Mail, Phone, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { getLocaleEmoji } from "@/config/locales";
@@ -12,28 +12,18 @@ import {
 } from "@/features/contact/domain/contact-links";
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { SiteLogo } from "@/components/shared/SiteLogo";
+import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
+import {
+  getMobileSiteNavLinkClassName,
+  resolveSiteNavHref,
+  SITE_NAV_SECTIONS,
+} from "@/components/shared/site-nav";
+import { useActiveSiteNavKey } from "@/components/shared/use-site-nav-active";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useLocaleSwitch } from "@/i18n/use-locale-switch";
 import { cn } from "@/lib/utils";
 
-const NAV_SECTIONS = [
-  { key: "about", href: "/about", type: "route" },
-  { key: "destinations", href: "#destinations", type: "hash" },
-  { key: "fleet", href: "#fleet", type: "hash" },
-  { key: "howItWorks", href: "#how-it-works", type: "hash" },
-  { key: "faq", href: "#faq", type: "hash" },
-] as const;
-
-function resolveNavHref(
-  pathname: string,
-  section: (typeof NAV_SECTIONS)[number],
-): string {
-  if (section.type === "route") {
-    return section.href;
-  }
-
-  return pathname === "/" ? section.href : `/${section.href}`;
-}
+const NAV_SECTIONS = SITE_NAV_SECTIONS;
 
 type MobileNavDrawerProps = {
   open: boolean;
@@ -52,6 +42,7 @@ export function MobileNavDrawer({
   const footer = useTranslations("home.footer");
   const common = useTranslations("common");
   const pathname = usePathname();
+  const activeNavKey = useActiveSiteNavKey();
   const switchLocale = useLocaleSwitch();
   const contactChannels = usePublicContactChannels();
 
@@ -119,13 +110,17 @@ export function MobileNavDrawer({
         {/* Nav items */}
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="space-y-1">
-            {NAV_SECTIONS.map((section) => (
+            {NAV_SECTIONS.map((section) => {
+              const isActive = activeNavKey === section.key;
+
+              return (
               <li key={section.key}>
                 {section.type === "route" ? (
                   <Link
                     href={section.href}
                     onClick={onClose}
-                    className="flex items-center justify-between rounded-xl px-3 py-3.5 text-sm font-semibold text-white/85 transition-colors hover:bg-white/8 hover:text-white"
+                    aria-current={isActive ? "page" : undefined}
+                    className={getMobileSiteNavLinkClassName(isActive)}
                   >
                     {t(section.key)}
                     <ArrowRight
@@ -135,9 +130,10 @@ export function MobileNavDrawer({
                   </Link>
                 ) : (
                   <a
-                    href={resolveNavHref(pathname, section)}
+                    href={resolveSiteNavHref(pathname, section)}
                     onClick={onClose}
-                    className="flex items-center justify-between rounded-xl px-3 py-3.5 text-sm font-semibold text-white/85 transition-colors hover:bg-white/8 hover:text-white"
+                    aria-current={isActive ? "page" : undefined}
+                    className={getMobileSiteNavLinkClassName(isActive)}
                   >
                     {t(section.key)}
                     <ArrowRight
@@ -147,7 +143,8 @@ export function MobileNavDrawer({
                   </a>
                 )}
               </li>
-            ))}
+              );
+            })}
           </ul>
         </nav>
 
@@ -171,7 +168,7 @@ export function MobileNavDrawer({
               rel="noreferrer"
               className="flex items-center gap-2.5 text-sm font-medium text-white/80 transition-colors hover:text-gold-light"
             >
-              <MessageCircle className="h-4 w-4 text-gold" aria-hidden />
+              <WhatsAppIcon className="h-4 w-4 text-gold" aria-hidden />
               {whatsapp}
             </a>
           ))}
@@ -217,14 +214,14 @@ export function MobileNavDrawer({
             ))}
           </div>
 
-          <a
-            href="#booking"
+          <Link
+            href="/booking"
             onClick={onClose}
             className="flex h-11 items-center justify-center gap-2 rounded-xl bg-gold-gradient text-sm font-bold text-ink shadow-gold transition-all hover:brightness-110"
           >
             {t("reserve")}
             <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
-          </a>
+          </Link>
 
           <p className="pt-1 text-center text-[10px] tracking-wide text-white/40">
             {footer("tagline")}

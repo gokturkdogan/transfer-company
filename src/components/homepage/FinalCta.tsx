@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
 import { Reveal } from "@/components/motion/Reveal";
+import { Link } from "@/i18n/navigation";
 import {
   pickPrimaryChannel,
   toTelHref,
@@ -53,8 +54,8 @@ export async function FinalCta() {
           </p>
 
           <div className="flex flex-col items-center justify-center gap-3 pt-2 sm:flex-row">
-            <a
-              href="#booking"
+            <Link
+              href="/booking"
               className="group flex h-13 w-full items-center justify-center gap-2 rounded-full bg-gold-gradient px-8 text-sm font-bold text-ink shadow-gold transition-all duration-300 hover:brightness-110 sm:w-auto"
             >
               {t("button")}
@@ -62,7 +63,7 @@ export async function FinalCta() {
                 className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180"
                 aria-hidden
               />
-            </a>
+            </Link>
             <a
               href={toTelHref(primaryPhone)}
               className="flex h-13 w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/8 px-8 text-sm font-semibold text-white backdrop-blur-md transition-colors duration-300 hover:border-gold/50 hover:text-gold-light sm:w-auto"

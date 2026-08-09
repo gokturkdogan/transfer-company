@@ -93,13 +93,25 @@ function clearDestination(state: BookingFlowState): BookingFlowState {
   };
 }
 
+function resolveInitialStep(search: BookingSearchState): BookingStep {
+  if (isLauncherSearchComplete(search)) {
+    return "vehicle";
+  }
+
+  if (search.originAirportId && search.destinationDistrictId) {
+    return "vehicle";
+  }
+
+  return "search";
+}
+
 export function createInitialBookingFlowState(
   search?: Partial<BookingSearchState>,
 ): BookingFlowState {
   const mergedSearch = { ...getDefaultSearchState(), ...search };
 
   return {
-    step: isLauncherSearchComplete(mergedSearch) ? "vehicle" : "search",
+    step: resolveInitialStep(mergedSearch),
     search: mergedSearch,
     destination: getDefaultDestinationState(),
     quote: null,

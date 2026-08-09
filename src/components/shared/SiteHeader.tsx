@@ -2,19 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowRight, Menu, MessageCircle, Phone } from "lucide-react";
+import { ArrowRight, Menu, Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
 import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { MobileNavDrawer } from "@/components/shared/MobileNavDrawer";
 import { SiteLogo } from "@/components/shared/SiteLogo";
-import type { SiteLocaleOption } from "@/features/locales/types";
+import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
+import {
+  getSiteNavLinkClassName,
+  resolveSiteNavHref,
+  SITE_NAV_SECTIONS,
+  type SiteNavSection,
+} from "@/components/shared/site-nav";
+import { useActiveSiteNavKey } from "@/components/shared/use-site-nav-active";
 import {
   pickPrimaryChannel,
   toTelHref,
   toWhatsappHref,
 } from "@/features/contact/domain/contact-links";
 import { usePublicContactChannels } from "@/features/contact/components/PublicContactProvider";
+import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -22,30 +30,47 @@ type SiteHeaderProps = {
   enabledLocales: SiteLocaleOption[];
 };
 
-const NAV_SECTIONS = [
-  { key: "about", href: "/about", type: "route" },
-  { key: "destinations", href: "#destinations", type: "hash" },
-  { key: "fleet", href: "#fleet", type: "hash" },
-  { key: "howItWorks", href: "#how-it-works", type: "hash" },
-  { key: "faq", href: "#faq", type: "hash" },
-] as const;
+const NAV_SECTIONS = SITE_NAV_SECTIONS;
 
-function resolveNavHref(
-  pathname: string,
-  section: (typeof NAV_SECTIONS)[number],
-): string {
+function SiteNavLink({
+  section,
+  isActive,
+  children,
+}: {
+  section: SiteNavSection;
+  isActive: boolean;
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+
   if (section.type === "route") {
-    return section.href;
+    return (
+      <Link
+        href={section.href}
+        aria-current={isActive ? "page" : undefined}
+        className={getSiteNavLinkClassName(isActive)}
+      >
+        {children}
+      </Link>
+    );
   }
 
-  return pathname === "/" ? section.href : `/${section.href}`;
+  return (
+    <a
+      href={resolveSiteNavHref(pathname, section)}
+      aria-current={isActive ? "page" : undefined}
+      className={getSiteNavLinkClassName(isActive)}
+    >
+      {children}
+    </a>
+  );
 }
 
 export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
   const t = useTranslations("home.nav");
   const common = useTranslations("common");
   const currentLocale = useLocale();
-  const pathname = usePathname();
+  const activeNavKey = useActiveSiteNavKey();
   const contactChannels = usePublicContactChannels();
   const primaryPhone = pickPrimaryChannel(contactChannels.phones, "");
   const primaryWhatsapp = pickPrimaryChannel(contactChannels.whatsapps, "");
@@ -110,25 +135,15 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
             </Link>
 
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 md:flex lg:gap-1">
-              {NAV_SECTIONS.map((section) =>
-                section.type === "route" ? (
-                  <Link
-                    key={section.key}
-                    href={section.href}
-                    className="rounded-full px-2 py-1.5 text-xs font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white lg:px-3.5 lg:py-2 lg:text-sm"
-                  >
-                    {t(section.key)}
-                  </Link>
-                ) : (
-                  <a
-                    key={section.key}
-                    href={resolveNavHref(pathname, section)}
-                    className="rounded-full px-2 py-1.5 text-xs font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white lg:px-3.5 lg:py-2 lg:text-sm"
-                  >
-                    {t(section.key)}
-                  </a>
-                ),
-              )}
+              {NAV_SECTIONS.map((section) => (
+                <SiteNavLink
+                  key={section.key}
+                  section={section}
+                  isActive={activeNavKey === section.key}
+                >
+                  {t(section.key)}
+                </SiteNavLink>
+              ))}
             </nav>
 
             <div className="hidden shrink-0 items-center gap-2 md:flex">
@@ -149,11 +164,11 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
                 aria-label="WhatsApp"
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/8 text-white/80 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold-light"
               >
-                <MessageCircle className="h-4 w-4" aria-hidden />
+                <WhatsAppIcon className="h-4 w-4" aria-hidden />
               </a>
 
-              <a
-                href="#booking"
+              <Link
+                href="/booking"
                 className="group ms-1 flex h-9 items-center gap-1.5 rounded-full bg-gold-gradient px-4 text-xs font-bold text-ink shadow-gold transition-all duration-300 hover:brightness-110"
               >
                 {t("reserve")}
@@ -161,7 +176,7 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
                   className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180"
                   aria-hidden
                 />
-              </a>
+              </Link>
             </div>
 
             <div className="flex items-center gap-2 md:hidden">

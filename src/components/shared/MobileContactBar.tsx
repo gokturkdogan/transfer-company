@@ -1,7 +1,10 @@
 "use client";
 
-import { CalendarCheck, Mail, MessageCircle, Phone } from "lucide-react";
+import { CalendarCheck, Mail, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
+
+import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
+import { Link } from "@/i18n/navigation";
 
 import { usePublicContactChannels } from "@/features/contact/components/PublicContactProvider";
 import {
@@ -41,7 +44,7 @@ export function MobileContactBar({ variant = "default" }: MobileContactBarProps)
           rel="noreferrer"
           className={actionLinkClassName}
         >
-          <MessageCircle className="h-4 w-4 shrink-0 text-gold" aria-hidden />
+          <WhatsAppIcon className="h-4 w-4 shrink-0 text-gold" aria-hidden />
           <span>{t("whatsapp")}</span>
         </a>
         {variant === "booking" ? (
@@ -53,13 +56,13 @@ export function MobileContactBar({ variant = "default" }: MobileContactBarProps)
             <span>{t("email")}</span>
           </a>
         ) : (
-          <a
-            href="#booking"
+          <Link
+            href="/booking"
             className="flex h-11 items-center justify-center gap-1.5 rounded-xl bg-gold-gradient px-2 text-xs font-bold text-ink shadow-gold whitespace-nowrap"
           >
             <CalendarCheck className="h-4 w-4 shrink-0" aria-hidden />
             <span>{t("reserve")}</span>
-          </a>
+          </Link>
         )}
       </div>
     </div>

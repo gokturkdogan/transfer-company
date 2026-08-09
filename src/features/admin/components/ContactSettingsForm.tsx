@@ -1,8 +1,8 @@
 "use client";
 
+import type { ComponentType, SVGProps } from "react";
 import {
   Mail,
-  MessageCircle,
   Phone,
   Plus,
   Trash2,
@@ -20,6 +20,7 @@ import { CONTACT_CHANNEL_TYPES } from "@/db/schema/enums";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import { cn } from "@/lib/utils";
 
 type ContactRowState = {
@@ -41,7 +42,7 @@ const SECTION_CONFIG: Record<
     description: string;
     addLabel: string;
     placeholder: string;
-    icon: typeof Mail;
+    icon: ComponentType<SVGProps<SVGSVGElement>>;
   }
 > = {
   EMAIL: {
@@ -63,7 +64,7 @@ const SECTION_CONFIG: Record<
     description: adminCopy.contact.sectionHints.whatsapp,
     addLabel: adminCopy.contact.addWhatsapp,
     placeholder: adminCopy.contact.placeholders.whatsapp,
-    icon: MessageCircle,
+    icon: WhatsAppIcon,
   },
 };
 
