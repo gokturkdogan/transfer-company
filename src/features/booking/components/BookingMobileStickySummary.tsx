@@ -78,18 +78,14 @@ export function BookingMobileStickySummary() {
 
   return createPortal(
     <>
-      <button
-        type="button"
-        aria-label={tSummary("mobileSummaryCollapse")}
-        tabIndex={expanded ? 0 : -1}
-        aria-hidden={!expanded}
-        onClick={() => setExpanded(false)}
-        className={cn(
-          "fixed inset-0 z-[58] cursor-pointer bg-black/45 backdrop-blur-[2px] md:hidden",
-          "transition-opacity duration-300 ease-out",
-          expanded ? "opacity-100" : "pointer-events-none opacity-0",
-        )}
-      />
+      {expanded ? (
+        <button
+          type="button"
+          aria-label={tSummary("mobileSummaryCollapse")}
+          onClick={() => setExpanded(false)}
+          className="fixed inset-0 z-[58] cursor-pointer bg-black/45 backdrop-blur-[2px] md:hidden"
+        />
+      ) : null}
 
       <div
         className={cn(
@@ -97,36 +93,38 @@ export function BookingMobileStickySummary() {
           state.isLoadingQuote && "opacity-80",
         )}
       >
-        <button
-          type="button"
-          aria-label={tSummary("mobileSummaryCollapse")}
-          tabIndex={expanded ? 0 : -1}
-          onClick={() => setExpanded(false)}
-          className={cn(
-            "absolute end-3 top-3 z-[2] flex h-9 w-9 cursor-pointer items-center justify-center",
-            "rounded-full border border-white/15 bg-ink/70 text-white backdrop-blur-md",
-            "transition-[opacity,background-color] duration-300 ease-out hover:bg-ink/85",
-            expanded ? "opacity-100 delay-150" : "pointer-events-none opacity-0",
-          )}
-        >
-          <X className="h-4 w-4" aria-hidden />
-        </button>
-
         <div
           className={cn(
-            "overflow-hidden",
-            expanded ? "pointer-events-auto" : "pointer-events-none",
+            "absolute inset-x-0 bottom-full overflow-hidden",
+            "transition-[max-height] duration-300 ease-out",
+            expanded
+              ? "max-h-[calc(100dvh-4.75rem)]"
+              : "max-h-0 pointer-events-none",
           )}
         >
           <div
             className={cn(
-              "max-h-[calc(100dvh-4.75rem)] overflow-y-auto overscroll-contain",
+              "relative max-h-[calc(100dvh-4.75rem)] overflow-y-auto overscroll-contain",
               "rounded-t-[1.5rem] border border-b-0 border-white/10 bg-card",
               "shadow-[0_-20px_56px_rgb(0_0_0/0.28)]",
               "transition-transform duration-300 ease-out will-change-transform",
               expanded ? "translate-y-0" : "translate-y-full",
             )}
           >
+            <button
+              type="button"
+              aria-label={tSummary("mobileSummaryCollapse")}
+              onClick={() => setExpanded(false)}
+              className={cn(
+                "absolute end-3 top-3 z-[2] flex h-9 w-9 cursor-pointer items-center justify-center",
+                "rounded-full border border-white/15 bg-ink/70 text-white backdrop-blur-md",
+                "transition-opacity duration-300 ease-out hover:bg-ink/85",
+                expanded ? "opacity-100" : "pointer-events-none opacity-0",
+              )}
+            >
+              <X className="h-4 w-4" aria-hidden />
+            </button>
+
             <BookingOrderSummary embedded compact />
           </div>
         </div>
