@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray, isNull, sql } from "drizzle-orm";
 
 import { DEFAULT_LOCALE } from "@/config/constants";
 import type { LocaleTranslationMap } from "@/features/admin/server/translation-input";
@@ -10,7 +10,9 @@ import {
   extraServicePrices,
   extraServices,
   extraServiceTranslations,
+  reservationItems,
 } from "@/db/schema";
+import { NotFoundError } from "@/server/errors";
 
 type DbExecutor = Database | Parameters<Parameters<Database["transaction"]>[0]>[0];
 
@@ -70,7 +72,12 @@ export class ExtraAdminRepository {
         isActive: extraServices.isActive,
       })
       .from(extraServices)
-      .where(includeInactive ? undefined : eq(extraServices.isActive, true))
+      .where(
+        and(
+          isNull(extraServices.deletedAt),
+          includeInactive ? undefined : eq(extraServices.isActive, true),
+        ),
+      )
       .orderBy(asc(extraServices.sortOrder), asc(extraServices.code));
 
     if (rows.length === 0) {
@@ -165,7 +172,7 @@ export class ExtraAdminRepository {
         isActive: extraServices.isActive,
       })
       .from(extraServices)
-      .where(eq(extraServices.id, id))
+      .where(and(eq(extraServices.id, id), isNull(extraServices.deletedAt)))
       .limit(1);
 
     if (!row) {
@@ -348,5 +355,42 @@ export class ExtraAdminRepository {
     }
 
     return extra;
+  }
+
+  private async countReservationReferences(extraServiceId: string): Promise<number> {
+    const [row] = await this.database
+      .select({
+        count: sql<number>`count(*)::int`,
+      })
+      .from(reservationItems)
+      .where(eq(reservationItems.extraServiceId, extraServiceId));
+
+    return row?.count ?? 0;
+  }
+
+  async delete(id: string): Promise<"deleted" | "archived"> {
+    const extra = await this.findById(id);
+
+    if (!extra) {
+      throw new NotFoundError("Extra not found");
+    }
+
+    const reservationCount = await this.countReservationReferences(id);
+
+    if (reservationCount > 0) {
+      await this.database
+        .update(extraServices)
+        .set({
+          isActive: false,
+          deletedAt: new Date(),
+        })
+        .where(eq(extraServices.id, id));
+
+      return "archived";
+    }
+
+    await this.database.delete(extraServices).where(eq(extraServices.id, id));
+
+    return "deleted";
   }
 }

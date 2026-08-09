@@ -10,6 +10,7 @@ import {
   updateExtraAction,
 } from "@/features/admin/server/actions";
 import type { AdminExtraRecord } from "@/features/admin/server/extra-admin-repository";
+import { ExtraDeleteButton } from "@/features/admin/components/ExtraDeleteButton";
 import { adminCopy, translateAdminError } from "@/features/admin/copy";
 import { LocaleTextFields } from "@/features/admin/components/LocaleTextFields";
 import { AdminField } from "@/features/admin/components/shell/AdminField";
@@ -134,6 +135,15 @@ export function ExtraForm({
           >
             {adminCopy.extras.form.cancel}
           </Button>
+          {mode === "edit" && extra ? (
+            <ExtraDeleteButton
+              extraId={extra.id}
+              extraName={extra.name}
+              redirectToList
+              size="default"
+              className="ml-auto"
+            />
+          ) : null}
         </>
       }
     >

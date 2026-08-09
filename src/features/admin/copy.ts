@@ -157,6 +157,13 @@ export const adminCopy = {
       status: "Durum",
       actions: "İşlemler",
       edit: "Düzenle",
+      delete: "Sil",
+    },
+    delete: {
+      button: "Sil",
+      confirm: (name: string) =>
+        `"${name}" ekstrasını silmek istediğinize emin misiniz? Geçmiş rezervasyonlarda kullanıldıysa kayıt arşivlenir.`,
+      deleting: "Siliniyor...",
     },
     form: {
       code: "Kod",
@@ -453,6 +460,7 @@ const ADMIN_ERROR_MESSAGES: Record<string, string> = {
     "Varış noktası aktif bir bölge olmalı",
   "En az bir para birimi seçmelisiniz": "En az bir para birimi seçmelisiniz",
   "En az bir geçerli fiyat girmelisiniz": "En az bir geçerli fiyat girmelisiniz",
+  "Extra not found": "Extra bulunamadı",
   INVALID_IMAGE_DATA: "Geçersiz görsel verisi",
   UNSUPPORTED_IMAGE_TYPE: "Desteklenmeyen görsel formatı",
   IMAGE_TOO_LARGE: "Görsel boyutu çok büyük (en fazla 10 MB)",

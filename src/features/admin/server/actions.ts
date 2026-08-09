@@ -634,6 +634,18 @@ export async function updateExtraAction(rawInput: unknown) {
   }, rawInput);
 }
 
+export async function deleteExtraAction(rawInput: unknown) {
+  return createAction(
+    z.object({ id: z.string().uuid() }),
+    async (input) => {
+      const result = await extraAdminRepository.delete(input.id);
+      revalidatePath("/admin/extras");
+      return { result };
+    },
+    rawInput,
+  );
+}
+
 export async function updateContactChannelsAction(rawInput: unknown) {
   return createAction(syncContactChannelsSchema, async (input) => {
     const channels = await contactChannelRepository.sync(

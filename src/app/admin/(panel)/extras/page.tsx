@@ -3,6 +3,7 @@ import { PackagePlus } from "lucide-react";
 
 import { db } from "@/db/client";
 import { ExtraAdminRepository } from "@/features/admin/server/extra-admin-repository";
+import { ExtraTableActions } from "@/features/admin/components/ExtraDeleteButton";
 import { AdminContentCard } from "@/features/admin/components/shell/AdminContentCard";
 import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
@@ -84,11 +85,7 @@ export default async function AdminExtrasPage() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button asChild variant="outline" size="sm">
-                      <Link href={`/admin/extras/${extra.id}/edit`}>
-                        {adminCopy.extras.table.edit}
-                      </Link>
-                    </Button>
+                    <ExtraTableActions extraId={extra.id} extraName={extra.name} />
                   </TableCell>
                 </TableRow>
               ))}
