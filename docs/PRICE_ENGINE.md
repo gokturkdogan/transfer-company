@@ -26,9 +26,11 @@ Each extra has `pricingMode`:
 | Mode | Calculation |
 |------|-------------|
 | `FIXED` | Flat price regardless of quantity (quantity stored as 1 on line item) |
-| `PER_UNIT` | `unitPriceMinor × quantity` |
+| `PER_UNIT` | `unitPriceMinor × max(0, quantity − includedQuantity)` |
 
 Luggage vehicle is a standard extra with optional `luggageCapacityPerUnit`. No hardcoded pricing.
+
+`includedQuantity` on `extra_services` defines how many units are free per booking for `PER_UNIT` extras (e.g. child seat: 1 free, additional units charged). Fixed extras ignore this field.
 
 ## Quote calculation
 

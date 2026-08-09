@@ -28,6 +28,7 @@ export type AdminExtraRecord = {
   autoSuggested: boolean;
   minQuantity: number;
   maxQuantity: number | null;
+  includedQuantity: number;
   luggageCapacityPerUnit: number | null;
   sortOrder: number;
   isActive: boolean;
@@ -43,6 +44,7 @@ export type UpsertAdminExtraInput = {
   autoSuggested: boolean;
   minQuantity: number;
   maxQuantity?: number | null;
+  includedQuantity: number;
   luggageCapacityPerUnit?: number | null;
   sortOrder: number;
   isActive: boolean;
@@ -62,6 +64,7 @@ export class ExtraAdminRepository {
         autoSuggested: extraServices.autoSuggested,
         minQuantity: extraServices.minQuantity,
         maxQuantity: extraServices.maxQuantity,
+        includedQuantity: extraServices.includedQuantity,
         luggageCapacityPerUnit: extraServices.luggageCapacityPerUnit,
         sortOrder: extraServices.sortOrder,
         isActive: extraServices.isActive,
@@ -125,6 +128,7 @@ export class ExtraAdminRepository {
       autoSuggested: row.autoSuggested,
       minQuantity: row.minQuantity,
       maxQuantity: row.maxQuantity,
+      includedQuantity: row.includedQuantity,
       luggageCapacityPerUnit: row.luggageCapacityPerUnit,
       sortOrder: row.sortOrder,
       isActive: row.isActive,
@@ -155,6 +159,7 @@ export class ExtraAdminRepository {
         autoSuggested: extraServices.autoSuggested,
         minQuantity: extraServices.minQuantity,
         maxQuantity: extraServices.maxQuantity,
+        includedQuantity: extraServices.includedQuantity,
         luggageCapacityPerUnit: extraServices.luggageCapacityPerUnit,
         sortOrder: extraServices.sortOrder,
         isActive: extraServices.isActive,
@@ -191,6 +196,7 @@ export class ExtraAdminRepository {
       autoSuggested: row.autoSuggested,
       minQuantity: row.minQuantity,
       maxQuantity: row.maxQuantity,
+      includedQuantity: row.includedQuantity,
       luggageCapacityPerUnit: row.luggageCapacityPerUnit,
       sortOrder: row.sortOrder,
       isActive: row.isActive,
@@ -282,6 +288,7 @@ export class ExtraAdminRepository {
           autoSuggested: input.autoSuggested,
           minQuantity: input.minQuantity,
           maxQuantity: input.maxQuantity ?? null,
+          includedQuantity: input.includedQuantity,
           luggageCapacityPerUnit: input.luggageCapacityPerUnit ?? null,
           sortOrder: input.sortOrder,
           isActive: input.isActive,
@@ -318,6 +325,7 @@ export class ExtraAdminRepository {
           autoSuggested: input.autoSuggested,
           minQuantity: input.minQuantity,
           maxQuantity: input.maxQuantity ?? null,
+          includedQuantity: input.includedQuantity,
           luggageCapacityPerUnit: input.luggageCapacityPerUnit ?? null,
           sortOrder: input.sortOrder,
           isActive: input.isActive,

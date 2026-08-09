@@ -15,6 +15,7 @@ export type QuoteExtraSelection = {
   extraServiceName: string;
   pricingMode: ExtraPricingMode;
   quantity: number;
+  includedQuantity: number;
   unitPriceMinor: number;
   currency: string;
 };

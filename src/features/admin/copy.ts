@@ -94,13 +94,13 @@ export const adminCopy = {
       uploadFailed: "Görsel yüklenemedi. Lütfen tekrar deneyin.",
       startingPrice: "Başlangıç fiyatı",
       startingPriceHint:
-        "Anasayfada gösterilecek her para birimi için başlangıç fiyatı zorunludur.",
+        "Anasayfada gösterilecek başlangıç fiyatı (EUR) zorunludur.",
     },
   },
   pricing: {
     title: "Fiyatlandırma",
     subtitle:
-      "Havalimanından bölgeye, araç kategorisi ve para birimine göre rota fiyatları.",
+      "Havalimanından bölgeye, araç kategorisine göre rota fiyatları (EUR).",
     airport: "Havalimanı",
     selectAirport: "Havalimanı seçin",
     selectVehicle: "Araç kategorisi",
@@ -112,7 +112,7 @@ export const adminCopy = {
     emptyVehicles:
       "Fiyat girebilmek için önce en az bir aktif araç kategorisi ekleyin.",
     saveHint:
-      "Kaydet tüm havalimanı, bölge, araç ve para birimi kombinasyonlarındaki dolu fiyatları günceller.",
+      "Kaydet tüm havalimanı, bölge ve araç kombinasyonlarındaki dolu EUR fiyatlarını günceller.",
     load: "Yükle",
     emptyAirport: "Fiyat tanımlamadan önce bir havalimanı konumu ekleyin.",
     emptyCurrencies:
@@ -167,12 +167,15 @@ export const adminCopy = {
       minQuantity: "Minimum adet",
       maxQuantity: "Maksimum adet",
       maxQuantityHint: "Boş bırakılırsa sınırsız",
+      includedQuantity: "Ücretsiz dahil adet",
+      includedQuantityHint:
+        "Adet başına fiyatlandırmada ücretsiz sayılacak adet (ör. 1 = ilk adet ücretsiz). Sabit fiyatta yok sayılır.",
       luggageCapacityPerUnit: "Birim bagaj kapasitesi",
       luggageCapacityHint: "Otomatik önerilen bagaj extraları için",
       sortOrder: "Sıralama",
       active: "Aktif",
       pricesTitle: "Fiyatlar",
-      pricesHint: "Her aktif para birimi için fiyat girin.",
+      pricesHint: "EUR cinsinden fiyat girin.",
       priceLabel: (currency: string) => `Fiyat (${currency})`,
       create: "Oluştur",
       save: "Kaydet",

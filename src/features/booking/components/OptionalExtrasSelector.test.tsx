@@ -59,6 +59,7 @@ const quoteFixture: TransferAvailabilityResponseDto = {
           pricingMode: "PER_UNIT",
           quantity: 0,
           maxQuantity: 3,
+          includedQuantity: 1,
           unitPriceMinor: 500,
           totalPriceMinor: 0,
           required: false,

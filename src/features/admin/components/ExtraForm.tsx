@@ -4,7 +4,7 @@ import { Banknote, Hash, Settings2, SlidersHorizontal } from "lucide-react";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-import { getCurrencyEmoji } from "@/config/currencies";
+import { DEFAULT_CURRENCY } from "@/config/constants";
 import {
   createExtraAction,
   updateExtraAction,
@@ -27,15 +27,9 @@ import { EXTRA_PRICING_MODES } from "@/db/schema/enums";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-type EnabledCurrency = {
-  code: string;
-  label: string;
-};
-
 type ExtraFormProps = {
   mode: "create" | "edit";
   extra?: AdminExtraRecord;
-  enabledCurrencies: EnabledCurrency[];
   enabledLocales: EnabledLocaleRecord[];
 };
 
@@ -55,7 +49,6 @@ function buildTranslationState(
 export function ExtraForm({
   mode,
   extra,
-  enabledCurrencies,
   enabledLocales,
 }: ExtraFormProps) {
   const router = useRouter();
@@ -69,6 +62,7 @@ export function ExtraForm({
   const priceByCurrency = new Map(
     (extra?.prices ?? []).map((price) => [price.currency, price.priceMinor]),
   );
+  const eurPriceMinor = priceByCurrency.get(DEFAULT_CURRENCY);
 
   return (
     <AdminFormShell
@@ -91,14 +85,17 @@ export function ExtraForm({
             maxQuantityRaw === "" || maxQuantityRaw === null
               ? null
               : maxQuantityRaw,
+          includedQuantity: formData.get("includedQuantity"),
           luggageCapacityPerUnit:
             luggageRaw === "" || luggageRaw === null ? null : luggageRaw,
           sortOrder: formData.get("sortOrder"),
           isActive: formData.get("isActive") === "on",
-          prices: enabledCurrencies.map((currency) => ({
-            currency: currency.code,
-            priceMajor: formData.get(`price_${currency.code}`),
-          })),
+          prices: [
+            {
+              currency: DEFAULT_CURRENCY,
+              priceMajor: formData.get("price"),
+            },
+          ],
         };
 
         startTransition(async () => {
@@ -213,7 +210,7 @@ export function ExtraForm({
               />
             </AdminFormGrid>
 
-            <AdminFormGrid cols={2}>
+            <AdminFormGrid cols={3}>
               <AdminField
                 label={adminCopy.extras.form.minQuantity}
                 htmlFor="minQuantity"
@@ -239,6 +236,19 @@ export function ExtraForm({
                   type="number"
                   min={1}
                   defaultValue={extra?.maxQuantity ?? ""}
+                />
+              </AdminField>
+              <AdminField
+                label={adminCopy.extras.form.includedQuantity}
+                htmlFor="includedQuantity"
+                hint={adminCopy.extras.form.includedQuantityHint}
+              >
+                <Input
+                  id="includedQuantity"
+                  name="includedQuantity"
+                  type="number"
+                  min={0}
+                  defaultValue={extra?.includedQuantity ?? 0}
                 />
               </AdminField>
             </AdminFormGrid>
@@ -288,37 +298,23 @@ export function ExtraForm({
         compact
         contentClassName="space-y-0"
       >
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-          {enabledCurrencies.map((currency) => (
-            <div
-              key={currency.code}
-              className="flex min-w-0 items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2 py-1"
-              title={currency.label}
-            >
-              <span className="flex shrink-0 items-center gap-0.5 text-[10px] font-semibold text-slate-500">
-                <span className="text-sm leading-none" aria-hidden>
-                  {getCurrencyEmoji(currency.code)}
-                </span>
-                {currency.code}
-              </span>
-              <Input
-                id={`price_${currency.code}`}
-                name={`price_${currency.code}`}
-                type="number"
-                min={0}
-                step="0.01"
-                defaultValue={
-                  priceByCurrency.has(currency.code)
-                    ? majorFromMinor(priceByCurrency.get(currency.code)!)
-                    : ""
-                }
-                required
-                className="h-8 min-w-0 flex-1 border-0 bg-transparent px-0 py-0 text-xs shadow-none focus-visible:ring-0"
-                aria-label={adminCopy.extras.form.priceLabel(currency.code)}
-              />
-            </div>
-          ))}
-        </div>
+        <AdminFormGrid cols={2}>
+          <AdminField
+            label={adminCopy.extras.form.priceLabel(DEFAULT_CURRENCY)}
+            htmlFor="price"
+            required
+          >
+            <Input
+              id="price"
+              name="price"
+              type="number"
+              min={0}
+              step="0.01"
+              defaultValue={eurPriceMinor ? majorFromMinor(eurPriceMinor) : ""}
+              required
+            />
+          </AdminField>
+        </AdminFormGrid>
       </AdminFormSection>
     </AdminFormShell>
   );

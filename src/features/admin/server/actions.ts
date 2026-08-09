@@ -15,7 +15,7 @@ import {
   type UpsertRoutePriceInput,
 } from "@/features/admin/server/pricing-admin-repository";
 import { findSupportedCurrency, isSupportedCurrencyCode } from "@/config/currencies";
-import { DEFAULT_LOCALE } from "@/config/constants";
+import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "@/config/constants";
 import {
   normalizeLocaleTranslations,
   type LocaleTranslationMap,
@@ -115,6 +115,7 @@ const extraSchema = z.object({
   autoSuggested: z.boolean(),
   minQuantity: z.coerce.number().int().min(0),
   maxQuantity: z.coerce.number().int().min(1).nullable().optional(),
+  includedQuantity: z.coerce.number().int().min(0).default(0),
   luggageCapacityPerUnit: z.coerce.number().int().min(1).nullable().optional(),
   sortOrder: z.coerce.number().int().min(0).default(0),
   isActive: z.boolean(),
@@ -315,13 +316,12 @@ function mapVehicleInput(
 
 function mapExtraInput(
   input: z.infer<typeof extraSchema>,
-  enabledCodes: string[],
   enabledLocaleCodes: string[],
 ): UpsertAdminExtraInput {
   const prices = input.prices
-    .filter((price) => enabledCodes.includes(price.currency.toUpperCase()))
+    .filter((price) => price.currency.toUpperCase() === DEFAULT_CURRENCY)
     .map((price) => ({
-      currency: price.currency.toUpperCase(),
+      currency: DEFAULT_CURRENCY,
       priceMinor: Math.round(price.priceMajor * 100),
     }));
 
@@ -342,6 +342,8 @@ function mapExtraInput(
     autoSuggested: input.autoSuggested,
     minQuantity: input.minQuantity,
     maxQuantity: input.maxQuantity ?? null,
+    includedQuantity:
+      input.pricingMode === "FIXED" ? 0 : input.includedQuantity,
     luggageCapacityPerUnit: input.luggageCapacityPerUnit ?? null,
     sortOrder: input.sortOrder,
     isActive: input.isActive,
@@ -384,14 +386,10 @@ async function assertDistrictFeaturedInput(input: {
     throw new DomainRuleError("FEATURED_IMAGE_REQUIRED");
   }
 
-  const enabledCurrencies = await currencyRepository.listEnabledCodes();
+  const priceMajor = input.featuredStartingPrices?.[DEFAULT_CURRENCY];
 
-  for (const currency of enabledCurrencies) {
-    const priceMajor = input.featuredStartingPrices?.[currency];
-
-    if (priceMajor === undefined || priceMajor <= 0) {
-      throw new DomainRuleError("FEATURED_PRICE_REQUIRED");
-    }
+  if (priceMajor === undefined || priceMajor <= 0) {
+    throw new DomainRuleError("FEATURED_PRICE_REQUIRED");
   }
 }
 
@@ -570,20 +568,12 @@ export async function deactivateLocationAction(rawInput: unknown) {
 
 export async function updateRoutePricesAction(rawInput: unknown) {
   return createAction(priceUpdateSchema, async (input) => {
-    const enabledCodes = await currencyRepository.listEnabledCodes();
-
     const prices: UpsertRoutePriceInput[] = input.prices
-      .filter((price) => {
-        const normalized = price.currency.toUpperCase();
-        return (
-          isSupportedCurrencyCode(normalized) &&
-          enabledCodes.includes(normalized)
-        );
-      })
+      .filter((price) => price.currency.toUpperCase() === DEFAULT_CURRENCY)
       .map((price) => ({
         districtId: price.districtId,
         vehicleCategoryId: price.vehicleCategoryId,
-        currency: price.currency.toUpperCase(),
+        currency: DEFAULT_CURRENCY,
         oneWayPriceMinor: Math.round(price.oneWayPriceMajor * 100),
         roundTripPriceMinor:
           price.roundTripPriceMajor === null ||
@@ -621,12 +611,9 @@ export async function updateEnabledCurrenciesAction(rawInput: unknown) {
 
 export async function createExtraAction(rawInput: unknown) {
   return createAction(extraSchema, async (input) => {
-    const [enabledCodes, enabledLocaleCodes] = await Promise.all([
-      currencyRepository.listEnabledCodes(),
-      localeRepository.listActiveCodes(),
-    ]);
+    const enabledLocaleCodes = await localeRepository.listActiveCodes();
     const extra = await extraAdminRepository.create(
-      mapExtraInput(input, enabledCodes, enabledLocaleCodes),
+      mapExtraInput(input, enabledLocaleCodes),
     );
     revalidatePath("/admin/extras");
     return extra;
@@ -635,14 +622,11 @@ export async function createExtraAction(rawInput: unknown) {
 
 export async function updateExtraAction(rawInput: unknown) {
   return createAction(updateExtraSchema, async (input) => {
-    const [enabledCodes, enabledLocaleCodes] = await Promise.all([
-      currencyRepository.listEnabledCodes(),
-      localeRepository.listActiveCodes(),
-    ]);
+    const enabledLocaleCodes = await localeRepository.listActiveCodes();
     const { id, ...rest } = input;
     const extra = await extraAdminRepository.update(
       id,
-      mapExtraInput(rest, enabledCodes, enabledLocaleCodes),
+      mapExtraInput(rest, enabledLocaleCodes),
     );
     revalidatePath("/admin/extras");
     revalidatePath(`/admin/extras/${id}/edit`);

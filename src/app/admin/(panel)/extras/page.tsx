@@ -5,7 +5,6 @@ import { db } from "@/db/client";
 import { ExtraAdminRepository } from "@/features/admin/server/extra-admin-repository";
 import { AdminContentCard } from "@/features/admin/components/shell/AdminContentCard";
 import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
-import { CurrencyRepository } from "@/features/currencies/server/repository";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,16 +21,11 @@ import {
   formatExtraPricingMode,
 } from "@/features/admin/copy";
 import { createMoney, formatMoney } from "@/lib/money";
-import { Alert } from "@/components/ui/alert";
 
 const extraAdminRepository = new ExtraAdminRepository(db);
-const currencyRepository = new CurrencyRepository(db);
 
 export default async function AdminExtrasPage() {
-  const [extras, enabledCurrencies] = await Promise.all([
-    extraAdminRepository.list(true),
-    currencyRepository.listEnabled(),
-  ]);
+  const extras = await extraAdminRepository.list(true);
 
   return (
     <div className="space-y-8">
@@ -45,15 +39,6 @@ export default async function AdminExtrasPage() {
           </Button>
         }
       />
-
-      {enabledCurrencies.length === 0 ? (
-        <Alert>
-          {adminCopy.extras.emptyCurrencies}{" "}
-          <Link href="/admin/currencies" className="font-medium underline">
-            {adminCopy.currencies.open}
-          </Link>
-        </Alert>
-      ) : null}
 
       <AdminContentCard title={adminCopy.extras.title} flush>
         <Table className="admin-table">

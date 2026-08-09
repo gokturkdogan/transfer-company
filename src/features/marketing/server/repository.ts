@@ -2,6 +2,8 @@ import "server-only";
 
 import { and, asc, eq, min, sql } from "drizzle-orm";
 
+import { DEFAULT_CURRENCY } from "@/config/constants";
+
 import type { Database } from "@/db/client";
 import {
   locationFeaturedPrices,
@@ -29,7 +31,6 @@ export class MarketingRepository {
 
   async findFeaturedDistricts(
     locale: string,
-    currency: string,
   ): Promise<DistrictStartingPriceDto[]> {
     const rows = await this.database
       .select({
@@ -46,7 +47,7 @@ export class MarketingRepository {
         locationFeaturedPrices,
         and(
           eq(locationFeaturedPrices.locationId, locations.id),
-          eq(locationFeaturedPrices.currency, currency),
+          eq(locationFeaturedPrices.currency, DEFAULT_CURRENCY),
         ),
       )
       .leftJoin(
@@ -73,7 +74,7 @@ export class MarketingRepository {
       code: row.code,
       imageKey: row.imageKey!.trim(),
       startingFromMinor: row.startingFromMinor,
-      currency,
+      currency: DEFAULT_CURRENCY,
     }));
   }
 
@@ -89,7 +90,6 @@ export class MarketingRepository {
         cabinLuggageCapacity: vehicleCategories.cabinLuggageCapacity,
         imageKey: vehicleCategories.imageKey,
         startingFromMinor: min(routePrices.oneWayPriceMinor),
-        currency: sql<string>`min(${routePrices.currency})`,
         sortOrder: vehicleCategories.sortOrder,
       })
       .from(vehicleCategories)
@@ -98,6 +98,7 @@ export class MarketingRepository {
         and(
           eq(routePrices.vehicleCategoryId, vehicleCategories.id),
           eq(routePrices.isActive, true),
+          eq(routePrices.currency, DEFAULT_CURRENCY),
         ),
       )
       .leftJoin(
@@ -133,7 +134,7 @@ export class MarketingRepository {
       cabinLuggageCapacity: row.cabinLuggageCapacity,
       imageKey: row.imageKey,
       startingFromMinor: Number(row.startingFromMinor ?? 0),
-      currency: row.currency ?? "EUR",
+      currency: DEFAULT_CURRENCY,
     }));
   }
 
@@ -169,7 +170,6 @@ export class MarketingRepository {
         cabinLuggageCapacity: vehicleCategories.cabinLuggageCapacity,
         imageKey: vehicleCategories.imageKey,
         startingFromMinor: min(routePrices.oneWayPriceMinor),
-        currency: sql<string>`min(${routePrices.currency})`,
       })
       .from(vehicleCategories)
       .innerJoin(
@@ -177,6 +177,7 @@ export class MarketingRepository {
         and(
           eq(routePrices.vehicleCategoryId, vehicleCategories.id),
           eq(routePrices.isActive, true),
+          eq(routePrices.currency, DEFAULT_CURRENCY),
         ),
       )
       .leftJoin(
@@ -228,7 +229,7 @@ export class MarketingRepository {
       cabinLuggageCapacity: row.cabinLuggageCapacity,
       imageKey: row.imageKey,
       startingFromMinor: Number(row.startingFromMinor ?? 0),
-      currency: row.currency ?? "EUR",
+      currency: DEFAULT_CURRENCY,
     };
   }
 }

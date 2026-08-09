@@ -46,10 +46,14 @@ export function FleetVehicleGallery({
     <div className={cn("flex w-full flex-col gap-3", className)}>
       <div
         className={cn(
-          "group relative w-full overflow-hidden rounded-[1.5rem] border border-border/70 bg-muted shadow-premium",
-          compact ? "aspect-video max-h-[17rem]" : "aspect-[16/10]",
+          "group relative w-full overflow-hidden rounded-[1.75rem] border border-gold/25 bg-muted shadow-premium",
+          compact ? "aspect-[4/3] max-h-[19rem]" : "aspect-[4/3] sm:aspect-[16/11]",
         )}
       >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-20 rounded-[1.75rem] ring-1 ring-inset ring-white/10"
+        />
         <Image
           key={activeImage}
           src={activeImage}
@@ -115,7 +119,7 @@ export function FleetVehicleGallery({
       </div>
 
       {hasMultiple ? (
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="flex flex-wrap gap-2">
           {gallery.map((image, index) => (
             <button
               key={image}
@@ -123,7 +127,7 @@ export function FleetVehicleGallery({
               onClick={() => setActiveIndex(index)}
               className={cn(
                 "relative shrink-0 overflow-hidden rounded-xl border transition-all",
-                compact ? "h-12 w-16" : "h-16 w-24",
+                compact ? "h-12 w-16" : "h-[4.5rem] w-28",
                 index === safeIndex
                   ? "border-gold shadow-gold"
                   : "border-border/70 opacity-75 hover:opacity-100",

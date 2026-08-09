@@ -31,6 +31,7 @@ export type ExtraServiceRecord = {
   currency: string;
   minQuantity: number;
   maxQuantity: number | null;
+  includedQuantity: number;
   customerSelectable: boolean;
 };
 

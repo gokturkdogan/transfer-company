@@ -76,6 +76,7 @@ describe("calculateQuote", () => {
           extraServiceName: "VIP Meet and Greet",
           pricingMode: "FIXED",
           quantity: 3,
+          includedQuantity: 0,
           unitPriceMinor: 2500,
           currency: "EUR",
         },
@@ -98,6 +99,7 @@ describe("calculateQuote", () => {
           extraServiceName: "Baby Seat",
           pricingMode: "PER_UNIT",
           quantity: 2,
+          includedQuantity: 0,
           unitPriceMinor: 1000,
           currency: "EUR",
         },
@@ -106,6 +108,29 @@ describe("calculateQuote", () => {
 
     expect(result.quote.extraItems[0]?.totalPriceMinor).toBe(2000);
     expect(result.quote.totalMinor).toBe(6500);
+  });
+
+  it("waives included units for per-unit extras", () => {
+    const result = calculateQuote({
+      tripType: "ONE_WAY",
+      currency: "EUR",
+      vehicles: [vitoVehicle],
+      extras: [
+        {
+          extraServiceId: "child-seat",
+          extraServiceName: "Child Seat",
+          pricingMode: "PER_UNIT",
+          quantity: 3,
+          includedQuantity: 1,
+          unitPriceMinor: 500,
+          currency: "EUR",
+        },
+      ],
+    });
+
+    expect(result.quote.extraItems[0]?.quantity).toBe(3);
+    expect(result.quote.extraItems[0]?.totalPriceMinor).toBe(1000);
+    expect(result.quote.totalMinor).toBe(5500);
   });
 
   it("rejects currency mismatch", () => {
@@ -119,6 +144,7 @@ describe("calculateQuote", () => {
           extraServiceName: "Baby Seat",
           pricingMode: "PER_UNIT",
           quantity: 1,
+          includedQuantity: 0,
           unitPriceMinor: 1000,
           currency: "USD",
         },

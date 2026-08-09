@@ -23,6 +23,7 @@ import { AdminFormShell } from "@/features/admin/components/shell/AdminFormShell
 import { AdminSelect } from "@/features/admin/components/shell/AdminSelect";
 import { AdminToggleField } from "@/features/admin/components/shell/AdminToggleField";
 import type { EnabledLocaleRecord } from "@/features/locales/server/repository";
+import { DEFAULT_CURRENCY } from "@/config/constants";
 import { minorToMajor } from "@/lib/money";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,11 +35,6 @@ type SelectOption = {
   cityId?: string;
 };
 
-type EnabledCurrency = {
-  code: string;
-  label: string;
-};
-
 type LocationFormProps = {
   mode: "create" | "edit";
   type: "AIRPORT" | "CITY" | "DISTRICT" | "HOTEL";
@@ -47,7 +43,6 @@ type LocationFormProps = {
   cityOptions?: SelectOption[];
   initialCityId?: string | null;
   enabledLocales: EnabledLocaleRecord[];
-  enabledCurrencies?: EnabledCurrency[];
 };
 
 function buildTranslationState(
@@ -67,7 +62,6 @@ export function LocationForm({
   cityOptions = [],
   initialCityId = null,
   enabledLocales,
-  enabledCurrencies = [],
 }: LocationFormProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -77,17 +71,10 @@ export function LocationForm({
   const [isFeaturedOnHomepage, setIsFeaturedOnHomepage] = useState(
     location?.isFeaturedOnHomepage ?? false,
   );
-  const [featuredPrices, setFeaturedPrices] = useState<Record<string, string>>(
-    () =>
-      Object.fromEntries(
-        enabledCurrencies.map((currency) => [
-          currency.code,
-          location?.featuredStartingPrices[currency.code]
-            ? String(minorToMajor(location.featuredStartingPrices[currency.code]!))
-            : "",
-        ]),
-      ),
-  );
+  const [featuredPrice, setFeaturedPrice] = useState(() => {
+    const priceMinor = location?.featuredStartingPrices[DEFAULT_CURRENCY];
+    return priceMinor ? String(minorToMajor(priceMinor)) : "";
+  });
   const [selectedCityId, setSelectedCityId] = useState(
     initialCityId ?? cityOptions[0]?.id ?? "",
   );
@@ -247,30 +234,22 @@ export function LocationForm({
                 {adminCopy.locationForm.featured.startingPriceHint}
               </p>
               <AdminFormGrid cols={2}>
-                {enabledCurrencies.map((currency) => (
-                  <AdminField
-                    key={currency.code}
-                    label={`${adminCopy.locationForm.featured.startingPrice} (${currency.code})`}
-                    htmlFor={`featured-price-${currency.code}`}
+                <AdminField
+                  label={`${adminCopy.locationForm.featured.startingPrice} (${DEFAULT_CURRENCY})`}
+                  htmlFor="featured-price"
+                  required
+                >
+                  <Input
+                    id="featured-price"
+                    type="number"
+                    min={0}
+                    step="0.01"
+                    inputMode="decimal"
                     required
-                  >
-                    <Input
-                      id={`featured-price-${currency.code}`}
-                      type="number"
-                      min={0}
-                      step="0.01"
-                      inputMode="decimal"
-                      required
-                      value={featuredPrices[currency.code] ?? ""}
-                      onChange={(event) =>
-                        setFeaturedPrices((current) => ({
-                          ...current,
-                          [currency.code]: event.target.value,
-                        }))
-                      }
-                    />
-                  </AdminField>
-                ))}
+                    value={featuredPrice}
+                    onChange={(event) => setFeaturedPrice(event.target.value)}
+                  />
+                </AdminField>
               </AdminFormGrid>
             </div>
           </div>
@@ -298,12 +277,9 @@ export function LocationForm({
             ? {
                 imageKey: imageKey.trim() || null,
                 isFeaturedOnHomepage,
-                featuredStartingPrices: Object.fromEntries(
-                  enabledCurrencies.map((currency) => [
-                    currency.code,
-                    Number(featuredPrices[currency.code] || 0),
-                  ]),
-                ),
+                featuredStartingPrices: {
+                  [DEFAULT_CURRENCY]: Number(featuredPrice || 0),
+                },
               }
             : {}),
         };

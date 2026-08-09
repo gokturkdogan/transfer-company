@@ -3,6 +3,7 @@ import { drizzle } from "drizzle-orm/neon-serverless";
 import { and, eq } from "drizzle-orm";
 
 import * as schema from "../src/db/schema";
+import { ANTALYA_OFFICIAL_DISTRICTS } from "./data/antalya-districts";
 
 const pool = new Pool({
   connectionString:
@@ -244,7 +245,7 @@ async function seed() {
 
   await upsertLocation(regionId, airportSeed, cityId, locationIds);
 
-  const districtSeeds: LocationSeed[] = [
+  const touristDistrictSeeds: LocationSeed[] = [
     {
       code: "BELEK",
       type: "DISTRICT",
@@ -257,39 +258,36 @@ async function seed() {
       },
     },
     {
-      code: "KEMER",
-      type: "DISTRICT",
-      defaultName: "Kemer",
-      sortOrder: 3,
-      parentCode: "ANTALYA",
-      translations: {
-        tr: { name: "Kemer", slug: "kemer" },
-        en: { name: "Kemer", slug: "kemer" },
-      },
-    },
-    {
       code: "SIDE",
       type: "DISTRICT",
       defaultName: "Side",
-      sortOrder: 4,
+      sortOrder: 3,
       parentCode: "ANTALYA",
       translations: {
         tr: { name: "Side", slug: "side" },
         en: { name: "Side", slug: "side" },
       },
     },
-    {
-      code: "ALANYA",
-      type: "DISTRICT",
-      defaultName: "Alanya",
-      sortOrder: 5,
+  ];
+
+  const officialDistrictSeeds: LocationSeed[] = ANTALYA_OFFICIAL_DISTRICTS.map(
+    (district) => ({
+      code: district.code,
+      type: "DISTRICT" as const,
+      defaultName: district.defaultName,
+      sortOrder: district.sortOrder,
       parentCode: "ANTALYA",
       translations: {
-        tr: { name: "Alanya", slug: "alanya" },
-        en: { name: "Alanya", slug: "alanya" },
+        tr: { name: district.names.tr, slug: district.slug },
+        en: { name: district.names.en, slug: district.slug },
+        de: { name: district.names.de, slug: district.slug },
+        ru: { name: district.names.ru, slug: district.slug },
+        ar: { name: district.names.ar, slug: district.slug },
       },
-    },
-  ];
+    }),
+  );
+
+  const districtSeeds = [...touristDistrictSeeds, ...officialDistrictSeeds];
 
   for (const districtSeed of districtSeeds) {
     await upsertLocation(regionId, districtSeed, cityId, locationIds);
@@ -497,6 +495,8 @@ async function seed() {
       priceMinor: 500,
       customerSelectable: true,
       autoSuggested: false,
+      minQuantity: 0,
+      includedQuantity: 1,
       maxQuantity: 3,
       sortOrder: 1,
       translations: {
@@ -529,6 +529,8 @@ async function seed() {
         currency: "EUR",
         customerSelectable: extraSeed.customerSelectable,
         autoSuggested: extraSeed.autoSuggested,
+        minQuantity: extraSeed.minQuantity ?? 1,
+        includedQuantity: extraSeed.includedQuantity ?? 0,
         luggageCapacityPerUnit: extraSeed.luggageCapacityPerUnit ?? null,
         maxQuantity: extraSeed.maxQuantity,
         sortOrder: extraSeed.sortOrder,
@@ -562,20 +564,13 @@ async function seed() {
     }
   }
 
-  for (const [index, currencySeed] of [
-    { code: "EUR", label: "Euro (EUR)" },
-    { code: "TRY", label: "Türk Lirası (TRY)" },
-    { code: "USD", label: "ABD Doları (USD)" },
-    { code: "GBP", label: "İngiliz Sterlini (GBP)" },
-    { code: "RUB", label: "Rus Rublesi (RUB)" },
-    { code: "AED", label: "BAE Dirhemi (AED)" },
-  ].entries()) {
+  for (const currencySeed of [{ code: "EUR", label: "Euro (EUR)" }]) {
     await db
       .insert(schema.enabledCurrencies)
       .values({
         code: currencySeed.code,
         label: currencySeed.label,
-        sortOrder: index,
+        sortOrder: 0,
       })
       .onConflictDoNothing();
   }

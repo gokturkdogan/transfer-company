@@ -290,7 +290,8 @@
       "required": "Zorunlu",
       "quantity": "Adet: {count}",
       "quantityLabel": "Adet",
-      "none": "İsteğe bağlı ekstra yok."
+      "none": "İsteğe bağlı ekstra yok.",
+      "includedPricing": "{included} adet ücretsiz · sonraki {price}/adet"
     },
     "customer": {
       "title": "İletişim Bilgileri",
@@ -614,7 +615,47 @@
       "largeLuggage": "{count} büyük bagaj",
       "cabinLuggage": "{count} kabin bagajı",
       "fallbackShortDescription": "{name} — Antalya Havalimanı transferlerinde premium konfor ve geniş iç mekan.",
-      "fallbackDescription": "{name} ile grup ve aile transferlerinde konforlu, şık ve güvenilir bir yolculuk deneyimi yaşayın."
+      "fallbackDescription": "{name} ile grup ve aile transferlerinde konforlu, şık ve güvenilir bir yolculuk deneyimi yaşayın.",
+      "experienceParagraph": "{name}, Antalya Havalimanı'ndan otel ve villalara kadar kapıdan kapıya premium transferler için tasarlandı. Sessiz kabin, geniş oturma düzeni ve profesyonel şoför kadromuzla yolculuğunuzun her anında konfor önceliğimizdir.",
+      "specsTitle": "Kapasite",
+      "specsBandTitle": "{name} teknik özet",
+      "specsBandSubtitle": "Yolcu ve bagaj kapasitesini önceden görün; grubunuza en uygun aracı güvenle seçin.",
+      "specPassengers": "Yolcu kapasitesi",
+      "specLargeLuggage": "Büyük bagaj",
+      "specCabinLuggage": "Kabin bagajı",
+      "priceBadge": "Sabit fiyat",
+      "idealForTitle": "Kimler için ideal?",
+      "idealForHeading": "{name} ile premium transfer",
+      "idealForParagraphs": {
+        "0": "Aile tatilleri, iş seyahatleri ve küçük grup transferleri için mükemmel bir seçim. {code} sınıfı, yolcu ve bagaj dengesinde esneklik sunar.",
+        "1": "Uçuş takibi, ücretsiz karşılama ve sabit fiyat avantajlarıyla Antalya transferlerinizi önceden planlayın; varışta sürpriz ücretlerle karşılaşmayın."
+      },
+      "includedTitle": "Her rezervasyonda dahil",
+      "includedItems": {
+        "0": "Ücretsiz havalimanı karşılama",
+        "1": "Uçuş takibi ve bekleme süresi",
+        "2": "Sabit fiyat — sürpriz yok",
+        "3": "7/24 operasyon desteği"
+      },
+      "promises": {
+        "0": {
+          "title": "Profesyonel şoför",
+          "description": "Deneyimli, üniformalı ve misafir odaklı şoförler."
+        },
+        "1": {
+          "title": "Zamanında karşılama",
+          "description": "Uçuş gecikmelerinde ek ücret olmadan bekleme."
+        },
+        "2": {
+          "title": "Premium konfor",
+          "description": "Klimalı kabin, temiz iç mekan ve sessiz sürüş."
+        },
+        "3": {
+          "title": "Şeffaf fiyat",
+          "description": "Rezervasyonda gördüğünüz tutar geçerlidir."
+        }
+      },
+      "bookNote": "Online ödeme yok. Rezervasyon sonrası ödemeyi transfer bitiminde şoförünüze yapın."
     }
   },
   "privacy": {

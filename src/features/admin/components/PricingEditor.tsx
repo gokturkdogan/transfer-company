@@ -4,7 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 
-import { findSupportedCurrency, getCurrencyEmoji } from "@/config/currencies";
+import { DEFAULT_CURRENCY } from "@/config/constants";
 import { updateRoutePricesAction } from "@/features/admin/server/actions";
 import type { AdminDistrictRoutePrice } from "@/features/admin/server/pricing-admin-repository";
 import { adminCopy, translateAdminError } from "@/features/admin/copy";
@@ -36,44 +36,37 @@ type PricingEditorProps = {
   airports: AirportOption[];
   vehicleCategories: VehicleCategory[];
   districtRoutes: AdminDistrictRoutePrice[];
-  enabledCurrencies: string[];
 };
 
-function priceKey(
-  districtId: string,
-  vehicleCategoryId: string,
-  currency: string,
-): string {
-  return `${districtId}:${vehicleCategoryId}:${currency}`;
+function priceKey(districtId: string, vehicleCategoryId: string): string {
+  return `${districtId}:${vehicleCategoryId}`;
 }
 
 function buildInitialPrices(
   districtRoutes: AdminDistrictRoutePrice[],
   vehicleCategories: VehicleCategory[],
-  enabledCurrencies: string[],
 ): Record<string, PriceFields> {
   const map: Record<string, PriceFields> = {};
 
   for (const district of districtRoutes) {
     for (const vehicle of vehicleCategories) {
-      for (const currency of enabledCurrencies) {
-        const key = priceKey(district.districtId, vehicle.id, currency);
-        const cell = district.prices.find(
-          (item) =>
-            item.vehicleCategoryId === vehicle.id && item.currency === currency,
-        );
+      const key = priceKey(district.districtId, vehicle.id);
+      const cell = district.prices.find(
+        (item) =>
+          item.vehicleCategoryId === vehicle.id &&
+          item.currency === DEFAULT_CURRENCY,
+      );
 
-        map[key] = {
-          oneWay:
-            cell?.oneWayPriceMinor != null
-              ? (cell.oneWayPriceMinor / 100).toFixed(2)
-              : "",
-          roundTrip:
-            cell?.roundTripPriceMinor != null
-              ? (cell.roundTripPriceMinor / 100).toFixed(2)
-              : "",
-        };
-      }
+      map[key] = {
+        oneWay:
+          cell?.oneWayPriceMinor != null
+            ? (cell.oneWayPriceMinor / 100).toFixed(2)
+            : "",
+        roundTrip:
+          cell?.roundTripPriceMinor != null
+            ? (cell.roundTripPriceMinor / 100).toFixed(2)
+            : "",
+      };
     }
   }
 
@@ -84,93 +77,56 @@ function countFilledPricesForVehicle(
   districtRoutes: AdminDistrictRoutePrice[],
   prices: Record<string, PriceFields>,
   vehicleId: string,
-  enabledCurrencies: string[],
 ): number {
   let filled = 0;
 
   for (const district of districtRoutes) {
-    for (const currency of enabledCurrencies) {
-      const key = priceKey(district.districtId, vehicleId, currency);
-      if (prices[key]?.oneWay.trim()) {
-        filled += 1;
-      }
+    const key = priceKey(district.districtId, vehicleId);
+    if (prices[key]?.oneWay.trim()) {
+      filled += 1;
     }
   }
 
   return filled;
 }
 
-function totalPriceSlots(
-  districtCount: number,
-  currencyCount: number,
-): number {
-  return districtCount * currencyCount;
-}
-
-type CurrencyPriceInputsProps = {
+type DistrictPriceInputsProps = {
   districtId: string;
   districtName: string;
   vehicleId: string;
   field: keyof PriceFields;
   fieldLabel: string;
-  enabledCurrencies: string[];
   prices: Record<string, PriceFields>;
   onUpdate: (
     districtId: string,
-    currency: string,
     field: keyof PriceFields,
     value: string,
   ) => void;
 };
 
-function CurrencyPriceInputs({
+function DistrictPriceInput({
   districtId,
   districtName,
   vehicleId,
   field,
   fieldLabel,
-  enabledCurrencies,
   prices,
   onUpdate,
-}: CurrencyPriceInputsProps) {
-  return (
-    <div className="grid grid-cols-3 gap-1.5">
-      {enabledCurrencies.map((currency) => {
-        const key = priceKey(districtId, vehicleId, currency);
-        const entry = prices[key] ?? { oneWay: "", roundTrip: "" };
-        const emoji = getCurrencyEmoji(currency);
-        const label = findSupportedCurrency(currency)?.label ?? currency;
+}: DistrictPriceInputsProps) {
+  const key = priceKey(districtId, vehicleId);
+  const entry = prices[key] ?? { oneWay: "", roundTrip: "" };
 
-        return (
-          <div
-            key={currency}
-            className="flex min-w-0 items-center gap-1 rounded-md border border-slate-200 bg-white px-1.5 py-0.5"
-            title={label}
-          >
-            <span className="flex shrink-0 items-center gap-0.5 leading-none">
-              <span className="text-sm" aria-hidden>
-                {emoji}
-              </span>
-              <span className="text-[10px] font-semibold text-slate-500">
-                {currency}
-              </span>
-            </span>
-            <Input
-              type="number"
-              min={0}
-              step="0.01"
-              inputMode="decimal"
-              value={entry[field]}
-              onChange={(event) =>
-                onUpdate(districtId, currency, field, event.target.value)
-              }
-              className="h-7 min-w-0 flex-1 border-0 bg-transparent px-0 py-0 text-xs shadow-none focus-visible:ring-0"
-              aria-label={`${districtName} ${fieldLabel} ${currency}`}
-            />
-          </div>
-        );
-      })}
-    </div>
+  return (
+    <Input
+      type="number"
+      min={0}
+      step="0.01"
+      inputMode="decimal"
+      value={entry[field]}
+      onChange={(event) => onUpdate(districtId, field, event.target.value)}
+      className="h-8 text-xs"
+      aria-label={`${districtName} ${fieldLabel} ${DEFAULT_CURRENCY}`}
+    />
   );
 }
 
@@ -179,7 +135,6 @@ export function PricingEditor({
   airports,
   vehicleCategories,
   districtRoutes,
-  enabledCurrencies,
 }: PricingEditorProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -192,7 +147,7 @@ export function PricingEditor({
   );
 
   const [prices, setPrices] = useState(() =>
-    buildInitialPrices(districtRoutes, vehicleCategories, enabledCurrencies),
+    buildInitialPrices(districtRoutes, vehicleCategories),
   );
 
   const filteredDistricts = useMemo(() => {
@@ -212,29 +167,20 @@ export function PricingEditor({
     (vehicle) => vehicle.id === selectedVehicleId,
   );
 
-  const totalSlots = totalPriceSlots(
-    districtRoutes.length,
-    enabledCurrencies.length,
-  );
+  const totalSlots = districtRoutes.length;
 
   const filledForVehicle = useMemo(
     () =>
-      countFilledPricesForVehicle(
-        districtRoutes,
-        prices,
-        selectedVehicleId,
-        enabledCurrencies,
-      ),
-    [districtRoutes, enabledCurrencies, prices, selectedVehicleId],
+      countFilledPricesForVehicle(districtRoutes, prices, selectedVehicleId),
+    [districtRoutes, prices, selectedVehicleId],
   );
 
   function updatePrice(
     districtId: string,
-    currency: string,
     field: keyof PriceFields,
     value: string,
   ) {
-    const key = priceKey(districtId, selectedVehicleId, currency);
+    const key = priceKey(districtId, selectedVehicleId);
     setPrices((current) => ({
       ...current,
       [key]: {
@@ -256,25 +202,23 @@ export function PricingEditor({
 
     for (const district of districtRoutes) {
       for (const vehicle of vehicleCategories) {
-        for (const currency of enabledCurrencies) {
-          const key = priceKey(district.districtId, vehicle.id, currency);
-          const entry = prices[key];
-          const oneWay = entry?.oneWay.trim();
+        const key = priceKey(district.districtId, vehicle.id);
+        const entry = prices[key];
+        const oneWay = entry?.oneWay.trim();
 
-          if (!oneWay) {
-            continue;
-          }
-
-          const roundTrip = entry?.roundTrip.trim();
-
-          payload.push({
-            districtId: district.districtId,
-            vehicleCategoryId: vehicle.id,
-            currency,
-            oneWayPriceMajor: Number(oneWay),
-            roundTripPriceMajor: roundTrip ? Number(roundTrip) : null,
-          });
+        if (!oneWay) {
+          continue;
         }
+
+        const roundTrip = entry?.roundTrip.trim();
+
+        payload.push({
+          districtId: district.districtId,
+          vehicleCategoryId: vehicle.id,
+          currency: DEFAULT_CURRENCY,
+          oneWayPriceMajor: Number(oneWay),
+          roundTripPriceMajor: roundTrip ? Number(roundTrip) : null,
+        });
       }
     }
 
@@ -295,14 +239,6 @@ export function PricingEditor({
       setSuccess(adminCopy.pricing.saved);
       router.refresh();
     });
-  }
-
-  if (enabledCurrencies.length === 0) {
-    return (
-      <Alert>
-        <p>{adminCopy.pricing.emptyCurrencies}</p>
-      </Alert>
-    );
   }
 
   if (vehicleCategories.length === 0) {
@@ -375,7 +311,6 @@ export function PricingEditor({
                   districtRoutes,
                   prices,
                   vehicle.id,
-                  enabledCurrencies,
                 );
                 const isActive = vehicle.id === selectedVehicleId;
                 const isComplete = totalSlots > 0 && filled === totalSlots;
@@ -451,25 +386,23 @@ export function PricingEditor({
                       </div>
                     </td>
                     <td className="px-3 py-2">
-                      <CurrencyPriceInputs
+                      <DistrictPriceInput
                         districtId={district.districtId}
                         districtName={district.districtName}
                         vehicleId={selectedVehicleId}
                         field="oneWay"
                         fieldLabel={adminCopy.pricing.oneWay}
-                        enabledCurrencies={enabledCurrencies}
                         prices={prices}
                         onUpdate={updatePrice}
                       />
                     </td>
                     <td className="px-3 py-2">
-                      <CurrencyPriceInputs
+                      <DistrictPriceInput
                         districtId={district.districtId}
                         districtName={district.districtName}
                         vehicleId={selectedVehicleId}
                         field="roundTrip"
                         fieldLabel={adminCopy.pricing.roundTrip}
-                        enabledCurrencies={enabledCurrencies}
                         prices={prices}
                         onUpdate={updatePrice}
                       />

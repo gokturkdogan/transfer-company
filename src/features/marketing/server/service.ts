@@ -16,11 +16,8 @@ export class MarketingService {
     private readonly galleryRepository: VehicleGalleryRepository,
   ) {}
 
-  getPopularDestinations(
-    locale: string,
-    displayCurrency: string,
-  ): Promise<DistrictStartingPriceDto[]> {
-    return this.repository.findFeaturedDistricts(locale, displayCurrency);
+  getPopularDestinations(locale: string): Promise<DistrictStartingPriceDto[]> {
+    return this.repository.findFeaturedDistricts(locale);
   }
 
   getFleet(locale: string): Promise<FleetVehicleDto[]> {

@@ -1,6 +1,7 @@
 import { createMoney, sumMoney } from "@/lib/money";
 
 import { PricingDomainError } from "./errors";
+import { calculateExtraTotalMinor } from "./extra-pricing";
 import type {
   QuoteLineItem,
   TransferQuote,
@@ -54,6 +55,12 @@ function buildExtraLineItem(
 ): QuoteLineItem {
   const effectiveQuantity =
     extra.pricingMode === "FIXED" ? 1 : extra.quantity;
+  const totalPriceMinor = calculateExtraTotalMinor({
+    pricingMode: extra.pricingMode,
+    quantity: extra.quantity,
+    unitPriceMinor: extra.unitPriceMinor,
+    includedQuantity: extra.includedQuantity,
+  });
 
   return {
     type: "EXTRA_SERVICE",
@@ -61,7 +68,7 @@ function buildExtraLineItem(
     name: extra.extraServiceName,
     quantity: effectiveQuantity,
     unitPriceMinor: extra.unitPriceMinor,
-    totalPriceMinor: extra.unitPriceMinor * effectiveQuantity,
+    totalPriceMinor,
   };
 }
 

@@ -1,3 +1,5 @@
+import { DEFAULT_CURRENCY } from "@/config/constants";
+
 export type SupportedCurrency = {
   code: string;
   label: string;
@@ -5,12 +7,7 @@ export type SupportedCurrency = {
 };
 
 export const SUPPORTED_CURRENCIES: readonly SupportedCurrency[] = [
-  { code: "EUR", label: "Euro (EUR)", emoji: "🇪🇺" },
-  { code: "TRY", label: "Türk Lirası (TRY)", emoji: "🇹🇷" },
-  { code: "USD", label: "ABD Doları (USD)", emoji: "🇺🇸" },
-  { code: "GBP", label: "İngiliz Sterlini (GBP)", emoji: "🇬🇧" },
-  { code: "RUB", label: "Rus Rublesi (RUB)", emoji: "🇷🇺" },
-  { code: "AED", label: "BAE Dirhemi (AED)", emoji: "🇦🇪" },
+  { code: DEFAULT_CURRENCY, label: "Euro (EUR)", emoji: "🇪🇺" },
 ] as const;
 
 export function findSupportedCurrency(code: string): SupportedCurrency | undefined {
@@ -22,5 +19,5 @@ export function getCurrencyEmoji(code: string): string {
 }
 
 export function isSupportedCurrencyCode(code: string): boolean {
-  return SUPPORTED_CURRENCIES.some((currency) => currency.code === code);
+  return code.toUpperCase() === DEFAULT_CURRENCY;
 }

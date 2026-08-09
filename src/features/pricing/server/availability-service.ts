@@ -1,6 +1,7 @@
 import "server-only";
 
 import { recommendVehicles } from "@/features/capacity/domain/recommend-vehicles";
+import { calculateExtraTotalMinor } from "@/features/pricing/domain/extra-pricing";
 import type { LuggageVehicleExtra } from "@/features/capacity/types";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
@@ -17,13 +18,9 @@ import type {
 import { assertPriceableEndpoints } from "@/features/locations/domain/hierarchy";
 import { LocationDomainError } from "@/features/locations/domain/errors";
 import type { LocationRepository } from "@/features/locations/server/repository";
-import {
-  CurrencyRepository,
-  resolveQuoteCurrency,
-} from "@/features/currencies/server/repository";
+import { DEFAULT_CURRENCY, PROJECT_TIME_ZONE } from "@/config/constants";
 import type { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
 import type { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
-import { PROJECT_TIME_ZONE } from "@/config/constants";
 import { DomainRuleError } from "@/server/errors";
 
 function mapDomainError(error: unknown): never {
@@ -84,8 +81,14 @@ function buildRequiredExtras(
       pricingMode: extra.pricingMode,
       quantity,
       maxQuantity: extra.maxQuantity,
+      includedQuantity: extra.includedQuantity,
       unitPriceMinor: extra.priceMinor,
-      totalPriceMinor: extra.priceMinor * quantity,
+      totalPriceMinor: calculateExtraTotalMinor({
+        pricingMode: extra.pricingMode,
+        quantity,
+        unitPriceMinor: extra.priceMinor,
+        includedQuantity: extra.includedQuantity,
+      }),
       required: true,
     },
   ];
@@ -103,8 +106,14 @@ function buildOptionalExtras(
       pricingMode: extra.pricingMode,
       quantity: extra.minQuantity,
       maxQuantity: extra.maxQuantity,
+      includedQuantity: extra.includedQuantity,
       unitPriceMinor: extra.priceMinor,
-      totalPriceMinor: extra.priceMinor * extra.minQuantity,
+      totalPriceMinor: calculateExtraTotalMinor({
+        pricingMode: extra.pricingMode,
+        quantity: extra.minQuantity,
+        unitPriceMinor: extra.priceMinor,
+        includedQuantity: extra.includedQuantity,
+      }),
       required: false,
     }));
 }
@@ -114,7 +123,6 @@ export class AvailabilityService {
     private readonly repository: PricingReader,
     private readonly quoteService?: QuoteService,
     private readonly locationRepository?: LocationRepository,
-    private readonly currencyRepository?: CurrencyRepository,
     private readonly featureRepository?: VehicleFeatureRepository,
     private readonly galleryRepository?: VehicleGalleryRepository,
   ) {}
@@ -146,9 +154,7 @@ export class AvailabilityService {
 
       assertRouteActive(route);
 
-      const quoteCurrency = this.currencyRepository
-        ? await resolveQuoteCurrency(this.currencyRepository)
-        : "EUR";
+      const quoteCurrency = DEFAULT_CURRENCY;
 
       const [vehicleOptions, luggageVehicleCandidates, selectableExtras] =
         await Promise.all([
@@ -257,6 +263,7 @@ export class AvailabilityService {
               extraServiceName: extra.name,
               pricingMode: extra.pricingMode,
               quantity: extra.quantity,
+              includedQuantity: extra.includedQuantity,
               unitPriceMinor: extra.unitPriceMinor,
               currency: vehicleOption.currency,
             })),
@@ -330,6 +337,7 @@ export class AvailabilityService {
               pricingMode: "PER_UNIT" as const,
               quantity: extra.quantity,
               maxQuantity: null,
+              includedQuantity: 0,
               unitPriceMinor: 0,
               totalPriceMinor: 0,
               required: true,

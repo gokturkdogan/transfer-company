@@ -33,6 +33,7 @@ export const extraServices = pgTable(
     autoSuggested: boolean("auto_suggested").notNull().default(false),
     minQuantity: integer("min_quantity").notNull().default(1),
     maxQuantity: integer("max_quantity"),
+    includedQuantity: integer("included_quantity").notNull().default(0),
     luggageCapacityPerUnit: integer("luggage_capacity_per_unit"),
     sortOrder: sortOrder(),
     ...timestamps,
@@ -48,6 +49,10 @@ export const extraServices = pgTable(
     check(
       "extra_services_quantity_bounds",
       sql`${table.maxQuantity} IS NULL OR ${table.maxQuantity} >= ${table.minQuantity}`,
+    ),
+    check(
+      "extra_services_included_quantity_non_negative",
+      sql`${table.includedQuantity} >= 0`,
     ),
     check(
       "extra_services_luggage_capacity_positive",

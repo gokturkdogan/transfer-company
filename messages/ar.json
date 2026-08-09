@@ -290,7 +290,8 @@
       "required": "Required",
       "quantity": "Quantity: {count}",
       "quantityLabel": "Quantity",
-      "none": "No optional extras available."
+      "none": "No optional extras available.",
+      "includedPricing": "{included} مجانًا · ثم {price} لكل قطعة"
     },
     "customer": {
       "title": "معلومات الاتصال",
@@ -614,7 +615,47 @@
       "largeLuggage": "{count} حقائب كبيرة",
       "cabinLuggage": "{count} حقائب يد",
       "fallbackShortDescription": "{name} — راحة فاخرة ومساحة واسعة لرحلات مطار أنطاليا.",
-      "fallbackDescription": "سافر براحة وأناقة مع {name} — خيار موثوق للعائلات والمجموعات."
+      "fallbackDescription": "سافر براحة وأناقة مع {name} — خيار موثوق للعائلات والمجموعات.",
+      "experienceParagraph": "صُمم {name} لرحلات نقل فاخرة من مطار أنطاليا إلى الفنادق والمنتجعات. مقصورة هادئة ومقاعد واسعة وسائقون محترفون — راحتك أولوية في كل رحلة.",
+      "specsTitle": "السعة",
+      "specsBandTitle": "{name} في لمحة",
+      "specsBandSubtitle": "اطّلع على سعة الركاب والأمتعة مسبقًا واختر المركبة الأنسب لمجموعتك بثقة.",
+      "specPassengers": "سعة الركاب",
+      "specLargeLuggage": "أمتعة كبيرة",
+      "specCabinLuggage": "أمتعة يد",
+      "priceBadge": "سعر ثابت",
+      "idealForTitle": "مثالي لـ",
+      "idealForHeading": "نقل فاخر مع {name}",
+      "idealForParagraphs": {
+        "0": "خيار ممتاز لعطلات العائلة ورحلات العمل والمجموعات الصغيرة. فئة {code} توازن بين الركاب والأمتعة.",
+        "1": "خطط لرحلة أنطاليا مع متابعة الرحلة واستقبال مجاني وسعر ثابت — دون مفاجآت عند الوصول."
+      },
+      "includedTitle": "مشمول في كل حجز",
+      "includedItems": {
+        "0": "استقبال مجاني في المطار",
+        "1": "متابعة الرحلة ووقت الانتظار",
+        "2": "سعر ثابت — بلا مفاجآت",
+        "3": "دعم تشغيلي 24/7"
+      },
+      "promises": {
+        "0": {
+          "title": "سائق محترف",
+          "description": "ذو خبرة، بزّة رسمية وتركيز على الضيف."
+        },
+        "1": {
+          "title": "استلام في الوقت",
+          "description": "وقت الانتظار مشمول عند تأخر الرحلة."
+        },
+        "2": {
+          "title": "راحة فاخرة",
+          "description": "مكيّف، مقصورة نظيفة وقيادة هادئة."
+        },
+        "3": {
+          "title": "تسعير شفاف",
+          "description": "السعر عند الحجز هو السعر النهائي."
+        }
+      },
+      "bookNote": "لا حاجة للدفع أونلاين. ادفع للسائق بعد الرحلة."
     }
   },
   "privacy": {

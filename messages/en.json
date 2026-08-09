@@ -290,7 +290,8 @@
       "required": "Required",
       "quantity": "Quantity: {count}",
       "quantityLabel": "Quantity",
-      "none": "No optional extras available."
+      "none": "No optional extras available.",
+      "includedPricing": "{included} included free · {price} each after"
     },
     "customer": {
       "title": "Contact Information",
@@ -614,7 +615,47 @@
       "largeLuggage": "{count} large bags",
       "cabinLuggage": "{count} cabin bags",
       "fallbackShortDescription": "{name} — premium comfort and generous space for Antalya Airport transfers.",
-      "fallbackDescription": "Travel in comfort and style with the {name} — a reliable choice for families and groups."
+      "fallbackDescription": "Travel in comfort and style with the {name} — a reliable choice for families and groups.",
+      "experienceParagraph": "The {name} is built for door-to-door premium transfers from Antalya Airport to hotels and resorts. A quiet cabin, generous seating and professional chauffeurs keep comfort first on every journey.",
+      "specsTitle": "Capacity",
+      "specsBandTitle": "{name} at a glance",
+      "specsBandSubtitle": "See passenger and luggage capacity upfront, then pick the right vehicle for your group with confidence.",
+      "specPassengers": "Passenger capacity",
+      "specLargeLuggage": "Large luggage",
+      "specCabinLuggage": "Cabin luggage",
+      "priceBadge": "Fixed price",
+      "idealForTitle": "Ideal for",
+      "idealForHeading": "Premium transfers with the {name}",
+      "idealForParagraphs": {
+        "0": "A great fit for family holidays, business trips and small groups. The {code} class balances passenger and luggage needs with ease.",
+        "1": "Plan your Antalya transfer with flight tracking, complimentary meet & greet and fixed pricing — no surprise fees on arrival."
+      },
+      "includedTitle": "Included with every booking",
+      "includedItems": {
+        "0": "Complimentary airport meet & greet",
+        "1": "Flight tracking and waiting time",
+        "2": "Fixed price — no surprises",
+        "3": "24/7 operations support"
+      },
+      "promises": {
+        "0": {
+          "title": "Professional chauffeur",
+          "description": "Experienced, uniformed and guest-focused drivers."
+        },
+        "1": {
+          "title": "On-time pickup",
+          "description": "Waiting time included when flights are delayed."
+        },
+        "2": {
+          "title": "Premium comfort",
+          "description": "Climate-controlled cabin, clean interior and quiet ride."
+        },
+        "3": {
+          "title": "Transparent pricing",
+          "description": "The price you see when booking is the price you pay."
+        }
+      },
+      "bookNote": "No online payment required. Pay your chauffeur after the transfer."
     }
   },
   "privacy": {

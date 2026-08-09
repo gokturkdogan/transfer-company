@@ -290,7 +290,8 @@
       "required": "Required",
       "quantity": "Quantity: {count}",
       "quantityLabel": "Quantity",
-      "none": "No optional extras available."
+      "none": "No optional extras available.",
+      "includedPricing": "{included} inklusive · danach {price} pro Stück"
     },
     "customer": {
       "title": "Kontaktinformationen",
@@ -614,7 +615,47 @@
       "largeLuggage": "{count} große Koffer",
       "cabinLuggage": "{count} Handgepäckstücke",
       "fallbackShortDescription": "{name} — Premium-Komfort und großzügiger Raum für Antalya-Flughafentransfers.",
-      "fallbackDescription": "Reisen Sie stilvoll und komfortabel mit dem {name} — ideal für Familien und Gruppen."
+      "fallbackDescription": "Reisen Sie stilvoll und komfortabel mit dem {name} — ideal für Familien und Gruppen.",
+      "experienceParagraph": "Der {name} ist für Premium-Transfers vom Flughafen Antalya bis zu Hotels und Resorts konzipiert. Ruhige Kabine, großzügige Sitze und professionelle Chauffeure stehen an erster Stelle.",
+      "specsTitle": "Kapazität",
+      "specsBandTitle": "{name} auf einen Blick",
+      "specsBandSubtitle": "Sehen Sie Passagier- und Gepäckkapazität im Voraus und wählen Sie das passende Fahrzeug für Ihre Gruppe.",
+      "specPassengers": "Passagierkapazität",
+      "specLargeLuggage": "Großes Gepäck",
+      "specCabinLuggage": "Handgepäck",
+      "priceBadge": "Festpreis",
+      "idealForTitle": "Ideal für",
+      "idealForHeading": "Premium-Transfers mit dem {name}",
+      "idealForParagraphs": {
+        "0": "Perfekt für Familienurlaub, Geschäftsreisen und kleine Gruppen. Die {code}-Klasse bietet eine ausgewogene Passagier- und Gepäckkapazität.",
+        "1": "Planen Sie Ihren Antalya-Transfer mit Flugverfolgung, kostenlosem Meet & Greet und Festpreis — ohne Überraschungen bei der Ankunft."
+      },
+      "includedTitle": "Bei jeder Buchung inklusive",
+      "includedItems": {
+        "0": "Kostenloses Meet & Greet am Flughafen",
+        "1": "Flugverfolgung und Wartezeit",
+        "2": "Festpreis — keine Überraschungen",
+        "3": "24/7 Operations-Support"
+      },
+      "promises": {
+        "0": {
+          "title": "Professioneller Chauffeur",
+          "description": "Erfahren, uniformiert und gastorientiert."
+        },
+        "1": {
+          "title": "Pünktliche Abholung",
+          "description": "Wartezeit bei Flugverspätung inklusive."
+        },
+        "2": {
+          "title": "Premium-Komfort",
+          "description": "Klimatisierte Kabine, sauberes Interieur, ruhige Fahrt."
+        },
+        "3": {
+          "title": "Transparente Preise",
+          "description": "Der gebuchte Preis ist der Endpreis."
+        }
+      },
+      "bookNote": "Keine Online-Zahlung. Zahlen Sie nach der Fahrt beim Chauffeur."
     }
   },
   "privacy": {

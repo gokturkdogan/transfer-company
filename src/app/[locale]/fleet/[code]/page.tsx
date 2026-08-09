@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { FleetCta } from "@/components/fleet/FleetCta";
 import { VehicleDetailContent } from "@/components/fleet/VehicleDetailContent";
 import { VehicleDetailHero } from "@/components/fleet/VehicleDetailHero";
+import { VehicleDetailPremiumBand } from "@/components/fleet/VehicleDetailPremiumBand";
+import { VehicleDetailSpecsBand } from "@/components/fleet/VehicleDetailSpecsBand";
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
@@ -113,6 +115,8 @@ export default async function FleetVehicleDetailPage({
       <main className="flex flex-1 flex-col pb-20 md:pb-0">
         <VehicleDetailHero vehicle={vehicle} />
         <VehicleDetailContent vehicle={vehicle} bookingHref={bookingHref} />
+        <VehicleDetailSpecsBand vehicle={vehicle} />
+        <VehicleDetailPremiumBand vehicle={vehicle} />
         <FleetCta />
       </main>
       <SiteFooter enabledLocales={enabledLocales} />

@@ -7,6 +7,7 @@ export type TransferOptionExtraDto = {
   pricingMode: ExtraPricingMode;
   quantity: number;
   maxQuantity: number | null;
+  includedQuantity: number;
   unitPriceMinor: number;
   totalPriceMinor: number;
   required: boolean;

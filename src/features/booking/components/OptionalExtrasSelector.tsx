@@ -67,11 +67,21 @@ export function OptionalExtrasSelector({
               {extra.name}
             </p>
             <p className="text-xs text-muted-foreground">
-              {formatPrice(
-                extra.unitPriceMinor,
-                selectedOption.quote.currency,
-                locale,
-              )}
+              {extra.pricingMode === "FIXED" ||
+              extra.includedQuantity <= 0
+                ? formatPrice(
+                    extra.unitPriceMinor,
+                    selectedOption.quote.currency,
+                    locale,
+                  )
+                : t("includedPricing", {
+                    included: extra.includedQuantity,
+                    price: formatPrice(
+                      extra.unitPriceMinor,
+                      selectedOption.quote.currency,
+                      locale,
+                    ),
+                  })}
             </p>
           </div>
           <CounterField
