@@ -172,7 +172,8 @@
       "languagesTitle": "Dil seçenekleri",
       "copyright": "© {year} VIP Transfer. Tüm hakları saklıdır.",
       "exploreTitle": "Keşfet",
-      "tagline": "Antalya · Premium VIP Transfer"
+      "tagline": "Antalya · Premium VIP Transfer",
+      "privacyPolicy": "Gizlilik ve Çerezler"
     },
     "meta": {
       "title": "Antalya Havalimanı VIP Transfer | Sabit Fiyat, 7/24 Premium Hizmet",
@@ -537,6 +538,67 @@
       "title": "Transferinizi planlamaya hazır mısınız?",
       "subtitle": "Birkaç adımda rezervasyon talebinizi gönderin; gerisini biz halledelim.",
       "button": "Rezervasyon Yap"
+    }
+  },
+  "privacy": {
+    "meta": {
+      "title": "Gizlilik ve Çerez Politikası | VIP Transfer",
+      "description": "VIP Transfer web sitesinde kullanılan çerezler, veri işleme yaklaşımımız ve gizlilik haklarınız hakkında bilgi edinin."
+    },
+    "hero": {
+      "badge": "Şeffaflık",
+      "title": "Gizlilik ve",
+      "titleAccent": "Çerez Politikası",
+      "subtitle": "Sitemizde yalnızca hizmetin çalışması için gerekli, işlevsel çerezler kullanılır. Pazarlama veya izleme çerezi bulunmaz.",
+      "updated": "Son güncelleme: 9 Ağustos 2026",
+      "highlights": {
+        "essential": "Yalnızca gerekli çerezler",
+        "noTracking": "İzleme veya reklam yok"
+      }
+    },
+    "sections": {
+      "overview": {
+        "title": "Genel bilgilendirme",
+        "paragraphs": {
+          "0": "VIP Transfer olarak kişisel verilerinizi ve gizliliğinizi önemsiyoruz. Bu sayfa, web sitemizi ziyaret ettiğinizde veya rezervasyon talebi gönderdiğinizde hangi çerezlerin kullanıldığını açıklar.",
+          "1": "Rezervasyon bilgileriniz sunucu tarafında işlenir; tarayıcınızda pazarlama veya profil çıkarma amaçlı çerezler kullanılmaz. Yalnızca dil tercihinizi hatırlamak için sınırlı bir çerez kullanılabilir."
+        }
+      },
+      "cookies": {
+        "title": "Kullandığımız çerezler",
+        "intro": "Aşağıdaki tabloda birinci taraf çerezlerimiz listelenmiştir. Her çerez belirli bir işlev için gereklidir.",
+        "table": {
+          "name": "Çerez adı",
+          "purpose": "Amaç",
+          "duration": "Süre",
+          "type": "Tür"
+        },
+        "items": {
+          "locale": {
+            "name": "NEXT_LOCALE",
+            "purpose": "Seçtiğiniz dil tercihini hatırlar (ör. Türkçe veya İngilizce).",
+            "duration": "Oturum / tarayıcıya bağlı",
+            "type": "İşlevsel"
+          }
+        }
+      },
+      "noMarketing": {
+        "title": "Pazarlama çerezi kullanılmıyor",
+        "body": "Google Analytics, reklam pikselleri, sosyal medya izleme veya benzeri üçüncü taraf analitik araçları kullanmıyoruz. Bu nedenle çerez onay banner'ı göstermiyoruz; ziyaretçilerimizi izlemiyor veya profil çıkarmıyoruz."
+      },
+      "thirdParty": {
+        "title": "Üçüncü taraf hizmetler",
+        "body": "Araç ve destinasyon görselleri Cloudinary (res.cloudinary.com) üzerinden sunulur. Bu hizmet kendi alan adında çerez bırakabilir; bizim sitemizde analitik veya reklam amaçlı üçüncü taraf çerez ayarlamıyoruz. Rezervasyon sırasında ilettiğiniz kişisel veriler yalnızca transfer hizmetinin sunulması için işlenir."
+      },
+      "rights": {
+        "eyebrow": "Haklarınız",
+        "title": "KVKK kapsamında bilgilendirme",
+        "body": "6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında verilerinize erişim, düzeltme ve silme taleplerinde bulunabilirsiniz. Rezervasyon sırasında paylaştığınız iletişim bilgileri hizmet sunumu ve rezervasyon yönetimi amacıyla saklanır."
+      },
+      "contact": {
+        "title": "Sorularınız için",
+        "body": "Gizlilik veya çerez kullanımı hakkında sorularınız varsa bizimle iletişime geçebilirsiniz:"
+      }
     }
   },
   "contact": {

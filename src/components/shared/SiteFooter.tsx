@@ -94,6 +94,11 @@ export async function SiteFooter({
               </Link>
             </li>
             <li>
+              <Link href="/privacy" className="transition-colors hover:text-gold-light">
+                {t("privacyPolicy")}
+              </Link>
+            </li>
+            <li>
               <Link
                 href="/booking"
                 className="transition-colors hover:text-gold-light"

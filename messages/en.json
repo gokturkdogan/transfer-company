@@ -172,7 +172,8 @@
       "languagesTitle": "Languages",
       "copyright": "© {year} VIP Transfer. All rights reserved.",
       "exploreTitle": "Explore",
-      "tagline": "Antalya · Premium VIP Transfer"
+      "tagline": "Antalya · Premium VIP Transfer",
+      "privacyPolicy": "Privacy & Cookies"
     },
     "meta": {
       "title": "Antalya Airport VIP Transfer | Fixed Prices, Premium 24/7 Service",
@@ -537,6 +538,67 @@
       "title": "Ready to plan your transfer?",
       "subtitle": "Send a reservation request in a few steps — we'll handle the rest.",
       "button": "Book a Transfer"
+    }
+  },
+  "privacy": {
+    "meta": {
+      "title": "Privacy & Cookie Policy | VIP Transfer",
+      "description": "Learn which cookies VIP Transfer uses, how we handle data, and your privacy rights."
+    },
+    "hero": {
+      "badge": "Transparency",
+      "title": "Privacy &",
+      "titleAccent": "Cookie Policy",
+      "subtitle": "We only use functional cookies required for the site to work. No marketing or tracking cookies.",
+      "updated": "Last updated: 9 August 2026",
+      "highlights": {
+        "essential": "Essential cookies only",
+        "noTracking": "No tracking or ads"
+      }
+    },
+    "sections": {
+      "overview": {
+        "title": "Overview",
+        "paragraphs": {
+          "0": "At VIP Transfer we respect your privacy. This page explains which cookies are used when you visit our website or submit a reservation request.",
+          "1": "Booking data is processed on our servers. We do not use marketing or profiling cookies in your browser. A limited cookie may be used only to remember your language preference."
+        }
+      },
+      "cookies": {
+        "title": "Cookies we use",
+        "intro": "The table below lists our first-party cookies. Each one serves a specific, necessary function.",
+        "table": {
+          "name": "Cookie name",
+          "purpose": "Purpose",
+          "duration": "Duration",
+          "type": "Type"
+        },
+        "items": {
+          "locale": {
+            "name": "NEXT_LOCALE",
+            "purpose": "Remembers your selected language (e.g. Turkish or English).",
+            "duration": "Session / browser-dependent",
+            "type": "Functional"
+          }
+        }
+      },
+      "noMarketing": {
+        "title": "No marketing cookies",
+        "body": "We do not use Google Analytics, ad pixels, social media trackers or similar third-party analytics. We therefore do not show a cookie consent banner — we do not track or profile visitors."
+      },
+      "thirdParty": {
+        "title": "Third-party services",
+        "body": "Vehicle and destination images are served via Cloudinary (res.cloudinary.com). That service may set cookies on its own domain; we do not set third-party analytics or advertising cookies on our site. Personal data you provide when booking is processed solely to deliver the transfer service."
+      },
+      "rights": {
+        "eyebrow": "Your rights",
+        "title": "Data protection information",
+        "body": "Under applicable data protection law you may request access, correction or deletion of your data. Contact details shared during booking are retained for service delivery and reservation management."
+      },
+      "contact": {
+        "title": "Questions?",
+        "body": "If you have questions about privacy or cookie use, please contact us:"
+      }
     }
   },
   "contact": {
