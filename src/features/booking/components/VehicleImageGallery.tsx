@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 
 import { MAX_VEHICLE_BOOKING_PREVIEW_IMAGES } from "@/features/vehicles/domain/constants";
@@ -18,6 +19,8 @@ export function VehicleImageGallery({
   alt,
   className,
 }: VehicleImageGalleryProps) {
+  const t = useTranslations("home.carousel");
+
   const gallery = useMemo(
     () =>
       images
@@ -76,7 +79,7 @@ export function VehicleImageGallery({
               type="button"
               onClick={showPrevious}
               className="absolute start-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-ink/70 text-white shadow-lg backdrop-blur-sm transition-opacity hover:bg-ink/85 md:opacity-0 md:group-hover:opacity-100"
-              aria-label={`${alt} — previous`}
+              aria-label={t("previousImage", { alt })}
             >
               <ChevronLeft className="h-4 w-4 rtl:rotate-180" aria-hidden />
             </button>
@@ -84,7 +87,7 @@ export function VehicleImageGallery({
               type="button"
               onClick={showNext}
               className="absolute end-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-ink/70 text-white shadow-lg backdrop-blur-sm transition-opacity hover:bg-ink/85 md:opacity-0 md:group-hover:opacity-100"
-              aria-label={`${alt} — next`}
+              aria-label={t("nextImage", { alt })}
             >
               <ChevronRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
             </button>
@@ -101,7 +104,7 @@ export function VehicleImageGallery({
                       ? "w-6 bg-gold"
                       : "w-1.5 bg-white/55 hover:bg-white/80",
                   )}
-                  aria-label={`${alt} — ${index + 1}`}
+                  aria-label={t("imageDot", { alt, index: index + 1 })}
                   aria-current={index === safeIndex}
                 />
               ))}
@@ -131,7 +134,7 @@ export function VehicleImageGallery({
                   ? "border-gold opacity-100 ring-1 ring-gold/30"
                   : "border-transparent opacity-80 hover:border-gold/35 hover:opacity-100",
               )}
-              aria-label={`${alt} — ${index + 1}`}
+              aria-label={t("thumbnail", { alt, index: index + 1 })}
               aria-current={index === safeIndex}
             >
               <Image src={image} alt="" fill sizes="96px" className="object-cover" />

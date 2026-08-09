@@ -1,15 +1,17 @@
 {
   "common": {
     "appName": "VIP Transfer",
-    "tagline": "Premium airport transfer booking"
+    "tagline": "Premium-Flughafentransfer-Buchung",
+    "decreaseAria": "Verringern {label}",
+    "increaseAria": "Erhöhen {label}"
   },
   "home": {
-    "title": "VIP Airport Transfer",
-    "description": "Reliable, comfortable, and multilingual VIP transfer booking platform.",
+    "title": "VIP Flughafentransfer",
+    "description": "Zuverlässige, komfortable und mehrsprachige VIP-Transfer-Buchungsplattform.",
     "cta": {
       "title": "Ihr Premium-Transfer ist",
-      "subtitle": "Book your Antalya airport transfer in under two minutes.",
-      "button": "Book Your Transfer",
+      "subtitle": "Buchen Sie Ihren Antalya-Flughafentransfer in unter zwei Minuten.",
+      "button": "Transfer jetzt buchen",
       "eyebrow": "Reservierung",
       "titleAccent": "60 Sekunden entfernt"
     },
@@ -23,7 +25,7 @@
       "scrollHint": "Entdecken"
     },
     "nav": {
-      "reserve": "Reserve Now",
+      "reserve": "Jetzt reservieren",
       "destinations": "Reiseziele",
       "fleet": "Fahrzeuge",
       "createReservation": "Reservierung erstellen",
@@ -35,144 +37,151 @@
     "carousel": {
       "prev": "Zurück",
       "next": "Weiter",
-      "goToSlide": "Zu Folie {index}"
+      "goToSlide": "Zu Folie {index}",
+      "previousImage": "{alt} — vorheriges Bild",
+      "nextImage": "{alt} — nächstes Bild",
+      "imageDot": "{alt} — Bild {index}",
+      "thumbnail": "{alt} — Vorschaubild {index}",
+      "slideOf": "{current} / {total}",
+      "carouselRole": "Karussell",
+      "slideRole": "Folie"
     },
     "trustBar": {
-      "fixedPrice": "Fixed Price",
-      "flightTracking": "Flight Tracking",
-      "meetGreet": "Meet & Greet",
-      "support": "24/7 Support",
-      "luxuryFleet": "Luxury Fleet"
+      "fixedPrice": "Festpreis",
+      "flightTracking": "Flugverfolgung",
+      "meetGreet": "Begrüßungsservice",
+      "support": "24/7-Support",
+      "luxuryFleet": "Luxusflotte"
     },
     "destinations": {
-      "eyebrow": "Destinations",
-      "title": "Popular Destinations",
-      "subtitle": "Discover our most requested transfer routes from Antalya Airport.",
-      "from": "From {price}",
+      "eyebrow": "Reiseziele",
+      "title": "Beliebte Reiseziele",
+      "subtitle": "Entdecken Sie unsere meistgebuchten Transferrouten vom Flughafen Antalya.",
+      "from": "Ab {price}",
       "book": "Jetzt Transfer buchen"
     },
     "fleet": {
-      "eyebrow": "Our Fleet",
-      "title": "Luxury Vehicles",
-      "subtitle": "Travel in comfort with our premium Mercedes fleet.",
-      "passengers": "Up to {count} passengers",
+      "eyebrow": "Unsere Flotte",
+      "title": "Luxusfahrzeuge",
+      "subtitle": "Reisen Sie komfortabel mit unserer Premium-Mercedes-Flotte.",
+      "passengers": "Bis zu {count} Passagiere",
       "luggage": "{large} Gepäck",
-      "from": "From {price}",
-      "book": "Book Now",
+      "from": "Ab {price}",
+      "book": "Jetzt buchen",
       "viewAll": "Gesamte Flotte ansehen",
       "details": "Details"
     },
     "howItWorks": {
-      "eyebrow": "Process",
-      "title": "How It Works",
-      "subtitle": "Your premium transfer in four simple steps.",
+      "eyebrow": "Ablauf",
+      "title": "So funktioniert es",
+      "subtitle": "Ihr Premium-Transfer in vier einfachen Schritten.",
       "steps": [
         {
-          "title": "Book Online",
-          "description": "Select your route, date, and vehicle in minutes."
+          "title": "Online buchen",
+          "description": "Wählen Sie Route, Datum und Fahrzeug in wenigen Minuten."
         },
         {
-          "title": "Confirmation",
-          "description": "Receive instant confirmation with your transfer details."
+          "title": "Bestätigung",
+          "description": "Erhalten Sie sofort eine Bestätigung mit Ihren Transferdetails."
         },
         {
-          "title": "Airport Meet",
-          "description": "Your chauffeur waits at arrivals with a name sign."
+          "title": "Abholung am Flughafen",
+          "description": "Ihr Chauffeur wartet in der Ankunftshalle mit Namensschild."
         },
         {
-          "title": "Enjoy the Ride",
-          "description": "Relax in a luxury vehicle to your destination."
+          "title": "Entspannt ankommen",
+          "description": "Genießen Sie die Fahrt in einem Luxusfahrzeug zu Ihrem Ziel."
         }
       ]
     },
     "whyUs": {
-      "eyebrow": "Why Us",
-      "title": "Why Choose Us",
-      "subtitle": "The premium difference in every detail of your journey.",
+      "eyebrow": "Warum wir",
+      "title": "Warum uns wählen",
+      "subtitle": "Der Premium-Unterschied in jedem Detail Ihrer Reise.",
       "features": [
         {
-          "title": "Luxury Experience",
-          "description": "Premium vehicles and immaculate interiors for every transfer."
+          "title": "Luxuserlebnis",
+          "description": "Premium-Fahrzeuge und makellose Innenräume bei jedem Transfer."
         },
         {
-          "title": "Fixed Pricing",
-          "description": "Know your price before you book — no hidden fees."
+          "title": "Festpreise",
+          "description": "Kennen Sie Ihren Preis vor der Buchung — keine versteckten Gebühren."
         },
         {
-          "title": "24/7 Availability",
-          "description": "Round-the-clock support for early flights and late arrivals."
+          "title": "24/7 Verfügbarkeit",
+          "description": "Rund-um-die-Uhr-Support für frühe Flüge und späte Ankünfte."
         },
         {
-          "title": "Professional Chauffeurs",
-          "description": "Experienced, courteous drivers who know the region."
+          "title": "Professionelle Chauffeurs",
+          "description": "Erfahrene, höfliche Fahrer, die die Region kennen."
         },
         {
-          "title": "No Online Payment",
-          "description": "Reserve securely — pay your driver on arrival."
+          "title": "Keine Online-Zahlung",
+          "description": "Sicher reservieren — Zahlung bei Ankunft beim Fahrer."
         },
         {
-          "title": "Flight Monitoring",
-          "description": "We track your flight and adjust pickup times automatically."
+          "title": "Flugüberwachung",
+          "description": "Wir verfolgen Ihren Flug und passen die Abholzeit automatisch an."
         }
       ]
     },
     "testimonials": {
-      "eyebrow": "Reviews",
-      "title": "What Our Guests Say",
+      "eyebrow": "Bewertungen",
+      "title": "Was unsere Gäste sagen",
       "items": [
         {
-          "quote": "Impeccable service from airport to hotel. The Vito was spotless and the driver was incredibly professional.",
-          "author": "Sarah M., United Kingdom"
+          "quote": "Makelloser Service vom Flughafen zum Hotel. Der Vito war blitzsauber und der Fahrer äußerst professionell.",
+          "author": "Sarah M., Vereinigtes Königreich"
         },
         {
-          "quote": "Best transfer experience in Antalya. Fixed price, no surprises, and they waited despite our delayed flight.",
-          "author": "Thomas K., Germany"
+          "quote": "Beste Transfererfahrung in Antalya. Festpreis, keine Überraschungen, und sie warteten trotz unserer Verspätung.",
+          "author": "Thomas K., Deutschland"
         },
         {
-          "quote": "Luxury at a fair price. We use them every time we visit Belek. Highly recommended.",
-          "author": "Elena R., Russia"
+          "quote": "Luxus zu einem fairen Preis. Wir nutzen sie bei jedem Besuch in Belek. Sehr empfehlenswert.",
+          "author": "Elena R., Russland"
         }
       ]
     },
     "faq": {
-      "eyebrow": "FAQ",
-      "title": "Frequently Asked Questions",
+      "eyebrow": "Häufige Fragen",
+      "title": "Häufig gestellte Fragen",
       "items": [
         {
-          "question": "How do I book a transfer?",
-          "answer": "Use the booking widget on this page to select your airport, destination, date, and vehicle. Submit your reservation request and we will confirm shortly."
+          "question": "Wie buche ich einen Transfer?",
+          "answer": "Nutzen Sie das Buchungsformular auf dieser Seite, um Flughafen, Ziel, Datum und Fahrzeug auszuwählen. Senden Sie Ihre Anfrage — wir bestätigen in Kürze."
         },
         {
-          "question": "Is the price fixed?",
-          "answer": "Yes. The price shown during booking is the final price for your route and vehicle. No hidden fees or surge pricing."
+          "question": "Ist der Preis fest?",
+          "answer": "Ja. Der bei der Buchung angezeigte Preis ist der Endpreis für Ihre Route und Ihr Fahrzeug. Keine versteckten Gebühren oder Preisschwankungen."
         },
         {
-          "question": "Where will the driver meet me?",
-          "answer": "Your chauffeur will wait in the arrivals hall with a name sign. We monitor your flight and adjust for delays."
+          "question": "Wo trifft mich der Fahrer?",
+          "answer": "Ihr Chauffeur wartet in der Ankunftshalle mit Namensschild. Wir überwachen Ihren Flug und passen uns bei Verspätungen an."
         },
         {
-          "question": "Can I book a return transfer?",
-          "answer": "Yes. Select round-trip when booking and provide your return date and flight details."
+          "question": "Kann ich einen Rücktransfer buchen?",
+          "answer": "Ja. Wählen Sie bei der Buchung Hin- und Rückfahrt und geben Sie Rückflugdatum und -details an."
         },
         {
-          "question": "Do I pay online?",
-          "answer": "No online payment is required. You pay your driver directly after the transfer."
+          "question": "Zahle ich online?",
+          "answer": "Keine Online-Zahlung erforderlich. Sie zahlen Ihrem Fahrer direkt nach dem Transfer."
         },
         {
-          "question": "What if my flight is delayed?",
-          "answer": "We track your flight automatically. Your driver will adjust the pickup time at no extra charge."
+          "question": "Was passiert bei Flugverspätung?",
+          "answer": "Wir verfolgen Ihren Flug automatisch. Ihr Fahrer passt die Abholzeit ohne Aufpreis an."
         }
       ],
       "subtitle": "Die häufigsten Fragen zu Buchung, Preisen und Begrüßung am Flughafen."
     },
     "footer": {
-      "description": "Premium airport transfer service in Antalya and the Turkish Riviera.",
-      "linksTitle": "Quick Links",
-      "bookTransfer": "Book a Transfer",
-      "fullBooking": "Full Booking Page",
-      "contactTitle": "Contact",
+      "description": "Premium-Flughafentransfer-Service in Antalya und an der Türkischen Riviera.",
+      "linksTitle": "Schnelllinks",
+      "bookTransfer": "Transfer buchen",
+      "fullBooking": "Vollständige Buchungsseite",
+      "contactTitle": "Kontakt",
       "languagesTitle": "Sprachen",
-      "copyright": "© {year} VIP Transfer. All rights reserved.",
+      "copyright": "© {year} VIP Transfer. Alle Rechte vorbehalten.",
       "exploreTitle": "Entdecken",
       "tagline": "Antalya · Premium VIP Transfer",
       "privacyPolicy": "Datenschutz & Cookies"
@@ -286,11 +295,11 @@
       "sectionTitle": "Extras",
       "sectionSubtitle": "Pflicht-Extras ansehen oder optionale Leistungen hinzufügen.",
       "title": "Optionale Extras",
-      "requiredTitle": "Required extras",
-      "required": "Required",
-      "quantity": "Quantity: {count}",
-      "quantityLabel": "Quantity",
-      "none": "No optional extras available.",
+      "requiredTitle": "Pflicht-Extras",
+      "required": "Pflicht",
+      "quantity": "Menge: {count}",
+      "quantityLabel": "Menge",
+      "none": "Keine optionalen Extras verfügbar.",
       "includedPricing": "{included} inklusive · danach {price} pro Stück"
     },
     "customer": {
@@ -316,14 +325,14 @@
       "notesSectionTitle": "--- Passagierinformationen ---"
     },
     "errors": {
-      "rateLimit": "Too many requests. Please try again later.",
-      "quoteChanged": "Pricing has been updated. Please review the new total.",
-      "validation": "Please check the highlighted fields.",
-      "noVehicles": "No suitable vehicles are available for this search.",
-      "noRoute": "No transfer is currently available for this route.",
-      "vehicleUnavailable": "This vehicle is no longer available. Please select another option.",
-      "network": "Network error. Please check your connection and try again.",
-      "generic": "Something went wrong. Please try again."
+      "rateLimit": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
+      "quoteChanged": "Der Preis wurde aktualisiert. Bitte prüfen Sie den neuen Gesamtbetrag.",
+      "validation": "Bitte überprüfen Sie die markierten Felder.",
+      "noVehicles": "Für diese Suche sind keine passenden Fahrzeuge verfügbar.",
+      "noRoute": "Für diese Route ist derzeit kein Transfer verfügbar.",
+      "vehicleUnavailable": "Dieses Fahrzeug ist nicht mehr verfügbar. Bitte wählen Sie eine andere Option.",
+      "network": "Netzwerkfehler. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
     },
     "paymentCurrencies": {
       "title": "Bargeldzahlungsoptionen",
@@ -337,34 +346,34 @@
       "review": "Zusammenfassung"
     },
     "search": {
-      "airport": "Airport",
-      "city": "City",
-      "district": "Destination district",
-      "selectAirport": "Select airport",
-      "selectCity": "Select city",
-      "selectDistrict": "Select district",
-      "searchAirport": "Search airports...",
-      "searchCity": "Search cities...",
-      "searchDistrict": "Search districts...",
-      "noAirports": "No airports found.",
-      "noCities": "No cities found.",
-      "noDistricts": "No districts found.",
-      "tripType": "Trip type",
-      "oneWay": "One way",
-      "roundTrip": "Round trip",
-      "outboundDate": "Outbound date",
-      "outboundTime": "Outbound time",
-      "returnDate": "Return date",
-      "returnTime": "Return time",
+      "airport": "Flughafen",
+      "city": "Stadt",
+      "district": "Zielbezirk",
+      "selectAirport": "Flughafen wählen",
+      "selectCity": "Stadt wählen",
+      "selectDistrict": "Bezirk wählen",
+      "searchAirport": "Flughäfen suchen...",
+      "searchCity": "Städte suchen...",
+      "searchDistrict": "Bezirke suchen...",
+      "noAirports": "Keine Flughäfen gefunden.",
+      "noCities": "Keine Städte gefunden.",
+      "noDistricts": "Keine Bezirke gefunden.",
+      "tripType": "Reiseart",
+      "oneWay": "Einfache Fahrt",
+      "roundTrip": "Hin- und Rückfahrt",
+      "outboundDate": "Hinfahrtsdatum",
+      "outboundTime": "Hinfahrtszeit",
+      "returnDate": "Rückfahrtsdatum",
+      "returnTime": "Rückfahrtszeit",
       "selectDateTime": "Datum & Uhrzeit wählen",
       "pickTime": "Uhrzeit wählen",
       "noTimesAvailable": "Für dieses Datum sind keine Zeiten verfügbar.",
-      "passengers": "Passengers",
-      "adults": "Adults",
-      "children": "Children",
-      "submit": "Search transfers",
-      "loading": "Searching...",
-      "swapDirection": "Swap airport and destination",
+      "passengers": "Passagiere",
+      "adults": "Erwachsene",
+      "children": "Kinder",
+      "submit": "Transfers suchen",
+      "loading": "Suche läuft...",
+      "swapDirection": "Flughafen und Ziel tauschen",
       "mobileEditSearch": "Bearbeiten",
       "mobileEditSearchTitle": "Suche bearbeiten",
       "mobileEditSearchClose": "Schließen",
@@ -381,24 +390,24 @@
       "stepSearch": "Suchen, um Fahrzeuge anzuzeigen"
     },
     "locations": {
-      "placeholder": "Select location",
-      "search": "Search locations...",
-      "empty": "No locations found.",
+      "placeholder": "Ort wählen",
+      "search": "Orte suchen...",
+      "empty": "Keine Orte gefunden.",
       "types": {
-        "AIRPORT": "Airport",
-        "CITY": "City",
-        "DISTRICT": "District",
+        "AIRPORT": "Flughafen",
+        "CITY": "Stadt",
+        "DISTRICT": "Bezirk",
         "HOTEL": "Hotel",
         "REGION": "Region",
-        "TRANSFER_POINT": "Transfer point",
+        "TRANSFER_POINT": "Transferpunkt",
         "MARINA": "Marina",
-        "CUSTOM_LOCATION": "Custom location"
+        "CUSTOM_LOCATION": "Benutzerdefinierter Ort"
       }
     },
     "vehicle": {
-      "title": "Choose your vehicle",
-      "noQuote": "Search for transfers to see vehicle options.",
-      "empty": "No vehicles available.",
+      "title": "Fahrzeug wählen",
+      "noQuote": "Suchen Sie nach Transfers, um Fahrzeugoptionen zu sehen.",
+      "empty": "Keine Fahrzeuge verfügbar.",
       "capacity": "Bis zu {passengers} Passagiere · {large} Gepäck",
       "passengerRange": "1–{max} Passagiere",
       "luggageMax": "Max. {large} Gepäck",
@@ -413,13 +422,13 @@
       "vehicleFeaturesTitle": "Fahrzeugausstattung",
       "totalLabel": "Gesamt",
       "multiVehicle": "{quantity} × {name}",
-      "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
-      "select": "Select",
-      "selected": "Selected",
+      "luggageVehicleRequired": "Ihr Gepäck übersteigt die Kapazität dieses Fahrzeugs. Ein zusätzliches Gepäckfahrzeug ist erforderlich.",
+      "select": "Auswählen",
+      "selected": "Ausgewählt",
       "eligibility": {
-        "ELIGIBLE": "Suitable",
-        "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
-        "INELIGIBLE": "Not suitable"
+        "ELIGIBLE": "Geeignet",
+        "ELIGIBLE_WITH_EXTRAS": "Mit Zusatzgepäck geeignet",
+        "INELIGIBLE": "Nicht geeignet"
       }
     },
     "transfer": {
@@ -433,20 +442,20 @@
       "updatingSchedule": "Termin wird aktualisiert, Preis wird neu berechnet..."
     },
     "flight": {
-      "outbound": "Outbound flight number (optional)",
-      "return": "Return flight number (optional)",
-      "notes": "Notes (optional)"
+      "outbound": "Hinflugnummer (optional)",
+      "return": "Rückflugnummer (optional)",
+      "notes": "Notizen (optional)"
     },
     "hotel": {
-      "title": "Hotel / drop-off",
-      "titlePickup": "Hotel / pick-up",
-      "selectHotel": "Select your hotel",
-      "searchHotel": "Search hotels...",
-      "empty": "No hotels found for this district.",
-      "loading": "Loading hotels...",
-      "notListed": "Hotel not listed",
-      "customName": "Property name",
-      "customAddress": "Address (optional)"
+      "title": "Hotel / Ziel",
+      "titlePickup": "Hotel / Abholung",
+      "selectHotel": "Hotel wählen",
+      "searchHotel": "Hotels suchen...",
+      "empty": "Keine Hotels in diesem Bezirk gefunden.",
+      "loading": "Hotels werden geladen...",
+      "notListed": "Hotel nicht in der Liste",
+      "customName": "Unterkunftsname",
+      "customAddress": "Adresse (optional)"
     },
     "review": {
       "title": "Reservierungsübersicht",
@@ -468,21 +477,21 @@
       "name": "Vollständiger Name",
       "email": "E-Mail",
       "phone": "Telefon",
-      "baseTransfer": "Base transfer",
-      "total": "Total",
-      "edit": "Edit details",
-      "submit": "Submit Reservation Request",
-      "submitting": "Submitting...",
+      "baseTransfer": "Basis-Transfer",
+      "total": "Gesamt",
+      "edit": "Details bearbeiten",
+      "submit": "Reservierungsanfrage senden",
+      "submitting": "Wird gesendet...",
       "tripType": {
-        "ONE_WAY": "One way",
-        "ROUND_TRIP": "Round trip"
+        "ONE_WAY": "Einfache Fahrt",
+        "ROUND_TRIP": "Hin- und Rückfahrt"
       }
     },
     "success": {
-      "title": "Reservation Request Received",
-      "subtitle": "Your reservation is awaiting confirmation.",
-      "reference": "Reference",
-      "backHome": "Back to homepage"
+      "title": "Reservierungsanfrage erhalten",
+      "subtitle": "Ihre Reservierung wartet auf Bestätigung.",
+      "reference": "Referenz",
+      "backHome": "Zur Startseite"
     }
   },
   "about": {
@@ -496,7 +505,7 @@
       "titleAccent": "Mit Erfahrung & Leidenschaft",
       "subtitle": "Als lokales Team bieten wir komfortable, transparente Premium-Transfers vom Flughafen Antalya an die gesamte Türkische Riviera.",
       "stats": {
-        "support": "24/7 Support",
+        "support": "24/7-Support",
         "rating": "4,9 / 5 Gästebewertung",
         "booking": "Buchung in 60 Sekunden"
       }
@@ -728,26 +737,26 @@
   },
   "contact": {
     "whatsapp": "WhatsApp",
-    "call": "Call",
-    "email": "Email",
+    "call": "Anrufen",
+    "email": "E-Mail",
     "reserve": "Buchen"
   },
   "trust": {
     "fixedPrice": {
-      "title": "Fixed Price",
-      "description": "Know your transfer price before you book."
+      "title": "Festpreis",
+      "description": "Kennen Sie Ihren Transferpreis vor der Buchung."
     },
     "support": {
-      "title": "24/7 Support",
-      "description": "We are here whenever you need help."
+      "title": "24/7-Support",
+      "description": "Wir sind da, wann immer Sie Hilfe brauchen."
     },
     "professional": {
-      "title": "Professional Driver",
-      "description": "Experienced drivers for a premium journey."
+      "title": "Professioneller Fahrer",
+      "description": "Erfahrene Fahrer für eine Premium-Reise."
     },
     "noPayment": {
-      "title": "No Online Payment",
-      "description": "Submit a secure reservation request without paying online."
+      "title": "Keine Online-Zahlung",
+      "description": "Senden Sie eine sichere Reservierungsanfrage ohne Online-Zahlung."
     }
   }
 }

@@ -1,4 +1,5 @@
-import { setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
@@ -14,6 +15,20 @@ import { LocaleRepository } from "@/features/locales/server/repository";
 import { resolveSiteLocales } from "@/features/locales/server/resolve-site-locales";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "booking.page" });
+
+  return {
+    title: t("title"),
+    description: t("subtitle"),
+  };
+}
 
 export default async function BookingPage({
   params,

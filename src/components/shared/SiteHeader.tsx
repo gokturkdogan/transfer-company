@@ -68,6 +68,7 @@ function SiteNavLink({
 
 export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
   const t = useTranslations("home.nav");
+  const tContact = useTranslations("contact");
   const common = useTranslations("common");
   const currentLocale = useLocale();
   const activeNavKey = useActiveSiteNavKey();
@@ -161,7 +162,7 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
                 href={toWhatsappHref(primaryWhatsapp)}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="WhatsApp"
+                aria-label={tContact("whatsapp")}
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/8 text-white/80 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold-light"
               >
                 <WhatsAppIcon className="h-4 w-4" aria-hidden />

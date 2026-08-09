@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -19,6 +20,8 @@ export function FleetVehicleGallery({
   className,
   compact = false,
 }: FleetVehicleGalleryProps) {
+  const t = useTranslations("home.carousel");
+
   const gallery = useMemo(
     () =>
       images
@@ -82,7 +85,7 @@ export function FleetVehicleGallery({
                 )
               }
               className="absolute start-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-ink/70 text-white shadow-lg backdrop-blur-sm transition-opacity hover:bg-ink/85 md:opacity-0 md:group-hover:opacity-100"
-              aria-label={`${alt} — previous`}
+              aria-label={t("previousImage", { alt })}
             >
               <ChevronLeft className="h-5 w-5 rtl:rotate-180" aria-hidden />
             </button>
@@ -94,7 +97,7 @@ export function FleetVehicleGallery({
                 )
               }
               className="absolute end-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-ink/70 text-white shadow-lg backdrop-blur-sm transition-opacity hover:bg-ink/85 md:opacity-0 md:group-hover:opacity-100"
-              aria-label={`${alt} — next`}
+              aria-label={t("nextImage", { alt })}
             >
               <ChevronRight className="h-5 w-5 rtl:rotate-180" aria-hidden />
             </button>
@@ -110,7 +113,7 @@ export function FleetVehicleGallery({
                       ? "w-6 bg-gold"
                       : "w-1.5 bg-white/50 hover:bg-white/80",
                   )}
-                  aria-label={`${alt} — image ${index + 1}`}
+                  aria-label={t("imageDot", { alt, index: index + 1 })}
                 />
               ))}
             </div>
@@ -132,7 +135,7 @@ export function FleetVehicleGallery({
                   ? "border-gold shadow-gold"
                   : "border-border/70 opacity-75 hover:opacity-100",
               )}
-              aria-label={`${alt} — thumbnail ${index + 1}`}
+              aria-label={t("thumbnail", { alt, index: index + 1 })}
             >
               <Image
                 src={image}

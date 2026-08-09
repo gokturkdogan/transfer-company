@@ -1,15 +1,17 @@
 {
   "common": {
     "appName": "VIP Transfer",
-    "tagline": "Premium airport transfer booking"
+    "tagline": "Премиальное бронирование трансфера из аэропорта",
+    "decreaseAria": "Уменьшить {label}",
+    "increaseAria": "Увеличить {label}"
   },
   "home": {
-    "title": "VIP Airport Transfer",
-    "description": "Reliable, comfortable, and multilingual VIP transfer booking platform.",
+    "title": "VIP трансфер из аэропорта",
+    "description": "Надёжная, комфортная и многоязычная платформа бронирования VIP-трансферов.",
     "cta": {
       "title": "Ваш премиальный трансфер",
-      "subtitle": "Book your Antalya airport transfer in under two minutes.",
-      "button": "Book Your Transfer",
+      "subtitle": "Забронируйте трансфер из аэропорта Антальи менее чем за две минуты.",
+      "button": "Забронировать трансфер",
       "eyebrow": "Бронирование",
       "titleAccent": "в 60 секундах"
     },
@@ -23,7 +25,7 @@
       "scrollHint": "Смотреть"
     },
     "nav": {
-      "reserve": "Reserve Now",
+      "reserve": "Забронировать сейчас",
       "destinations": "Направления",
       "fleet": "Автопарк",
       "createReservation": "Создать бронирование",
@@ -35,144 +37,151 @@
     "carousel": {
       "prev": "Назад",
       "next": "Вперёд",
-      "goToSlide": "Перейти к слайду {index}"
+      "goToSlide": "Перейти к слайду {index}",
+      "previousImage": "{alt} — предыдущее",
+      "nextImage": "{alt} — следующее",
+      "imageDot": "{alt} — изображение {index}",
+      "thumbnail": "{alt} — миниатюра {index}",
+      "slideOf": "{current} / {total}",
+      "carouselRole": "карусель",
+      "slideRole": "слайд"
     },
     "trustBar": {
-      "fixedPrice": "Fixed Price",
-      "flightTracking": "Flight Tracking",
-      "meetGreet": "Meet & Greet",
-      "support": "24/7 Support",
-      "luxuryFleet": "Luxury Fleet"
+      "fixedPrice": "Фиксированная цена",
+      "flightTracking": "Отслеживание рейса",
+      "meetGreet": "Встреча в зале",
+      "support": "Поддержка 24/7",
+      "luxuryFleet": "Премиальный автопарк"
     },
     "destinations": {
-      "eyebrow": "Destinations",
-      "title": "Popular Destinations",
-      "subtitle": "Discover our most requested transfer routes from Antalya Airport.",
-      "from": "From {price}",
+      "eyebrow": "Направления",
+      "title": "Популярные направления",
+      "subtitle": "Откройте для себя наши самые востребованные маршруты из аэропорта Антальи.",
+      "from": "От {price}",
       "book": "Забронировать трансфер"
     },
     "fleet": {
-      "eyebrow": "Our Fleet",
-      "title": "Luxury Vehicles",
-      "subtitle": "Travel in comfort with our premium Mercedes fleet.",
-      "passengers": "Up to {count} passengers",
+      "eyebrow": "Наш автопарк",
+      "title": "Автомобили премиум-класса",
+      "subtitle": "Путешествуйте с комфортом на нашем премиальном парке Mercedes.",
+      "passengers": "До {count} пассажиров",
       "luggage": "{large} багаж",
-      "from": "From {price}",
-      "book": "Book Now",
+      "from": "От {price}",
+      "book": "Забронировать",
       "viewAll": "Весь автопарк",
       "details": "Подробнее"
     },
     "howItWorks": {
-      "eyebrow": "Process",
-      "title": "How It Works",
-      "subtitle": "Your premium transfer in four simple steps.",
+      "eyebrow": "Процесс",
+      "title": "Как это работает",
+      "subtitle": "Ваш премиальный трансфер в четыре простых шага.",
       "steps": [
         {
-          "title": "Book Online",
-          "description": "Select your route, date, and vehicle in minutes."
+          "title": "Онлайн-бронирование",
+          "description": "Выберите маршрут, дату и автомобиль за несколько минут."
         },
         {
-          "title": "Confirmation",
-          "description": "Receive instant confirmation with your transfer details."
+          "title": "Подтверждение",
+          "description": "Получите мгновенное подтверждение с деталями трансфера."
         },
         {
-          "title": "Airport Meet",
-          "description": "Your chauffeur waits at arrivals with a name sign."
+          "title": "Встреча в аэропорту",
+          "description": "Водитель ждёт в зале прилёта с табличкой с вашим именем."
         },
         {
-          "title": "Enjoy the Ride",
-          "description": "Relax in a luxury vehicle to your destination."
+          "title": "Наслаждайтесь поездкой",
+          "description": "Отдохните в автомобиле премиум-класса по пути к месту назначения."
         }
       ]
     },
     "whyUs": {
-      "eyebrow": "Why Us",
-      "title": "Why Choose Us",
-      "subtitle": "The premium difference in every detail of your journey.",
+      "eyebrow": "Почему мы",
+      "title": "Почему выбирают нас",
+      "subtitle": "Премиальное отличие в каждой детали вашего путешествия.",
       "features": [
         {
-          "title": "Luxury Experience",
-          "description": "Premium vehicles and immaculate interiors for every transfer."
+          "title": "Роскошный опыт",
+          "description": "Премиальные автомобили и безупречный салон для каждого трансфера."
         },
         {
-          "title": "Fixed Pricing",
-          "description": "Know your price before you book — no hidden fees."
+          "title": "Фиксированная цена",
+          "description": "Знайте цену до бронирования — без скрытых платежей."
         },
         {
-          "title": "24/7 Availability",
-          "description": "Round-the-clock support for early flights and late arrivals."
+          "title": "Доступность 24/7",
+          "description": "Круглосуточная поддержка для ранних вылетов и поздних прилётов."
         },
         {
-          "title": "Professional Chauffeurs",
-          "description": "Experienced, courteous drivers who know the region."
+          "title": "Профессиональные водители",
+          "description": "Опытные, вежливые водители, хорошо знающие регион."
         },
         {
-          "title": "No Online Payment",
-          "description": "Reserve securely — pay your driver on arrival."
+          "title": "Без онлайн-оплаты",
+          "description": "Безопасное бронирование — оплата водителю по прибытии."
         },
         {
-          "title": "Flight Monitoring",
-          "description": "We track your flight and adjust pickup times automatically."
+          "title": "Мониторинг рейса",
+          "description": "Мы отслеживаем ваш рейс и автоматически корректируем время встречи."
         }
       ]
     },
     "testimonials": {
-      "eyebrow": "Reviews",
-      "title": "What Our Guests Say",
+      "eyebrow": "Отзывы",
+      "title": "Что говорят наши гости",
       "items": [
         {
-          "quote": "Impeccable service from airport to hotel. The Vito was spotless and the driver was incredibly professional.",
-          "author": "Sarah M., United Kingdom"
+          "quote": "Безупречный сервис от аэропорта до отеля. Vito был идеально чистым, водитель очень профессионален.",
+          "author": "Сара М., Великобритания"
         },
         {
-          "quote": "Best transfer experience in Antalya. Fixed price, no surprises, and they waited despite our delayed flight.",
-          "author": "Thomas K., Germany"
+          "quote": "Лучший трансфер в Анталье. Фиксированная цена, никаких сюрпризов, и нас ждали несмотря на задержку рейса.",
+          "author": "Томас К., Германия"
         },
         {
-          "quote": "Luxury at a fair price. We use them every time we visit Belek. Highly recommended.",
-          "author": "Elena R., Russia"
+          "quote": "Роскошь по справедливой цене. Пользуемся ими при каждом визите в Белек. Очень рекомендую.",
+          "author": "Елена Р., Россия"
         }
       ]
     },
     "faq": {
-      "eyebrow": "FAQ",
-      "title": "Frequently Asked Questions",
+      "eyebrow": "Вопросы и ответы",
+      "title": "Часто задаваемые вопросы",
       "items": [
         {
-          "question": "How do I book a transfer?",
-          "answer": "Use the booking widget on this page to select your airport, destination, date, and vehicle. Submit your reservation request and we will confirm shortly."
+          "question": "Как забронировать трансфер?",
+          "answer": "Используйте форму бронирования на этой странице, чтобы выбрать аэропорт, направление, дату и автомобиль. Отправьте запрос — мы подтвердим в ближайшее время."
         },
         {
-          "question": "Is the price fixed?",
-          "answer": "Yes. The price shown during booking is the final price for your route and vehicle. No hidden fees or surge pricing."
+          "question": "Цена фиксированная?",
+          "answer": "Да. Цена, показанная при бронировании, является окончательной для вашего маршрута и автомобиля. Без скрытых платежей и динамического ценообразования."
         },
         {
-          "question": "Where will the driver meet me?",
-          "answer": "Your chauffeur will wait in the arrivals hall with a name sign. We monitor your flight and adjust for delays."
+          "question": "Где меня встретит водитель?",
+          "answer": "Водитель будет ждать в зале прилёта с табличкой с вашим именем. Мы отслеживаем рейс и учитываем задержки."
         },
         {
-          "question": "Can I book a return transfer?",
-          "answer": "Yes. Select round-trip when booking and provide your return date and flight details."
+          "question": "Можно забронировать обратный трансфер?",
+          "answer": "Да. Выберите «туда и обратно» при бронировании и укажите дату и детали обратного рейса."
         },
         {
-          "question": "Do I pay online?",
-          "answer": "No online payment is required. You pay your driver directly after the transfer."
+          "question": "Нужно ли платить онлайн?",
+          "answer": "Онлайн-оплата не требуется. Вы платите водителю напрямую после трансфера."
         },
         {
-          "question": "What if my flight is delayed?",
-          "answer": "We track your flight automatically. Your driver will adjust the pickup time at no extra charge."
+          "question": "Что если рейс задержится?",
+          "answer": "Мы автоматически отслеживаем ваш рейс. Водитель скорректирует время встречи без дополнительной платы."
         }
       ],
       "subtitle": "Самые частые вопросы о бронировании, ценах и встрече в аэропорту."
     },
     "footer": {
-      "description": "Premium airport transfer service in Antalya and the Turkish Riviera.",
-      "linksTitle": "Quick Links",
-      "bookTransfer": "Book a Transfer",
-      "fullBooking": "Full Booking Page",
-      "contactTitle": "Contact",
+      "description": "Премиальный трансфер из аэропорта в Анталье и на Турецкой Ривьере.",
+      "linksTitle": "Быстрые ссылки",
+      "bookTransfer": "Забронировать трансфер",
+      "fullBooking": "Полная страница бронирования",
+      "contactTitle": "Контакты",
       "languagesTitle": "Языки",
-      "copyright": "© {year} VIP Transfer. All rights reserved.",
+      "copyright": "© {year} VIP Transfer. Все права защищены.",
       "exploreTitle": "Разделы",
       "tagline": "Анталья · Премиальный VIP-трансфер",
       "privacyPolicy": "Конфиденциальность и cookie"
@@ -286,11 +295,11 @@
       "sectionTitle": "Доп. услуги",
       "sectionSubtitle": "Просмотрите обязательные услуги или добавьте опциональные.",
       "title": "Опциональные услуги",
-      "requiredTitle": "Required extras",
-      "required": "Required",
-      "quantity": "Quantity: {count}",
-      "quantityLabel": "Quantity",
-      "none": "No optional extras available.",
+      "requiredTitle": "Обязательные доп. услуги",
+      "required": "Обязательно",
+      "quantity": "Количество: {count}",
+      "quantityLabel": "Количество",
+      "none": "Нет доступных дополнительных услуг.",
       "includedPricing": "{included} бесплатно · далее {price} за шт."
     },
     "customer": {
@@ -316,14 +325,14 @@
       "notesSectionTitle": "--- Информация о пассажирах ---"
     },
     "errors": {
-      "rateLimit": "Too many requests. Please try again later.",
-      "quoteChanged": "Pricing has been updated. Please review the new total.",
-      "validation": "Please check the highlighted fields.",
-      "noVehicles": "No suitable vehicles are available for this search.",
-      "noRoute": "No transfer is currently available for this route.",
-      "vehicleUnavailable": "This vehicle is no longer available. Please select another option.",
-      "network": "Network error. Please check your connection and try again.",
-      "generic": "Something went wrong. Please try again."
+      "rateLimit": "Слишком много запросов. Пожалуйста, попробуйте позже.",
+      "quoteChanged": "Цена обновлена. Пожалуйста, проверьте новую сумму.",
+      "validation": "Пожалуйста, проверьте выделенные поля.",
+      "noVehicles": "Для этого поиска нет подходящих автомобилей.",
+      "noRoute": "Для этого маршрута трансфер сейчас недоступен.",
+      "vehicleUnavailable": "Этот автомобиль больше недоступен. Выберите другой вариант.",
+      "network": "Ошибка сети. Проверьте подключение и попробуйте снова.",
+      "generic": "Что-то пошло не так. Пожалуйста, попробуйте снова."
     },
     "paymentCurrencies": {
       "title": "Варианты оплаты наличными",
@@ -337,34 +346,34 @@
       "review": "Итог"
     },
     "search": {
-      "airport": "Airport",
-      "city": "City",
-      "district": "Destination district",
-      "selectAirport": "Select airport",
-      "selectCity": "Select city",
-      "selectDistrict": "Select district",
-      "searchAirport": "Search airports...",
-      "searchCity": "Search cities...",
-      "searchDistrict": "Search districts...",
-      "noAirports": "No airports found.",
-      "noCities": "No cities found.",
-      "noDistricts": "No districts found.",
-      "tripType": "Trip type",
-      "oneWay": "One way",
-      "roundTrip": "Round trip",
-      "outboundDate": "Outbound date",
-      "outboundTime": "Outbound time",
-      "returnDate": "Return date",
-      "returnTime": "Return time",
+      "airport": "Аэропорт",
+      "city": "Город",
+      "district": "Район назначения",
+      "selectAirport": "Выберите аэропорт",
+      "selectCity": "Выберите город",
+      "selectDistrict": "Выберите район",
+      "searchAirport": "Поиск аэропортов...",
+      "searchCity": "Поиск городов...",
+      "searchDistrict": "Поиск районов...",
+      "noAirports": "Аэропорты не найдены.",
+      "noCities": "Города не найдены.",
+      "noDistricts": "Районы не найдены.",
+      "tripType": "Тип поездки",
+      "oneWay": "В одну сторону",
+      "roundTrip": "Туда и обратно",
+      "outboundDate": "Дата выезда",
+      "outboundTime": "Время выезда",
+      "returnDate": "Дата возврата",
+      "returnTime": "Время возврата",
       "selectDateTime": "Выберите дату и время",
       "pickTime": "Выберите время",
       "noTimesAvailable": "На эту дату нет доступного времени.",
-      "passengers": "Passengers",
-      "adults": "Adults",
-      "children": "Children",
-      "submit": "Search transfers",
-      "loading": "Searching...",
-      "swapDirection": "Swap airport and destination",
+      "passengers": "Пассажиры",
+      "adults": "Взрослые",
+      "children": "Дети",
+      "submit": "Найти трансферы",
+      "loading": "Поиск...",
+      "swapDirection": "Поменять аэропорт и направление",
       "mobileEditSearch": "Изменить",
       "mobileEditSearchTitle": "Изменить поиск",
       "mobileEditSearchClose": "Закрыть",
@@ -381,24 +390,24 @@
       "stepSearch": "Выполните поиск, чтобы увидеть автомобили"
     },
     "locations": {
-      "placeholder": "Select location",
-      "search": "Search locations...",
-      "empty": "No locations found.",
+      "placeholder": "Выберите место",
+      "search": "Поиск мест...",
+      "empty": "Места не найдены.",
       "types": {
-        "AIRPORT": "Airport",
-        "CITY": "City",
-        "DISTRICT": "District",
-        "HOTEL": "Hotel",
-        "REGION": "Region",
-        "TRANSFER_POINT": "Transfer point",
-        "MARINA": "Marina",
-        "CUSTOM_LOCATION": "Custom location"
+        "AIRPORT": "Аэропорт",
+        "CITY": "Город",
+        "DISTRICT": "Район",
+        "HOTEL": "Отель",
+        "REGION": "Регион",
+        "TRANSFER_POINT": "Пункт трансфера",
+        "MARINA": "Марина",
+        "CUSTOM_LOCATION": "Произвольное место"
       }
     },
     "vehicle": {
-      "title": "Choose your vehicle",
-      "noQuote": "Search for transfers to see vehicle options.",
-      "empty": "No vehicles available.",
+      "title": "Выберите автомобиль",
+      "noQuote": "Найдите трансферы, чтобы увидеть варианты автомобилей.",
+      "empty": "Нет доступных автомобилей.",
       "capacity": "До {passengers} пассажиров · {large} багаж",
       "passengerRange": "1–{max} пассажиров",
       "luggageMax": "Макс. {large} багаж",
@@ -413,13 +422,13 @@
       "vehicleFeaturesTitle": "Особенности автомобиля",
       "totalLabel": "Итого",
       "multiVehicle": "{quantity} × {name}",
-      "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
-      "select": "Select",
-      "selected": "Selected",
+      "luggageVehicleRequired": "Ваш багаж превышает вместимость этого автомобиля. Требуется дополнительный багажный автомобиль.",
+      "select": "Выбрать",
+      "selected": "Выбрано",
       "eligibility": {
-        "ELIGIBLE": "Suitable",
-        "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
-        "INELIGIBLE": "Not suitable"
+        "ELIGIBLE": "Подходит",
+        "ELIGIBLE_WITH_EXTRAS": "Подходит с доп. багажом",
+        "INELIGIBLE": "Не подходит"
       }
     },
     "transfer": {
@@ -433,20 +442,20 @@
       "updatingSchedule": "Обновление расписания и пересчёт цены..."
     },
     "flight": {
-      "outbound": "Outbound flight number (optional)",
-      "return": "Return flight number (optional)",
-      "notes": "Notes (optional)"
+      "outbound": "Номер рейса туда (необязательно)",
+      "return": "Номер обратного рейса (необязательно)",
+      "notes": "Примечания (необязательно)"
     },
     "hotel": {
-      "title": "Hotel / drop-off",
-      "titlePickup": "Hotel / pick-up",
-      "selectHotel": "Select your hotel",
-      "searchHotel": "Search hotels...",
-      "empty": "No hotels found for this district.",
-      "loading": "Loading hotels...",
-      "notListed": "Hotel not listed",
-      "customName": "Property name",
-      "customAddress": "Address (optional)"
+      "title": "Отель / место высадки",
+      "titlePickup": "Отель / место посадки",
+      "selectHotel": "Выберите отель",
+      "searchHotel": "Поиск отелей...",
+      "empty": "Отели в этом районе не найдены.",
+      "loading": "Загрузка отелей...",
+      "notListed": "Отеля нет в списке",
+      "customName": "Название объекта",
+      "customAddress": "Адрес (необязательно)"
     },
     "review": {
       "title": "Сводка бронирования",
@@ -466,23 +475,23 @@
       "vehicle": "Автомобиль",
       "customer": "Клиент",
       "name": "ФИО",
-      "email": "Email",
+      "email": "Электронная почта",
       "phone": "Телефон",
-      "baseTransfer": "Base transfer",
-      "total": "Total",
-      "edit": "Edit details",
-      "submit": "Submit Reservation Request",
-      "submitting": "Submitting...",
+      "baseTransfer": "Базовый трансфер",
+      "total": "Итого",
+      "edit": "Редактировать",
+      "submit": "Отправить запрос на бронирование",
+      "submitting": "Отправка...",
       "tripType": {
-        "ONE_WAY": "One way",
-        "ROUND_TRIP": "Round trip"
+        "ONE_WAY": "В одну сторону",
+        "ROUND_TRIP": "Туда и обратно"
       }
     },
     "success": {
-      "title": "Reservation Request Received",
-      "subtitle": "Your reservation is awaiting confirmation.",
-      "reference": "Reference",
-      "backHome": "Back to homepage"
+      "title": "Запрос на бронирование получен",
+      "subtitle": "Ваше бронирование ожидает подтверждения.",
+      "reference": "Номер",
+      "backHome": "На главную"
     }
   },
   "about": {
@@ -728,26 +737,26 @@
   },
   "contact": {
     "whatsapp": "WhatsApp",
-    "call": "Call",
-    "email": "Email",
-    "reserve": "Book"
+    "call": "Позвонить",
+    "email": "Электронная почта",
+    "reserve": "Забронировать"
   },
   "trust": {
     "fixedPrice": {
-      "title": "Fixed Price",
-      "description": "Know your transfer price before you book."
+      "title": "Фиксированная цена",
+      "description": "Узнайте стоимость трансфера до бронирования."
     },
     "support": {
-      "title": "24/7 Support",
-      "description": "We are here whenever you need help."
+      "title": "Поддержка 24/7",
+      "description": "Мы рядом, когда вам нужна помощь."
     },
     "professional": {
-      "title": "Professional Driver",
-      "description": "Experienced drivers for a premium journey."
+      "title": "Профессиональный водитель",
+      "description": "Опытные водители для премиального путешествия."
     },
     "noPayment": {
-      "title": "No Online Payment",
-      "description": "Submit a secure reservation request without paying online."
+      "title": "Без онлайн-оплаты",
+      "description": "Отправьте безопасный запрос на бронирование без онлайн-оплаты."
     }
   }
 }

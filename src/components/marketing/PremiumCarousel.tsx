@@ -142,7 +142,7 @@ export function PremiumCarousel({
         <div
           ref={trackRef}
           role="region"
-          aria-roledescription="carousel"
+          aria-roledescription={t("carouselRole")}
           aria-label={label}
           className={cn(
             "min-w-0 flex-1",
@@ -155,8 +155,11 @@ export function PremiumCarousel({
             <div
               key={index}
               role="group"
-              aria-roledescription="slide"
-              aria-label={`${index + 1} / ${slideCount}`}
+              aria-roledescription={t("slideRole")}
+              aria-label={t("slideOf", {
+                current: index + 1,
+                total: slideCount,
+              })}
               className={cn(
                 "h-full shrink-0 snap-start",
                 "w-full lg:w-[calc((100%-2.5rem)/3)]",

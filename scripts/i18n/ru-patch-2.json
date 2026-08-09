@@ -1,0 +1,22 @@
+{
+  "common": {
+    "decreaseAria": "Уменьшить {label}",
+    "increaseAria": "Увеличить {label}"
+  },
+  "home": {
+    "carousel": {
+      "previousImage": "{alt} — предыдущее",
+      "nextImage": "{alt} — следующее",
+      "imageDot": "{alt} — изображение {index}",
+      "thumbnail": "{alt} — миниатюра {index}",
+      "slideOf": "{current} / {total}",
+      "carouselRole": "карусель",
+      "slideRole": "слайд"
+    },
+    "faq": { "eyebrow": "Вопросы и ответы" }
+  },
+  "contact": {
+    "email": "Электронная почта",
+    "reserve": "Забронировать"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "common": {
+    "decreaseAria": "Verringern {label}",
+    "increaseAria": "Erhöhen {label}"
+  },
+  "home": {
+    "carousel": {
+      "previousImage": "{alt} — vorheriges Bild",
+      "nextImage": "{alt} — nächstes Bild",
+      "imageDot": "{alt} — Bild {index}",
+      "thumbnail": "{alt} — Vorschaubild {index}",
+      "slideOf": "{current} / {total}",
+      "carouselRole": "Karussell",
+      "slideRole": "Folie"
+    },
+    "trustBar": {
+      "meetGreet": "Begrüßungsservice",
+      "support": "24/7-Support"
+    },
+    "fleet": { "details": "Details" },
+    "faq": { "eyebrow": "Häufige Fragen" }
+  },
+  "booking": {
+    "summary": { "extrasTitle": "Extras:" },
+    "extras": { "sectionTitle": "Extras" },
+    "steps": { "customer": "Details" },
+    "locations": {
+      "types": {
+        "HOTEL": "Hotel",
+        "REGION": "Region"
+      }
+    }
+  },
+  "about": {
+    "hero": { "stats": { "support": "24/7-Support" } },
+    "values": { "items": { "2": { "badge": "24/7" } } }
+  },
+  "fleet": {
+    "vehicleDetail": { "featuresTitle": "Highlights" }
+  },
+  "trust": {
+    "support": { "title": "24/7-Support" }
+  }
+}

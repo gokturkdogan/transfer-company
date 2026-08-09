@@ -1,0 +1,21 @@
+{
+  "common": {
+    "decreaseAria": "تقليل {label}",
+    "increaseAria": "زيادة {label}"
+  },
+  "home": {
+    "carousel": {
+      "previousImage": "{alt} — السابق",
+      "nextImage": "{alt} — التالي",
+      "imageDot": "{alt} — صورة {index}",
+      "thumbnail": "{alt} — صورة مصغرة {index}",
+      "slideOf": "{current} / {total}",
+      "carouselRole": "عرض شرائح",
+      "slideRole": "شريحة"
+    }
+  },
+  "contact": {
+    "email": "البريد الإلكتروني",
+    "reserve": "احجز"
+  }
+}

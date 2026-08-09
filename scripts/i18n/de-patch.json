@@ -1,0 +1,218 @@
+{
+  "common": {
+    "tagline": "Premium-Flughafentransfer-Buchung"
+  },
+  "home": {
+    "title": "VIP Flughafentransfer",
+    "description": "Zuverlässige, komfortable und mehrsprachige VIP-Transfer-Buchungsplattform.",
+    "cta": {
+      "subtitle": "Buchen Sie Ihren Antalya-Flughafentransfer in unter zwei Minuten.",
+      "button": "Transfer jetzt buchen"
+    },
+    "nav": { "reserve": "Jetzt reservieren" },
+    "trustBar": {
+      "fixedPrice": "Festpreis",
+      "flightTracking": "Flugverfolgung",
+      "meetGreet": "Meet & Greet",
+      "support": "24/7 Support",
+      "luxuryFleet": "Luxusflotte"
+    },
+    "destinations": {
+      "eyebrow": "Reiseziele",
+      "title": "Beliebte Reiseziele",
+      "subtitle": "Entdecken Sie unsere meistgebuchten Transferrouten vom Flughafen Antalya.",
+      "from": "Ab {price}"
+    },
+    "fleet": {
+      "eyebrow": "Unsere Flotte",
+      "title": "Luxusfahrzeuge",
+      "subtitle": "Reisen Sie komfortabel mit unserer Premium-Mercedes-Flotte.",
+      "passengers": "Bis zu {count} Passagiere",
+      "from": "Ab {price}",
+      "book": "Jetzt buchen",
+      "details": "Details"
+    },
+    "howItWorks": {
+      "eyebrow": "Ablauf",
+      "title": "So funktioniert es",
+      "subtitle": "Ihr Premium-Transfer in vier einfachen Schritten.",
+      "steps": [
+        { "title": "Online buchen", "description": "Wählen Sie Route, Datum und Fahrzeug in wenigen Minuten." },
+        { "title": "Bestätigung", "description": "Erhalten Sie sofort eine Bestätigung mit Ihren Transferdetails." },
+        { "title": "Abholung am Flughafen", "description": "Ihr Chauffeur wartet in der Ankunftshalle mit Namensschild." },
+        { "title": "Entspannt ankommen", "description": "Genießen Sie die Fahrt in einem Luxusfahrzeug zu Ihrem Ziel." }
+      ]
+    },
+    "whyUs": {
+      "eyebrow": "Warum wir",
+      "title": "Warum uns wählen",
+      "subtitle": "Der Premium-Unterschied in jedem Detail Ihrer Reise.",
+      "features": [
+        { "title": "Luxuserlebnis", "description": "Premium-Fahrzeuge und makellose Innenräume bei jedem Transfer." },
+        { "title": "Festpreise", "description": "Kennen Sie Ihren Preis vor der Buchung — keine versteckten Gebühren." },
+        { "title": "24/7 Verfügbarkeit", "description": "Rund-um-die-Uhr-Support für frühe Flüge und späte Ankünfte." },
+        { "title": "Professionelle Chauffeurs", "description": "Erfahrene, höfliche Fahrer, die die Region kennen." },
+        { "title": "Keine Online-Zahlung", "description": "Sicher reservieren — Zahlung bei Ankunft beim Fahrer." },
+        { "title": "Flugüberwachung", "description": "Wir verfolgen Ihren Flug und passen die Abholzeit automatisch an." }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "Bewertungen",
+      "title": "Was unsere Gäste sagen",
+      "items": [
+        { "quote": "Makelloser Service vom Flughafen zum Hotel. Der Vito war blitzsauber und der Fahrer äußerst professionell.", "author": "Sarah M., Vereinigtes Königreich" },
+        { "quote": "Beste Transfererfahrung in Antalya. Festpreis, keine Überraschungen, und sie warteten trotz unserer Verspätung.", "author": "Thomas K., Deutschland" },
+        { "quote": "Luxus zu einem fairen Preis. Wir nutzen sie bei jedem Besuch in Belek. Sehr empfehlenswert.", "author": "Elena R., Russland" }
+      ]
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Häufig gestellte Fragen",
+      "items": [
+        { "question": "Wie buche ich einen Transfer?", "answer": "Nutzen Sie das Buchungsformular auf dieser Seite, um Flughafen, Ziel, Datum und Fahrzeug auszuwählen. Senden Sie Ihre Anfrage — wir bestätigen in Kürze." },
+        { "question": "Ist der Preis fest?", "answer": "Ja. Der bei der Buchung angezeigte Preis ist der Endpreis für Ihre Route und Ihr Fahrzeug. Keine versteckten Gebühren oder Preisschwankungen." },
+        { "question": "Wo trifft mich der Fahrer?", "answer": "Ihr Chauffeur wartet in der Ankunftshalle mit Namensschild. Wir überwachen Ihren Flug und passen uns bei Verspätungen an." },
+        { "question": "Kann ich einen Rücktransfer buchen?", "answer": "Ja. Wählen Sie bei der Buchung Hin- und Rückfahrt und geben Sie Rückflugdatum und -details an." },
+        { "question": "Zahle ich online?", "answer": "Keine Online-Zahlung erforderlich. Sie zahlen Ihrem Fahrer direkt nach dem Transfer." },
+        { "question": "Was passiert bei Flugverspätung?", "answer": "Wir verfolgen Ihren Flug automatisch. Ihr Fahrer passt die Abholzeit ohne Aufpreis an." }
+      ]
+    },
+    "footer": {
+      "description": "Premium-Flughafentransfer-Service in Antalya und an der Türkischen Riviera.",
+      "linksTitle": "Schnelllinks",
+      "bookTransfer": "Transfer buchen",
+      "fullBooking": "Vollständige Buchungsseite",
+      "contactTitle": "Kontakt",
+      "copyright": "© {year} VIP Transfer. Alle Rechte vorbehalten."
+    }
+  },
+  "booking": {
+    "extras": {
+      "requiredTitle": "Pflicht-Extras",
+      "required": "Pflicht",
+      "quantity": "Menge: {count}",
+      "quantityLabel": "Menge",
+      "none": "Keine optionalen Extras verfügbar."
+    },
+    "errors": {
+      "rateLimit": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
+      "quoteChanged": "Der Preis wurde aktualisiert. Bitte prüfen Sie den neuen Gesamtbetrag.",
+      "validation": "Bitte überprüfen Sie die markierten Felder.",
+      "noVehicles": "Für diese Suche sind keine passenden Fahrzeuge verfügbar.",
+      "noRoute": "Für diese Route ist derzeit kein Transfer verfügbar.",
+      "vehicleUnavailable": "Dieses Fahrzeug ist nicht mehr verfügbar. Bitte wählen Sie eine andere Option.",
+      "network": "Netzwerkfehler. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    },
+    "search": {
+      "airport": "Flughafen",
+      "city": "Stadt",
+      "district": "Zielbezirk",
+      "selectAirport": "Flughafen wählen",
+      "selectCity": "Stadt wählen",
+      "selectDistrict": "Bezirk wählen",
+      "searchAirport": "Flughäfen suchen...",
+      "searchCity": "Städte suchen...",
+      "searchDistrict": "Bezirke suchen...",
+      "noAirports": "Keine Flughäfen gefunden.",
+      "noCities": "Keine Städte gefunden.",
+      "noDistricts": "Keine Bezirke gefunden.",
+      "tripType": "Reiseart",
+      "oneWay": "Einfache Fahrt",
+      "roundTrip": "Hin- und Rückfahrt",
+      "outboundDate": "Hinfahrtsdatum",
+      "outboundTime": "Hinfahrtszeit",
+      "returnDate": "Rückfahrtsdatum",
+      "returnTime": "Rückfahrtszeit",
+      "passengers": "Passagiere",
+      "adults": "Erwachsene",
+      "children": "Kinder",
+      "submit": "Transfers suchen",
+      "loading": "Suche läuft...",
+      "swapDirection": "Flughafen und Ziel tauschen"
+    },
+    "locations": {
+      "placeholder": "Ort wählen",
+      "search": "Orte suchen...",
+      "empty": "Keine Orte gefunden.",
+      "types": {
+        "AIRPORT": "Flughafen",
+        "CITY": "Stadt",
+        "DISTRICT": "Bezirk",
+        "HOTEL": "Hotel",
+        "REGION": "Region",
+        "TRANSFER_POINT": "Transferpunkt",
+        "MARINA": "Marina",
+        "CUSTOM_LOCATION": "Benutzerdefinierter Ort"
+      }
+    },
+    "vehicle": {
+      "title": "Fahrzeug wählen",
+      "noQuote": "Suchen Sie nach Transfers, um Fahrzeugoptionen zu sehen.",
+      "empty": "Keine Fahrzeuge verfügbar.",
+      "luggageVehicleRequired": "Ihr Gepäck übersteigt die Kapazität dieses Fahrzeugs. Ein zusätzliches Gepäckfahrzeug ist erforderlich.",
+      "select": "Auswählen",
+      "selected": "Ausgewählt",
+      "eligibility": {
+        "ELIGIBLE": "Geeignet",
+        "ELIGIBLE_WITH_EXTRAS": "Mit Zusatzgepäck geeignet",
+        "INELIGIBLE": "Nicht geeignet"
+      }
+    },
+    "flight": {
+      "outbound": "Hinflugnummer (optional)",
+      "return": "Rückflugnummer (optional)",
+      "notes": "Notizen (optional)"
+    },
+    "hotel": {
+      "title": "Hotel / Ziel",
+      "titlePickup": "Hotel / Abholung",
+      "selectHotel": "Hotel wählen",
+      "searchHotel": "Hotels suchen...",
+      "empty": "Keine Hotels in diesem Bezirk gefunden.",
+      "loading": "Hotels werden geladen...",
+      "notListed": "Hotel nicht in der Liste",
+      "customName": "Unterkunftsname",
+      "customAddress": "Adresse (optional)"
+    },
+    "review": {
+      "baseTransfer": "Basis-Transfer",
+      "total": "Gesamt",
+      "edit": "Details bearbeiten",
+      "submit": "Reservierungsanfrage senden",
+      "submitting": "Wird gesendet...",
+      "tripType": {
+        "ONE_WAY": "Einfache Fahrt",
+        "ROUND_TRIP": "Hin- und Rückfahrt"
+      }
+    },
+    "success": {
+      "title": "Reservierungsanfrage erhalten",
+      "subtitle": "Ihre Reservierung wartet auf Bestätigung.",
+      "reference": "Referenz",
+      "backHome": "Zur Startseite"
+    }
+  },
+  "contact": {
+    "call": "Anrufen",
+    "email": "E-Mail"
+  },
+  "trust": {
+    "fixedPrice": {
+      "title": "Festpreis",
+      "description": "Kennen Sie Ihren Transferpreis vor der Buchung."
+    },
+    "support": {
+      "title": "24/7 Support",
+      "description": "Wir sind da, wann immer Sie Hilfe brauchen."
+    },
+    "professional": {
+      "title": "Professioneller Fahrer",
+      "description": "Erfahrene Fahrer für eine Premium-Reise."
+    },
+    "noPayment": {
+      "title": "Keine Online-Zahlung",
+      "description": "Senden Sie eine sichere Reservierungsanfrage ohne Online-Zahlung."
+    }
+  }
+}

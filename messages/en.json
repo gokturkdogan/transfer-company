@@ -1,7 +1,9 @@
 {
   "common": {
     "appName": "VIP Transfer",
-    "tagline": "Premium airport transfer booking"
+    "tagline": "Premium airport transfer booking",
+    "decreaseAria": "Decrease {label}",
+    "increaseAria": "Increase {label}"
   },
   "home": {
     "title": "VIP Airport Transfer",
@@ -35,7 +37,14 @@
     "carousel": {
       "prev": "Previous",
       "next": "Next",
-      "goToSlide": "Go to slide {index}"
+      "goToSlide": "Go to slide {index}",
+      "previousImage": "{alt} — previous",
+      "nextImage": "{alt} — next",
+      "imageDot": "{alt} — image {index}",
+      "thumbnail": "{alt} — thumbnail {index}",
+      "slideOf": "{current} / {total}",
+      "carouselRole": "carousel",
+      "slideRole": "slide"
     },
     "trustBar": {
       "fixedPrice": "Fixed Price",

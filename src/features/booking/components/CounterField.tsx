@@ -1,6 +1,7 @@
 "use client";
 
 import { Minus, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -26,6 +27,8 @@ export function CounterField({
   variant = "default",
   onChange,
 }: CounterFieldProps) {
+  const t = useTranslations("common");
+
   const controls = (
     <div className="flex items-center gap-1">
       <Button
@@ -36,7 +39,7 @@ export function CounterField({
           "h-8 w-8 rounded-lg border-border/40 bg-background/80 shadow-none hover:border-gold/30",
           variant === "inline" && "h-7 w-7",
         )}
-        aria-label={`Decrease ${label}`}
+        aria-label={t("decreaseAria", { label })}
         disabled={value <= min}
         onClick={() => onChange(Math.max(min, value - 1))}
       >
@@ -58,7 +61,7 @@ export function CounterField({
           "h-8 w-8 rounded-lg border-border/40 bg-background/80 shadow-none hover:border-gold/30",
           variant === "inline" && "h-7 w-7",
         )}
-        aria-label={`Increase ${label}`}
+        aria-label={t("increaseAria", { label })}
         disabled={value >= max}
         onClick={() => onChange(Math.min(max, value + 1))}
       >

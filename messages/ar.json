@@ -1,15 +1,17 @@
 {
   "common": {
     "appName": "VIP Transfer",
-    "tagline": "Premium airport transfer booking"
+    "tagline": "حجز نقل مميز من المطار",
+    "decreaseAria": "تقليل {label}",
+    "increaseAria": "زيادة {label}"
   },
   "home": {
-    "title": "VIP Airport Transfer",
-    "description": "Reliable, comfortable, and multilingual VIP transfer booking platform.",
+    "title": "نقل VIP من المطار",
+    "description": "منصة موثوقة ومريحة ومتعددة اللغات لحجز نقل VIP.",
     "cta": {
       "title": "نقلك الفاخر",
-      "subtitle": "Book your Antalya airport transfer in under two minutes.",
-      "button": "Book Your Transfer",
+      "subtitle": "احجز نقلك من مطار أنطاليا في أقل من دقيقتين.",
+      "button": "احجز نقلتك",
       "eyebrow": "الحجز",
       "titleAccent": "على بعد 60 ثانية"
     },
@@ -23,7 +25,7 @@
       "scrollHint": "استكشف"
     },
     "nav": {
-      "reserve": "Reserve Now",
+      "reserve": "احجز الآن",
       "destinations": "المقاصد",
       "fleet": "أسطولنا",
       "createReservation": "إنشاء حجز",
@@ -35,144 +37,151 @@
     "carousel": {
       "prev": "السابق",
       "next": "التالي",
-      "goToSlide": "الانتقال إلى الشريحة {index}"
+      "goToSlide": "الانتقال إلى الشريحة {index}",
+      "previousImage": "{alt} — السابق",
+      "nextImage": "{alt} — التالي",
+      "imageDot": "{alt} — صورة {index}",
+      "thumbnail": "{alt} — صورة مصغرة {index}",
+      "slideOf": "{current} / {total}",
+      "carouselRole": "عرض شرائح",
+      "slideRole": "شريحة"
     },
     "trustBar": {
-      "fixedPrice": "Fixed Price",
-      "flightTracking": "Flight Tracking",
-      "meetGreet": "Meet & Greet",
-      "support": "24/7 Support",
-      "luxuryFleet": "Luxury Fleet"
+      "fixedPrice": "سعر ثابت",
+      "flightTracking": "تتبع الرحلة",
+      "meetGreet": "استقبال بالاسم",
+      "support": "دعم 24/7",
+      "luxuryFleet": "أسطول فاخر"
     },
     "destinations": {
-      "eyebrow": "Destinations",
-      "title": "Popular Destinations",
-      "subtitle": "Discover our most requested transfer routes from Antalya Airport.",
-      "from": "From {price}",
+      "eyebrow": "الوجهات",
+      "title": "الوجهات الشائعة",
+      "subtitle": "اكتشف أكثر مسارات النقل طلباً من مطار أنطاليا.",
+      "from": "من {price}",
       "book": "احجز نقلتك الآن"
     },
     "fleet": {
-      "eyebrow": "Our Fleet",
-      "title": "Luxury Vehicles",
-      "subtitle": "Travel in comfort with our premium Mercedes fleet.",
-      "passengers": "Up to {count} passengers",
+      "eyebrow": "أسطولنا",
+      "title": "مركبات فاخرة",
+      "subtitle": "سافر براحة مع أسطول مرسيدس المميز لدينا.",
+      "passengers": "حتى {count} راكب",
       "luggage": "{large} أمتعة",
-      "from": "From {price}",
-      "book": "Book Now",
+      "from": "من {price}",
+      "book": "احجز الآن",
       "viewAll": "عرض الأسطول الكامل",
       "details": "التفاصيل"
     },
     "howItWorks": {
-      "eyebrow": "Process",
-      "title": "How It Works",
-      "subtitle": "Your premium transfer in four simple steps.",
+      "eyebrow": "الخطوات",
+      "title": "كيف يعمل",
+      "subtitle": "نقلتك المميزة في أربع خطوات بسيطة.",
       "steps": [
         {
-          "title": "Book Online",
-          "description": "Select your route, date, and vehicle in minutes."
+          "title": "احجز عبر الإنترنت",
+          "description": "اختر المسار والتاريخ والمركبة في دقائق."
         },
         {
-          "title": "Confirmation",
-          "description": "Receive instant confirmation with your transfer details."
+          "title": "التأكيد",
+          "description": "احصل على تأكيد فوري مع تفاصيل النقل."
         },
         {
-          "title": "Airport Meet",
-          "description": "Your chauffeur waits at arrivals with a name sign."
+          "title": "الاستقبال في المطار",
+          "description": "سائقك ينتظر في صالة الوصول بلافتة باسمك."
         },
         {
-          "title": "Enjoy the Ride",
-          "description": "Relax in a luxury vehicle to your destination."
+          "title": "استمتع بالرحلة",
+          "description": "استرخِ في مركبة فاخرة إلى وجهتك."
         }
       ]
     },
     "whyUs": {
-      "eyebrow": "Why Us",
-      "title": "Why Choose Us",
-      "subtitle": "The premium difference in every detail of your journey.",
+      "eyebrow": "لماذا نحن",
+      "title": "لماذا تختارنا",
+      "subtitle": "الفرق المميز في كل تفاصيل رحلتك.",
       "features": [
         {
-          "title": "Luxury Experience",
-          "description": "Premium vehicles and immaculate interiors for every transfer."
+          "title": "تجربة فاخرة",
+          "description": "مركبات مميزة ومقصورات نظيفة لكل نقل."
         },
         {
-          "title": "Fixed Pricing",
-          "description": "Know your price before you book — no hidden fees."
+          "title": "أسعار ثابتة",
+          "description": "اعرف سعرك قبل الحجز — بدون رسوم مخفية."
         },
         {
-          "title": "24/7 Availability",
-          "description": "Round-the-clock support for early flights and late arrivals."
+          "title": "متاحون 24/7",
+          "description": "دعم على مدار الساعة للرحلات المبكرة والوصول المتأخر."
         },
         {
-          "title": "Professional Chauffeurs",
-          "description": "Experienced, courteous drivers who know the region."
+          "title": "سائقون محترفون",
+          "description": "سائقون ذوو خبرة ولباقة يعرفون المنطقة جيداً."
         },
         {
-          "title": "No Online Payment",
-          "description": "Reserve securely — pay your driver on arrival."
+          "title": "بدون دفع إلكتروني",
+          "description": "احجز بأمان — ادفع للسائق عند الوصول."
         },
         {
-          "title": "Flight Monitoring",
-          "description": "We track your flight and adjust pickup times automatically."
+          "title": "مراقبة الرحلة",
+          "description": "نتتبع رحلتك ونعدّل وقت الاستقبال تلقائياً."
         }
       ]
     },
     "testimonials": {
-      "eyebrow": "Reviews",
-      "title": "What Our Guests Say",
+      "eyebrow": "التقييمات",
+      "title": "ماذا يقول ضيوفنا",
       "items": [
         {
-          "quote": "Impeccable service from airport to hotel. The Vito was spotless and the driver was incredibly professional.",
-          "author": "Sarah M., United Kingdom"
+          "quote": "خدمة لا تشوبها شائبة من المطار إلى الفندق. كانت مركبة Vito نظيفة للغاية والسائق محترف جداً.",
+          "author": "سارة م.، المملكة المتحدة"
         },
         {
-          "quote": "Best transfer experience in Antalya. Fixed price, no surprises, and they waited despite our delayed flight.",
-          "author": "Thomas K., Germany"
+          "quote": "أفضل تجربة نقل في أنطاليا. سعر ثابت، بلا مفاجآت، وانتظرونا رغم تأخر رحلتنا.",
+          "author": "توماس ك.، ألمانيا"
         },
         {
-          "quote": "Luxury at a fair price. We use them every time we visit Belek. Highly recommended.",
-          "author": "Elena R., Russia"
+          "quote": "فخامة بسعر عادل. نستخدمهم في كل زيارة لبيلك. أنصح بهم بشدة.",
+          "author": "إيلينا ر.، روسيا"
         }
       ]
     },
     "faq": {
-      "eyebrow": "FAQ",
-      "title": "Frequently Asked Questions",
+      "eyebrow": "الأسئلة الشائعة",
+      "title": "الأسئلة المتكررة",
       "items": [
         {
-          "question": "How do I book a transfer?",
-          "answer": "Use the booking widget on this page to select your airport, destination, date, and vehicle. Submit your reservation request and we will confirm shortly."
+          "question": "كيف أحجز نقل؟",
+          "answer": "استخدم نموذج الحجز في هذه الصفحة لاختيار المطار والوجهة والتاريخ والمركبة. أرسل طلبك وسنؤكد قريباً."
         },
         {
-          "question": "Is the price fixed?",
-          "answer": "Yes. The price shown during booking is the final price for your route and vehicle. No hidden fees or surge pricing."
+          "question": "هل السعر ثابت؟",
+          "answer": "نعم. السعر المعروض عند الحجز هو السعر النهائي لمسارك ومركبتك. بدون رسوم مخفية أو تسعير متغير."
         },
         {
-          "question": "Where will the driver meet me?",
-          "answer": "Your chauffeur will wait in the arrivals hall with a name sign. We monitor your flight and adjust for delays."
+          "question": "أين سيلتقيني السائق؟",
+          "answer": "سائقك ينتظر في صالة الوصول بلافتة باسمك. نراقب رحلتك ونتكيف مع التأخيرات."
         },
         {
-          "question": "Can I book a return transfer?",
-          "answer": "Yes. Select round-trip when booking and provide your return date and flight details."
+          "question": "هل يمكنني حجز نقل العودة؟",
+          "answer": "نعم. اختر ذهاباً وإياباً عند الحجز وقدّم تاريخ و تفاصيل رحلة العودة."
         },
         {
-          "question": "Do I pay online?",
-          "answer": "No online payment is required. You pay your driver directly after the transfer."
+          "question": "هل أدفع عبر الإنترنت؟",
+          "answer": "لا يلزم الدفع الإلكتروني. تدفع للسائق مباشرة بعد النقل."
         },
         {
-          "question": "What if my flight is delayed?",
-          "answer": "We track your flight automatically. Your driver will adjust the pickup time at no extra charge."
+          "question": "ماذا لو تأخرت رحلتي؟",
+          "answer": "نتتبع رحلتك تلقائياً. سائقك يعدّل وقت الاستقبال دون رسوم إضافية."
         }
       ],
       "subtitle": "أكثر الأسئلة شيوعًا حول الحجز والأسعار والاستقبال."
     },
     "footer": {
-      "description": "Premium airport transfer service in Antalya and the Turkish Riviera.",
-      "linksTitle": "Quick Links",
-      "bookTransfer": "Book a Transfer",
-      "fullBooking": "Full Booking Page",
-      "contactTitle": "Contact",
+      "description": "خدمة نقل مميزة من المطار في أنطاليا والريفيرا التركية.",
+      "linksTitle": "روابط سريعة",
+      "bookTransfer": "احجز نقل",
+      "fullBooking": "صفحة الحجز الكاملة",
+      "contactTitle": "اتصل بنا",
       "languagesTitle": "اللغات",
-      "copyright": "© {year} VIP Transfer. All rights reserved.",
+      "copyright": "© {year} VIP Transfer. جميع الحقوق محفوظة.",
       "exploreTitle": "استكشف",
       "tagline": "أنطاليا · نقل VIP فاخر",
       "privacyPolicy": "الخصوصية وملفات تعريف الارتباط"
@@ -286,11 +295,11 @@
       "sectionTitle": "الإضافات",
       "sectionSubtitle": "اعرض الإضافات الإلزامية أو أضف خدمات اختيارية.",
       "title": "إضافات اختيارية",
-      "requiredTitle": "Required extras",
-      "required": "Required",
-      "quantity": "Quantity: {count}",
-      "quantityLabel": "Quantity",
-      "none": "No optional extras available.",
+      "requiredTitle": "إضافات مطلوبة",
+      "required": "مطلوب",
+      "quantity": "الكمية: {count}",
+      "quantityLabel": "الكمية",
+      "none": "لا توجد إضافات اختيارية.",
       "includedPricing": "{included} مجانًا · ثم {price} لكل قطعة"
     },
     "customer": {
@@ -316,14 +325,14 @@
       "notesSectionTitle": "--- معلومات الركاب ---"
     },
     "errors": {
-      "rateLimit": "Too many requests. Please try again later.",
-      "quoteChanged": "Pricing has been updated. Please review the new total.",
-      "validation": "Please check the highlighted fields.",
-      "noVehicles": "No suitable vehicles are available for this search.",
-      "noRoute": "No transfer is currently available for this route.",
-      "vehicleUnavailable": "This vehicle is no longer available. Please select another option.",
-      "network": "Network error. Please check your connection and try again.",
-      "generic": "Something went wrong. Please try again."
+      "rateLimit": "طلبات كثيرة جداً. يرجى المحاولة لاحقاً.",
+      "quoteChanged": "تم تحديث السعر. يرجى مراجعة المجموع الجديد.",
+      "validation": "يرجى التحقق من الحقول المميزة.",
+      "noVehicles": "لا توجد مركبات مناسبة لهذا البحث.",
+      "noRoute": "لا يتوفر نقل لهذا المسار حالياً.",
+      "vehicleUnavailable": "هذه المركبة لم تعد متاحة. يرجى اختيار خيار آخر.",
+      "network": "خطأ في الشبكة. تحقق من اتصالك وحاول مرة أخرى.",
+      "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
     },
     "paymentCurrencies": {
       "title": "خيارات الدفع نقداً",
@@ -337,34 +346,34 @@
       "review": "الملخص"
     },
     "search": {
-      "airport": "Airport",
-      "city": "City",
-      "district": "Destination district",
-      "selectAirport": "Select airport",
-      "selectCity": "Select city",
-      "selectDistrict": "Select district",
-      "searchAirport": "Search airports...",
-      "searchCity": "Search cities...",
-      "searchDistrict": "Search districts...",
-      "noAirports": "No airports found.",
-      "noCities": "No cities found.",
-      "noDistricts": "No districts found.",
-      "tripType": "Trip type",
-      "oneWay": "One way",
-      "roundTrip": "Round trip",
-      "outboundDate": "Outbound date",
-      "outboundTime": "Outbound time",
-      "returnDate": "Return date",
-      "returnTime": "Return time",
+      "airport": "المطار",
+      "city": "المدينة",
+      "district": "منطقة الوجهة",
+      "selectAirport": "اختر المطار",
+      "selectCity": "اختر المدينة",
+      "selectDistrict": "اختر المنطقة",
+      "searchAirport": "ابحث عن المطارات...",
+      "searchCity": "ابحث عن المدن...",
+      "searchDistrict": "ابحث عن المناطق...",
+      "noAirports": "لم يُعثر على مطارات.",
+      "noCities": "لم يُعثر على مدن.",
+      "noDistricts": "لم يُعثر على مناطق.",
+      "tripType": "نوع الرحلة",
+      "oneWay": "ذهاب فقط",
+      "roundTrip": "ذهاب وإياب",
+      "outboundDate": "تاريخ الذهاب",
+      "outboundTime": "وقت الذهاب",
+      "returnDate": "تاريخ العودة",
+      "returnTime": "وقت العودة",
       "selectDateTime": "اختر التاريخ والوقت",
       "pickTime": "اختر الوقت",
       "noTimesAvailable": "لا توجد أوقات متاحة لهذا التاريخ.",
-      "passengers": "Passengers",
-      "adults": "Adults",
-      "children": "Children",
-      "submit": "Search transfers",
-      "loading": "Searching...",
-      "swapDirection": "Swap airport and destination",
+      "passengers": "الركاب",
+      "adults": "بالغون",
+      "children": "أطفال",
+      "submit": "ابحث عن النقل",
+      "loading": "جارٍ البحث...",
+      "swapDirection": "تبديل المطار والوجهة",
       "mobileEditSearch": "تعديل",
       "mobileEditSearchTitle": "تعديل البحث",
       "mobileEditSearchClose": "إغلاق",
@@ -381,24 +390,24 @@
       "stepSearch": "ابحث لعرض المركبات"
     },
     "locations": {
-      "placeholder": "Select location",
-      "search": "Search locations...",
-      "empty": "No locations found.",
+      "placeholder": "اختر الموقع",
+      "search": "ابحث عن المواقع...",
+      "empty": "لم يُعثر على مواقع.",
       "types": {
-        "AIRPORT": "Airport",
-        "CITY": "City",
-        "DISTRICT": "District",
-        "HOTEL": "Hotel",
-        "REGION": "Region",
-        "TRANSFER_POINT": "Transfer point",
-        "MARINA": "Marina",
-        "CUSTOM_LOCATION": "Custom location"
+        "AIRPORT": "مطار",
+        "CITY": "مدينة",
+        "DISTRICT": "منطقة",
+        "HOTEL": "فندق",
+        "REGION": "منطقة",
+        "TRANSFER_POINT": "نقطة نقل",
+        "MARINA": "مارينا",
+        "CUSTOM_LOCATION": "موقع مخصص"
       }
     },
     "vehicle": {
-      "title": "Choose your vehicle",
-      "noQuote": "Search for transfers to see vehicle options.",
-      "empty": "No vehicles available.",
+      "title": "اختر مركبتك",
+      "noQuote": "ابحث عن النقل لعرض خيارات المركبات.",
+      "empty": "لا توجد مركبات متاحة.",
       "capacity": "حتى {passengers} ركاب · {large} أمتعة",
       "passengerRange": "1–{max} راكب",
       "luggageMax": "حد أقصى {large} أمتعة",
@@ -413,13 +422,13 @@
       "vehicleFeaturesTitle": "ميزات المركبة",
       "totalLabel": "الإجمالي",
       "multiVehicle": "{quantity} × {name}",
-      "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
-      "select": "Select",
-      "selected": "Selected",
+      "luggageVehicleRequired": "أمتعتك تتجاوز سعة هذه المركبة. يلزم مركبة أمتعة إضافية.",
+      "select": "اختر",
+      "selected": "محدد",
       "eligibility": {
-        "ELIGIBLE": "Suitable",
-        "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
-        "INELIGIBLE": "Not suitable"
+        "ELIGIBLE": "مناسب",
+        "ELIGIBLE_WITH_EXTRAS": "مناسب مع أمتعة إضافية",
+        "INELIGIBLE": "غير مناسب"
       }
     },
     "transfer": {
@@ -433,20 +442,20 @@
       "updatingSchedule": "جارٍ تحديث الموعد وإعادة حساب السعر..."
     },
     "flight": {
-      "outbound": "Outbound flight number (optional)",
-      "return": "Return flight number (optional)",
-      "notes": "Notes (optional)"
+      "outbound": "رقم رحلة الذهاب (اختياري)",
+      "return": "رقم رحلة العودة (اختياري)",
+      "notes": "ملاحظات (اختياري)"
     },
     "hotel": {
-      "title": "Hotel / drop-off",
-      "titlePickup": "Hotel / pick-up",
-      "selectHotel": "Select your hotel",
-      "searchHotel": "Search hotels...",
-      "empty": "No hotels found for this district.",
-      "loading": "Loading hotels...",
-      "notListed": "Hotel not listed",
-      "customName": "Property name",
-      "customAddress": "Address (optional)"
+      "title": "الفندق / نقطة الوصول",
+      "titlePickup": "الفندق / نقطة الانطلاق",
+      "selectHotel": "اختر فندقك",
+      "searchHotel": "ابحث عن الفنادق...",
+      "empty": "لم يُعثر على فنادق في هذه المنطقة.",
+      "loading": "جارٍ تحميل الفنادق...",
+      "notListed": "الفندق غير مدرج",
+      "customName": "اسم مكان الإقامة",
+      "customAddress": "العنوان (اختياري)"
     },
     "review": {
       "title": "ملخص الحجز",
@@ -468,21 +477,21 @@
       "name": "الاسم الكامل",
       "email": "البريد الإلكتروني",
       "phone": "الهاتف",
-      "baseTransfer": "Base transfer",
-      "total": "Total",
-      "edit": "Edit details",
-      "submit": "Submit Reservation Request",
-      "submitting": "Submitting...",
+      "baseTransfer": "النقل الأساسي",
+      "total": "المجموع",
+      "edit": "تعديل التفاصيل",
+      "submit": "إرسال طلب الحجز",
+      "submitting": "جارٍ الإرسال...",
       "tripType": {
-        "ONE_WAY": "One way",
-        "ROUND_TRIP": "Round trip"
+        "ONE_WAY": "ذهاب فقط",
+        "ROUND_TRIP": "ذهاب وإياب"
       }
     },
     "success": {
-      "title": "Reservation Request Received",
-      "subtitle": "Your reservation is awaiting confirmation.",
-      "reference": "Reference",
-      "backHome": "Back to homepage"
+      "title": "تم استلام طلب الحجز",
+      "subtitle": "حجزك في انتظار التأكيد.",
+      "reference": "المرجع",
+      "backHome": "العودة للرئيسية"
     }
   },
   "about": {
@@ -728,26 +737,26 @@
   },
   "contact": {
     "whatsapp": "WhatsApp",
-    "call": "Call",
-    "email": "Email",
-    "reserve": "Book"
+    "call": "اتصال",
+    "email": "البريد الإلكتروني",
+    "reserve": "احجز"
   },
   "trust": {
     "fixedPrice": {
-      "title": "Fixed Price",
-      "description": "Know your transfer price before you book."
+      "title": "سعر ثابت",
+      "description": "اعرف سعر النقل قبل الحجز."
     },
     "support": {
-      "title": "24/7 Support",
-      "description": "We are here whenever you need help."
+      "title": "دعم 24/7",
+      "description": "نحن هنا متى احتجت المساعدة."
     },
     "professional": {
-      "title": "Professional Driver",
-      "description": "Experienced drivers for a premium journey."
+      "title": "سائق محترف",
+      "description": "سائقون ذوو خبرة لرحلة مميزة."
     },
     "noPayment": {
-      "title": "No Online Payment",
-      "description": "Submit a secure reservation request without paying online."
+      "title": "بدون دفع إلكتروني",
+      "description": "أرسل طلب حجز آمن دون الدفع عبر الإنترنت."
     }
   }
 }

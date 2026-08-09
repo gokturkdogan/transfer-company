@@ -1,7 +1,9 @@
 {
   "common": {
     "appName": "VIP Transfer",
-    "tagline": "Premium havalimanı transfer rezervasyonu"
+    "tagline": "Premium havalimanı transfer rezervasyonu",
+    "decreaseAria": "{label} azalt",
+    "increaseAria": "{label} artır"
   },
   "home": {
     "title": "VIP Havalimanı Transfer",
@@ -35,7 +37,14 @@
     "carousel": {
       "prev": "Önceki",
       "next": "Sonraki",
-      "goToSlide": "{index}. slayta git"
+      "goToSlide": "{index}. slayta git",
+      "previousImage": "{alt} — önceki",
+      "nextImage": "{alt} — sonraki",
+      "imageDot": "{alt} — görsel {index}",
+      "thumbnail": "{alt} — küçük görsel {index}",
+      "slideOf": "{current} / {total}",
+      "carouselRole": "kaydırıcı",
+      "slideRole": "slayt"
     },
     "trustBar": {
       "fixedPrice": "Sabit Fiyat",
