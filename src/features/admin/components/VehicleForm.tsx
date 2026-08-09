@@ -1,6 +1,6 @@
 "use client";
 
-import { Car, ImageIcon, ListChecks, Plus, Settings2, Users } from "lucide-react";
+import { Car, ImageIcon, ListChecks, Settings2, Users } from "lucide-react";
 import { useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
@@ -22,27 +22,21 @@ import { AdminFormShell } from "@/features/admin/components/shell/AdminFormShell
 import { AdminToggleField } from "@/features/admin/components/shell/AdminToggleField";
 import type { EnabledLocaleRecord } from "@/features/locales/server/repository";
 import {
-  VehicleImageUploadField,
-  type VehicleImageAssetName,
-} from "@/features/admin/components/VehicleImageUploadField";
+  VehicleGallerySection,
+  type GalleryImageState,
+} from "@/features/admin/components/VehicleGallerySection";
+import { VehicleImageUploadField } from "@/features/admin/components/VehicleImageUploadField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   MAX_VEHICLE_BOOKING_PREVIEW_IMAGES,
   MAX_VEHICLE_FEATURES,
-  MAX_VEHICLE_GALLERY_IMAGES,
 } from "@/features/vehicles/domain/constants";
 
 type VehicleFormProps = {
   mode: "create" | "edit";
   vehicle?: AdminVehicleRecord;
   enabledLocales: EnabledLocaleRecord[];
-};
-
-type GalleryImageState = {
-  clientId: string;
-  imageKey: string;
-  showInBookingPreview: boolean;
 };
 
 function createClientId(): string {
@@ -85,10 +79,6 @@ function toGalleryRows(
     imageKey: image.imageKey,
     showInBookingPreview: image.showInBookingPreview,
   }));
-}
-
-function toGalleryAssetName(index: number): VehicleImageAssetName {
-  return `gallery-${index + 1}`;
 }
 
 function countBookingPreviewSelections(galleryImages: GalleryImageState[]): number {
@@ -331,74 +321,13 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
         icon={ImageIcon}
         compact
       >
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-xs text-slate-500">
-            {adminCopy.vehicles.form.bookingPreviewLimit(
-              bookingPreviewCount,
-              MAX_VEHICLE_BOOKING_PREVIEW_IMAGES,
-            )}
-          </p>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={galleryImages.length >= MAX_VEHICLE_GALLERY_IMAGES}
-            onClick={() =>
-              setGalleryImages((current) => [
-                ...current,
-                {
-                  clientId: createClientId(),
-                  imageKey: "",
-                  showInBookingPreview: false,
-                },
-              ])
-            }
-          >
-            <Plus className="h-4 w-4" aria-hidden />
-            {adminCopy.vehicles.form.addGalleryImage}
-          </Button>
-        </div>
-
-        {galleryImages.length === 0 ? (
-          <p className="text-sm text-slate-500">
-            {adminCopy.vehicles.form.uploadPlaceholder}
-          </p>
-        ) : (
-          <AdminFormGrid cols={3} className="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {galleryImages.map((image, index) => (
-              <VehicleImageUploadField
-                key={image.clientId}
-                compact
-                label={adminCopy.vehicles.form.galleryImageLabel(index + 1)}
-                value={image.imageKey}
-                assetName={toGalleryAssetName(index)}
-                getVehicleIdentity={getVehicleIdentity}
-                showInBookingPreview={image.showInBookingPreview}
-                bookingPreviewDisabled={bookingPreviewLimitReached}
-                onShowInBookingPreviewChange={(checked) =>
-                  setGalleryImages((current) =>
-                    current.map((item) =>
-                      item.clientId === image.clientId
-                        ? { ...item, showInBookingPreview: checked }
-                        : item,
-                    ),
-                  )
-                }
-                onChange={(nextValue) =>
-                  setGalleryImages((current) =>
-                    nextValue
-                      ? current.map((item) =>
-                          item.clientId === image.clientId
-                            ? { ...item, imageKey: nextValue }
-                            : item,
-                        )
-                      : current.filter((item) => item.clientId !== image.clientId),
-                  )
-                }
-              />
-            ))}
-          </AdminFormGrid>
-        )}
+        <VehicleGallerySection
+          galleryImages={galleryImages}
+          onGalleryImagesChange={setGalleryImages}
+          getVehicleIdentity={getVehicleIdentity}
+          bookingPreviewCount={bookingPreviewCount}
+          bookingPreviewLimitReached={bookingPreviewLimitReached}
+        />
       </AdminFormSection>
 
       <AdminFormSection

@@ -14,7 +14,7 @@ const uploadVehicleImageSchema = z.object({
   model: z.string().trim().min(1).max(100),
   assetName: z
     .string()
-    .regex(/^(cover|gallery-(?:[1-9]|1[0-2]))$/, "Invalid vehicle image asset"),
+    .regex(/^(cover|gallery-(?:[1-9]|10))$/, "Invalid vehicle image asset"),
 });
 
 export async function uploadVehicleImageAction(rawInput: unknown) {

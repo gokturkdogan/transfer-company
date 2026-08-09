@@ -279,11 +279,16 @@ export const adminCopy = {
       featuresEmpty: "Henüz özellik eklenmedi.",
       coverImage: "Kapak fotoğrafı",
       coverImageHint: "16:9 oranında kırpılarak Cloudinary'ye yüklenir.",
-      galleryImages: "Ek fotoğraflar (en fazla 12)",
+      galleryImages: "Ek fotoğraflar (en fazla 10)",
       galleryImagesHint:
-        "Kapak görseli rezervasyonda her zaman görünür. Ek fotoğraflardan en fazla 3 tanesini carousel önizlemesine ekleyebilirsiniz.",
+        "Kapak görseli rezervasyonda her zaman görünür. Ek fotoğraflardan en fazla 3 tanesini carousel önizlemesine ekleyebilirsiniz. Seçim yapmazsanız ilk 3 ek fotoğraf otomatik kullanılır.",
       galleryImageLabel: (index: number) => `Fotoğraf ${index}`,
-      addGalleryImage: "Fotoğraf ekle",
+      bulkUploadGallery: "Toplu görsel yükle",
+      bulkUploadGalleryHint: (remaining: number) =>
+        `Tek seferde en fazla ${remaining} görsel seçebilirsiniz.`,
+      gallerySlotsUsed: (used: number, max: number) => `${used}/${max} fotoğraf`,
+      cropProgress: (current: number, total: number) =>
+        `Görseli kırp (${current}/${total})`,
       showInBookingPreview: "Rezervasyonda göster",
       bookingPreviewLimit: (count: number, max: number) =>
         `${count}/${max} ek fotoğraf seçildi (kapak her zaman görünür)`,
