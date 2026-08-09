@@ -375,7 +375,7 @@ async function loadRoutes(airportId: string): Promise<Map<string, RouteContext>>
       districtName: row.districtName,
       districtCode: row.districtCode,
       oneWayMinor: row.oneWayMinor,
-      roundTripMinor: row.roundTripMinor,
+      roundTripMinor: row.roundTripMinor ?? row.oneWayMinor * 2,
     });
   }
 
