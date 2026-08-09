@@ -76,7 +76,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-lg:space-y-0 lg:space-y-3">
+    <form onSubmit={handleSubmit} className="min-w-0 max-lg:space-y-0 lg:space-y-3">
       <TripTypeToggle
         tripType={search.tripType}
         oneWayLabel={t("oneWay")}
@@ -94,7 +94,12 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
           onChange={(tripType) => dispatch({ type: "SET_TRIP_TYPE", tripType })}
         />
 
-        <div className="grid grid-cols-1 gap-2 rounded-[18px] bg-card/98 p-2 max-lg:gap-2 sm:grid-cols-2 sm:max-lg:gap-1.5 lg:flex lg:items-center lg:gap-0 lg:rounded-[22px] lg:bg-card/95 lg:p-1.5">
+        <div
+          className={cn(
+            "grid grid-cols-1 gap-2 rounded-[18px] bg-card/98 p-2 max-lg:gap-2 sm:grid-cols-2 sm:max-lg:gap-1.5",
+            "lg:flex lg:flex-nowrap lg:items-center lg:gap-0 lg:rounded-[22px] lg:bg-card/95 lg:p-1.5",
+          )}
+        >
           <LocationSegment
             icon={PlaneLanding}
             label={t("airport")}
@@ -103,7 +108,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             placeholder={t("selectAirport")}
             searchPlaceholder={t("searchAirport")}
             emptyLabel={t("noAirports")}
-            className="lg:flex-[1.15_1_0%]"
+            className="min-w-0 w-full lg:flex-1 lg:basis-0"
             onChange={(airportId) => {
               const airport = airports.find((item) => item.id === airportId);
               dispatch({
@@ -122,7 +127,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             placeholder={t("selectDistrict")}
             searchPlaceholder={t("searchDistrict")}
             emptyLabel={t("noDistricts")}
-            className="lg:flex-[1.15_1_0%]"
+            className="min-w-0 w-full lg:flex-1 lg:basis-0"
             onChange={(districtId) => {
               const district = districts.find((item) => item.id === districtId);
               dispatch({
@@ -140,7 +145,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             dateValue={search.outboundDate}
             timeValue={search.outboundTime}
             minDate={minDate}
-            className="lg:flex-[1_1_0%]"
+            className="min-w-0 w-full lg:flex-1 lg:basis-0"
             onDateChange={(value) =>
               dispatch({ type: "UPDATE_SEARCH", search: { outboundDate: value } })
             }
@@ -155,7 +160,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
               dateValue={search.returnDate}
               timeValue={search.returnTime}
               minDate={search.outboundDate || minDate}
-              className="lg:flex-[1_1_0%]"
+              className="min-w-0 w-full lg:flex-1 lg:basis-0"
               onDateChange={(value) =>
                 dispatch({ type: "UPDATE_SEARCH", search: { returnDate: value } })
               }
@@ -169,7 +174,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             adults={search.passengerCount}
             childCount={search.childCount}
             withDivider={false}
-            className="lg:flex-[0.9_1_0%]"
+            className="min-w-0 w-full lg:flex-[0.85_1_0%] lg:basis-0"
             onAdultsChange={(value) =>
               dispatch({ type: "UPDATE_SEARCH", search: { passengerCount: value } })
             }
@@ -182,29 +187,37 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             type="submit"
             disabled={!canSubmit || state.isLoadingQuote}
             className={cn(
-              "group relative flex h-14 w-full shrink-0 cursor-pointer items-center justify-center gap-2",
-              "overflow-hidden rounded-xl bg-gold-gradient px-6 text-base font-bold tracking-tight text-ink",
+              "group relative flex h-14 w-full cursor-pointer items-center justify-center",
+              "rounded-xl bg-gold-gradient text-base font-bold tracking-tight text-ink",
               "shadow-gold transition-all duration-300 hover:brightness-110 active:scale-[0.98]",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
               "disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none",
-              "max-lg:mt-1 sm:col-span-2 lg:col-span-1 lg:h-[52px] lg:w-auto lg:rounded-2xl lg:text-sm",
+              "max-lg:mt-1 sm:col-span-2",
+              "lg:col-auto lg:mt-0 lg:h-[52px] lg:w-auto lg:flex-none lg:shrink-0 lg:whitespace-nowrap lg:rounded-2xl lg:px-4 lg:text-sm",
             )}
           >
-            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-            {state.isLoadingQuote ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                {t("loading")}
-              </>
-            ) : (
-              <>
-                {t("submit")}
-                <ArrowRight
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180"
-                  aria-hidden
-                />
-              </>
-            )}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]"
+            >
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+            </span>
+            <span className="relative z-[1] inline-flex items-center gap-2">
+              {state.isLoadingQuote ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                  {t("loading")}
+                </>
+              ) : (
+                <>
+                  {t("submit")}
+                  <ArrowRight
+                    className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180"
+                    aria-hidden
+                  />
+                </>
+              )}
+            </span>
           </button>
         </div>
       </div>

@@ -246,8 +246,7 @@ export const adminCopy = {
       model: "Model",
       displayName: "Görünen ad",
       passengerCapacity: "Maksimum yolcu",
-      largeLuggageCapacity: "Büyük bagaj kapasitesi",
-      cabinLuggageCapacity: "Kabin bagaj kapasitesi",
+      largeLuggageCapacity: "Bagaj kapasitesi",
       featuresTitle: "Özellikler",
       featuresHint:
         "Araçta bulunan özellikleri her dil için ayrı ayrı girin.",
@@ -347,8 +346,6 @@ export const adminCopy = {
       return: "Dönüş",
       passengers: "Yolcu",
       luggage: "Bagaj",
-      luggageLarge: "büyük",
-      luggageCabin: "kabin",
       name: "Ad",
       email: "E-posta",
       phone: "Telefon",

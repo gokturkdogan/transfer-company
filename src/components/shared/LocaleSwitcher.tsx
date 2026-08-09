@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { getLocaleEmoji } from "@/config/locales";
 import type { SiteLocaleOption } from "@/features/locales/types";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { useLocaleSwitch } from "@/i18n/use-locale-switch";
 import { cn } from "@/lib/utils";
 
 type LocaleSwitcherProps = {
@@ -20,16 +20,11 @@ type LocaleSwitcherProps = {
 export function LocaleSwitcher({ enabledLocales }: LocaleSwitcherProps) {
   const t = useTranslations("home.nav");
   const currentLocale = useLocale();
-  const pathname = usePathname();
-  const router = useRouter();
+  const switchLocale = useLocaleSwitch();
 
   const activeLocale =
     enabledLocales.find((locale) => locale.code === currentLocale) ??
     enabledLocales[0];
-
-  const switchLocale = (code: string) => {
-    router.replace(pathname, { locale: code });
-  };
 
   return (
     <>

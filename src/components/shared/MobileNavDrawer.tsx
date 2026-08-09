@@ -7,7 +7,8 @@ import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { SiteLogo } from "@/components/shared/SiteLogo";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useLocaleSwitch } from "@/i18n/use-locale-switch";
 import { cn } from "@/lib/utils";
 
 const NAV_SECTIONS = [
@@ -46,7 +47,7 @@ export function MobileNavDrawer({
   const footer = useTranslations("home.footer");
   const common = useTranslations("common");
   const pathname = usePathname();
-  const router = useRouter();
+  const switchLocale = useLocaleSwitch();
 
   return (
     <div
@@ -179,7 +180,7 @@ export function MobileNavDrawer({
                 type="button"
                 title={localeOption.label}
                 onClick={() => {
-                  router.replace(pathname, { locale: localeOption.code });
+                  switchLocale(localeOption.code);
                   onClose();
                 }}
                 className={cn(

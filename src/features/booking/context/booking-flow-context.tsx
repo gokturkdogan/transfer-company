@@ -8,7 +8,7 @@ import {
   useReducer,
   type ReactNode,
 } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   bookingFlowReducer,
@@ -17,6 +17,8 @@ import {
 } from "@/features/booking/lib/booking-flow-reducer";
 import { fetchReservation, fetchTransferQuote } from "@/features/booking/lib/api";
 import { mapApiErrorToKey } from "@/features/booking/lib/error-messages";
+import { appendPassengerDetailsToNotes } from "@/features/booking/lib/passenger-details";
+import { formatInternationalPhone } from "@/lib/phone/format";
 import { getTotalPassengerCount } from "@/features/booking/lib/passenger-count";
 import {
   buildQuoteRequest,
@@ -45,6 +47,10 @@ type BookingFlowContextValue = {
   dispatch: React.Dispatch<BookingFlowAction>;
   requestQuote: (searchOverride?: Partial<BookingSearchState>) => Promise<void>;
   requestRequote: (extras: SelectedExtra[]) => Promise<void>;
+  updateOutboundSchedule: (
+    outboundDate: string,
+    outboundTime: string,
+  ) => Promise<void>;
   submitReservation: () => Promise<void>;
 };
 
@@ -64,6 +70,7 @@ export function BookingFlowProvider({
   initialSearch?: Partial<BookingSearchState>;
 }) {
   const locale = useLocale();
+  const tPassengers = useTranslations("booking.passengers");
   const [state, dispatch] = useReducer(
     bookingFlowReducer,
     createInitialBookingFlowState(initialSearch),
@@ -128,12 +135,61 @@ export function BookingFlowProvider({
         type: "QUOTE_SUCCESS",
         quote: result.data,
         searchSignature: buildSearchSignature(state.search),
+        preserveStep: true,
       });
       dispatch({ type: "SET_EXTRAS", extras });
     },
     [
       locale,
       state.search,
+      state.selectedQuantity,
+      state.selectedVehicleCategoryId,
+    ],
+  );
+
+  const updateOutboundSchedule = useCallback(
+    async (outboundDate: string, outboundTime: string) => {
+      const search = { ...state.search, outboundDate, outboundTime };
+
+      if (!state.selectedVehicleCategoryId) {
+        dispatch({ type: "UPDATE_SEARCH", search });
+        return;
+      }
+
+      dispatch({
+        type: "UPDATE_SEARCH",
+        search: { outboundDate, outboundTime },
+        preserveFlow: true,
+      });
+      dispatch({ type: "QUOTE_LOADING" });
+
+      const body = buildQuoteRequest(search, locale, {
+        vehicleCategoryId: state.selectedVehicleCategoryId,
+        quantity: state.selectedQuantity,
+        extras: state.selectedExtras,
+      });
+
+      const result = await fetchTransferQuote(body);
+
+      if (!result.success) {
+        dispatch({
+          type: "QUOTE_ERROR",
+          errorKey: mapApiErrorToKey(result.error, result.status),
+        });
+        return;
+      }
+
+      dispatch({
+        type: "QUOTE_SUCCESS",
+        quote: result.data,
+        searchSignature: buildSearchSignature(search),
+        preserveStep: true,
+      });
+    },
+    [
+      locale,
+      state.search,
+      state.selectedExtras,
       state.selectedQuantity,
       state.selectedVehicleCategoryId,
     ],
@@ -203,10 +259,21 @@ export function BookingFlowProvider({
         firstName: state.customer.firstName,
         lastName: state.customer.lastName,
         email: state.customer.email,
-        phone: state.customer.phone,
+        phone: formatInternationalPhone(
+          state.customer.phoneCountryCode,
+          state.customer.phone,
+        ),
         whatsappPhone: state.customer.whatsappPhone || undefined,
       },
-      notes: state.notes || undefined,
+      notes: appendPassengerDetailsToNotes(
+        state.passengers,
+        (passenger) =>
+          passenger.kind === "adult"
+            ? tPassengers("adultLabel", { index: passenger.index })
+            : tPassengers("childLabel", { index: passenger.index }),
+        tPassengers("notesSectionTitle"),
+        state.notes,
+      ),
       locale,
       clientQuotedTotalMinor: totalMinor,
       website: "",
@@ -225,7 +292,7 @@ export function BookingFlowProvider({
 
     dispatch({ type: "SUBMIT_SUCCESS", reservation: result.data });
     track({ name: "booking_success", payload: { reference: result.data.reference } });
-  }, [locale, state]);
+  }, [locale, state, tPassengers]);
 
   const value = useMemo(
     () => ({
@@ -236,9 +303,19 @@ export function BookingFlowProvider({
       dispatch,
       requestQuote,
       requestRequote,
+      updateOutboundSchedule,
       submitReservation,
     }),
-    [state, airports, cities, districts, requestQuote, requestRequote, submitReservation],
+    [
+      state,
+      airports,
+      cities,
+      districts,
+      requestQuote,
+      requestRequote,
+      updateOutboundSchedule,
+      submitReservation,
+    ],
   );
 
   return (

@@ -36,6 +36,35 @@ describe("bookingFlowReducer", () => {
     expect(next.step).toBe("vehicle");
   });
 
+  it("preserves customer step when search changes with preserveFlow", () => {
+    const initial = createInitialBookingFlowState({
+      originAirportId: "a",
+      destinationDistrictId: "b",
+      outboundDate: "2026-08-10",
+      outboundTime: "10:00",
+    });
+
+    const onCustomerStep = bookingFlowReducer(
+      {
+        ...initial,
+        step: "customer",
+        selectedVehicleCategoryId: "vehicle-1",
+        selectedQuantity: 1,
+        searchSignature: buildSearchSignature(initial.search),
+      },
+      {
+        type: "UPDATE_SEARCH",
+        search: { outboundTime: "12:00" },
+        preserveFlow: true,
+      },
+    );
+
+    expect(onCustomerStep.step).toBe("customer");
+    expect(onCustomerStep.selectedVehicleCategoryId).toBe("vehicle-1");
+    expect(onCustomerStep.search.outboundTime).toBe("12:00");
+    expect(onCustomerStep.quote).toBeNull();
+  });
+
   it("clears return fields when switching to one way", () => {
     const initial = createInitialBookingFlowState({
       tripType: "ROUND_TRIP",
@@ -83,6 +112,42 @@ describe("bookingFlowReducer", () => {
     });
 
     expect(reviewAgain.idempotencyKey).toBe("idem-123");
+  });
+
+  it("syncs passenger slots when search counts change", () => {
+    const initial = createInitialBookingFlowState({
+      passengerCount: 2,
+      childCount: 0,
+    });
+
+    const next = bookingFlowReducer(initial, {
+      type: "UPDATE_SEARCH",
+      search: { passengerCount: 1, childCount: 1 },
+      preserveFlow: true,
+    });
+
+    expect(next.passengers).toHaveLength(2);
+    expect(next.passengers[0]).toMatchObject({ kind: "adult", index: 1 });
+    expect(next.passengers[1]).toMatchObject({ kind: "child", index: 1 });
+  });
+
+  it("updates a passenger entry", () => {
+    const initial = createInitialBookingFlowState({
+      passengerCount: 1,
+      childCount: 0,
+    });
+
+    const next = bookingFlowReducer(initial, {
+      type: "UPDATE_PASSENGER",
+      kind: "adult",
+      index: 1,
+      passenger: { fullName: "Ada Lovelace", idDocument: "123" },
+    });
+
+    expect(next.passengers[0]).toMatchObject({
+      fullName: "Ada Lovelace",
+      idDocument: "123",
+    });
   });
 
   it("clears hotel when district changes", () => {

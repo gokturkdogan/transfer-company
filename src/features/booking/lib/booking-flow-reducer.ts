@@ -7,18 +7,28 @@ import type {
   FlightState,
   SelectedExtra,
 } from "@/features/booking/lib/types";
+import type { PassengerDetails } from "@/features/booking/lib/passenger-details";
 import type { TransferAvailabilityResponseDto } from "@/features/pricing/types/dto";
 import type { ReservationResponseDto } from "@/features/pricing/types/dto";
 import { buildSearchSignature } from "@/features/booking/lib/search-signature";
 import { isLauncherSearchComplete } from "@/features/booking/lib/launcher-search";
 import {
+  buildPassengerSlots,
+  syncPassengersWithSearch,
+} from "@/features/booking/lib/passenger-details";
+import {
   getDefaultDestinationState,
   getDefaultSearchState,
 } from "@/features/booking/lib/error-messages";
+import { DEFAULT_PHONE_COUNTRY_CODE } from "@/lib/phone/countries";
 
 export type BookingFlowAction =
   | { type: "SET_STEP"; step: BookingStep; idempotencyKey?: string }
-  | { type: "UPDATE_SEARCH"; search: Partial<BookingSearchState> }
+  | {
+      type: "UPDATE_SEARCH";
+      search: Partial<BookingSearchState>;
+      preserveFlow?: boolean;
+    }
   | { type: "SET_AIRPORT"; airportId: string; cityId?: string }
   | { type: "SET_CITY"; cityId: string }
   | { type: "SET_DISTRICT"; districtId: string }
@@ -30,11 +40,18 @@ export type BookingFlowAction =
       type: "QUOTE_SUCCESS";
       quote: TransferAvailabilityResponseDto;
       searchSignature: string;
+      preserveStep?: boolean;
     }
   | { type: "QUOTE_ERROR"; errorKey: string }
   | { type: "SELECT_VEHICLE"; vehicleCategoryId: string; quantity: number }
   | { type: "SET_EXTRAS"; extras: SelectedExtra[] }
   | { type: "UPDATE_CUSTOMER"; customer: Partial<CustomerState> }
+  | {
+      type: "UPDATE_PASSENGER";
+      kind: PassengerDetails["kind"];
+      index: number;
+      passenger: Partial<Pick<PassengerDetails, "fullName" | "idDocument">>;
+    }
   | { type: "UPDATE_FLIGHT"; flight: Partial<FlightState> }
   | { type: "SET_NOTES"; notes: string }
   | { type: "ENSURE_IDEMPOTENCY_KEY"; key: string }
@@ -81,9 +98,14 @@ export function createInitialBookingFlowState(
       firstName: "",
       lastName: "",
       email: "",
+      phoneCountryCode: DEFAULT_PHONE_COUNTRY_CODE,
       phone: "",
       whatsappPhone: "",
     },
+    passengers: buildPassengerSlots(
+      mergedSearch.passengerCount,
+      mergedSearch.childCount,
+    ),
     flight: {
       outboundFlightNumber: "",
       returnFlightNumber: "",
@@ -98,24 +120,55 @@ export function createInitialBookingFlowState(
   };
 }
 
+function withSyncedPassengers(
+  state: BookingFlowState,
+  search: BookingSearchState,
+): BookingFlowState {
+  return {
+    ...state,
+    search,
+    passengers: syncPassengersWithSearch(
+      state.passengers,
+      search.passengerCount,
+      search.childCount,
+    ),
+  };
+}
+
 function applySearchChange(
   state: BookingFlowState,
   search: BookingSearchState,
+  preserveFlow = false,
 ): BookingFlowState {
   const nextSignature = buildSearchSignature(search);
   const signatureChanged =
     state.searchSignature !== null && nextSignature !== state.searchSignature;
 
   if (signatureChanged) {
-    return {
-      ...clearQuoteState(state),
+    if (preserveFlow) {
+      return withSyncedPassengers(
+        {
+          ...state,
+          quote: null,
+          searchSignature: null,
+          idempotencyKey: null,
+          errorKey: null,
+        },
+        search,
+      );
+    }
+
+    return withSyncedPassengers(
+      {
+        ...clearQuoteState(state),
+        step: "vehicle",
+        errorKey: null,
+      },
       search,
-      step: "vehicle",
-      errorKey: null,
-    };
+    );
   }
 
-  return { ...state, search, errorKey: null };
+  return withSyncedPassengers({ ...state, errorKey: null }, search);
 }
 
 export function bookingFlowReducer(
@@ -143,7 +196,11 @@ export function bookingFlowReducer(
     }
 
     case "UPDATE_SEARCH":
-      return applySearchChange(state, { ...state.search, ...action.search });
+      return applySearchChange(
+        state,
+        { ...state.search, ...action.search },
+        action.preserveFlow ?? false,
+      );
 
     case "SET_AIRPORT": {
       const search: BookingSearchState = {
@@ -218,7 +275,7 @@ export function bookingFlowReducer(
         quote: action.quote,
         searchSignature: action.searchSignature,
         isLoadingQuote: false,
-        step: "vehicle",
+        step: action.preserveStep ? state.step : "vehicle",
         errorKey: null,
       };
 
@@ -246,6 +303,16 @@ export function bookingFlowReducer(
       return {
         ...state,
         customer: { ...state.customer, ...action.customer },
+      };
+
+    case "UPDATE_PASSENGER":
+      return {
+        ...state,
+        passengers: state.passengers.map((passenger) =>
+          passenger.kind === action.kind && passenger.index === action.index
+            ? { ...passenger, ...action.passenger }
+            : passenger,
+        ),
       };
 
     case "UPDATE_FLIGHT":

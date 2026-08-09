@@ -5,6 +5,7 @@ import {
   CupSoda,
   Droplets,
   Luggage,
+  Sparkles,
   Tv,
   Users,
   Wifi,
@@ -97,29 +98,56 @@ export function VehicleRecommendationCard({
                 icon={Luggage}
                 label={t("luggageMax", {
                   large: option.largeLuggageCapacity,
-                  cabin: option.cabinLuggageCapacity,
                 })}
               />
             </div>
           </div>
 
-          <div className="space-y-2.5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold-deep">
-              {t("includedServicesTitle")}
-            </p>
-            <ul className="grid gap-2 sm:grid-cols-2">
-              {INCLUDED_SERVICES.map(({ key, icon: Icon }) => (
-                <li
-                  key={key}
-                  className="flex items-center gap-2 text-sm text-foreground/85"
-                >
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold">
-                    <Icon className="h-3.5 w-3.5" aria-hidden />
-                  </span>
-                  {t(`includedServices.${key}`)}
-                </li>
-              ))}
-            </ul>
+          <div
+            className={cn(
+              "grid gap-6",
+              option.features.length > 0 ? "sm:grid-cols-2" : "grid-cols-1",
+            )}
+          >
+            <div className="space-y-2.5">
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold-deep">
+                {t("includedServicesTitle")}
+              </p>
+              <ul className="flex flex-col gap-2">
+                {INCLUDED_SERVICES.map(({ key, icon: Icon }) => (
+                  <li
+                    key={key}
+                    className="flex items-center gap-2 text-sm text-foreground/85"
+                  >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold">
+                      <Icon className="h-3.5 w-3.5" aria-hidden />
+                    </span>
+                    {t(`includedServices.${key}`)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {option.features.length > 0 && (
+              <div className="space-y-2.5">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-gold-deep">
+                  {t("vehicleFeaturesTitle")}
+                </p>
+                <ul className="flex flex-col gap-2">
+                  {option.features.map((feature) => (
+                    <li
+                      key={feature}
+                      className="flex items-center gap-2 text-sm text-foreground/85"
+                    >
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-gold">
+                        <Sparkles className="h-3.5 w-3.5" aria-hidden />
+                      </span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           {option.requiredLuggageVehicles > 0 && (

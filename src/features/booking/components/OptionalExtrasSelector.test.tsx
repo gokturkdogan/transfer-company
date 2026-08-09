@@ -61,6 +61,7 @@ const quoteFixture: TransferAvailabilityResponseDto = {
           required: false,
         },
       ],
+      features: [],
       quote: {
         currency: "EUR",
         baseItems: [],
@@ -146,7 +147,7 @@ describe("OptionalExtrasSelector", () => {
 
     await screen.findByText("Child seat");
 
-    await user.click(screen.getByRole("button", { name: "Increase Quantity" }));
+    await user.click(screen.getByRole("button", { name: "Increase Child seat" }));
 
     await waitFor(
       () => {

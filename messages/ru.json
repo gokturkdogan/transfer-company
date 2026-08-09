@@ -57,7 +57,7 @@
       "title": "Luxury Vehicles",
       "subtitle": "Travel in comfort with our premium Mercedes fleet.",
       "passengers": "Up to {count} passengers",
-      "luggage": "{large} large · {cabin} cabin",
+      "luggage": "{large} багаж",
       "from": "From {price}",
       "book": "Book Now"
     },
@@ -268,12 +268,20 @@
       "reviewEyebrow": "Шаг 4"
     },
     "summary": {
-      "title": "Сводка поездки",
+      "title": "Сводка заказа",
       "edit": "Изменить",
-      "passengers": "{adults} взрослых · {children} детей"
+      "passengers": "{adults} взрослых · {children} детей",
+      "adults": "{count} Взрослых",
+      "children": "{count} Детей",
+      "oneWayTransfer": "Трансфер в одну сторону",
+      "roundTripTransfer": "Трансфер туда-обратно",
+      "extrasTitle": "Доп. услуги:",
+      "extraLine": "{name} x {count}"
     },
     "extras": {
-      "title": "Optional extras",
+      "sectionTitle": "Доп. услуги",
+      "sectionSubtitle": "Просмотрите обязательные услуги или добавьте опциональные.",
+      "title": "Опциональные услуги",
       "requiredTitle": "Required extras",
       "required": "Required",
       "quantity": "Quantity: {count}",
@@ -281,12 +289,24 @@
       "none": "No optional extras available."
     },
     "customer": {
-      "title": "Customer information",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "email": "Email",
-      "phone": "Phone",
-      "whatsapp": "WhatsApp (optional)"
+      "title": "Контактная информация",
+      "subtitle": "Укажите данные, чтобы мы могли подтвердить бронирование и связаться с вами.",
+      "fullName": "ФИО",
+      "email": "Эл. почта",
+      "phone": "Телефон",
+      "phonePlaceholder": "9XX XXX XX XX",
+      "countryCode": "Код страны",
+      "whatsapp": "WhatsApp (необязательно)"
+    },
+    "passengers": {
+      "title": "Информация о пассажирах",
+      "subtitle": "Укажите ФИО для каждого пассажира. Номер удостоверения или паспорта необязателен.",
+      "adultLabel": "Пассажир {index}",
+      "childLabel": "Ребёнок {index}",
+      "fullName": "ФИО",
+      "idDocument": "Удостоверение / Паспорт (необязательно)",
+      "idDocumentPlaceholder": "Номер удостоверения или паспорта",
+      "notesSectionTitle": "--- Информация о пассажирах ---"
     },
     "errors": {
       "rateLimit": "Too many requests. Please try again later.",
@@ -355,9 +375,9 @@
       "title": "Choose your vehicle",
       "noQuote": "Search for transfers to see vehicle options.",
       "empty": "No vehicles available.",
-      "capacity": "Up to {passengers} passengers · {large} large · {cabin} cabin luggage",
+      "capacity": "До {passengers} пассажиров · {large} багаж",
       "passengerRange": "1–{max} пассажиров",
-      "luggageMax": "Макс. {large} крупный · {cabin} ручной",
+      "luggageMax": "Макс. {large} багаж",
       "includedServicesTitle": "Услуги, включённые в стоимость",
       "includedServices": {
         "tv": "ТВ",
@@ -366,6 +386,7 @@
         "softDrinks": "Безалкогольные напитки",
         "welcomeWithName": "Встреча с табличкой с именем"
       },
+      "vehicleFeaturesTitle": "Особенности автомобиля",
       "totalLabel": "Итого",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
@@ -376,6 +397,16 @@
         "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
         "INELIGIBLE": "Not suitable"
       }
+    },
+    "transfer": {
+      "title": "Данные трансфера",
+      "subtitle": "Проверьте или измените данные рейса и места высадки.",
+      "flightNumber": "Номер рейса",
+      "flightNumberPlaceholder": "TK1234",
+      "landingDateTime": "Дата и время прилёта",
+      "returnFlightNumber": "Номер обратного рейса (необязательно)",
+      "notes": "Примечания (необязательно)",
+      "updatingSchedule": "Обновление расписания и пересчёт цены..."
     },
     "flight": {
       "outbound": "Outbound flight number (optional)",

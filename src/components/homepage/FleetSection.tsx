@@ -41,7 +41,6 @@ export async function FleetSection({
               })}
               luggageLabel={t("luggage", {
                 large: vehicle.largeLuggageCapacity,
-                cabin: vehicle.cabinLuggageCapacity,
               })}
               featureLabels={vehicle.features}
               priceLabel={t("from", {

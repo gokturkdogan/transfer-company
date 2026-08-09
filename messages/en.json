@@ -57,7 +57,7 @@
       "title": "Luxury Vehicles",
       "subtitle": "Travel in comfort with our premium Mercedes fleet.",
       "passengers": "Up to {count} passengers",
-      "luggage": "{large} large · {cabin} cabin",
+      "luggage": "{large} luggage",
       "from": "From {price}",
       "book": "Book Now"
     },
@@ -268,11 +268,19 @@
       "reviewEyebrow": "Step 4"
     },
     "summary": {
-      "title": "Trip summary",
+      "title": "Order summary",
       "edit": "Edit",
-      "passengers": "{adults} adults · {children} children"
+      "passengers": "{adults} adults · {children} children",
+      "adults": "{count} Adult",
+      "children": "{count} Child",
+      "oneWayTransfer": "One-way transfer",
+      "roundTripTransfer": "Round-trip transfer",
+      "extrasTitle": "Extras:",
+      "extraLine": "{name} x {count}"
     },
     "extras": {
+      "sectionTitle": "Extras",
+      "sectionSubtitle": "View required extras or add optional services.",
       "title": "Optional extras",
       "requiredTitle": "Required extras",
       "required": "Required",
@@ -281,12 +289,24 @@
       "none": "No optional extras available."
     },
     "customer": {
-      "title": "Customer information",
-      "firstName": "First name",
-      "lastName": "Last name",
+      "title": "Contact Information",
+      "subtitle": "Enter your details so we can confirm your reservation and reach you.",
+      "fullName": "Full name",
       "email": "Email",
       "phone": "Phone",
+      "phonePlaceholder": "7XX XXX XXXX",
+      "countryCode": "Country code",
       "whatsapp": "WhatsApp (optional)"
+    },
+    "passengers": {
+      "title": "Passenger Information",
+      "subtitle": "Enter a full name for each passenger. ID or passport number is optional.",
+      "adultLabel": "Passenger {index}",
+      "childLabel": "Child {index}",
+      "fullName": "Full name",
+      "idDocument": "ID / Passport No. (optional)",
+      "idDocumentPlaceholder": "National ID or passport number",
+      "notesSectionTitle": "--- Passenger Information ---"
     },
     "errors": {
       "rateLimit": "Too many requests. Please try again later.",
@@ -355,9 +375,9 @@
       "title": "Choose your vehicle",
       "noQuote": "Search for transfers to see vehicle options.",
       "empty": "No vehicles available.",
-      "capacity": "Up to {passengers} passengers · {large} large · {cabin} cabin luggage",
+      "capacity": "Up to {passengers} passengers · {large} luggage",
       "passengerRange": "1–{max} passengers",
-      "luggageMax": "Max. {large} large · {cabin} cabin",
+      "luggageMax": "Max. {large} luggage",
       "includedServicesTitle": "Services included in the price",
       "includedServices": {
         "tv": "TV",
@@ -366,6 +386,7 @@
         "softDrinks": "Soft Drinks",
         "welcomeWithName": "Welcome with Name"
       },
+      "vehicleFeaturesTitle": "Vehicle features",
       "totalLabel": "Total",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
@@ -376,6 +397,16 @@
         "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
         "INELIGIBLE": "Not suitable"
       }
+    },
+    "transfer": {
+      "title": "Transfer Details",
+      "subtitle": "Review or update your flight and drop-off information.",
+      "flightNumber": "Flight number",
+      "flightNumberPlaceholder": "TK1234",
+      "landingDateTime": "Aircraft landing date and time",
+      "returnFlightNumber": "Return flight number (optional)",
+      "notes": "Notes (optional)",
+      "updatingSchedule": "Updating schedule and refreshing price..."
     },
     "flight": {
       "outbound": "Outbound flight number (optional)",

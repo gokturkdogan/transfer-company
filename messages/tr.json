@@ -57,7 +57,7 @@
       "title": "Lüks Araçlar",
       "subtitle": "Premium Mercedes filomuzla konforlu yolculuk edin.",
       "passengers": "En fazla {count} yolcu",
-      "luggage": "{large} büyük · {cabin} kabin",
+      "luggage": "{large} bagaj",
       "from": "{price} başlayan",
       "book": "Rezervasyon Yap"
     },
@@ -245,7 +245,7 @@
   "booking": {
     "actions": {
       "back": "Geri",
-      "continue": "Devam"
+      "continue": "Devam Et"
     },
     "page": {
       "badge": "Rezervasyon",
@@ -268,11 +268,19 @@
       "reviewEyebrow": "Adım 4"
     },
     "summary": {
-      "title": "Transfer özeti",
+      "title": "Sipariş özeti",
       "edit": "Düzenle",
-      "passengers": "{adults} yetişkin · {children} çocuk"
+      "passengers": "{adults} yetişkin · {children} çocuk",
+      "adults": "{count} Yetişkin",
+      "children": "{count} Çocuk",
+      "oneWayTransfer": "Tek Yön Transfer",
+      "roundTripTransfer": "Gidiş-Dönüş Transfer",
+      "extrasTitle": "Ekstralar:",
+      "extraLine": "{name} x {count}"
     },
     "extras": {
+      "sectionTitle": "Ekstralar",
+      "sectionSubtitle": "Zorunlu ekstraları görüntüleyin veya isteğe bağlı hizmetler ekleyin.",
       "title": "İsteğe bağlı ekstralar",
       "requiredTitle": "Zorunlu ekstralar",
       "required": "Zorunlu",
@@ -281,12 +289,24 @@
       "none": "İsteğe bağlı ekstra yok."
     },
     "customer": {
-      "title": "Müşteri bilgileri",
-      "firstName": "Ad",
-      "lastName": "Soyad",
+      "title": "İletişim Bilgileri",
+      "subtitle": "Rezervasyon onayı ve iletişim için bilgilerinizi girin.",
+      "fullName": "Ad Soyad",
       "email": "E-posta",
       "phone": "Telefon",
+      "phonePlaceholder": "5XX XXX XX XX",
+      "countryCode": "Ülke kodu",
       "whatsapp": "WhatsApp (isteğe bağlı)"
+    },
+    "passengers": {
+      "title": "Yolcu Bilgileri",
+      "subtitle": "Her yolcu için ad soyad girin. Kimlik veya pasaport numarası isteğe bağlıdır.",
+      "adultLabel": "{index}. Yolcu",
+      "childLabel": "{index}. Çocuk",
+      "fullName": "Ad Soyad",
+      "idDocument": "TC / Pasaport No (opsiyonel)",
+      "idDocumentPlaceholder": "TC veya pasaport numarası",
+      "notesSectionTitle": "--- Yolcu Bilgileri ---"
     },
     "errors": {
       "rateLimit": "Çok fazla istek. Lütfen daha sonra tekrar deneyin.",
@@ -355,9 +375,9 @@
       "title": "Aracınızı seçin",
       "noQuote": "Araç seçeneklerini görmek için transfer arayın.",
       "empty": "Uygun araç yok.",
-      "capacity": "En fazla {passengers} yolcu · {large} büyük · {cabin} kabin bagajı",
+      "capacity": "En fazla {passengers} yolcu · {large} bagaj",
       "passengerRange": "1–{max} yolcu",
-      "luggageMax": "Max. {large} büyük · {cabin} kabin",
+      "luggageMax": "Max. {large} bagaj",
       "includedServicesTitle": "Fiyata dahil hizmetler",
       "includedServices": {
         "tv": "TV",
@@ -366,6 +386,7 @@
         "softDrinks": "Meşrubat",
         "welcomeWithName": "İsimli karşılama"
       },
+      "vehicleFeaturesTitle": "Araç özellikleri",
       "totalLabel": "Toplam",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Bagajınız bu aracın kapasitesini aşıyor. Ek bagaj aracı gereklidir.",
@@ -376,6 +397,16 @@
         "ELIGIBLE_WITH_EXTRAS": "Ek bagaj ile uygun",
         "INELIGIBLE": "Uygun değil"
       }
+    },
+    "transfer": {
+      "title": "Transfer Bilgileri",
+      "subtitle": "Uçuş ve varış bilgilerinizi kontrol edin veya güncelleyin.",
+      "flightNumber": "Uçuş numarası",
+      "flightNumberPlaceholder": "TK1234",
+      "landingDateTime": "Uçak iniş tarihi ve saati",
+      "returnFlightNumber": "Dönüş uçuş numarası (isteğe bağlı)",
+      "notes": "Notlar (isteğe bağlı)",
+      "updatingSchedule": "Tarih güncelleniyor, fiyat yenileniyor..."
     },
     "flight": {
       "outbound": "Gidiş uçuş numarası (isteğe bağlı)",

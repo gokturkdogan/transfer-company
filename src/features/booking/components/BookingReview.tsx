@@ -2,19 +2,18 @@
 
 import { useTranslations } from "next-intl";
 
-import { BookingFlowNavigation } from "@/features/booking/components/BookingFlowNavigation";
 import { BookingStepHeader } from "@/features/booking/components/BookingStepHeader";
 import { PriceSummary } from "@/features/booking/components/PriceSummary";
 import { RequiredExtrasPanel } from "@/features/booking/components/RequiredExtrasPanel";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { formatInternationalPhone } from "@/lib/phone/format";
 import { joinWallClockDateTime } from "@/features/booking/lib/search-signature";
-import { track } from "@/lib/analytics";
 
 export function BookingReview() {
   const t = useTranslations("booking.review");
+  const tPassengers = useTranslations("booking.passengers");
   const tPage = useTranslations("booking.page");
-  const { state, airports, districts, dispatch, submitReservation } =
-    useBookingFlow();
+  const { state, airports, districts } = useBookingFlow();
 
   const selectedOption = state.quote?.options.find(
     (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
@@ -71,6 +70,17 @@ export function BookingReview() {
               children: state.search.childCount,
             })}
           />
+          {state.passengers.map((passenger) => {
+            const label =
+              passenger.kind === "adult"
+                ? tPassengers("adultLabel", { index: passenger.index })
+                : tPassengers("childLabel", { index: passenger.index });
+            const value = passenger.idDocument.trim()
+              ? `${passenger.fullName} (${passenger.idDocument.trim()})`
+              : passenger.fullName;
+
+            return <ReviewRow key={`${passenger.kind}-${passenger.index}`} label={label} value={value} />;
+          })}
           <ReviewRow
             label={t("vehicle")}
             value={
@@ -88,7 +98,13 @@ export function BookingReview() {
           value={`${state.customer.firstName} ${state.customer.lastName}`}
         />
         <ReviewRow label={t("email")} value={state.customer.email} />
-        <ReviewRow label={t("phone")} value={state.customer.phone} />
+        <ReviewRow
+          label={t("phone")}
+          value={formatInternationalPhone(
+            state.customer.phoneCountryCode,
+            state.customer.phone,
+          )}
+        />
       </ReviewSection>
 
       <RequiredExtrasPanel
@@ -100,16 +116,6 @@ export function BookingReview() {
         option={selectedOption}
         selectionTotalMinor={state.quote.selection?.quote.totalMinor}
         currency={state.quote.currency}
-      />
-
-      <BookingFlowNavigation
-        onBack={() => dispatch({ type: "SET_STEP", step: "customer" })}
-        onContinue={() => {
-          track({ name: "booking_review" });
-          void submitReservation();
-        }}
-        continueLabel={state.isSubmitting ? t("submitting") : t("submit")}
-        continueLoading={state.isSubmitting}
       />
     </div>
   );

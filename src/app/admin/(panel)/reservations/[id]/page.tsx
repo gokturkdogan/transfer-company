@@ -90,10 +90,7 @@ export default async function AdminReservationDetailPage({
               <span className="font-medium">
                 {adminCopy.reservations.fields.luggage}:
               </span>{" "}
-              {reservation.largeLuggageCount}{" "}
-              {adminCopy.reservations.fields.luggageLarge} /{" "}
-              {reservation.cabinLuggageCount}{" "}
-              {adminCopy.reservations.fields.luggageCabin}
+              {reservation.largeLuggageCount}
             </p>
           </CardContent>
         </Card>

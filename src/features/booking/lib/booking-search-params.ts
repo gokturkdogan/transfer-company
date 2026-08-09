@@ -13,7 +13,6 @@ export function buildBookingSearchParams(
     passengers: String(search.passengerCount),
     children: String(search.childCount),
     largeLuggage: String(search.largeLuggageCount),
-    cabinLuggage: String(search.cabinLuggageCount),
   });
 
   if (search.tripType === "ROUND_TRIP") {

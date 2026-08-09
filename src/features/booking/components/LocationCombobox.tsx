@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/command";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  bookingFormFieldGroupClass,
+  bookingFormLabelClass,
+  bookingFormTriggerClass,
+} from "@/features/booking/components/booking-form-styles";
 import { cn } from "@/lib/utils";
 
 export type ComboboxOption = {
@@ -32,6 +37,7 @@ type LocationComboboxProps = {
   onChange: (value: string) => void;
   disabled?: boolean;
   className?: string;
+  appearance?: "default" | "booking";
 };
 
 export function LocationCombobox({
@@ -44,23 +50,36 @@ export function LocationCombobox({
   onChange,
   disabled = false,
   className,
+  appearance = "default",
 }: LocationComboboxProps) {
   const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.id === value);
   const groups = [...new Set(options.map((option) => option.group).filter(Boolean))];
 
   return (
-    <div className={cn("space-y-2", className)}>
-      <Label>{label}</Label>
+    <div
+      className={cn(
+        appearance === "booking" ? bookingFormFieldGroupClass : "space-y-2",
+        className,
+      )}
+    >
+      <Label className={appearance === "booking" ? bookingFormLabelClass : undefined}>
+        {label}
+      </Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             type="button"
-            variant="outline"
+            variant={appearance === "booking" ? "ghost" : "outline"}
             role="combobox"
             aria-expanded={open}
             disabled={disabled}
-            className="h-11 w-full justify-between rounded-xl border-border shadow-sm"
+            className={cn(
+              "w-full justify-between font-normal",
+              appearance === "booking"
+                ? cn(bookingFormTriggerClass, !selected && "text-muted-foreground/65")
+                : "h-10 rounded-xl border-border shadow-sm",
+            )}
           >
             <span className="truncate">{selected?.label ?? placeholder}</span>
             <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />

@@ -57,7 +57,7 @@
       "title": "Luxury Vehicles",
       "subtitle": "Travel in comfort with our premium Mercedes fleet.",
       "passengers": "Up to {count} passengers",
-      "luggage": "{large} large · {cabin} cabin",
+      "luggage": "{large} أمتعة",
       "from": "From {price}",
       "book": "Book Now"
     },
@@ -268,12 +268,20 @@
       "reviewEyebrow": "الخطوة 4"
     },
     "summary": {
-      "title": "ملخص الرحلة",
+      "title": "ملخص الطلب",
       "edit": "تعديل",
-      "passengers": "{adults} بالغ · {children} طفل"
+      "passengers": "{adults} بالغ · {children} طفل",
+      "adults": "{count} بالغ",
+      "children": "{count} طفل",
+      "oneWayTransfer": "نقل ذهاب",
+      "roundTripTransfer": "نقل ذهاب وإياب",
+      "extrasTitle": "الإضافات:",
+      "extraLine": "{name} x {count}"
     },
     "extras": {
-      "title": "Optional extras",
+      "sectionTitle": "الإضافات",
+      "sectionSubtitle": "اعرض الإضافات الإلزامية أو أضف خدمات اختيارية.",
+      "title": "إضافات اختيارية",
       "requiredTitle": "Required extras",
       "required": "Required",
       "quantity": "Quantity: {count}",
@@ -281,12 +289,24 @@
       "none": "No optional extras available."
     },
     "customer": {
-      "title": "Customer information",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "email": "Email",
-      "phone": "Phone",
-      "whatsapp": "WhatsApp (optional)"
+      "title": "معلومات الاتصال",
+      "subtitle": "أدخل بياناتك حتى نتمكن من تأكيد الحجز والتواصل معك.",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "phonePlaceholder": "5X XXX XXXX",
+      "countryCode": "رمز الدولة",
+      "whatsapp": "واتساب (اختياري)"
+    },
+    "passengers": {
+      "title": "معلومات الركاب",
+      "subtitle": "أدخل الاسم الكامل لكل راكب. رقم الهوية أو جواز السفر اختياري.",
+      "adultLabel": "الراكب {index}",
+      "childLabel": "الطفل {index}",
+      "fullName": "الاسم الكامل",
+      "idDocument": "الهوية / جواز السفر (اختياري)",
+      "idDocumentPlaceholder": "رقم الهوية أو جواز السفر",
+      "notesSectionTitle": "--- معلومات الركاب ---"
     },
     "errors": {
       "rateLimit": "Too many requests. Please try again later.",
@@ -355,9 +375,9 @@
       "title": "Choose your vehicle",
       "noQuote": "Search for transfers to see vehicle options.",
       "empty": "No vehicles available.",
-      "capacity": "Up to {passengers} passengers · {large} large · {cabin} cabin luggage",
+      "capacity": "حتى {passengers} ركاب · {large} أمتعة",
       "passengerRange": "1–{max} راكب",
-      "luggageMax": "حد أقصى {large} كبير · {cabin} يدوي",
+      "luggageMax": "حد أقصى {large} أمتعة",
       "includedServicesTitle": "الخدمات المشمولة في السعر",
       "includedServices": {
         "tv": "تلفزيون",
@@ -366,6 +386,7 @@
         "softDrinks": "مشروبات غازية",
         "welcomeWithName": "استقبال بلوحة الاسم"
       },
+      "vehicleFeaturesTitle": "ميزات المركبة",
       "totalLabel": "الإجمالي",
       "multiVehicle": "{quantity} × {name}",
       "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
@@ -376,6 +397,16 @@
         "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
         "INELIGIBLE": "Not suitable"
       }
+    },
+    "transfer": {
+      "title": "معلومات النقل",
+      "subtitle": "راجع أو حدّث معلومات الرحلة ونقطة الوصول.",
+      "flightNumber": "رقم الرحلة",
+      "flightNumberPlaceholder": "TK1234",
+      "landingDateTime": "تاريخ ووقت هبوط الطائرة",
+      "returnFlightNumber": "رقم رحلة العودة (اختياري)",
+      "notes": "ملاحظات (اختياري)",
+      "updatingSchedule": "جارٍ تحديث الموعد وإعادة حساب السعر..."
     },
     "flight": {
       "outbound": "Outbound flight number (optional)",

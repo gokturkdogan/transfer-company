@@ -1,3 +1,4 @@
+import type { PassengerDetails } from "@/features/booking/lib/passenger-details";
 import type { TripType } from "@/db/schema/enums";
 import type { TransferAvailabilityResponseDto } from "@/features/pricing/types/dto";
 import type { ReservationResponseDto } from "@/features/pricing/types/dto";
@@ -38,9 +39,12 @@ export type CustomerState = {
   firstName: string;
   lastName: string;
   email: string;
+  phoneCountryCode: string;
   phone: string;
   whatsappPhone: string;
 };
+
+export type { PassengerDetails, PassengerKind } from "@/features/booking/lib/passenger-details";
 
 export type FlightState = {
   outboundFlightNumber: string;
@@ -62,6 +66,7 @@ export type BookingFlowState = {
   selectedQuantity: number;
   selectedExtras: SelectedExtra[];
   customer: CustomerState;
+  passengers: PassengerDetails[];
   flight: FlightState;
   notes: string;
   idempotencyKey: string | null;

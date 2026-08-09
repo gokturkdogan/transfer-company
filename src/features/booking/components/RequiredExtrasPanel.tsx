@@ -2,16 +2,21 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
-import { Badge } from "@/components/ui/badge";
+import {
+  bookingExtraItemClass,
+  bookingExtrasGridClass,
+} from "@/features/booking/components/booking-form-styles";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import type { TransferOptionExtraDto } from "@/features/pricing/types/dto";
 
 export function RequiredExtrasPanel({
   extras,
   currency,
+  embedded = false,
 }: {
   extras: TransferOptionExtraDto[];
   currency: string;
+  embedded?: boolean;
 }) {
   const t = useTranslations("booking.extras");
   const locale = useLocale();
@@ -20,28 +25,32 @@ export function RequiredExtrasPanel({
     return null;
   }
 
-  return (
-    <div className="space-y-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
-      <p className="text-sm font-medium text-amber-900">{t("requiredTitle")}</p>
-      {extras.map((extra) => (
-        <div
-          key={extra.extraServiceId}
-          className="flex items-center justify-between gap-4 text-sm"
-        >
-          <div className="space-y-1">
-            <p className="font-medium">{extra.name}</p>
-            <p className="text-muted-foreground">
-              {t("quantity", { count: extra.quantity })}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="warning">{t("required")}</Badge>
-            <span className="font-semibold">
-              {formatPrice(extra.totalPriceMinor, currency, locale)}
-            </span>
-          </div>
+  const items = extras.map((extra) => (
+    <li key={extra.extraServiceId} className={bookingExtraItemClass}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium text-foreground">
+            {extra.name}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {t("quantity", { count: extra.quantity })}
+          </p>
         </div>
-      ))}
-    </div>
-  );
+        <div className="shrink-0 text-end">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-gold-deep/80">
+            {t("required")}
+          </p>
+          <p className="text-sm font-medium text-foreground">
+            {formatPrice(extra.totalPriceMinor, currency, locale)}
+          </p>
+        </div>
+      </div>
+    </li>
+  ));
+
+  if (embedded) {
+    return <>{items}</>;
+  }
+
+  return <ul className={bookingExtrasGridClass}>{items}</ul>;
 }

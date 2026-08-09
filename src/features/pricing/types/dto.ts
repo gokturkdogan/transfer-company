@@ -24,6 +24,7 @@ export type TransferVehicleOptionDto = {
   warnings: CapacityWarning[];
   requiredExtras: TransferOptionExtraDto[];
   optionalExtras: TransferOptionExtraDto[];
+  features: string[];
   quote: TransferQuote;
 };
 

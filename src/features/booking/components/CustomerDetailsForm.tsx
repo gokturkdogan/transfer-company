@@ -1,10 +1,17 @@
 "use client";
 
+import { UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { BookingFormField } from "@/features/booking/components/BookingFormField";
+import { BookingFormSection } from "@/features/booking/components/BookingFormSection";
+import { BookingInput } from "@/features/booking/components/BookingInput";
+import { PhoneNumberField } from "@/features/booking/components/PhoneNumberField";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import {
+  formatFullName,
+  parseFullName,
+} from "@/features/booking/lib/parse-full-name";
 
 export function CustomerDetailsForm() {
   const t = useTranslations("booking.customer");
@@ -12,73 +19,62 @@ export function CustomerDetailsForm() {
   const { customer } = state;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <div className="space-y-2">
-        <Label htmlFor="first-name">{t("firstName")}</Label>
-        <Input
-          id="first-name"
-          value={customer.firstName}
-          onChange={(event) =>
-            dispatch({
-              type: "UPDATE_CUSTOMER",
-              customer: { firstName: event.target.value },
-            })
-          }
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="last-name">{t("lastName")}</Label>
-        <Input
-          id="last-name"
-          value={customer.lastName}
-          onChange={(event) =>
-            dispatch({
-              type: "UPDATE_CUSTOMER",
-              customer: { lastName: event.target.value },
-            })
-          }
-        />
-      </div>
-      <div className="space-y-2 sm:col-span-2">
-        <Label htmlFor="email">{t("email")}</Label>
-        <Input
-          id="email"
-          type="email"
-          value={customer.email}
-          onChange={(event) =>
-            dispatch({
-              type: "UPDATE_CUSTOMER",
-              customer: { email: event.target.value },
-            })
-          }
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="phone">{t("phone")}</Label>
-        <Input
+    <BookingFormSection
+      title={t("title")}
+      description={t("subtitle")}
+      icon={<UserRound className="h-4 w-4" aria-hidden />}
+    >
+      <div className="grid gap-4 lg:grid-cols-3">
+        <BookingFormField label={t("fullName")} htmlFor="full-name">
+          <BookingInput
+            id="full-name"
+            autoComplete="name"
+            value={formatFullName(customer.firstName, customer.lastName)}
+            onChange={(event) => {
+              const { firstName, lastName } = parseFullName(event.target.value);
+
+              dispatch({
+                type: "UPDATE_CUSTOMER",
+                customer: { firstName, lastName },
+              });
+            }}
+          />
+        </BookingFormField>
+        <BookingFormField label={t("email")} htmlFor="email">
+          <BookingInput
+            id="email"
+            type="email"
+            autoComplete="email"
+            value={customer.email}
+            onChange={(event) =>
+              dispatch({
+                type: "UPDATE_CUSTOMER",
+                customer: { email: event.target.value },
+              })
+            }
+          />
+        </BookingFormField>
+        <PhoneNumberField
           id="phone"
-          value={customer.phone}
-          onChange={(event) =>
+          label={t("phone")}
+          countryCode={customer.phoneCountryCode}
+          nationalNumber={customer.phone}
+          placeholder={t("phonePlaceholder")}
+          compact
+          onCountryCodeChange={(phoneCountryCode) =>
             dispatch({
               type: "UPDATE_CUSTOMER",
-              customer: { phone: event.target.value },
+              customer: { phoneCountryCode },
+            })
+          }
+          onNationalNumberChange={(phone) =>
+            dispatch({
+              type: "UPDATE_CUSTOMER",
+              customer: { phone },
             })
           }
         />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="whatsapp">{t("whatsapp")}</Label>
-        <Input
-          id="whatsapp"
-          value={customer.whatsappPhone}
-          onChange={(event) =>
-            dispatch({
-              type: "UPDATE_CUSTOMER",
-              customer: { whatsappPhone: event.target.value },
-            })
-          }
-        />
-      </div>
-    </div>
+    </BookingFormSection>
   );
 }

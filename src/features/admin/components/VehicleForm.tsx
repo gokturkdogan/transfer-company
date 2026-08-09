@@ -100,7 +100,7 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
           nameTranslations,
           passengerCapacity: formData.get("passengerCapacity"),
           largeLuggageCapacity: formData.get("largeLuggageCapacity"),
-          cabinLuggageCapacity: formData.get("cabinLuggageCapacity"),
+          cabinLuggageCapacity: vehicle?.cabinLuggageCapacity ?? 0,
           features: featureRows.map((row) => ({ labels: row.labels })),
           coverImageKey: formData.get("coverImageKey") || null,
           galleryImageKeys: galleryKeys,
@@ -222,20 +222,6 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
                   type="number"
                   min={0}
                   defaultValue={vehicle?.largeLuggageCapacity ?? 0}
-                  required
-                />
-              </AdminField>
-              <AdminField
-                label={adminCopy.vehicles.form.cabinLuggageCapacity}
-                htmlFor="cabinLuggageCapacity"
-                required
-              >
-                <Input
-                  id="cabinLuggageCapacity"
-                  name="cabinLuggageCapacity"
-                  type="number"
-                  min={0}
-                  defaultValue={vehicle?.cabinLuggageCapacity ?? 0}
                   required
                 />
               </AdminField>

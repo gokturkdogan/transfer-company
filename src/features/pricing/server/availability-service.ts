@@ -21,6 +21,7 @@ import {
   CurrencyRepository,
   resolveQuoteCurrency,
 } from "@/features/currencies/server/repository";
+import type { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
 import { PROJECT_TIME_ZONE } from "@/config/constants";
 import { DomainRuleError } from "@/server/errors";
 
@@ -113,6 +114,7 @@ export class AvailabilityService {
     private readonly quoteService?: QuoteService,
     private readonly locationRepository?: LocationRepository,
     private readonly currencyRepository?: CurrencyRepository,
+    private readonly featureRepository?: VehicleFeatureRepository,
   ) {}
 
   async getTransferOptions(
@@ -156,6 +158,13 @@ export class AvailabilityService {
           this.repository.findLuggageVehicleExtras(input.locale),
           this.repository.findCustomerSelectableExtras(input.locale),
         ]);
+
+      const featuresByVehicle = this.featureRepository
+        ? await this.featureRepository.listLabelsByVehicleIds(
+            vehicleOptions.map((option) => option.id),
+            input.locale,
+          )
+        : new Map<string, string[]>();
 
       const luggageVehicleExtra = resolveLuggageVehicleExtra(
         luggageVehicleCandidates,
@@ -261,6 +270,7 @@ export class AvailabilityService {
           warnings: recommendation.assessment.warnings,
           requiredExtras,
           optionalExtras,
+          features: featuresByVehicle.get(vehicleOption.id) ?? [],
           quote,
         });
       }

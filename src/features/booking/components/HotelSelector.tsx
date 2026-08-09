@@ -4,11 +4,16 @@ import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { LocationCombobox } from "@/features/booking/components/LocationCombobox";
+import { bookingFormLabelClass } from "@/features/booking/components/booking-form-styles";
 import { fetchHotelsForDistrict } from "@/features/booking/lib/api";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import type { HotelDto } from "@/features/locations/types";
 
-export function HotelSelector() {
+type HotelSelectorProps = {
+  className?: string;
+};
+
+export function HotelSelector({ className }: HotelSelectorProps) {
   const t = useTranslations("booking.hotel");
   const locale = useLocale();
   const { state, dispatch } = useBookingFlow();
@@ -47,12 +52,20 @@ export function HotelSelector() {
   }
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">{t("loading")}</p>;
+    return (
+      <div className={className}>
+        <p className={bookingFormLabelClass}>{t("title")}</p>
+        <p className="flex h-10 items-center text-xs text-muted-foreground/80">
+          {t("loading")}
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-4">
-      <LocationCombobox
+    <LocationCombobox
+      appearance="booking"
+      className={className}
         label={t("title")}
         value={
           state.destination.useCustomDestination
@@ -83,6 +96,5 @@ export function HotelSelector() {
           });
         }}
       />
-    </div>
   );
 }

@@ -17,6 +17,7 @@ const messages = {
       passengerRange: "1–{max} passengers",
       luggageMax: "Max. {large} large",
       includedServicesTitle: "Services included",
+      vehicleFeaturesTitle: "Vehicle features",
       includedServices: {
         tv: "TV",
         wifi: "Wi-Fi",
@@ -67,6 +68,7 @@ function createOption(
     warnings: [],
     requiredExtras: [],
     optionalExtras: [],
+    features: [],
     quote: {
       currency: "EUR",
       baseItems: [

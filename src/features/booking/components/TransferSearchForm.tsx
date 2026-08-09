@@ -176,7 +176,7 @@ export function TransferSearchForm({
             adultsLabel={t("adults")}
             childrenLabel={t("children")}
             compact
-            className="min-w-[280px] shrink-0"
+            className="min-w-0 w-full shrink xl:max-w-[17rem] xl:flex-1"
             onAdultsChange={(value) =>
               dispatch({ type: "UPDATE_SEARCH", search: { passengerCount: value } })
             }
@@ -190,7 +190,7 @@ export function TransferSearchForm({
             variant="gold"
             size="lg"
             disabled={!canSubmit || state.isLoadingQuote}
-            className="h-11 w-full shrink-0 px-6 sm:w-auto xl:w-auto"
+            className="h-11 w-full shrink-0 whitespace-nowrap px-5 sm:w-auto xl:flex-none"
           >
             {state.isLoadingQuote ? t("loading") : t("submit")}
           </Button>

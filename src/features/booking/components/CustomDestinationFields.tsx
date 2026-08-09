@@ -2,8 +2,8 @@
 
 import { useTranslations } from "next-intl";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { BookingFormField } from "@/features/booking/components/BookingFormField";
+import { BookingInput } from "@/features/booking/components/BookingInput";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 
 export function CustomDestinationFields() {
@@ -16,9 +16,12 @@ export function CustomDestinationFields() {
 
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      <div className="space-y-2 sm:col-span-2">
-        <Label htmlFor="custom-name">{t("customName")}</Label>
-        <Input
+      <BookingFormField
+        label={t("customName")}
+        htmlFor="custom-name"
+        className="sm:col-span-2"
+      >
+        <BookingInput
           id="custom-name"
           value={state.destination.customName}
           onChange={(event) =>
@@ -28,10 +31,13 @@ export function CustomDestinationFields() {
             })
           }
         />
-      </div>
-      <div className="space-y-2 sm:col-span-2">
-        <Label htmlFor="custom-address">{t("customAddress")}</Label>
-        <Input
+      </BookingFormField>
+      <BookingFormField
+        label={t("customAddress")}
+        htmlFor="custom-address"
+        className="sm:col-span-2"
+      >
+        <BookingInput
           id="custom-address"
           value={state.destination.customAddress}
           onChange={(event) =>
@@ -41,7 +47,7 @@ export function CustomDestinationFields() {
             })
           }
         />
-      </div>
+      </BookingFormField>
     </div>
   );
 }

@@ -4,11 +4,21 @@ import { useEffect, useMemo, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { CounterField } from "@/features/booking/components/CounterField";
+import {
+  bookingExtraItemClass,
+  bookingExtrasGridClass,
+} from "@/features/booking/components/booking-form-styles";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import { track } from "@/lib/analytics";
 
-export function OptionalExtrasSelector() {
+type OptionalExtrasSelectorProps = {
+  embedded?: boolean;
+};
+
+export function OptionalExtrasSelector({
+  embedded = false,
+}: OptionalExtrasSelectorProps) {
   const t = useTranslations("booking.extras");
   const locale = useLocale();
   const { state, requestRequote } = useBookingFlow();
@@ -41,62 +51,70 @@ export function OptionalExtrasSelector() {
   }
 
   if (optionalExtras.length === 0) {
-    return <p className="text-sm text-muted-foreground">{t("none")}</p>;
+    return embedded ? null : (
+      <p className="text-sm text-muted-foreground">{t("none")}</p>
+    );
   }
 
-  return (
-    <div className="space-y-4">
-      {optionalExtras.map((extra) => {
-        const quantity = quantities.get(extra.extraServiceId) ?? 0;
+  const items = optionalExtras.map((extra) => {
+    const quantity = quantities.get(extra.extraServiceId) ?? 0;
 
-        return (
-          <div
-            key={extra.extraServiceId}
-            className="rounded-lg border border-border p-4"
-          >
-            <div className="mb-3 flex items-start justify-between gap-4">
-              <div>
-                <p className="font-medium">{extra.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {formatPrice(extra.unitPriceMinor, selectedOption.quote.currency, locale)}
-                </p>
-              </div>
-            </div>
-            <CounterField
-              label={t("quantityLabel")}
-              value={quantity}
-              min={0}
-              max={extra.maxQuantity ?? 10}
-              onChange={(value) => {
-                const nextExtras = optionalExtras
-                  .map((item) => ({
-                    extraServiceId: item.extraServiceId,
-                    quantity:
-                      item.extraServiceId === extra.extraServiceId
-                        ? value
-                        : (quantities.get(item.extraServiceId) ?? 0),
-                  }))
-                  .filter((item) => item.quantity > 0);
-
-                if (debounceRef.current) {
-                  clearTimeout(debounceRef.current);
-                }
-
-                debounceRef.current = setTimeout(() => {
-                  track({
-                    name: "extra_selected",
-                    payload: {
-                      extraServiceId: extra.extraServiceId,
-                      quantity: value,
-                    },
-                  });
-                  void requestRequote(nextExtras);
-                }, 400);
-              }}
-            />
+    return (
+      <li key={extra.extraServiceId} className={bookingExtraItemClass}>
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium text-foreground">
+              {extra.name}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {formatPrice(
+                extra.unitPriceMinor,
+                selectedOption.quote.currency,
+                locale,
+              )}
+            </p>
           </div>
-        );
-      })}
-    </div>
-  );
+          <CounterField
+            label={extra.name}
+            value={quantity}
+            min={0}
+            max={extra.maxQuantity ?? 10}
+            variant="inline"
+            onChange={(value) => {
+              const nextExtras = optionalExtras
+                .map((item) => ({
+                  extraServiceId: item.extraServiceId,
+                  quantity:
+                    item.extraServiceId === extra.extraServiceId
+                      ? value
+                      : (quantities.get(item.extraServiceId) ?? 0),
+                }))
+                .filter((item) => item.quantity > 0);
+
+              if (debounceRef.current) {
+                clearTimeout(debounceRef.current);
+              }
+
+              debounceRef.current = setTimeout(() => {
+                track({
+                  name: "extra_selected",
+                  payload: {
+                    extraServiceId: extra.extraServiceId,
+                    quantity: value,
+                  },
+                });
+                void requestRequote(nextExtras);
+              }, 400);
+            }}
+          />
+        </div>
+      </li>
+    );
+  });
+
+  if (embedded) {
+    return <>{items}</>;
+  }
+
+  return <ul className={bookingExtrasGridClass}>{items}</ul>;
 }
