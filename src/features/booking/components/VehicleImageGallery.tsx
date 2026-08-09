@@ -3,39 +3,39 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 
-import { MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
+import { MAX_VEHICLE_BOOKING_PREVIEW_IMAGES } from "@/features/vehicles/domain/constants";
 import { cn } from "@/lib/utils";
 
 type VehicleImageGalleryProps = {
-  coverImage: string;
-  galleryImages?: string[];
+  images: string[];
   alt: string;
   className?: string;
 };
 
 export function VehicleImageGallery({
-  coverImage,
-  galleryImages = [],
+  images,
   alt,
   className,
 }: VehicleImageGalleryProps) {
   const gallery = useMemo(
     () =>
-      galleryImages
+      images
         .map((image) => image.trim())
-        .filter((image) => image.length > 0 && image !== coverImage)
-        .slice(0, MAX_VEHICLE_GALLERY_IMAGES),
-    [coverImage, galleryImages],
+        .filter((image) => image.length > 0)
+        .slice(0, MAX_VEHICLE_BOOKING_PREVIEW_IMAGES),
+    [images],
   );
 
-  const allImages = useMemo(() => [coverImage, ...gallery], [coverImage, gallery]);
-
-  const [activeImage, setActiveImage] = useState(coverImage);
-  const resolvedActiveImage = allImages.includes(activeImage)
+  const [activeImage, setActiveImage] = useState(gallery[0] ?? "");
+  const resolvedActiveImage = gallery.includes(activeImage)
     ? activeImage
-    : coverImage;
+    : (gallery[0] ?? "");
 
-  const thumbnails = allImages.filter((image) => image !== resolvedActiveImage);
+  const thumbnails = gallery.filter((image) => image !== resolvedActiveImage);
+
+  if (gallery.length === 0) {
+    return null;
+  }
 
   return (
     <div className={cn("flex w-full flex-col gap-2", className)}>
@@ -65,7 +65,7 @@ export function VehicleImageGallery({
                 "relative aspect-video cursor-pointer overflow-hidden rounded-lg border-2 border-transparent opacity-90 transition-all",
                 "hover:border-gold/35 hover:opacity-100",
               )}
-              aria-label={`${alt} — ${image === coverImage ? "cover" : "gallery"}`}
+              aria-label={`${alt} — gallery`}
             >
               <Image src={image} alt="" fill sizes="96px" className="object-cover" />
             </button>

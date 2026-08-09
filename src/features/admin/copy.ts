@@ -279,8 +279,14 @@ export const adminCopy = {
       featuresEmpty: "Henüz özellik eklenmedi.",
       coverImage: "Kapak fotoğrafı",
       coverImageHint: "16:9 oranında kırpılarak Cloudinary'ye yüklenir.",
-      galleryImages: "Ek fotoğraflar (en fazla 3)",
+      galleryImages: "Ek fotoğraflar (en fazla 12)",
+      galleryImagesHint:
+        "Kapak görseli rezervasyonda her zaman görünür. Ek fotoğraflardan en fazla 3 tanesini carousel önizlemesine ekleyebilirsiniz.",
       galleryImageLabel: (index: number) => `Fotoğraf ${index}`,
+      addGalleryImage: "Fotoğraf ekle",
+      showInBookingPreview: "Rezervasyonda göster",
+      bookingPreviewLimit: (count: number, max: number) =>
+        `${count}/${max} ek fotoğraf seçildi (kapak her zaman görünür)`,
       uploadImage: "Görsel yükle",
       replaceImage: "Görseli değiştir",
       removeImage: "Kaldır",
@@ -444,6 +450,8 @@ const ADMIN_ERROR_MESSAGES: Record<string, string> = {
   IMAGE_TOO_LARGE: "Görsel boyutu çok büyük (en fazla 10 MB)",
   EMPTY_IMAGE: "Boş görsel yüklenemez",
   VEHICLE_IDENTITY_REQUIRED: "Kod, marka ve model zorunludur",
+  VEHICLE_BOOKING_PREVIEW_LIMIT:
+    "Rezervasyon carousel'ine en fazla 3 ek fotoğraf seçebilirsiniz",
   FEATURED_IMAGE_REQUIRED:
     "Anasayfada gösterilecek bölgeler için görsel zorunludur",
   FEATURED_PRICE_REQUIRED:

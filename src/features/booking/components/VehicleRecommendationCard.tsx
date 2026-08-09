@@ -11,12 +11,16 @@ import {
   Wifi,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useMemo } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { VehicleImageGallery } from "@/features/booking/components/VehicleImageGallery";
 import { formatPrice } from "@/features/booking/lib/format-price";
-import { MAX_VEHICLE_FEATURES } from "@/features/vehicles/domain/constants";
+import {
+  MAX_VEHICLE_BOOKING_PREVIEW_IMAGES,
+  MAX_VEHICLE_FEATURES,
+} from "@/features/vehicles/domain/constants";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import type { TransferVehicleOptionDto } from "@/features/pricing/types/dto";
 import { track } from "@/lib/analytics";
@@ -60,6 +64,16 @@ export function VehicleRecommendationCard({
   const t = useTranslations("booking.vehicle");
   const locale = useLocale();
   const coverImage = resolveVehicleCoverImage(option.imageKey, option.code);
+  const previewImages = useMemo(() => {
+    const additional = option.galleryImageKeys
+      .map((image) => image.trim())
+      .filter((image) => image.length > 0 && image !== coverImage);
+
+    return [coverImage, ...additional].slice(
+      0,
+      MAX_VEHICLE_BOOKING_PREVIEW_IMAGES + 1,
+    );
+  }, [coverImage, option.galleryImageKeys]);
   const displayName =
     option.quantity > 1
       ? t("multiVehicle", { quantity: option.quantity, name: option.name })
@@ -78,9 +92,8 @@ export function VehicleRecommendationCard({
       <div className="grid gap-0 lg:grid-cols-[minmax(0,34%)_minmax(0,1fr)_11.5rem]">
         <div className="border-b border-border/60 p-4 lg:border-b-0 lg:border-e">
           <VehicleImageGallery
-            key={`${option.vehicleCategoryId}-${coverImage}-${option.galleryImageKeys.join("|")}`}
-            coverImage={coverImage}
-            galleryImages={option.galleryImageKeys}
+            key={`${option.vehicleCategoryId}-${previewImages.join("|")}`}
+            images={previewImages}
             alt={displayName}
           />
         </div>

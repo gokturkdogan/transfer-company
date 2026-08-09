@@ -1,4 +1,4 @@
-import { index, integer, pgTable, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { boolean, index, integer, pgTable, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 import { uuid } from "drizzle-orm/pg-core";
 
 import {
@@ -21,6 +21,9 @@ export const vehicleCategories = pgTable(
     largeLuggageCapacity: integer("large_luggage_capacity").notNull(),
     cabinLuggageCapacity: integer("cabin_luggage_capacity").notNull(),
     imageKey: varchar("image_key", { length: 512 }),
+    coverInBookingPreview: boolean("cover_in_booking_preview")
+      .notNull()
+      .default(false),
     sortOrder: sortOrder(),
     ...timestamps,
     ...softDelete,
@@ -80,6 +83,7 @@ export const vehicleCategoryImages = pgTable(
       .notNull()
       .references(() => vehicleCategories.id, { onDelete: "cascade" }),
     imageKey: varchar("image_key", { length: 512 }).notNull(),
+    isBookingPreview: boolean("is_booking_preview").notNull().default(false),
     sortOrder: sortOrder(),
     ...timestamps,
   },

@@ -23,7 +23,6 @@ import {
 } from "@/features/currencies/server/repository";
 import type { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
 import type { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
-import { MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
 import { PROJECT_TIME_ZONE } from "@/config/constants";
 import { DomainRuleError } from "@/server/errors";
 
@@ -169,7 +168,9 @@ export class AvailabilityService {
           ? this.featureRepository.listLabelsByVehicleIds(vehicleIds, input.locale)
           : Promise.resolve(new Map<string, string[]>()),
         this.galleryRepository
-          ? this.galleryRepository.listImageKeysByVehicleIds(vehicleIds)
+          ? this.galleryRepository.listBookingPreviewImageKeysByVehicleIds(
+              vehicleIds,
+            )
           : Promise.resolve(new Map<string, string[]>()),
       ]);
 
@@ -269,10 +270,7 @@ export class AvailabilityService {
           name: vehicleOption.translatedName ?? vehicleOption.defaultName,
           code: vehicleOption.code,
           imageKey: vehicleOption.imageKey,
-          galleryImageKeys: (galleryByVehicle.get(vehicleOption.id) ?? []).slice(
-            0,
-            MAX_VEHICLE_GALLERY_IMAGES,
-          ),
+          galleryImageKeys: galleryByVehicle.get(vehicleOption.id) ?? [],
           quantity: recommendation.quantity,
           passengerCapacity: vehicleOption.passengerCapacity,
           largeLuggageCapacity: vehicleOption.largeLuggageCapacity,

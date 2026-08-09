@@ -38,7 +38,7 @@ import {
   VehicleAdminRepository,
   type UpsertAdminVehicleInput,
 } from "@/features/admin/server/vehicle-admin-repository";
-import { MAX_VEHICLE_FEATURES, MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
+import { MAX_VEHICLE_FEATURES, MAX_VEHICLE_BOOKING_PREVIEW_IMAGES, MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
 import type { ContactChannelType } from "@/db/schema/enums";
 import { createAction } from "@/server/action";
 import { DomainRuleError } from "@/server/errors";
@@ -235,6 +235,11 @@ const vehicleFeatureSchema = z.object({
   labels: translationsSchema,
 });
 
+const vehicleGalleryImageSchema = z.object({
+  imageKey: z.string().trim().max(512),
+  showInBookingPreview: z.boolean(),
+});
+
 const vehicleSchema = z.object({
   code: z.string().min(1).max(32),
   brand: z.string().trim().min(1).max(100),
@@ -245,7 +250,9 @@ const vehicleSchema = z.object({
   cabinLuggageCapacity: z.coerce.number().int().min(0),
   features: z.array(vehicleFeatureSchema).max(MAX_VEHICLE_FEATURES),
   coverImageKey: z.string().trim().max(512).nullable().optional(),
-  galleryImageKeys: z.array(z.string().trim().max(512)).max(MAX_VEHICLE_GALLERY_IMAGES),
+  galleryImages: z
+    .array(vehicleGalleryImageSchema)
+    .max(MAX_VEHICLE_GALLERY_IMAGES),
   sortOrder: z.coerce.number().int().min(0).default(0),
   isActive: z.boolean(),
 });
@@ -254,10 +261,24 @@ const updateVehicleSchema = vehicleSchema.extend({
   id: z.string().uuid(),
 });
 
+function assertVehicleBookingPreviewInput(
+  input: Pick<z.infer<typeof vehicleSchema>, "galleryImages">,
+): void {
+  const previewCount = input.galleryImages.filter(
+    (image) => image.showInBookingPreview && image.imageKey.trim(),
+  ).length;
+
+  if (previewCount > MAX_VEHICLE_BOOKING_PREVIEW_IMAGES) {
+    throw new DomainRuleError("VEHICLE_BOOKING_PREVIEW_LIMIT");
+  }
+}
+
 function mapVehicleInput(
   input: z.infer<typeof vehicleSchema>,
   enabledLocaleCodes: string[],
 ): UpsertAdminVehicleInput {
+  assertVehicleBookingPreviewInput(input);
+
   const nameTranslations = normalizeLocaleTranslations(
     input.nameTranslations,
     enabledLocaleCodes,
@@ -280,7 +301,13 @@ function mapVehicleInput(
     nameTranslations,
     features,
     coverImageKey: input.coverImageKey ?? null,
-    galleryImageKeys: input.galleryImageKeys.slice(0, MAX_VEHICLE_GALLERY_IMAGES),
+    galleryImages: input.galleryImages
+      .filter((image) => image.imageKey.trim())
+      .slice(0, MAX_VEHICLE_GALLERY_IMAGES)
+      .map((image) => ({
+        imageKey: image.imageKey.trim(),
+        showInBookingPreview: image.showInBookingPreview,
+      })),
     sortOrder: input.sortOrder,
     isActive: input.isActive,
   };

@@ -10,13 +10,21 @@ import {
   vehicleCategoryTranslations,
 } from "@/db/schema";
 import type { LocaleTranslationMap } from "@/features/admin/server/translation-input";
-import { MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
+import {
+  MAX_VEHICLE_BOOKING_PREVIEW_IMAGES,
+  MAX_VEHICLE_GALLERY_IMAGES,
+} from "@/features/vehicles/domain/constants";
 import {
   AdminVehicleFeatureInput,
   VehicleFeatureRepository,
 } from "@/features/vehicles/server/feature-repository";
 
 type DbExecutor = Database | Parameters<Parameters<Database["transaction"]>[0]>[0];
+
+export type AdminVehicleGalleryImage = {
+  imageKey: string;
+  showInBookingPreview: boolean;
+};
 
 export type AdminVehicleRecord = {
   id: string;
@@ -30,7 +38,7 @@ export type AdminVehicleRecord = {
   nameTranslations: LocaleTranslationMap;
   features: AdminVehicleFeatureInput[];
   coverImageKey: string | null;
-  galleryImageKeys: string[];
+  galleryImages: AdminVehicleGalleryImage[];
   sortOrder: number;
   isActive: boolean;
 };
@@ -45,7 +53,7 @@ export type UpsertAdminVehicleInput = {
   nameTranslations: LocaleTranslationMap;
   features: AdminVehicleFeatureInput[];
   coverImageKey?: string | null;
-  galleryImageKeys: string[];
+  galleryImages: AdminVehicleGalleryImage[];
   sortOrder: number;
   isActive: boolean;
 };
@@ -83,29 +91,33 @@ export class VehicleAdminRepository {
     const vehicleIds = rows.map((row) => row.id);
     const [galleryRows, featuresByVehicle, nameTranslationsByVehicle] =
       await Promise.all([
-      this.database
-        .select({
-          vehicleCategoryId: vehicleCategoryImages.vehicleCategoryId,
-          imageKey: vehicleCategoryImages.imageKey,
-          sortOrder: vehicleCategoryImages.sortOrder,
-        })
-        .from(vehicleCategoryImages)
-        .where(inArray(vehicleCategoryImages.vehicleCategoryId, vehicleIds))
-        .orderBy(asc(vehicleCategoryImages.sortOrder)),
-      Promise.all(
-        vehicleIds.map(async (vehicleId) => ({
-          vehicleId,
-          features:
-            await this.featureRepository.listAdminFeaturesByVehicleId(vehicleId),
-        })),
-      ),
-      this.loadNameTranslations(vehicleIds),
-    ]);
+        this.database
+          .select({
+            vehicleCategoryId: vehicleCategoryImages.vehicleCategoryId,
+            imageKey: vehicleCategoryImages.imageKey,
+            isBookingPreview: vehicleCategoryImages.isBookingPreview,
+            sortOrder: vehicleCategoryImages.sortOrder,
+          })
+          .from(vehicleCategoryImages)
+          .where(inArray(vehicleCategoryImages.vehicleCategoryId, vehicleIds))
+          .orderBy(asc(vehicleCategoryImages.sortOrder)),
+        Promise.all(
+          vehicleIds.map(async (vehicleId) => ({
+            vehicleId,
+            features:
+              await this.featureRepository.listAdminFeaturesByVehicleId(vehicleId),
+          })),
+        ),
+        this.loadNameTranslations(vehicleIds),
+      ]);
 
-    const galleryByVehicle = new Map<string, string[]>();
+    const galleryByVehicle = new Map<string, AdminVehicleGalleryImage[]>();
     for (const image of galleryRows) {
       const current = galleryByVehicle.get(image.vehicleCategoryId) ?? [];
-      current.push(image.imageKey);
+      current.push({
+        imageKey: image.imageKey,
+        showInBookingPreview: image.isBookingPreview,
+      });
       galleryByVehicle.set(image.vehicleCategoryId, current);
     }
 
@@ -125,7 +137,7 @@ export class VehicleAdminRepository {
       nameTranslations: nameTranslationsByVehicle.get(row.id) ?? {},
       features: featuresMap.get(row.id) ?? [],
       coverImageKey: row.coverImageKey,
-      galleryImageKeys: galleryByVehicle.get(row.id) ?? [],
+      galleryImages: galleryByVehicle.get(row.id) ?? [],
       sortOrder: row.sortOrder,
       isActive: row.isActive,
     }));
@@ -156,7 +168,10 @@ export class VehicleAdminRepository {
 
     const [galleryRows, features, nameTranslations] = await Promise.all([
       this.database
-        .select({ imageKey: vehicleCategoryImages.imageKey })
+        .select({
+          imageKey: vehicleCategoryImages.imageKey,
+          isBookingPreview: vehicleCategoryImages.isBookingPreview,
+        })
         .from(vehicleCategoryImages)
         .where(eq(vehicleCategoryImages.vehicleCategoryId, id))
         .orderBy(asc(vehicleCategoryImages.sortOrder)),
@@ -176,7 +191,10 @@ export class VehicleAdminRepository {
       nameTranslations: nameTranslations.get(id) ?? {},
       features,
       coverImageKey: row.coverImageKey,
-      galleryImageKeys: galleryRows.map((image) => image.imageKey),
+      galleryImages: galleryRows.map((image) => ({
+        imageKey: image.imageKey,
+        showInBookingPreview: image.isBookingPreview,
+      })),
       sortOrder: row.sortOrder,
       isActive: row.isActive,
     };
@@ -249,21 +267,25 @@ export class VehicleAdminRepository {
   private async syncGalleryImages(
     executor: DbExecutor,
     vehicleCategoryId: string,
-    galleryImageKeys: string[],
+    galleryImages: AdminVehicleGalleryImage[],
   ) {
     await executor
       .delete(vehicleCategoryImages)
       .where(eq(vehicleCategoryImages.vehicleCategoryId, vehicleCategoryId));
 
-    const keys = galleryImageKeys
-      .map((key) => key.trim())
-      .filter(Boolean)
+    const images = galleryImages
+      .map((image) => ({
+        imageKey: image.imageKey.trim(),
+        showInBookingPreview: image.showInBookingPreview,
+      }))
+      .filter((image) => image.imageKey.length > 0)
       .slice(0, MAX_VEHICLE_GALLERY_IMAGES);
 
-    for (const [index, imageKey] of keys.entries()) {
+    for (const [index, image] of images.entries()) {
       await executor.insert(vehicleCategoryImages).values({
         vehicleCategoryId,
-        imageKey,
+        imageKey: image.imageKey,
+        isBookingPreview: image.showInBookingPreview,
         sortOrder: index,
       });
     }
@@ -284,6 +306,7 @@ export class VehicleAdminRepository {
           largeLuggageCapacity: input.largeLuggageCapacity,
           cabinLuggageCapacity: input.cabinLuggageCapacity,
           imageKey: input.coverImageKey?.trim() || null,
+          coverInBookingPreview: false,
           sortOrder: input.sortOrder,
           isActive: input.isActive,
         })
@@ -291,7 +314,7 @@ export class VehicleAdminRepository {
 
       await this.syncNameTranslations(tx, created.id, input.nameTranslations);
       await this.featureRepository.syncFeatures(tx, created.id, input.features);
-      await this.syncGalleryImages(tx, created.id, input.galleryImageKeys);
+      await this.syncGalleryImages(tx, created.id, input.galleryImages);
       return created.id;
     });
 
@@ -321,6 +344,7 @@ export class VehicleAdminRepository {
           largeLuggageCapacity: input.largeLuggageCapacity,
           cabinLuggageCapacity: input.cabinLuggageCapacity,
           imageKey: input.coverImageKey?.trim() || null,
+          coverInBookingPreview: false,
           sortOrder: input.sortOrder,
           isActive: input.isActive,
         })
@@ -333,7 +357,7 @@ export class VehicleAdminRepository {
 
       await this.syncNameTranslations(tx, id, input.nameTranslations);
       await this.featureRepository.syncFeatures(tx, id, input.features);
-      await this.syncGalleryImages(tx, id, input.galleryImageKeys);
+      await this.syncGalleryImages(tx, id, input.galleryImages);
     });
 
     const vehicle = await this.findById(id);

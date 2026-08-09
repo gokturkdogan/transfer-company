@@ -13,11 +13,7 @@ import { cn } from "@/lib/utils";
 
 const ACCEPTED_IMAGE_TYPES = "image/jpeg,image/png,image/webp";
 
-export type VehicleImageAssetName =
-  | "cover"
-  | "gallery-1"
-  | "gallery-2"
-  | "gallery-3";
+export type VehicleImageAssetName = "cover" | `gallery-${number}`;
 
 type VehicleImageUploadFieldProps = {
   label: string;
@@ -30,6 +26,9 @@ type VehicleImageUploadFieldProps = {
     model: string;
   };
   onChange: (value: string) => void;
+  showInBookingPreview?: boolean;
+  onShowInBookingPreviewChange?: (checked: boolean) => void;
+  bookingPreviewDisabled?: boolean;
   className?: string;
   compact?: boolean;
 };
@@ -41,6 +40,9 @@ export function VehicleImageUploadField({
   assetName,
   getVehicleIdentity,
   onChange,
+  showInBookingPreview = false,
+  onShowInBookingPreviewChange,
+  bookingPreviewDisabled = false,
   className,
   compact = false,
 }: VehicleImageUploadFieldProps) {
@@ -127,7 +129,10 @@ export function VehicleImageUploadField({
               "cursor-pointer px-2 text-red-600 hover:text-red-700",
               compact ? "h-6" : "h-7",
             )}
-            onClick={() => onChange("")}
+            onClick={() => {
+              onChange("");
+              onShowInBookingPreviewChange?.(false);
+            }}
           >
             <Trash2 className="h-3.5 w-3.5" aria-hidden />
             {!compact ? adminCopy.vehicles.form.removeImage : null}
@@ -141,7 +146,7 @@ export function VehicleImageUploadField({
           disabled={isUploading}
           onClick={openFilePicker}
           className={cn(
-            "block w-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-60",
+            "relative block w-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-60",
             value ? "bg-slate-100" : "bg-transparent",
           )}
         >
@@ -154,6 +159,23 @@ export function VehicleImageUploadField({
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 320px"
               />
+              {onShowInBookingPreviewChange ? (
+                <label
+                  className="absolute start-2 top-2 z-10 flex cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-ink/80 px-2.5 py-1.5 text-[11px] font-semibold text-white shadow-lg backdrop-blur-sm"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <input
+                    type="checkbox"
+                    className="h-3.5 w-3.5 rounded border-white/30"
+                    checked={showInBookingPreview}
+                    disabled={bookingPreviewDisabled && !showInBookingPreview}
+                    onChange={(event) =>
+                      onShowInBookingPreviewChange(event.target.checked)
+                    }
+                  />
+                  {adminCopy.vehicles.form.showInBookingPreview}
+                </label>
+              ) : null}
             </div>
           ) : (
             <div

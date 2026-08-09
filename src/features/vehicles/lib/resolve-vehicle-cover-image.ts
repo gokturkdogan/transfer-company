@@ -1,5 +1,5 @@
 import { getFleetImage } from "@/config/homepage-images";
-import { MAX_VEHICLE_GALLERY_IMAGES } from "@/features/vehicles/domain/constants";
+import { MAX_VEHICLE_BOOKING_PREVIEW_IMAGES } from "@/features/vehicles/domain/constants";
 
 export function resolveVehicleCoverImage(
   imageKey: string | null | undefined,
@@ -34,7 +34,7 @@ export function resolveVehicleGalleryImages(
   const gallery = (galleryImageKeys ?? [])
     .map((key) => key.trim())
     .filter((key) => key.length > 0 && key !== cover)
-    .slice(0, MAX_VEHICLE_GALLERY_IMAGES);
+    .slice(0, MAX_VEHICLE_BOOKING_PREVIEW_IMAGES);
 
   return [cover, ...gallery];
 }
