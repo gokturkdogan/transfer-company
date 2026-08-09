@@ -21,6 +21,9 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
   const showOrderSummary =
     state.step === "customer" || state.step === "review";
   const showMobileStickySummary = state.step === "customer";
+  const showStepper =
+    state.step !== "search" &&
+    !(state.step === "vehicle" && !state.quote);
 
   useEffect(() => {
     if (isInitialStep.current) {
@@ -55,11 +58,11 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
           </div>
         )}
 
-        {state.step !== "success" && (
+        {showStepper ? (
           <div className="py-8 md:py-10">
             <BookingStepper currentStep={state.step} />
           </div>
-        )}
+        ) : null}
 
         <div
           className={cn(

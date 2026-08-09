@@ -8,7 +8,6 @@ import { BookingSearchPrompt } from "@/features/booking/components/BookingSearch
 import { BookingReview } from "@/features/booking/components/BookingReview";
 import { BookingSidebar } from "@/features/booking/components/BookingSidebar";
 import { BookingStepCard } from "@/features/booking/components/BookingStepCard";
-import { BookingStepHeader } from "@/features/booking/components/BookingStepHeader";
 import { BookingFormSections } from "@/features/booking/components/BookingFormSections";
 import { BookingNotesField } from "@/features/booking/components/BookingNotesField";
 import { CustomerDetailsForm } from "@/features/booking/components/CustomerDetailsForm";
@@ -27,7 +26,8 @@ export function BookingFlow() {
     (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
   );
 
-  const showStepCard = state.step !== "vehicle";
+  const showStepCard =
+    state.step !== "vehicle" && state.step !== "search";
   const showMobileSummaryBelow = state.step === "review";
 
   return (
@@ -38,23 +38,12 @@ export function BookingFlow() {
         </Alert>
       )}
 
+      {state.step === "search" && <BookingSearchPrompt />}
+
       {state.step === "vehicle" && <VehicleRecommendationList />}
 
       {showStepCard && (
         <BookingStepCard>
-          {state.step === "search" && (
-            <>
-              <BookingStepHeader
-                eyebrow={t("page.searchEyebrow")}
-                title={t("page.searchTitle")}
-                subtitle={t("page.searchSubtitle")}
-              />
-              <div className="mt-8">
-                <BookingSearchPrompt />
-              </div>
-            </>
-          )}
-
           {state.step === "customer" && selectedOption && (
             <BookingFormSections>
               <CustomerDetailsForm />
