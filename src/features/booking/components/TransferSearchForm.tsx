@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { CounterField } from "@/features/booking/components/CounterField";
 import { LocationCombobox } from "@/features/booking/components/LocationCombobox";
+import { RouteSwapButton } from "@/features/booking/components/RouteSwapButton";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { cn } from "@/lib/utils";
 
@@ -37,6 +38,71 @@ export function TransferSearchForm({
 
   const showCitySelector = cityOptions.length > 1;
   const isCompact = variant === "compact";
+  const isReverse = search.isReverseDirection;
+
+  const airportField = (
+    <LocationCombobox
+      label={t("airport")}
+      value={search.originAirportId}
+      options={airports.map((airport) => ({
+        id: airport.id,
+        label: airport.name,
+      }))}
+      placeholder={t("selectAirport")}
+      searchPlaceholder={t("searchAirport")}
+      emptyLabel={t("noAirports")}
+      className={isCompact ? "min-w-[160px] flex-1" : undefined}
+      onChange={(airportId) => {
+        const airport = airports.find((item) => item.id === airportId);
+        dispatch({
+          type: "SET_AIRPORT",
+          airportId,
+          cityId: airport?.cityId ?? undefined,
+        });
+      }}
+    />
+  );
+
+  const districtField = (
+    <LocationCombobox
+      label={t("district")}
+      value={search.destinationDistrictId}
+      options={districtOptions}
+      placeholder={t("selectDistrict")}
+      searchPlaceholder={t("searchDistrict")}
+      emptyLabel={t("noDistricts")}
+      disabled={!search.cityId && cityOptions.length > 1}
+      className={isCompact ? "min-w-[160px] flex-1" : undefined}
+      onChange={(districtId) => dispatch({ type: "SET_DISTRICT", districtId })}
+    />
+  );
+
+  const routeEndpoints = (
+    <div
+      className={cn(
+        "flex items-end gap-2",
+        isCompact ? "min-w-0 flex-1" : "sm:col-span-2",
+      )}
+    >
+      <div className="grid min-w-0 flex-1 gap-4 sm:grid-cols-2">
+        {isReverse ? (
+          <>
+            {districtField}
+            {airportField}
+          </>
+        ) : (
+          <>
+            {airportField}
+            {districtField}
+          </>
+        )}
+      </div>
+      <RouteSwapButton
+        className="mb-0.5"
+        onClick={() => dispatch({ type: "SWAP_ROUTE_DIRECTION" })}
+      />
+    </div>
+  );
 
   useEffect(() => {
     if (search.originAirportId && !search.cityId && cityOptions.length === 1) {
@@ -77,27 +143,6 @@ export function TransferSearchForm({
             onChange={(tripType) => dispatch({ type: "SET_TRIP_TYPE", tripType })}
           />
 
-          <LocationCombobox
-            label={t("airport")}
-            value={search.originAirportId}
-            options={airports.map((airport) => ({
-              id: airport.id,
-              label: airport.name,
-            }))}
-            placeholder={t("selectAirport")}
-            searchPlaceholder={t("searchAirport")}
-            emptyLabel={t("noAirports")}
-            className="min-w-[160px] flex-1"
-            onChange={(airportId) => {
-              const airport = airports.find((item) => item.id === airportId);
-              dispatch({
-                type: "SET_AIRPORT",
-                airportId,
-                cityId: airport?.cityId ?? undefined,
-              });
-            }}
-          />
-
           {showCitySelector && (
             <LocationCombobox
               label={t("city")}
@@ -111,19 +156,7 @@ export function TransferSearchForm({
             />
           )}
 
-          <LocationCombobox
-            label={t("district")}
-            value={search.destinationDistrictId}
-            options={districtOptions}
-            placeholder={t("selectDistrict")}
-            searchPlaceholder={t("searchDistrict")}
-            emptyLabel={t("noDistricts")}
-            disabled={!search.cityId && cityOptions.length > 1}
-            className="min-w-[160px] flex-1"
-            onChange={(districtId) =>
-              dispatch({ type: "SET_DISTRICT", districtId })
-            }
-          />
+          {routeEndpoints}
 
           <DateTimeField
             dateId="outbound-date"
@@ -202,25 +235,7 @@ export function TransferSearchForm({
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
       <div className="grid gap-4 sm:grid-cols-2">
-        <LocationCombobox
-          label={t("airport")}
-          value={search.originAirportId}
-          options={airports.map((airport) => ({
-            id: airport.id,
-            label: airport.name,
-          }))}
-          placeholder={t("selectAirport")}
-          searchPlaceholder={t("searchAirport")}
-          emptyLabel={t("noAirports")}
-          onChange={(airportId) => {
-            const airport = airports.find((item) => item.id === airportId);
-            dispatch({
-              type: "SET_AIRPORT",
-              airportId,
-              cityId: airport?.cityId ?? undefined,
-            });
-          }}
-        />
+        {routeEndpoints}
 
         {showCitySelector && (
           <LocationCombobox
@@ -233,19 +248,6 @@ export function TransferSearchForm({
             onChange={(cityId) => dispatch({ type: "SET_CITY", cityId })}
           />
         )}
-
-        <LocationCombobox
-          label={t("district")}
-          value={search.destinationDistrictId}
-          options={districtOptions}
-          placeholder={t("selectDistrict")}
-          searchPlaceholder={t("searchDistrict")}
-          emptyLabel={t("noDistricts")}
-          disabled={!search.cityId && cityOptions.length > 1}
-          onChange={(districtId) =>
-            dispatch({ type: "SET_DISTRICT", districtId })
-          }
-        />
       </div>
 
       <TripTypeToggle

@@ -211,4 +211,33 @@ describe("bookingFlowReducer", () => {
     expect(next.destination.hotelLocationId).toBe("");
     expect(next.destination.hotelName).toBe("");
   });
+
+  it("toggles reverse direction without invalidating quote", () => {
+    const initial = createInitialBookingFlowState({
+      originAirportId: "a",
+      destinationDistrictId: "b",
+      outboundDate: "2026-08-10",
+      outboundTime: "10:00",
+    });
+
+    const withQuote = bookingFlowReducer(initial, {
+      type: "QUOTE_SUCCESS",
+      quote: {
+        routeId: "route-1",
+        currency: "EUR",
+        timeZone: "Europe/Istanbul",
+        options: [],
+      },
+      searchSignature: buildSearchSignature(initial.search),
+    });
+
+    const reversed = bookingFlowReducer(withQuote, {
+      type: "SWAP_ROUTE_DIRECTION",
+    });
+
+    expect(reversed.search.isReverseDirection).toBe(true);
+    expect(reversed.search.originAirportId).toBe("a");
+    expect(reversed.search.destinationDistrictId).toBe("b");
+    expect(reversed.quote).toBe(withQuote.quote);
+  });
 });

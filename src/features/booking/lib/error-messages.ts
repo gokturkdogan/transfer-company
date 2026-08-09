@@ -41,6 +41,7 @@ export function getDefaultSearchState(): BookingSearchState {
     originAirportId: "",
     cityId: "",
     destinationDistrictId: "",
+    isReverseDirection: false,
     tripType: "ONE_WAY",
     outboundDate: "",
     outboundTime: "10:00",

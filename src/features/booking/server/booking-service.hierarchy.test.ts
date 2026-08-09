@@ -121,6 +121,26 @@ describe("BookingService hierarchical locations", () => {
     expect(result.totalMinor).toBe(10_000);
   });
 
+  it("persists reverse-direction pickup and drop-off snapshots", async () => {
+    const { service, bookingWriter } = createHierarchyService();
+
+    await service.createReservation(
+      {
+        ...baseInput,
+        isReverseDirection: true,
+        hotelLocationId: "hotel-maxx",
+      },
+      { idempotencyKey: "snapshot-reverse" },
+    );
+
+    const stored = bookingWriter.capturedReservationInputs[0]!;
+
+    expect(stored.pickupLocationId).toBe("hotel-maxx");
+    expect(stored.dropoffLocationId).toBe("airport-ayt");
+    expect(stored.snapshotRouteLabel).toBe("Belek → Antalya Airport");
+    expect(stored.snapshotDropoffLabel).toBe("Antalya Airport");
+  });
+
   it("persists district, hotel and drop-off snapshots", async () => {
     const { service, bookingWriter } = createHierarchyService();
 

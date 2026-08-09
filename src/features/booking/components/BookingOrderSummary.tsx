@@ -16,6 +16,7 @@ import { useMemo, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
+import { resolveTransferEndpointLabels } from "@/features/booking/lib/route-direction";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { cn } from "@/lib/utils";
@@ -111,9 +112,16 @@ export function BookingOrderSummary({
       (district) => district.id === state.search.destinationDistrictId,
     )?.name ?? "";
 
-  const dropoffLabel = state.destination.useCustomDestination
-    ? state.destination.customName || districtName
-    : state.destination.hotelName || districtName;
+  const hotelOrCustomLabel = state.destination.useCustomDestination
+    ? state.destination.customName
+    : state.destination.hotelName;
+
+  const endpoints = resolveTransferEndpointLabels({
+    search: state.search,
+    airportName,
+    districtName,
+    hotelOrCustomLabel: hotelOrCustomLabel || undefined,
+  });
 
   const scheduleLabel = formatDateTimeLabel(
     state.search.outboundDate,
@@ -163,10 +171,10 @@ export function BookingOrderSummary({
             {selectedOption.name}
           </SummaryDetailRow>
           <SummaryDetailRow icon={PlaneLanding} compact={compact}>
-            {airportName}
+            {endpoints.pickupLabel}
           </SummaryDetailRow>
           <SummaryDetailRow icon={MapPin} compact={compact}>
-            {dropoffLabel}
+            {endpoints.dropoffLabel}
           </SummaryDetailRow>
           {compact ? (
             <SummaryDetailRow icon={Users} compact>

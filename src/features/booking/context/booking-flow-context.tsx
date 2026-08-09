@@ -233,6 +233,7 @@ export function BookingFlowProvider({
       routeId: state.quote.routeId,
       originAirportId: state.search.originAirportId,
       destinationDistrictId: state.search.destinationDistrictId,
+      isReverseDirection: state.search.isReverseDirection,
       hotelLocationId:
         !state.destination.useCustomDestination && state.destination.hotelLocationId
           ? state.destination.hotelLocationId

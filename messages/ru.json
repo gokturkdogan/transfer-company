@@ -360,6 +360,7 @@
       "children": "Children",
       "submit": "Search transfers",
       "loading": "Searching...",
+      "swapDirection": "Swap airport and destination",
       "mobileEditSearch": "Изменить",
       "mobileEditSearchTitle": "Изменить поиск",
       "mobileEditSearchClose": "Закрыть",
@@ -434,6 +435,7 @@
     },
     "hotel": {
       "title": "Hotel / drop-off",
+      "titlePickup": "Hotel / pick-up",
       "selectHotel": "Select your hotel",
       "searchHotel": "Search hotels...",
       "empty": "No hotels found for this district.",
@@ -449,6 +451,7 @@
       "origin": "Отправление",
       "pricingDestination": "Район ценообразования",
       "dropoff": "Фактическая точка высадки",
+      "pickup": "Фактическая точка посадки",
       "noDropoff": "Не указано",
       "tripTypeLabel": "Тип поездки",
       "outbound": "Туда",

@@ -38,4 +38,13 @@ describe("buildBookingSearchParams", () => {
     expect(params.get("returnDate")).toBe("2026-08-25");
     expect(params.get("returnTime")).toBe("10:00");
   });
+
+  it("includes reverse flag when direction is reversed", () => {
+    const params = buildBookingSearchParams({
+      ...getDefaultSearchState(),
+      isReverseDirection: true,
+    });
+
+    expect(params.get("reverse")).toBe("1");
+  });
 });

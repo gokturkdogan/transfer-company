@@ -360,6 +360,7 @@
       "children": "Çocuk",
       "submit": "Transfer ara",
       "loading": "Aranıyor...",
+      "swapDirection": "Havalimanı ile bölgeyi değiştir",
       "mobileEditSearch": "Düzenle",
       "mobileEditSearchTitle": "Aramayı düzenle",
       "mobileEditSearchClose": "Kapat",
@@ -434,6 +435,7 @@
     },
     "hotel": {
       "title": "Otel / varış noktası",
+      "titlePickup": "Otel / kalkış noktası",
       "selectHotel": "Otelinizi seçin",
       "searchHotel": "Otel ara...",
       "empty": "Bu bölge için otel bulunamadı.",
@@ -449,6 +451,7 @@
       "origin": "Kalkış",
       "pricingDestination": "Fiyatlandırma bölgesi",
       "dropoff": "Gerçek varış noktası",
+      "pickup": "Gerçek kalkış noktası",
       "noDropoff": "Belirtilmedi",
       "tripTypeLabel": "Yolculuk tipi",
       "outbound": "Gidiş",

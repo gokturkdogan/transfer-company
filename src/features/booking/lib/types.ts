@@ -16,6 +16,8 @@ export type BookingSearchState = {
   originAirportId: string;
   cityId: string;
   destinationDistrictId: string;
+  /** When true, the customer books district/hotel → airport (UI order reversed). */
+  isReverseDirection: boolean;
   tripType: TripType;
   outboundDate: string;
   outboundTime: string;
@@ -98,6 +100,7 @@ export type ReservationRequestBody = {
   routeId: string;
   originAirportId: string;
   destinationDistrictId: string;
+  isReverseDirection?: boolean;
   hotelLocationId?: string;
   customDestination?: {
     name: string;

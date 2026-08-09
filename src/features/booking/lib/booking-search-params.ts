@@ -20,5 +20,9 @@ export function buildBookingSearchParams(
     params.set("returnTime", search.returnTime);
   }
 
+  if (search.isReverseDirection) {
+    params.set("reverse", "1");
+  }
+
   return params;
 }

@@ -7,6 +7,7 @@ import { PriceSummary } from "@/features/booking/components/PriceSummary";
 import { RequiredExtrasPanel } from "@/features/booking/components/RequiredExtrasPanel";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { formatInternationalPhone } from "@/lib/phone/format";
+import { resolveTransferEndpointLabels } from "@/features/booking/lib/route-direction";
 import { joinWallClockDateTime } from "@/features/booking/lib/search-signature";
 
 export function BookingReview() {
@@ -31,9 +32,18 @@ export function BookingReview() {
       (district) => district.id === state.search.destinationDistrictId,
     )?.name ?? "";
 
-  const dropoffLabel = state.destination.useCustomDestination
+  const hotelOrCustomLabel = state.destination.useCustomDestination
     ? state.destination.customName
-    : state.destination.hotelName || t("noDropoff");
+    : state.destination.hotelName;
+
+  const endpoints = resolveTransferEndpointLabels({
+    search: state.search,
+    airportName,
+    districtName,
+    hotelOrCustomLabel: hotelOrCustomLabel || undefined,
+  });
+
+  const detailLabel = hotelOrCustomLabel || t("noDropoff");
 
   const outboundAt = joinWallClockDateTime(
     state.search.outboundDate,
@@ -54,9 +64,17 @@ export function BookingReview() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <ReviewSection title={t("transfer")}>
-          <ReviewRow label={t("origin")} value={airportName} />
-          <ReviewRow label={t("pricingDestination")} value={districtName} />
-          <ReviewRow label={t("dropoff")} value={dropoffLabel} />
+          <ReviewRow label={t("origin")} value={endpoints.displayOrigin} />
+          <ReviewRow
+            label={t("pricingDestination")}
+            value={endpoints.displayDestination}
+          />
+          <ReviewRow
+            label={
+              state.search.isReverseDirection ? t("pickup") : t("dropoff")
+            }
+            value={detailLabel}
+          />
           <ReviewRow label={t("tripTypeLabel")} value={t(`tripType.${state.search.tripType}`)} />
           <ReviewRow label={t("outbound")} value={outboundAt} />
           {returnAt && <ReviewRow label={t("return")} value={returnAt} />}

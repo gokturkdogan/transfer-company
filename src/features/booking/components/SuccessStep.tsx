@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 
 import { ContactCta } from "@/components/shared/ContactCta";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { buildSearchRouteLabel } from "@/features/booking/lib/build-search-summary";
+import { resolveTransferEndpointLabels } from "@/features/booking/lib/route-direction";
 import { joinWallClockDateTime } from "@/features/booking/lib/search-signature";
 import { Link } from "@/i18n/navigation";
 
@@ -29,9 +31,22 @@ export function SuccessStep() {
       (district) => district.id === state.search.destinationDistrictId,
     )?.name ?? "";
 
-  const dropoffLabel = state.destination.useCustomDestination
+  const routeLabel = buildSearchRouteLabel({
+    airportName,
+    districtName,
+    isReverseDirection: state.search.isReverseDirection,
+  });
+
+  const hotelOrCustomLabel = state.destination.useCustomDestination
     ? state.destination.customName
     : state.destination.hotelName;
+
+  const endpoints = resolveTransferEndpointLabels({
+    search: state.search,
+    airportName,
+    districtName,
+    hotelOrCustomLabel: hotelOrCustomLabel || undefined,
+  });
 
   return (
     <div className="mx-auto max-w-xl space-y-8 py-4 text-center">
@@ -51,10 +66,8 @@ export function SuccessStep() {
           {state.reservation.reference}
         </p>
         <div className="mt-4 space-y-1.5 text-sm text-foreground/85">
-          <p>
-            {airportName} → {districtName}
-          </p>
-          {dropoffLabel && <p>{dropoffLabel}</p>}
+          <p>{routeLabel}</p>
+          {hotelOrCustomLabel && <p>{endpoints.pickupLabel}</p>}
           <p>{outboundAt}</p>
           <p>{state.customer.email}</p>
         </div>

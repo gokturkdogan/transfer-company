@@ -138,6 +138,20 @@ export class BookingService {
     const districtName =
       locationNames[input.destinationDistrictId] ?? "Unknown district";
 
+    const isReverse = input.isReverseDirection === true;
+    const pickupLocationId = isReverse
+      ? (input.hotelLocationId ?? input.destinationDistrictId)
+      : input.originAirportId;
+    const dropoffLocationId = isReverse
+      ? input.originAirportId
+      : input.destinationDistrictId;
+    const snapshotRouteLabel = isReverse
+      ? `${districtName} → ${airportName}`
+      : `${airportName} → ${districtName}`;
+    const resolvedSnapshotDropoffLabel = isReverse
+      ? airportName
+      : snapshotDropoffLabel;
+
     const items = buildReservationItems(
       quoteResult.allItems,
       quoteResult.quote.currency,
@@ -160,12 +174,12 @@ export class BookingService {
             reference: generateReservationReference(),
             tripType: input.tripType,
             customer: input.customer,
-            pickupLocationId: input.originAirportId,
-            dropoffLocationId: input.destinationDistrictId,
+            pickupLocationId,
+            dropoffLocationId,
             hotelLocationId: input.hotelLocationId,
             customDestinationName: input.customDestination?.name,
             customDestinationAddress: input.customDestination?.address,
-            snapshotDropoffLabel,
+            snapshotDropoffLabel: resolvedSnapshotDropoffLabel,
             routeId: input.routeId,
             outboundAt: input.outboundAt,
             returnAt: input.returnAt,
@@ -174,7 +188,7 @@ export class BookingService {
             passengerCount: input.passengerCount,
             largeLuggageCount: input.largeLuggageCount,
             cabinLuggageCount: input.cabinLuggageCount,
-            snapshotRouteLabel: `${airportName} → ${districtName}`,
+            snapshotRouteLabel,
             subtotalMinor: quoteResult.quote.subtotalMinor,
             totalMinor: quoteResult.quote.totalMinor,
             currency: quoteResult.quote.currency,

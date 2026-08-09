@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { DateTimeSegment } from "@/features/booking/components/hero-search/DateTimeSegment";
 import { LocationSegment } from "@/features/booking/components/hero-search/LocationSegment";
 import { PassengerSegment } from "@/features/booking/components/hero-search/PassengerSegment";
+import { RouteSwapButton } from "@/features/booking/components/RouteSwapButton";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { todayIsoDateInProjectZone } from "@/features/booking/lib/search-datetime";
 import { cn } from "@/lib/utils";
@@ -34,6 +35,7 @@ export function HeroSearchBar({
 
   const minDate = useMemo(() => todayIsoDateInProjectZone(), []);
   const isRoundTrip = search.tripType === "ROUND_TRIP";
+  const isReverse = search.isReverseDirection;
 
   const airportOptions = useMemo(
     () => airports.map((airport) => ({ id: airport.id, label: airport.name })),
@@ -70,6 +72,54 @@ export function HeroSearchBar({
       search.outboundDate &&
       search.outboundTime &&
       (!isRoundTrip || (search.returnDate && search.returnTime)),
+  );
+
+  const airportSegment = (
+    <LocationSegment
+      icon={PlaneLanding}
+      label={t("airport")}
+      value={search.originAirportId}
+      options={airportOptions}
+      placeholder={t("selectAirport")}
+      searchPlaceholder={t("searchAirport")}
+      emptyLabel={t("noAirports")}
+      embedded={isEmbedded}
+      withDivider={!isEmbedded}
+      className="min-w-0 w-full lg:flex-1 lg:basis-0"
+      onChange={(airportId) => {
+        const airport = airports.find((item) => item.id === airportId);
+        dispatch({
+          type: "SET_AIRPORT",
+          airportId,
+          cityId: airport?.cityId ?? undefined,
+        });
+      }}
+    />
+  );
+
+  const districtSegment = (
+    <LocationSegment
+      icon={MapPin}
+      label={t("district")}
+      value={search.destinationDistrictId}
+      options={districtOptions}
+      placeholder={t("selectDistrict")}
+      searchPlaceholder={t("searchDistrict")}
+      emptyLabel={t("noDistricts")}
+      embedded={isEmbedded}
+      withDivider={!isEmbedded}
+      className="min-w-0 w-full lg:flex-1 lg:basis-0"
+      onChange={(districtId) => {
+        const district = districts.find((item) => item.id === districtId);
+        dispatch({
+          type: "UPDATE_SEARCH",
+          search: {
+            destinationDistrictId: districtId,
+            cityId: district?.cityId ?? search.cityId,
+          },
+        });
+      }}
+    />
   );
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -115,47 +165,22 @@ export function HeroSearchBar({
               : "grid grid-cols-1 gap-2 rounded-[18px] bg-card/98 p-2 max-lg:gap-2 sm:grid-cols-2 sm:max-lg:gap-1.5 lg:flex lg:flex-nowrap lg:items-center lg:gap-0 lg:rounded-[22px] lg:bg-card/95 lg:p-1.5",
           )}
         >
-          <LocationSegment
-            icon={PlaneLanding}
-            label={t("airport")}
-            value={search.originAirportId}
-            options={airportOptions}
-            placeholder={t("selectAirport")}
-            searchPlaceholder={t("searchAirport")}
-            emptyLabel={t("noAirports")}
-            embedded={isEmbedded}
-            className="min-w-0 w-full lg:flex-1 lg:basis-0"
-            onChange={(airportId) => {
-              const airport = airports.find((item) => item.id === airportId);
-              dispatch({
-                type: "SET_AIRPORT",
-                airportId,
-                cityId: airport?.cityId ?? undefined,
-              });
-            }}
-          />
+          {isReverse ? districtSegment : airportSegment}
 
-          <LocationSegment
-            icon={MapPin}
-            label={t("district")}
-            value={search.destinationDistrictId}
-            options={districtOptions}
-            placeholder={t("selectDistrict")}
-            searchPlaceholder={t("searchDistrict")}
-            emptyLabel={t("noDistricts")}
-            embedded={isEmbedded}
-            className="min-w-0 w-full lg:flex-1 lg:basis-0"
-            onChange={(districtId) => {
-              const district = districts.find((item) => item.id === districtId);
-              dispatch({
-                type: "UPDATE_SEARCH",
-                search: {
-                  destinationDistrictId: districtId,
-                  cityId: district?.cityId ?? search.cityId,
-                },
-              });
-            }}
-          />
+          <div
+            className={cn(
+              "flex items-center justify-center",
+              isEmbedded
+                ? "py-1 sm:col-span-2"
+                : "max-lg:py-0.5 lg:flex-none lg:px-0.5",
+            )}
+          >
+            <RouteSwapButton
+              onClick={() => dispatch({ type: "SWAP_ROUTE_DIRECTION" })}
+            />
+          </div>
+
+          {isReverse ? airportSegment : districtSegment}
 
           <DateTimeSegment
             label={t("outboundDate")}

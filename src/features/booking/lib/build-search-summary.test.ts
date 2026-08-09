@@ -10,6 +10,7 @@ const baseSearch: BookingSearchState = {
   originAirportId: "a",
   cityId: "c",
   destinationDistrictId: "d",
+  isReverseDirection: false,
   tripType: "ONE_WAY",
   outboundDate: "2026-08-15",
   outboundTime: "14:30",
@@ -29,6 +30,16 @@ describe("build-search-summary", () => {
         districtName: "Belek",
       }),
     ).toBe("Antalya → Belek");
+  });
+
+  it("builds reversed route label", () => {
+    expect(
+      buildSearchRouteLabel({
+        airportName: "Antalya",
+        districtName: "Belek",
+        isReverseDirection: true,
+      }),
+    ).toBe("Belek → Antalya");
   });
 
   it("builds meta label with passengers and schedule", () => {

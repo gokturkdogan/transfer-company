@@ -32,6 +32,7 @@ export type BookingFlowAction =
   | { type: "SET_AIRPORT"; airportId: string; cityId?: string }
   | { type: "SET_CITY"; cityId: string }
   | { type: "SET_DISTRICT"; districtId: string }
+  | { type: "SWAP_ROUTE_DIRECTION" }
   | { type: "SET_TRIP_TYPE"; tripType: BookingSearchState["tripType"] }
   | { type: "SET_HOTEL"; hotelLocationId: string; hotelName: string }
   | { type: "SET_CUSTOM_DESTINATION"; destination: Partial<DestinationState> }
@@ -256,6 +257,15 @@ export function bookingFlowReducer(
 
       return clearDestination(applySearchChange(state, search));
     }
+
+    case "SWAP_ROUTE_DIRECTION":
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          isReverseDirection: !state.search.isReverseDirection,
+        },
+      };
 
     case "SET_TRIP_TYPE": {
       const search: BookingSearchState = {

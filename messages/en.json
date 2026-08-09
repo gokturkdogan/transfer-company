@@ -360,6 +360,7 @@
       "children": "Children",
       "submit": "Search transfers",
       "loading": "Searching...",
+      "swapDirection": "Swap airport and destination",
       "mobileEditSearch": "Edit",
       "mobileEditSearchTitle": "Edit search",
       "mobileEditSearchClose": "Close",
@@ -434,6 +435,7 @@
     },
     "hotel": {
       "title": "Hotel / drop-off",
+      "titlePickup": "Hotel / pick-up",
       "selectHotel": "Select your hotel",
       "searchHotel": "Search hotels...",
       "empty": "No hotels found for this district.",
@@ -449,6 +451,7 @@
       "origin": "Origin",
       "pricingDestination": "Pricing destination",
       "dropoff": "Actual drop-off",
+      "pickup": "Actual pick-up",
       "noDropoff": "Not specified",
       "tripTypeLabel": "Trip type",
       "outbound": "Outbound",

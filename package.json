@@ -15,6 +15,7 @@
     "db:studio": "node --env-file=.env.local ./node_modules/drizzle-kit/bin.cjs studio",
     "db:seed": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/seed.ts",
     "db:seed:antalya-districts": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/seed-antalya-districts.ts",
+    "db:seed:antalya-hotels": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/seed-antalya-hotels.ts",
     "db:setup": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/setup-database.ts",
     "admin:create": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/create-admin.ts"
   },

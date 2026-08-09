@@ -9,11 +9,13 @@ export function parseBookingSearchParams(
   };
 
   const tripType = get("tripType");
+  const reverse = get("reverse");
 
   return {
     originAirportId: get("airport") || get("pickup"),
     cityId: get("city"),
     destinationDistrictId: get("district") || get("dropoff"),
+    isReverseDirection: reverse === "1" || reverse === "true",
     tripType: tripType === "ROUND_TRIP" ? "ROUND_TRIP" : "ONE_WAY",
     outboundDate: get("outboundDate"),
     outboundTime: get("outboundTime") || "10:00",

@@ -7,6 +7,7 @@ import { LocationCombobox } from "@/features/booking/components/LocationCombobox
 import { bookingFormLabelClass } from "@/features/booking/components/booking-form-styles";
 import { fetchHotelsForDistrict } from "@/features/booking/lib/api";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { isReverseDirection } from "@/features/booking/lib/route-direction";
 import type { HotelDto } from "@/features/locations/types";
 
 type HotelSelectorProps = {
@@ -54,7 +55,9 @@ export function HotelSelector({ className }: HotelSelectorProps) {
   if (isLoading) {
     return (
       <div className={className}>
-        <p className={bookingFormLabelClass}>{t("title")}</p>
+        <p className={bookingFormLabelClass}>
+          {isReverseDirection(state.search) ? t("titlePickup") : t("title")}
+        </p>
         <p className="flex h-10 items-center text-xs text-muted-foreground/80">
           {t("loading")}
         </p>
@@ -66,7 +69,9 @@ export function HotelSelector({ className }: HotelSelectorProps) {
     <LocationCombobox
       appearance="booking"
       className={className}
-        label={t("title")}
+        label={
+          isReverseDirection(state.search) ? t("titlePickup") : t("title")
+        }
         value={
           state.destination.useCustomDestination
             ? "__custom__"

@@ -35,6 +35,7 @@ export const createReservationInputSchema = z
     routeId: z.string().uuid(),
     originAirportId: z.string().uuid(),
     destinationDistrictId: z.string().uuid(),
+    isReverseDirection: z.boolean().optional(),
     hotelLocationId: z.string().uuid().optional(),
     customDestination: customDestinationInputSchema.optional(),
     tripType: z.enum(TRIP_TYPES),

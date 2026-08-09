@@ -57,7 +57,11 @@ export function BookingMobileSearchSummary({
       (district) => district.id === state.search.destinationDistrictId,
     )?.name ?? "";
 
-  const routeLabel = buildSearchRouteLabel({ airportName, districtName });
+  const routeLabel = buildSearchRouteLabel({
+    airportName,
+    districtName,
+    isReverseDirection: state.search.isReverseDirection,
+  });
   const metaLabel = buildSearchMetaLabel({
     search: state.search,
     airportName,

@@ -1,28 +1,18 @@
 import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
+import { buildSearchRouteLabel } from "@/features/booking/lib/route-direction";
 import type { BookingSearchState } from "@/features/booking/lib/types";
 
-type SearchSummaryInput = {
-  search: BookingSearchState;
-  airportName: string;
-  districtName: string;
-  locale: string;
-};
-
-export function buildSearchRouteLabel({
-  airportName,
-  districtName,
-}: Pick<SearchSummaryInput, "airportName" | "districtName">): string {
-  const origin = airportName || "—";
-  const destination = districtName || "—";
-
-  return `${origin} → ${destination}`;
-}
+export { buildSearchRouteLabel };
 
 export function buildSearchMetaLabel({
   search,
   locale,
   formatPassengers,
-}: SearchSummaryInput & {
+}: {
+  search: BookingSearchState;
+  airportName: string;
+  districtName: string;
+  locale: string;
   formatPassengers: (adults: number, children: number) => string;
 }): string {
   const parts: string[] = [];

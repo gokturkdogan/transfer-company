@@ -360,6 +360,7 @@
       "children": "Children",
       "submit": "Search transfers",
       "loading": "Searching...",
+      "swapDirection": "Swap airport and destination",
       "mobileEditSearch": "تعديل",
       "mobileEditSearchTitle": "تعديل البحث",
       "mobileEditSearchClose": "إغلاق",
@@ -434,6 +435,7 @@
     },
     "hotel": {
       "title": "Hotel / drop-off",
+      "titlePickup": "Hotel / pick-up",
       "selectHotel": "Select your hotel",
       "searchHotel": "Search hotels...",
       "empty": "No hotels found for this district.",
@@ -449,6 +451,7 @@
       "origin": "المغادرة",
       "pricingDestination": "منطقة التسعير",
       "dropoff": "نقطة الوصول الفعلية",
+      "pickup": "نقطة الالتقاء الفعلية",
       "noDropoff": "غير محدد",
       "tripTypeLabel": "نوع الرحلة",
       "outbound": "الذهاب",
