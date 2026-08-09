@@ -10,6 +10,7 @@ import {
   SearchSegmentShell,
   SegmentValue,
 } from "@/features/booking/components/hero-search/SearchSegment";
+import { searchEditSheetPopoverClass } from "@/features/booking/components/hero-search/search-overlay-styles";
 import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,7 @@ type DateTimeSegmentProps = {
   onTimeChange: (value: string) => void;
   className?: string;
   withDivider?: boolean;
+  embedded?: boolean;
 };
 
 export function DateTimeSegment({
@@ -33,6 +35,7 @@ export function DateTimeSegment({
   onTimeChange,
   className,
   withDivider = true,
+  embedded = false,
 }: DateTimeSegmentProps) {
   const locale = useLocale();
   const t = useTranslations("booking.search");
@@ -65,6 +68,7 @@ export function DateTimeSegment({
           <SearchSegmentShell
             icon={CalendarDays}
             label={label}
+            embedded={embedded}
             withDivider={withDivider}
           >
             <SegmentValue placeholder={!hasValue}>
@@ -75,13 +79,14 @@ export function DateTimeSegment({
       </PopoverTrigger>
 
       <PopoverContent
-        side={isMobile ? "bottom" : "top"}
-        align={isMobile ? "center" : "start"}
+        side={isMobile || embedded ? "bottom" : "top"}
+        align={isMobile || embedded ? "center" : "start"}
         sideOffset={8}
         collisionPadding={12}
         className={cn(
           "w-auto overflow-hidden rounded-2xl border-border/70 p-0 shadow-premium",
-          isMobile && "w-[calc(100vw-1.5rem)] max-w-[22rem]",
+          (isMobile || embedded) && "w-[calc(100vw-1.5rem)] max-w-[22rem]",
+          embedded && searchEditSheetPopoverClass,
         )}
       >
         <DateTimePickerPanel

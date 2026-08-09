@@ -270,6 +270,8 @@
     "summary": {
       "title": "Сводка заказа",
       "edit": "Изменить",
+      "mobileSummaryExpand": "Показать детали",
+      "mobileSummaryCollapse": "Скрыть детали",
       "passengers": "{adults} взрослых · {children} детей",
       "adults": "{count} Взрослых",
       "children": "{count} Детей",
@@ -353,6 +355,9 @@
       "children": "Children",
       "submit": "Search transfers",
       "loading": "Searching...",
+      "mobileEditSearch": "Изменить",
+      "mobileEditSearchTitle": "Изменить поиск",
+      "mobileEditSearchClose": "Закрыть",
       "adultsShort": "{count} взрослых",
       "childrenShort": "{count} детей"
     },
@@ -527,6 +532,7 @@
   "contact": {
     "whatsapp": "WhatsApp",
     "call": "Call",
+    "email": "Email",
     "reserve": "Book"
   },
   "trust": {

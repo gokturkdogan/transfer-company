@@ -20,7 +20,7 @@ export function PassengerDetailsForm() {
   return (
     <BookingFormSection
       title={t("title")}
-      subtitle={t("subtitle")}
+      description={t("subtitle")}
       icon={<Users className="h-4 w-4" aria-hidden />}
     >
       <div className="space-y-5">

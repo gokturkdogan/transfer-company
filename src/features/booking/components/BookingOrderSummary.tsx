@@ -30,11 +30,15 @@ type SummaryPrimaryAction = {
 type BookingOrderSummaryProps = {
   className?: string;
   primaryAction?: SummaryPrimaryAction;
+  embedded?: boolean;
+  compact?: boolean;
 };
 
 export function BookingOrderSummary({
   className,
   primaryAction,
+  embedded = false,
+  compact = false,
 }: BookingOrderSummaryProps) {
   const t = useTranslations("booking.summary");
   const tReview = useTranslations("booking.review");
@@ -127,12 +131,20 @@ export function BookingOrderSummary({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-[1.35rem] border border-border/60 bg-card shadow-float",
+        "overflow-hidden bg-card",
+        embedded
+          ? "rounded-none border-0 shadow-none"
+          : "rounded-[1.35rem] border border-border/60 shadow-float",
         state.isLoadingQuote && "opacity-70 transition-opacity",
         className,
       )}
     >
-      <div className="relative aspect-[16/10] bg-muted/20">
+      <div
+        className={cn(
+          "relative bg-muted/20",
+          compact ? "aspect-[16/9]" : "aspect-[16/10]",
+        )}
+      >
         <Image
           src={vehicleImage}
           alt={selectedOption.name}
@@ -142,25 +154,59 @@ export function BookingOrderSummary({
         />
       </div>
 
-      <div className="border-t border-border/50 bg-card px-4 py-1 sm:px-5">
+      <div
+        className={cn(
+          "border-t border-border/50 bg-card",
+          compact ? "px-4 py-0.5" : "px-4 py-1 sm:px-5",
+        )}
+      >
         <ul>
-          <SummaryDetailRow icon={Car}>{selectedOption.name}</SummaryDetailRow>
-          <SummaryDetailRow icon={PlaneLanding}>{airportName}</SummaryDetailRow>
-          <SummaryDetailRow icon={MapPin}>{dropoffLabel}</SummaryDetailRow>
-          <SummaryDetailRow icon={Users}>
-            {t("adults", { count: state.search.passengerCount })}
+          <SummaryDetailRow icon={Car} compact={compact}>
+            {selectedOption.name}
           </SummaryDetailRow>
-          <SummaryDetailRow icon={Baby}>
-            {t("children", { count: state.search.childCount })}
+          <SummaryDetailRow icon={PlaneLanding} compact={compact}>
+            {airportName}
           </SummaryDetailRow>
+          <SummaryDetailRow icon={MapPin} compact={compact}>
+            {dropoffLabel}
+          </SummaryDetailRow>
+          {compact ? (
+            <SummaryDetailRow icon={Users} compact>
+              {t("passengers", {
+                adults: state.search.passengerCount,
+                children: state.search.childCount,
+              })}
+            </SummaryDetailRow>
+          ) : (
+            <>
+              <SummaryDetailRow icon={Users}>
+                {t("adults", { count: state.search.passengerCount })}
+              </SummaryDetailRow>
+              <SummaryDetailRow icon={Baby}>
+                {t("children", { count: state.search.childCount })}
+              </SummaryDetailRow>
+            </>
+          )}
           {scheduleLabel ? (
-            <SummaryDetailRow icon={Clock3}>{scheduleLabel}</SummaryDetailRow>
+            <SummaryDetailRow icon={Clock3} compact={compact}>
+              {scheduleLabel}
+            </SummaryDetailRow>
           ) : null}
         </ul>
       </div>
 
-      <div className="space-y-3 border-t border-border/50 bg-muted/35 px-4 py-4 sm:px-5">
-        <div className="flex items-start justify-between gap-3 text-sm">
+      <div
+        className={cn(
+          "border-t border-border/50 bg-muted/35",
+          compact ? "space-y-2 px-4 py-3" : "space-y-3 px-4 py-4 sm:px-5",
+        )}
+      >
+        <div
+          className={cn(
+            "flex items-start justify-between gap-3",
+            compact ? "text-xs" : "text-sm",
+          )}
+        >
           <span className="font-medium text-foreground">{transferLabel}</span>
           <span className="shrink-0 font-semibold text-gold-deep">
             {formatPrice(pricing.baseTransferMinor, pricing.currency, locale)}
@@ -168,15 +214,23 @@ export function BookingOrderSummary({
         </div>
 
         {pricing.hasExtras ? (
-          <div className="space-y-2">
-            <p className="text-sm font-semibold text-foreground">
+          <div className={cn(compact ? "space-y-1.5" : "space-y-2")}>
+            <p
+              className={cn(
+                "font-semibold text-foreground",
+                compact ? "text-xs" : "text-sm",
+              )}
+            >
               {t("extrasTitle")}
             </p>
             {[...pricing.requiredExtras, ...pricing.optionalExtras].map(
               (extra) => (
                 <div
                   key={extra.id}
-                  className="flex items-start justify-between gap-3 text-sm"
+                  className={cn(
+                    "flex items-start justify-between gap-3",
+                    compact ? "text-xs" : "text-sm",
+                  )}
                 >
                   <span className="text-muted-foreground">
                     {t("extraLine", {
@@ -197,11 +251,26 @@ export function BookingOrderSummary({
           </div>
         ) : null}
 
-        <div className="flex items-center justify-between gap-3 border-t border-border/50 pt-3">
-          <span className="text-sm font-bold text-foreground">
+        <div
+          className={cn(
+            "flex items-center justify-between gap-3 border-t border-border/50",
+            compact ? "pt-2" : "pt-3",
+          )}
+        >
+          <span
+            className={cn(
+              "font-bold text-foreground",
+              compact ? "text-xs" : "text-sm",
+            )}
+          >
             {tReview("total")}
           </span>
-          <span className="text-lg font-bold text-gold-deep">
+          <span
+            className={cn(
+              "font-bold text-gold-deep",
+              compact ? "text-base" : "text-lg",
+            )}
+          >
             {formatPrice(pricing.totalMinor, pricing.currency, locale)}
           </span>
         </div>
@@ -235,16 +304,33 @@ export function BookingOrderSummary({
 function SummaryDetailRow({
   icon: Icon,
   children,
+  compact = false,
 }: {
   icon: typeof Car;
   children: ReactNode;
+  compact?: boolean;
 }) {
   return (
-    <li className="flex items-center gap-3 border-b border-border/40 py-3 last:border-b-0">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gold/14 text-gold-deep">
-        <Icon className="h-4 w-4" aria-hidden />
+    <li
+      className={cn(
+        "flex items-center border-b border-border/40 last:border-b-0",
+        compact ? "gap-2.5 py-1.5" : "gap-3 py-3",
+      )}
+    >
+      <span
+        className={cn(
+          "flex shrink-0 items-center justify-center rounded-lg bg-gold/14 text-gold-deep",
+          compact ? "h-7 w-7" : "h-8 w-8",
+        )}
+      >
+        <Icon className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} aria-hidden />
       </span>
-      <span className="text-sm font-medium leading-snug text-foreground">
+      <span
+        className={cn(
+          "min-w-0 flex-1 truncate font-medium leading-snug text-foreground",
+          compact ? "text-xs" : "text-sm",
+        )}
+      >
         {children}
       </span>
     </li>

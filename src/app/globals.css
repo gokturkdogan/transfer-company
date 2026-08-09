@@ -211,9 +211,12 @@ body {
   background-image: var(--gradient-gold);
 }
 
-/* Hairline gold border via gradient mask */
-.ring-gold-hairline {
-  position: relative;
+/* Hairline gold border via gradient mask.
+   Layered so `fixed`/`absolute`/`sticky` utilities still win over `relative`. */
+@layer components {
+  .ring-gold-hairline {
+    position: relative;
+  }
 }
 
 .ring-gold-hairline::before {

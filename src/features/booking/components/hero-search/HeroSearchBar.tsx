@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 
 type HeroSearchBarProps = {
   onSubmit: () => void;
+  variant?: "hero" | "embedded";
 };
 
 /**
@@ -22,7 +23,11 @@ type HeroSearchBarProps = {
  * Passenger counters are collapsed behind one popover segment — that is what
  * keeps the row to a single line even for round trips.
  */
-export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
+export function HeroSearchBar({
+  onSubmit,
+  variant = "hero",
+}: HeroSearchBarProps) {
+  const isEmbedded = variant === "embedded";
   const t = useTranslations("booking.search");
   const { state, airports, cities, districts, dispatch } = useBookingFlow();
   const { search } = state;
@@ -81,23 +86,33 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
         tripType={search.tripType}
         oneWayLabel={t("oneWay")}
         roundTripLabel={t("roundTrip")}
+        variant={variant}
         className="hidden lg:inline-flex"
         onChange={(tripType) => dispatch({ type: "SET_TRIP_TYPE", tripType })}
       />
 
-      <div className="rounded-[24px] border border-white/30 bg-white/14 p-2 shadow-[0_12px_48px_rgb(0_0_0/0.38)] backdrop-blur-2xl max-lg:ring-1 max-lg:ring-gold/30 lg:rounded-[28px] lg:border-white/25 lg:bg-white/12 lg:p-1.5 lg:shadow-premium lg:ring-0">
+      <div
+        className={cn(
+          isEmbedded ? "space-y-4" : "rounded-[24px] border border-white/30 bg-white/14 p-2 shadow-[0_12px_48px_rgb(0_0_0/0.38)] backdrop-blur-2xl max-lg:ring-1 max-lg:ring-gold/30 lg:rounded-[28px] lg:border-white/25 lg:bg-white/12 lg:p-1.5 lg:shadow-premium lg:ring-0",
+        )}
+      >
         <TripTypeToggle
           tripType={search.tripType}
           oneWayLabel={t("oneWay")}
           roundTripLabel={t("roundTrip")}
-          className="mb-2 w-full justify-center lg:hidden"
+          variant={variant}
+          className={cn(
+            "w-full justify-center lg:hidden",
+            isEmbedded ? "mb-0" : "mb-2",
+          )}
           onChange={(tripType) => dispatch({ type: "SET_TRIP_TYPE", tripType })}
         />
 
         <div
           className={cn(
-            "grid grid-cols-1 gap-2 rounded-[18px] bg-card/98 p-2 max-lg:gap-2 sm:grid-cols-2 sm:max-lg:gap-1.5",
-            "lg:flex lg:flex-nowrap lg:items-center lg:gap-0 lg:rounded-[22px] lg:bg-card/95 lg:p-1.5",
+            isEmbedded
+              ? "grid grid-cols-1 gap-0 divide-y divide-border/25 sm:grid-cols-2 sm:gap-x-3 sm:divide-y-0"
+              : "grid grid-cols-1 gap-2 rounded-[18px] bg-card/98 p-2 max-lg:gap-2 sm:grid-cols-2 sm:max-lg:gap-1.5 lg:flex lg:flex-nowrap lg:items-center lg:gap-0 lg:rounded-[22px] lg:bg-card/95 lg:p-1.5",
           )}
         >
           <LocationSegment
@@ -108,6 +123,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             placeholder={t("selectAirport")}
             searchPlaceholder={t("searchAirport")}
             emptyLabel={t("noAirports")}
+            embedded={isEmbedded}
             className="min-w-0 w-full lg:flex-1 lg:basis-0"
             onChange={(airportId) => {
               const airport = airports.find((item) => item.id === airportId);
@@ -127,6 +143,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             placeholder={t("selectDistrict")}
             searchPlaceholder={t("searchDistrict")}
             emptyLabel={t("noDistricts")}
+            embedded={isEmbedded}
             className="min-w-0 w-full lg:flex-1 lg:basis-0"
             onChange={(districtId) => {
               const district = districts.find((item) => item.id === districtId);
@@ -145,6 +162,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             dateValue={search.outboundDate}
             timeValue={search.outboundTime}
             minDate={minDate}
+            embedded={isEmbedded}
             className="min-w-0 w-full lg:flex-1 lg:basis-0"
             onDateChange={(value) =>
               dispatch({ type: "UPDATE_SEARCH", search: { outboundDate: value } })
@@ -160,6 +178,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
               dateValue={search.returnDate}
               timeValue={search.returnTime}
               minDate={search.outboundDate || minDate}
+              embedded={isEmbedded}
               className="min-w-0 w-full lg:flex-1 lg:basis-0"
               onDateChange={(value) =>
                 dispatch({ type: "UPDATE_SEARCH", search: { returnDate: value } })
@@ -174,6 +193,7 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
             adults={search.passengerCount}
             childCount={search.childCount}
             withDivider={false}
+            embedded={isEmbedded}
             className="min-w-0 w-full lg:flex-[0.85_1_0%] lg:basis-0"
             onAdultsChange={(value) =>
               dispatch({ type: "UPDATE_SEARCH", search: { passengerCount: value } })
@@ -192,7 +212,9 @@ export function HeroSearchBar({ onSubmit }: HeroSearchBarProps) {
               "shadow-gold transition-all duration-300 hover:brightness-110 active:scale-[0.98]",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2",
               "disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none",
-              "max-lg:mt-1 sm:col-span-2",
+              isEmbedded
+                ? "col-span-1 mt-4 h-12 rounded-2xl sm:col-span-2"
+                : "max-lg:mt-1 sm:col-span-2",
               "lg:col-auto lg:mt-0 lg:h-[52px] lg:w-auto lg:flex-none lg:shrink-0 lg:whitespace-nowrap lg:rounded-2xl lg:px-4 lg:text-sm",
             )}
           >
@@ -229,15 +251,18 @@ function TripTypeToggle({
   tripType,
   oneWayLabel,
   roundTripLabel,
+  variant = "hero",
   className,
   onChange,
 }: {
   tripType: "ONE_WAY" | "ROUND_TRIP";
   oneWayLabel: string;
   roundTripLabel: string;
+  variant?: "hero" | "embedded";
   className?: string;
   onChange: (tripType: "ONE_WAY" | "ROUND_TRIP") => void;
 }) {
+  const isEmbedded = variant === "embedded";
   const options = [
     { value: "ONE_WAY" as const, label: oneWayLabel },
     { value: "ROUND_TRIP" as const, label: roundTripLabel },
@@ -247,7 +272,11 @@ function TripTypeToggle({
     <div
       role="radiogroup"
       className={cn(
-        "inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 p-1 backdrop-blur-xl max-lg:w-full max-lg:justify-center",
+        "inline-flex items-center gap-1 rounded-full p-1",
+        isEmbedded
+          ? "border border-border/60 bg-muted/40"
+          : "border border-white/20 bg-white/10 backdrop-blur-xl",
+        "max-lg:w-full max-lg:justify-center",
         className,
       )}
     >
@@ -265,7 +294,9 @@ function TripTypeToggle({
               "cursor-pointer rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all duration-300 max-lg:flex-1 max-lg:py-2.5",
               active
                 ? "bg-gold-gradient text-ink shadow-gold"
-                : "text-white/75 hover:bg-white/10 hover:text-white",
+                : isEmbedded
+                  ? "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                  : "text-white/75 hover:bg-white/10 hover:text-white",
             )}
           >
             {option.label}

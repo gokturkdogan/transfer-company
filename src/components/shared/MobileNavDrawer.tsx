@@ -51,8 +51,10 @@ export function MobileNavDrawer({
 
   return (
     <div
+      // Tops every other mobile overlay: sticky summary (60), search sheet (70),
+      // sheet popovers (80).
       className={cn(
-        "fixed inset-0 z-[60] md:hidden",
+        "fixed inset-0 z-[90] md:hidden",
         open ? "pointer-events-auto" : "pointer-events-none",
       )}
       aria-hidden={!open}

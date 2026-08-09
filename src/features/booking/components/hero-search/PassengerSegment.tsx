@@ -10,6 +10,7 @@ import {
   SearchSegmentShell,
   SegmentValue,
 } from "@/features/booking/components/hero-search/SearchSegment";
+import { searchEditSheetPopoverClass } from "@/features/booking/components/hero-search/search-overlay-styles";
 import { cn } from "@/lib/utils";
 
 type PassengerSegmentProps = {
@@ -19,6 +20,7 @@ type PassengerSegmentProps = {
   onChildrenChange: (value: number) => void;
   className?: string;
   withDivider?: boolean;
+  embedded?: boolean;
 };
 
 /**
@@ -32,6 +34,7 @@ export function PassengerSegment({
   onChildrenChange,
   className,
   withDivider = true,
+  embedded = false,
 }: PassengerSegmentProps) {
   const t = useTranslations("booking.search");
   const [open, setOpen] = useState(false);
@@ -58,6 +61,7 @@ export function PassengerSegment({
           <SearchSegmentShell
             icon={Users}
             label={t("passengers")}
+            embedded={embedded}
             withDivider={withDivider}
           >
             <SegmentValue>{summary}</SegmentValue>
@@ -65,9 +69,12 @@ export function PassengerSegment({
         </button>
       </PopoverTrigger>
       <PopoverContent
-        side="top"
-        align="end"
-        className="w-[min(20rem,calc(100vw-2rem))] rounded-2xl border-border/70 p-2 shadow-premium"
+        side={embedded ? "bottom" : "top"}
+        align={embedded ? "center" : "end"}
+        className={cn(
+          "w-[min(20rem,calc(100vw-2rem))] rounded-2xl border-border/70 p-2 shadow-premium",
+          embedded && searchEditSheetPopoverClass,
+        )}
       >
         <div className="divide-y divide-border/70">
           <CounterRow

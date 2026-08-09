@@ -1,6 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
 
-import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 import { BookingFlowWithInit } from "@/features/booking/components/BookingFlowWithInit";
@@ -58,7 +57,6 @@ export default async function BookingPage({
         </BookingFlowProvider>
       </main>
       <SiteFooter enabledLocales={enabledLocales} />
-      <MobileContactBar />
     </>
   );
 }

@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
+import { BookingMobileFooter } from "@/features/booking/components/BookingMobileFooter";
 import { BookingInlineSearchBar } from "@/features/booking/components/BookingInlineSearchBar";
 import { BookingSidebar } from "@/features/booking/components/BookingSidebar";
 import { BookingPageHero } from "@/features/booking/components/BookingPageHero";
@@ -13,9 +16,20 @@ type BookingFlowShellProps = {
 
 export function BookingFlowShell({ children }: BookingFlowShellProps) {
   const { state } = useBookingFlow();
+  const isInitialStep = useRef(true);
   const showInlineSearch = state.step !== "success";
   const showOrderSummary =
     state.step === "customer" || state.step === "review";
+  const showMobileStickySummary = state.step === "customer";
+
+  useEffect(() => {
+    if (isInitialStep.current) {
+      isInitialStep.current = false;
+      return;
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [state.step]);
 
   return (
     <>
@@ -25,7 +39,14 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
         className={cn(
           "relative mx-auto w-full px-4 sm:px-6",
           showOrderSummary ? "max-w-7xl" : "max-w-6xl",
-          state.step === "success" ? "py-10 md:py-14" : "-mt-14 pb-28 md:-mt-20 md:pb-16",
+          state.step === "success"
+            ? "py-10 md:py-14"
+            : cn(
+                "-mt-14 md:-mt-20",
+                showMobileStickySummary
+                  ? "pb-[calc(5.75rem+env(safe-area-inset-bottom))] md:pb-16"
+                  : "pb-28 md:pb-16",
+              ),
         )}
       >
         {showInlineSearch && (
@@ -58,6 +79,8 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
           ) : null}
         </div>
       </div>
+
+      <BookingMobileFooter />
     </>
   );
 }

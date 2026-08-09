@@ -27,8 +27,7 @@ export function BookingFlow() {
   );
 
   const showStepCard = state.step !== "vehicle";
-  const showSummaryActions =
-    state.step === "customer" || state.step === "review";
+  const showMobileSummaryBelow = state.step === "review";
 
   return (
     <BookingFlowShell>
@@ -65,7 +64,7 @@ export function BookingFlow() {
         </BookingStepCard>
       )}
 
-      {showSummaryActions ? (
+      {showMobileSummaryBelow ? (
         <div className="mt-8 lg:hidden">
           <BookingSidebar />
         </div>

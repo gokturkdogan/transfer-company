@@ -270,6 +270,8 @@
     "summary": {
       "title": "ملخص الطلب",
       "edit": "تعديل",
+      "mobileSummaryExpand": "عرض التفاصيل",
+      "mobileSummaryCollapse": "إخفاء التفاصيل",
       "passengers": "{adults} بالغ · {children} طفل",
       "adults": "{count} بالغ",
       "children": "{count} طفل",
@@ -353,6 +355,9 @@
       "children": "Children",
       "submit": "Search transfers",
       "loading": "Searching...",
+      "mobileEditSearch": "تعديل",
+      "mobileEditSearchTitle": "تعديل البحث",
+      "mobileEditSearchClose": "إغلاق",
       "adultsShort": "{count} بالغين",
       "childrenShort": "{count} أطفال"
     },
@@ -527,6 +532,7 @@
   "contact": {
     "whatsapp": "WhatsApp",
     "call": "Call",
+    "email": "Email",
     "reserve": "Book"
   },
   "trust": {

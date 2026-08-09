@@ -270,6 +270,8 @@
     "summary": {
       "title": "Bestellübersicht",
       "edit": "Bearbeiten",
+      "mobileSummaryExpand": "Details anzeigen",
+      "mobileSummaryCollapse": "Details ausblenden",
       "passengers": "{adults} Erwachsene · {children} Kinder",
       "adults": "{count} Erwachsene",
       "children": "{count} Kinder",
@@ -353,6 +355,9 @@
       "children": "Children",
       "submit": "Search transfers",
       "loading": "Searching...",
+      "mobileEditSearch": "Bearbeiten",
+      "mobileEditSearchTitle": "Suche bearbeiten",
+      "mobileEditSearchClose": "Schließen",
       "adultsShort": "{count} Erwachsene",
       "childrenShort": "{count} Kinder"
     },
@@ -527,6 +532,7 @@
   "contact": {
     "whatsapp": "WhatsApp",
     "call": "Call",
+    "email": "Email",
     "reserve": "Buchen"
   },
   "trust": {

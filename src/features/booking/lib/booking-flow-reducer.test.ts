@@ -150,6 +150,52 @@ describe("bookingFlowReducer", () => {
     });
   });
 
+  it("restores search draft when modal edits are discarded", () => {
+    const initial = createInitialBookingFlowState({
+      originAirportId: "a",
+      destinationDistrictId: "b",
+      outboundDate: "2026-08-10",
+      outboundTime: "10:00",
+      passengerCount: 2,
+      childCount: 0,
+    });
+
+    const withQuote = bookingFlowReducer(initial, {
+      type: "QUOTE_SUCCESS",
+      quote: {
+        routeId: "route-1",
+        currency: "EUR",
+        timeZone: "Europe/Istanbul",
+        options: [],
+      },
+      searchSignature: buildSearchSignature(initial.search),
+    });
+
+    const edited = bookingFlowReducer(withQuote, {
+      type: "UPDATE_SEARCH",
+      search: { passengerCount: 5 },
+    });
+
+    expect(edited.search.passengerCount).toBe(5);
+
+    const restored = bookingFlowReducer(edited, {
+      type: "RESTORE_SEARCH_DRAFT",
+      snapshot: {
+        search: withQuote.search,
+        destination: withQuote.destination,
+        quote: withQuote.quote,
+        searchSignature: withQuote.searchSignature,
+        selectedVehicleCategoryId: withQuote.selectedVehicleCategoryId,
+        selectedQuantity: withQuote.selectedQuantity,
+        selectedExtras: withQuote.selectedExtras,
+        passengers: withQuote.passengers,
+      },
+    });
+
+    expect(restored.search.passengerCount).toBe(2);
+    expect(restored.quote).toBe(withQuote.quote);
+  });
+
   it("clears hotel when district changes", () => {
     const withHotel = bookingFlowReducer(createInitialBookingFlowState(), {
       type: "SET_HOTEL",

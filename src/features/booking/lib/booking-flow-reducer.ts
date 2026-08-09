@@ -59,7 +59,20 @@ export type BookingFlowAction =
   | { type: "SUBMIT_SUCCESS"; reservation: ReservationResponseDto }
   | { type: "SUBMIT_ERROR"; errorKey: string }
   | { type: "CLEAR_ERROR" }
-  | { type: "INVALIDATE_QUOTE" };
+  | { type: "INVALIDATE_QUOTE" }
+  | {
+      type: "RESTORE_SEARCH_DRAFT";
+      snapshot: {
+        search: BookingSearchState;
+        destination: DestinationState;
+        quote: TransferAvailabilityResponseDto | null;
+        searchSignature: string | null;
+        selectedVehicleCategoryId: string | null;
+        selectedQuantity: number;
+        selectedExtras: SelectedExtra[];
+        passengers: PassengerDetails[];
+      };
+    };
 
 function clearQuoteState(state: BookingFlowState): BookingFlowState {
   return {
@@ -356,6 +369,21 @@ export function bookingFlowReducer(
       return {
         ...clearQuoteState(state),
         step: "vehicle",
+      };
+
+    case "RESTORE_SEARCH_DRAFT":
+      return {
+        ...state,
+        search: action.snapshot.search,
+        destination: action.snapshot.destination,
+        quote: action.snapshot.quote,
+        searchSignature: action.snapshot.searchSignature,
+        selectedVehicleCategoryId: action.snapshot.selectedVehicleCategoryId,
+        selectedQuantity: action.snapshot.selectedQuantity,
+        selectedExtras: action.snapshot.selectedExtras,
+        passengers: action.snapshot.passengers,
+        isLoadingQuote: false,
+        errorKey: null,
       };
 
     default:

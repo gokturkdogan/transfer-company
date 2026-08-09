@@ -45,7 +45,10 @@ type BookingFlowContextValue = {
   cities: CityDto[];
   districts: DistrictDto[];
   dispatch: React.Dispatch<BookingFlowAction>;
-  requestQuote: (searchOverride?: Partial<BookingSearchState>) => Promise<void>;
+  requestQuote: (
+    searchOverride?: Partial<BookingSearchState>,
+    options?: { preserveStep?: boolean },
+  ) => Promise<void>;
   requestRequote: (extras: SelectedExtra[]) => Promise<void>;
   updateOutboundSchedule: (
     outboundDate: string,
@@ -77,7 +80,10 @@ export function BookingFlowProvider({
   );
 
   const requestQuote = useCallback(
-    async (searchOverride?: Partial<BookingSearchState>) => {
+    async (
+      searchOverride?: Partial<BookingSearchState>,
+      options?: { preserveStep?: boolean },
+    ) => {
       const search = { ...state.search, ...searchOverride };
 
       if (searchOverride) {
@@ -102,6 +108,7 @@ export function BookingFlowProvider({
         type: "QUOTE_SUCCESS",
         quote: result.data,
         searchSignature: buildSearchSignature(search),
+        preserveStep: options?.preserveStep,
       });
     },
     [locale, state.search],

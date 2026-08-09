@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarCheck, MessageCircle, Phone } from "lucide-react";
+import { CalendarCheck, Mail, MessageCircle, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { siteConfig } from "@/config/site";
@@ -8,7 +8,11 @@ import { siteConfig } from "@/config/site";
 const actionLinkClassName =
   "flex h-11 items-center justify-center gap-1.5 rounded-xl border border-white/15 bg-white/8 px-2 text-xs font-semibold text-white whitespace-nowrap";
 
-export function MobileContactBar() {
+type MobileContactBarProps = {
+  variant?: "default" | "booking";
+};
+
+export function MobileContactBar({ variant = "default" }: MobileContactBarProps) {
   const t = useTranslations("contact");
 
   return (
@@ -30,13 +34,23 @@ export function MobileContactBar() {
           <MessageCircle className="h-4 w-4 shrink-0 text-gold" aria-hidden />
           <span>{t("whatsapp")}</span>
         </a>
-        <a
-          href="#booking"
-          className="flex h-11 items-center justify-center gap-1.5 rounded-xl bg-gold-gradient px-2 text-xs font-bold text-ink shadow-gold whitespace-nowrap"
-        >
-          <CalendarCheck className="h-4 w-4 shrink-0" aria-hidden />
-          <span>{t("reserve")}</span>
-        </a>
+        {variant === "booking" ? (
+          <a
+            href={`mailto:${siteConfig.email}`}
+            className={actionLinkClassName}
+          >
+            <Mail className="h-4 w-4 shrink-0 text-gold" aria-hidden />
+            <span>{t("email")}</span>
+          </a>
+        ) : (
+          <a
+            href="#booking"
+            className="flex h-11 items-center justify-center gap-1.5 rounded-xl bg-gold-gradient px-2 text-xs font-bold text-ink shadow-gold whitespace-nowrap"
+          >
+            <CalendarCheck className="h-4 w-4 shrink-0" aria-hidden />
+            <span>{t("reserve")}</span>
+          </a>
+        )}
       </div>
     </div>
   );

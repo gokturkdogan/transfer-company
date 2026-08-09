@@ -17,6 +17,7 @@ import {
   SearchSegmentShell,
   SegmentValue,
 } from "@/features/booking/components/hero-search/SearchSegment";
+import { searchEditSheetPopoverClass } from "@/features/booking/components/hero-search/search-overlay-styles";
 import { cn } from "@/lib/utils";
 
 type LocationSegmentProps = {
@@ -31,6 +32,7 @@ type LocationSegmentProps = {
   disabled?: boolean;
   className?: string;
   withDivider?: boolean;
+  embedded?: boolean;
 };
 
 export function LocationSegment({
@@ -45,6 +47,7 @@ export function LocationSegment({
   disabled = false,
   className,
   withDivider = true,
+  embedded = false,
 }: LocationSegmentProps) {
   const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.id === value);
@@ -89,6 +92,7 @@ export function LocationSegment({
           <SearchSegmentShell
             icon={icon}
             label={label}
+            embedded={embedded}
             withDivider={withDivider}
           >
             <SegmentValue placeholder={!selected}>
@@ -100,7 +104,10 @@ export function LocationSegment({
       <PopoverContent
         side="top"
         align="start"
-        className="w-[min(22rem,calc(100vw-2rem))] rounded-2xl border-border/70 p-0 shadow-premium"
+        className={cn(
+          "w-[min(22rem,calc(100vw-2rem))] rounded-2xl border-border/70 p-0 shadow-premium",
+          embedded && searchEditSheetPopoverClass,
+        )}
       >
         <Command>
           <CommandInput placeholder={searchPlaceholder} />

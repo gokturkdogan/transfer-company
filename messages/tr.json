@@ -270,6 +270,8 @@
     "summary": {
       "title": "Sipariş özeti",
       "edit": "Düzenle",
+      "mobileSummaryExpand": "Detayları gör",
+      "mobileSummaryCollapse": "Detayları gizle",
       "passengers": "{adults} yetişkin · {children} çocuk",
       "adults": "{count} Yetişkin",
       "children": "{count} Çocuk",
@@ -353,6 +355,9 @@
       "children": "Çocuk",
       "submit": "Transfer ara",
       "loading": "Aranıyor...",
+      "mobileEditSearch": "Düzenle",
+      "mobileEditSearchTitle": "Aramayı düzenle",
+      "mobileEditSearchClose": "Kapat",
       "adultsShort": "{count} yetişkin",
       "childrenShort": "{count} çocuk"
     },
@@ -527,6 +532,7 @@
   "contact": {
     "call": "Ara",
     "whatsapp": "WhatsApp",
+    "email": "E-posta",
     "reserve": "Rezervasyon"
   },
   "trust": {
