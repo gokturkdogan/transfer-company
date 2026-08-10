@@ -8,6 +8,7 @@ import {
   createVehicleAction,
   updateVehicleAction,
 } from "@/features/admin/server/actions";
+import { VehicleDeleteButton } from "@/features/admin/components/VehicleDeleteButton";
 import type { AdminVehicleRecord } from "@/features/admin/server/vehicle-admin-repository";
 import { adminCopy, translateAdminError } from "@/features/admin/copy";
 import { LocaleTextFields } from "@/features/admin/components/LocaleTextFields";
@@ -191,6 +192,15 @@ export function VehicleForm({ mode, vehicle, enabledLocales }: VehicleFormProps)
           >
             {adminCopy.vehicles.form.cancel}
           </Button>
+          {mode === "edit" && vehicle ? (
+            <VehicleDeleteButton
+              vehicleId={vehicle.id}
+              vehicleName={`${vehicle.brand} ${vehicle.model}`}
+              redirectToList
+              size="default"
+              className="ml-auto"
+            />
+          ) : null}
         </>
       }
     >

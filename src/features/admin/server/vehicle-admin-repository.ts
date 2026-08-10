@@ -1,10 +1,12 @@
 import "server-only";
 
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, count, eq, inArray, isNull } from "drizzle-orm";
 
 import { DEFAULT_LOCALE } from "@/config/constants";
 import type { Database } from "@/db/client";
 import {
+  reservationItems,
+  routePrices,
   vehicleCategories,
   vehicleCategoryImages,
   vehicleCategoryTranslations,
@@ -19,6 +21,7 @@ import {
   AdminVehicleFeatureInput,
   VehicleFeatureRepository,
 } from "@/features/vehicles/server/feature-repository";
+import { NotFoundError } from "@/server/errors";
 
 type DbExecutor = Database | Parameters<Parameters<Database["transaction"]>[0]>[0];
 
@@ -158,7 +161,14 @@ export class VehicleAdminRepository {
         isActive: vehicleCategories.isActive,
       })
       .from(vehicleCategories)
-      .where(includeInactive ? undefined : eq(vehicleCategories.isActive, true))
+      .where(
+        includeInactive
+          ? isNull(vehicleCategories.deletedAt)
+          : and(
+              eq(vehicleCategories.isActive, true),
+              isNull(vehicleCategories.deletedAt),
+            ),
+      )
       .orderBy(asc(vehicleCategories.sortOrder), asc(vehicleCategories.code));
 
     if (rows.length === 0) {
@@ -238,7 +248,9 @@ export class VehicleAdminRepository {
         isActive: vehicleCategories.isActive,
       })
       .from(vehicleCategories)
-      .where(eq(vehicleCategories.id, id))
+      .where(
+        and(eq(vehicleCategories.id, id), isNull(vehicleCategories.deletedAt)),
+      )
       .limit(1);
 
     if (!row) {
@@ -465,5 +477,52 @@ export class VehicleAdminRepository {
       .update(vehicleCategories)
       .set({ isActive: false })
       .where(eq(vehicleCategories.id, id));
+  }
+
+  private async countReservationReferences(
+    vehicleCategoryId: string,
+  ): Promise<number> {
+    const [row] = await this.database
+      .select({ count: count() })
+      .from(reservationItems)
+      .where(
+        and(
+          eq(reservationItems.vehicleCategoryId, vehicleCategoryId),
+          eq(reservationItems.itemType, "TRANSFER_VEHICLE"),
+        ),
+      );
+
+    return Number(row?.count ?? 0);
+  }
+
+  async delete(id: string): Promise<"deleted" | "archived"> {
+    const vehicle = await this.findById(id);
+
+    if (!vehicle) {
+      throw new NotFoundError("Vehicle not found");
+    }
+
+    const reservationCount = await this.countReservationReferences(id);
+
+    if (reservationCount > 0) {
+      await this.database
+        .update(vehicleCategories)
+        .set({
+          isActive: false,
+          deletedAt: new Date(),
+        })
+        .where(eq(vehicleCategories.id, id));
+
+      return "archived";
+    }
+
+    await this.database.transaction(async (tx) => {
+      await tx
+        .delete(routePrices)
+        .where(eq(routePrices.vehicleCategoryId, id));
+      await tx.delete(vehicleCategories).where(eq(vehicleCategories.id, id));
+    });
+
+    return "deleted";
   }
 }

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, asc, eq, inArray, min, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, isNull, min, sql } from "drizzle-orm";
 
 import { DEFAULT_CURRENCY } from "@/config/constants";
 
@@ -25,6 +25,21 @@ function translatedName(
   translatedNameValue: string | null,
 ): string {
   return translatedNameValue ?? defaultName;
+}
+
+function resolveStartingFromMinor(
+  displayPrice: number | undefined,
+  routeMinPrice: string | number | null | undefined,
+): number {
+  if (displayPrice != null && displayPrice > 0) {
+    return displayPrice;
+  }
+
+  if (routeMinPrice != null && Number(routeMinPrice) > 0) {
+    return Number(routeMinPrice);
+  }
+
+  return 0;
 }
 
 export class MarketingRepository {
@@ -94,7 +109,7 @@ export class MarketingRepository {
         sortOrder: vehicleCategories.sortOrder,
       })
       .from(vehicleCategories)
-      .innerJoin(
+      .leftJoin(
         routePrices,
         and(
           eq(routePrices.vehicleCategoryId, vehicleCategories.id),
@@ -112,7 +127,12 @@ export class MarketingRepository {
           eq(vehicleCategoryTranslations.locale, locale),
         ),
       )
-      .where(eq(vehicleCategories.isActive, true))
+      .where(
+        and(
+          eq(vehicleCategories.isActive, true),
+          isNull(vehicleCategories.deletedAt),
+        ),
+      )
       .groupBy(
         vehicleCategories.id,
         vehicleCategories.code,
@@ -138,8 +158,10 @@ export class MarketingRepository {
       largeLuggageCapacity: row.largeLuggageCapacity,
       cabinLuggageCapacity: row.cabinLuggageCapacity,
       imageKey: row.imageKey,
-      startingFromMinor:
-        displayPrices.get(row.id) ?? Number(row.startingFromMinor ?? 0),
+      startingFromMinor: resolveStartingFromMinor(
+        displayPrices.get(row.id),
+        row.startingFromMinor,
+      ),
       currency: DEFAULT_CURRENCY,
     }));
   }
@@ -173,7 +195,12 @@ export class MarketingRepository {
     const rows = await this.database
       .select({ code: vehicleCategories.code })
       .from(vehicleCategories)
-      .where(eq(vehicleCategories.isActive, true))
+      .where(
+        and(
+          eq(vehicleCategories.isActive, true),
+          isNull(vehicleCategories.deletedAt),
+        ),
+      )
       .orderBy(asc(vehicleCategories.sortOrder));
 
     return rows.map((row) => row.code);
@@ -203,7 +230,7 @@ export class MarketingRepository {
         startingFromMinor: min(routePrices.oneWayPriceMinor),
       })
       .from(vehicleCategories)
-      .innerJoin(
+      .leftJoin(
         routePrices,
         and(
           eq(routePrices.vehicleCategoryId, vehicleCategories.id),
@@ -224,6 +251,7 @@ export class MarketingRepository {
       .where(
         and(
           eq(vehicleCategories.isActive, true),
+          isNull(vehicleCategories.deletedAt),
           eq(vehicleCategories.code, code),
         ),
       )
@@ -261,8 +289,10 @@ export class MarketingRepository {
       largeLuggageCapacity: row.largeLuggageCapacity,
       cabinLuggageCapacity: row.cabinLuggageCapacity,
       imageKey: row.imageKey,
-      startingFromMinor:
-        displayPrices.get(row.id) ?? Number(row.startingFromMinor ?? 0),
+      startingFromMinor: resolveStartingFromMinor(
+        displayPrices.get(row.id),
+        row.startingFromMinor,
+      ),
       currency: DEFAULT_CURRENCY,
     };
   }

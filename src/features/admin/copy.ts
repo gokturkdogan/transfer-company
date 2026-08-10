@@ -253,7 +253,7 @@ export const adminCopy = {
   vehicles: {
     title: "Araçlar",
     subtitle:
-      "Filo araçlarını yönetin. Eklenen aktif araçlar fiyatlandırma matrisinde görünür.",
+      "Filo araçlarını yönetin. Aktif araçlar anasayfa ve filo sayfasında görünür; rezervasyon için Fiyatlandırma matrisinde rota fiyatları girilmelidir.",
     addNew: "Yeni araç",
     newTitle: "Yeni araç",
     editTitle: "Araç düzenle",
@@ -268,7 +268,14 @@ export const adminCopy = {
       startingPrice: "Başlangıç fiyatı",
       actions: "İşlemler",
       edit: "Düzenle",
+      delete: "Sil",
       passengers: (count: number) => `${count} kişi`,
+    },
+    delete: {
+      button: "Sil",
+      confirm: (name: string) =>
+        `"${name}" aracını silmek istediğinize emin misiniz? Geçmiş rezervasyonlarda kullanıldıysa kayıt arşivlenir.`,
+      deleting: "Siliniyor...",
     },
     form: {
       code: "Kod",
@@ -317,7 +324,7 @@ export const adminCopy = {
       active: "Aktif",
       startingPrice: "Başlangıç fiyatı",
       startingPriceHint:
-        "Sitede \"X €'dan başlayan\" metni olarak gösterilir. Boş bırakılırsa rota fiyatlarından otomatik hesaplanır.",
+        "Sitede \"X €'dan başlayan\" metni olarak gösterilir. Boş bırakılırsa rota fiyatlarından otomatik hesaplanır. Rezervasyonda görünmesi için Fiyatlandırma sayfasında rota fiyatları da girilmelidir.",
       create: "Oluştur",
       save: "Kaydet",
       saving: "Kaydediliyor...",
@@ -461,6 +468,7 @@ const ADMIN_ERROR_MESSAGES: Record<string, string> = {
   "En az bir para birimi seçmelisiniz": "En az bir para birimi seçmelisiniz",
   "En az bir geçerli fiyat girmelisiniz": "En az bir geçerli fiyat girmelisiniz",
   "Extra not found": "Extra bulunamadı",
+  "Vehicle not found": "Araç bulunamadı",
   INVALID_IMAGE_DATA: "Geçersiz görsel verisi",
   UNSUPPORTED_IMAGE_TYPE: "Desteklenmeyen görsel formatı",
   IMAGE_TOO_LARGE: "Görsel boyutu çok büyük (en fazla 10 MB)",

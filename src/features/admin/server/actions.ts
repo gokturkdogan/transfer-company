@@ -694,6 +694,20 @@ export async function updateVehicleAction(rawInput: unknown) {
   }, rawInput);
 }
 
+export async function deleteVehicleAction(rawInput: unknown) {
+  return createAction(
+    z.object({ id: z.string().uuid() }),
+    async (input) => {
+      const result = await vehicleAdminRepository.delete(input.id);
+      revalidatePath("/admin/vehicles");
+      revalidatePath("/admin/pricing");
+      revalidatePath("/", "layout");
+      return { result };
+    },
+    rawInput,
+  );
+}
+
 export async function deactivateVehicleAction(rawInput: unknown) {
   return createAction(
     z.object({ id: z.string().uuid() }),

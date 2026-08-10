@@ -5,6 +5,7 @@ import { Car } from "lucide-react";
 import { DEFAULT_CURRENCY, DEFAULT_LOCALE } from "@/config/constants";
 import { db } from "@/db/client";
 import { VehicleAdminRepository } from "@/features/admin/server/vehicle-admin-repository";
+import { VehicleTableActions } from "@/features/admin/components/VehicleDeleteButton";
 import { AdminContentCard } from "@/features/admin/components/shell/AdminContentCard";
 import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
@@ -128,11 +129,10 @@ export default async function AdminVehiclesPage() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button asChild variant="outline" size="sm">
-                      <Link href={`/admin/vehicles/${vehicle.id}/edit`}>
-                        {adminCopy.vehicles.table.edit}
-                      </Link>
-                    </Button>
+                    <VehicleTableActions
+                      vehicleId={vehicle.id}
+                      vehicleName={`${vehicle.brand} ${vehicle.model}`}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
