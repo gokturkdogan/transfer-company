@@ -1,20 +1,36 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import {
+  Car,
+  Luggage,
+  Mail,
+  MapPin,
+  NotebookPen,
+  Phone,
+  Plane,
+  PlaneLanding,
+  Sparkles,
+  UserRound,
+  Users,
+} from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { AcceptedPaymentCurrenciesNotice } from "@/features/booking/components/AcceptedPaymentCurrenciesNotice";
-import { BookingStepHeader } from "@/features/booking/components/BookingStepHeader";
-import { PriceSummary } from "@/features/booking/components/PriceSummary";
-import { RequiredExtrasPanel } from "@/features/booking/components/RequiredExtrasPanel";
+import { SummaryCard } from "@/features/booking/components/summary/SummaryCard";
+import { SummaryFactRow } from "@/features/booking/components/summary/SummaryFactRow";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
-import { formatInternationalPhone } from "@/lib/phone/format";
+import { buildOrderPricing } from "@/features/booking/lib/build-order-pricing";
+import { formatPrice } from "@/features/booking/lib/format-price";
+import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
 import { resolveTransferEndpointLabels } from "@/features/booking/lib/route-direction";
-import { joinWallClockDateTime } from "@/features/booking/lib/search-signature";
+import { formatInternationalPhone } from "@/lib/phone/format";
 
 export function BookingReview() {
   const t = useTranslations("booking.review");
   const tPassengers = useTranslations("booking.passengers");
-  const tPage = useTranslations("booking.page");
+  const tHotel = useTranslations("booking.hotel");
+  const tExtras = useTranslations("booking.extras");
+  const locale = useLocale();
   const { state, airports, districts } = useBookingFlow();
 
   const selectedOption = state.quote?.options.find(
@@ -24,6 +40,12 @@ export function BookingReview() {
   if (!state.quote || !selectedOption) {
     return null;
   }
+
+  const pricing = buildOrderPricing(
+    selectedOption,
+    state.quote,
+    state.selectedExtras,
+  );
 
   const airportName =
     airports.find((airport) => airport.id === state.search.originAirportId)
@@ -45,134 +67,212 @@ export function BookingReview() {
   });
 
   const detailLabel = hotelOrCustomLabel || t("noDropoff");
-
-  const outboundAt = joinWallClockDateTime(
+  const outboundAt = formatDateTimeLabel(
     state.search.outboundDate,
     state.search.outboundTime,
+    locale,
   );
   const returnAt =
     state.search.tripType === "ROUND_TRIP"
-      ? joinWallClockDateTime(state.search.returnDate, state.search.returnTime)
+      ? formatDateTimeLabel(
+          state.search.returnDate,
+          state.search.returnTime,
+          locale,
+        )
       : null;
 
+  const guestsSummary = [
+    t("adultsCount", { count: state.search.passengerCount }),
+    state.search.childCount > 0
+      ? t("childrenCount", { count: state.search.childCount })
+      : null,
+    state.search.infantCount > 0
+      ? t("infantsCount", { count: state.search.infantCount })
+      : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  const luggageSummary = [
+    state.search.largeLuggageCount > 0
+      ? t("largeLuggageCount", { count: state.search.largeLuggageCount })
+      : null,
+    state.search.cabinLuggageCount > 0
+      ? t("cabinLuggageCount", { count: state.search.cabinLuggageCount })
+      : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  const trimmedNotes = state.notes.trim();
+
   return (
-    <div className="space-y-6">
-      <BookingStepHeader
-        eyebrow={tPage("reviewEyebrow")}
-        title={t("title")}
-        subtitle={t("reservationNotice")}
-      />
+    <div className="space-y-4">
+      <p className="rounded-xl border border-gold/20 bg-gold/5 px-3.5 py-2.5 text-xs leading-relaxed text-muted-foreground">
+        {t("reservationNotice")}
+      </p>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <ReviewSection title={t("transfer")}>
-          <ReviewRow label={t("origin")} value={endpoints.displayOrigin} />
-          <ReviewRow
-            label={t("pricingDestination")}
-            value={endpoints.displayDestination}
-          />
-          <ReviewRow
-            label={
-              state.search.isReverseDirection ? t("pickup") : t("dropoff")
-            }
-            value={detailLabel}
-          />
-          <ReviewRow label={t("tripTypeLabel")} value={t(`tripType.${state.search.tripType}`)} />
-          <ReviewRow label={t("outbound")} value={outboundAt} />
-          {returnAt && <ReviewRow label={t("return")} value={returnAt} />}
-        </ReviewSection>
+      <div className="grid gap-3 lg:grid-cols-2">
+        <SummaryCard icon={PlaneLanding} title={t("transfer")}>
+          <div className="space-y-0.5">
+            <SummaryFactRow
+              label={t("origin")}
+              value={endpoints.displayOrigin}
+              icon={MapPin}
+            />
+            <SummaryFactRow
+              label={t("pricingDestination")}
+              value={endpoints.displayDestination}
+              icon={MapPin}
+            />
+            <SummaryFactRow
+              label={
+                state.search.isReverseDirection ? t("pickup") : t("dropoff")
+              }
+              value={detailLabel}
+              icon={MapPin}
+            />
+            {state.destination.useCustomDestination &&
+            state.destination.customAddress.trim() ? (
+              <SummaryFactRow
+                label={tHotel("customAddress")}
+                value={state.destination.customAddress.trim()}
+              />
+            ) : null}
+            <SummaryFactRow
+              label={t("tripTypeLabel")}
+              value={t(`tripType.${state.search.tripType}`)}
+            />
+            <SummaryFactRow label={t("outbound")} value={outboundAt} />
+            {returnAt ? (
+              <SummaryFactRow label={t("return")} value={returnAt} />
+            ) : null}
+            {state.flight.outboundFlightNumber.trim() ? (
+              <SummaryFactRow
+                label={t("flightNumber")}
+                value={state.flight.outboundFlightNumber.trim()}
+                icon={Plane}
+              />
+            ) : null}
+            {state.search.tripType === "ROUND_TRIP" &&
+            state.flight.returnFlightNumber.trim() ? (
+              <SummaryFactRow
+                label={t("returnFlightNumber")}
+                value={state.flight.returnFlightNumber.trim()}
+                icon={Plane}
+              />
+            ) : null}
+            {luggageSummary ? (
+              <SummaryFactRow
+                label={t("luggage")}
+                value={luggageSummary}
+                icon={Luggage}
+              />
+            ) : null}
+          </div>
+        </SummaryCard>
 
-        <ReviewSection title={t("passengers")}>
-          <ReviewRow
-            label={t("guests")}
-            value={t("adultsChildren", {
-              adults: state.search.passengerCount,
-              children: state.search.childCount,
+        <SummaryCard icon={Users} title={t("passengers")}>
+          <div className="space-y-0.5">
+            <SummaryFactRow label={t("guests")} value={guestsSummary} />
+            {state.passengers.map((passenger) => {
+              const label =
+                passenger.kind === "adult"
+                  ? tPassengers("adultLabel", { index: passenger.index })
+                  : tPassengers("childLabel", { index: passenger.index });
+              const value = passenger.idDocument.trim()
+                ? `${passenger.fullName} (${passenger.idDocument.trim()})`
+                : passenger.fullName;
+
+              return (
+                <SummaryFactRow
+                  key={`${passenger.kind}-${passenger.index}`}
+                  label={label}
+                  value={value}
+                />
+              );
             })}
-          />
-          {state.passengers.map((passenger) => {
-            const label =
-              passenger.kind === "adult"
-                ? tPassengers("adultLabel", { index: passenger.index })
-                : tPassengers("childLabel", { index: passenger.index });
-            const value = passenger.idDocument.trim()
-              ? `${passenger.fullName} (${passenger.idDocument.trim()})`
-              : passenger.fullName;
-
-            return <ReviewRow key={`${passenger.kind}-${passenger.index}`} label={label} value={value} />;
-          })}
-          <ReviewRow
-            label={t("vehicle")}
-            value={
-              selectedOption.quantity > 1
-                ? `${selectedOption.quantity} × ${selectedOption.name}`
-                : selectedOption.name
-            }
-          />
-        </ReviewSection>
+            <SummaryFactRow
+              label={t("vehicle")}
+              value={
+                selectedOption.quantity > 1
+                  ? `${selectedOption.quantity} × ${selectedOption.name}`
+                  : selectedOption.name
+              }
+              icon={Car}
+            />
+          </div>
+        </SummaryCard>
       </div>
 
-      <ReviewSection title={t("customer")}>
-        <ReviewRow
-          label={t("name")}
-          value={`${state.customer.firstName} ${state.customer.lastName}`}
-        />
-        <ReviewRow label={t("email")} value={state.customer.email} />
-        <ReviewRow
-          label={t("phone")}
-          value={formatInternationalPhone(
-            state.customer.phoneCountryCode,
-            state.customer.phone,
-          )}
-        />
-        {state.customer.secondaryPhone.trim() ? (
-          <ReviewRow
-            label={t("secondaryPhone")}
-            value={formatInternationalPhone(
-              state.customer.secondaryPhoneCountryCode,
-              state.customer.secondaryPhone,
-            )}
+      <SummaryCard icon={UserRound} title={t("customer")}>
+        <div className="space-y-0.5">
+          <SummaryFactRow
+            label={t("name")}
+            value={`${state.customer.firstName} ${state.customer.lastName}`.trim()}
           />
-        ) : null}
-      </ReviewSection>
+          <SummaryFactRow
+            label={t("email")}
+            value={state.customer.email}
+            icon={Mail}
+          />
+          <SummaryFactRow
+            label={t("phone")}
+            value={formatInternationalPhone(
+              state.customer.phoneCountryCode,
+              state.customer.phone,
+            )}
+            icon={Phone}
+          />
+          {state.customer.secondaryPhone.trim() ? (
+            <SummaryFactRow
+              label={t("secondaryPhone")}
+              value={formatInternationalPhone(
+                state.customer.secondaryPhoneCountryCode,
+                state.customer.secondaryPhone,
+              )}
+              icon={Phone}
+            />
+          ) : null}
+        </div>
+      </SummaryCard>
 
-      <RequiredExtrasPanel
-        extras={selectedOption.requiredExtras}
-        currency={state.quote.currency}
-      />
+      {pricing.hasExtras ? (
+        <SummaryCard icon={Sparkles} title={t("extras")}>
+          <ul className="space-y-2">
+            {pricing.allExtras.map((extra) => (
+              <li
+                key={extra.id}
+                className="flex items-start justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2"
+              >
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-white/90">
+                    {extra.name}
+                  </p>
+                  <p className="mt-0.5 text-[10px] uppercase tracking-[0.1em] text-white/45">
+                    {tExtras("quantity", { count: extra.quantity })}
+                    {" · "}
+                    {extra.required ? tExtras("required") : t("optionalExtra")}
+                  </p>
+                </div>
+                <span className="shrink-0 text-xs font-semibold text-gold-light">
+                  {formatPrice(extra.totalPriceMinor, pricing.currency, locale)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </SummaryCard>
+      ) : null}
 
-      <PriceSummary
-        option={selectedOption}
-        selectionTotalMinor={state.quote.selection?.quote.totalMinor}
-        currency={state.quote.currency}
-      />
+      {trimmedNotes ? (
+        <SummaryCard icon={NotebookPen} title={t("notes")}>
+          <p className="whitespace-pre-wrap text-xs leading-relaxed text-white/80">
+            {trimmedNotes}
+          </p>
+        </SummaryCard>
+      ) : null}
 
       <AcceptedPaymentCurrenciesNotice />
-    </div>
-  );
-}
-
-function ReviewSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="rounded-xl border border-border/70 bg-muted/35 p-4">
-      <h3 className="mb-3 text-sm font-bold uppercase tracking-[0.12em] text-gold-deep">
-        {title}
-      </h3>
-      <div className="space-y-2">{children}</div>
-    </section>
-  );
-}
-
-function ReviewRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col gap-0.5 text-sm sm:flex-row sm:justify-between sm:gap-4">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="font-medium text-foreground sm:text-end">{value}</span>
     </div>
   );
 }

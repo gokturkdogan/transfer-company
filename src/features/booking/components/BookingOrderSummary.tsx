@@ -1,19 +1,23 @@
 "use client";
 
 import {
-  Baby,
   Car,
   Clock3,
+  Luggage,
   MapPin,
+  NotebookPen,
+  Plane,
   PlaneLanding,
   Users,
 } from "lucide-react";
 import Image from "next/image";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo, type ReactNode } from "react";
+import { useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
+import { SummaryDetailRow } from "@/features/booking/components/summary/SummaryDetailRow";
+import { buildOrderPricing } from "@/features/booking/lib/build-order-pricing";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
 import { resolveTransferEndpointLabels } from "@/features/booking/lib/route-direction";
@@ -55,49 +59,11 @@ export function BookingOrderSummary({
       return null;
     }
 
-    const currency = state.quote.currency;
-    const baseTransferMinor = selectedOption.quote.baseItems.reduce(
-      (sum, item) => sum + item.totalPriceMinor,
-      0,
+    return buildOrderPricing(
+      selectedOption,
+      state.quote,
+      state.selectedExtras,
     );
-
-    const requiredExtras = selectedOption.requiredExtras.map((extra) => ({
-      id: extra.extraServiceId,
-      name: extra.name,
-      quantity: extra.quantity,
-      totalPriceMinor: extra.totalPriceMinor,
-    }));
-
-    const optionalExtras = state.selectedExtras
-      .map((selected) => {
-        const extra = selectedOption.optionalExtras.find(
-          (item) => item.extraServiceId === selected.extraServiceId,
-        );
-
-        if (!extra || selected.quantity <= 0) {
-          return null;
-        }
-
-        return {
-          id: extra.extraServiceId,
-          name: extra.name,
-          quantity: selected.quantity,
-          totalPriceMinor: extra.unitPriceMinor * selected.quantity,
-        };
-      })
-      .filter((item): item is NonNullable<typeof item> => item !== null);
-
-    const totalMinor =
-      state.quote.selection?.quote.totalMinor ?? selectedOption.quote.totalMinor;
-
-    return {
-      currency,
-      baseTransferMinor,
-      requiredExtras,
-      optionalExtras,
-      totalMinor,
-      hasExtras: requiredExtras.length > 0 || optionalExtras.length > 0,
-    };
   }, [selectedOption, state.quote, state.selectedExtras]);
 
   if (!selectedOption || !state.quote || !pricing) {
@@ -139,63 +105,112 @@ export function BookingOrderSummary({
     selectedOption.code,
   );
 
+  const passengerParts = [
+    t("adults", { count: state.search.passengerCount }),
+    state.search.childCount > 0
+      ? t("children", { count: state.search.childCount })
+      : null,
+    state.search.infantCount > 0
+      ? tReview("infantsCount", { count: state.search.infantCount })
+      : null,
+  ].filter(Boolean);
+
+  const luggageParts = [
+    state.search.largeLuggageCount > 0
+      ? tReview("largeLuggageCount", { count: state.search.largeLuggageCount })
+      : null,
+    state.search.cabinLuggageCount > 0
+      ? tReview("cabinLuggageCount", { count: state.search.cabinLuggageCount })
+      : null,
+  ].filter(Boolean);
+
+  const trimmedNotes = state.notes.trim();
+  const summaryTone = embedded ? "surface" : "ink";
+
   return (
     <div
       className={cn(
-        "overflow-hidden bg-card",
+        "overflow-hidden",
         embedded
-          ? "rounded-none border-0 shadow-none"
-          : "rounded-[1.35rem] border border-border/60 shadow-float",
+          ? "rounded-none border-0 bg-transparent shadow-none"
+          : cn(
+              "rounded-[1.35rem] border border-white/10 bg-gradient-to-br from-ink-elevated via-ink-soft to-ink",
+              "shadow-[0_16px_48px_rgb(0_0_0/0.32)]",
+            ),
         state.isLoadingQuote && "opacity-70 transition-opacity",
         className,
       )}
     >
-      <div className="relative aspect-video bg-muted/20">
-        <Image
-          src={vehicleImage}
-          alt={selectedOption.name}
-          fill
-          className="object-cover"
-          sizes="(min-width: 1024px) 22rem, 100vw"
-        />
-      </div>
+      {!embedded ? (
+        <div className="relative aspect-[16/10] bg-ink">
+          <Image
+            src={vehicleImage}
+            alt={selectedOption.name}
+            fill
+            className="object-cover opacity-90"
+            sizes="(min-width: 1024px) 22rem, 100vw"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 px-4 pb-3">
+            <p className="text-sm font-semibold text-white">{selectedOption.name}</p>
+            <p className="text-[11px] text-white/55">{transferLabel}</p>
+          </div>
+        </div>
+      ) : null}
 
       <div
         className={cn(
-          "border-t border-border/50 bg-card",
-          compact ? "px-4 py-0.5" : "px-4 py-1 sm:px-5",
+          embedded ? "px-0 py-0" : "border-t border-white/8 px-4 py-1",
         )}
       >
         <ul>
-          <SummaryDetailRow icon={Car} compact={compact}>
-            {selectedOption.name}
-          </SummaryDetailRow>
-          <SummaryDetailRow icon={PlaneLanding} compact={compact}>
+          {embedded ? (
+            <SummaryDetailRow icon={Car} compact={compact} tone={summaryTone}>
+              {selectedOption.name}
+            </SummaryDetailRow>
+          ) : null}
+          <SummaryDetailRow
+            icon={PlaneLanding}
+            compact={compact}
+            tone={summaryTone}
+          >
             {endpoints.pickupLabel}
           </SummaryDetailRow>
-          <SummaryDetailRow icon={MapPin} compact={compact}>
+          <SummaryDetailRow icon={MapPin} compact={compact} tone={summaryTone}>
             {endpoints.dropoffLabel}
           </SummaryDetailRow>
-          {compact ? (
-            <SummaryDetailRow icon={Users} compact>
-              {t("passengers", {
-                adults: state.search.passengerCount,
-                children: state.search.childCount,
-              })}
+          <SummaryDetailRow icon={Users} compact={compact} tone={summaryTone}>
+            {passengerParts.join(" · ")}
+          </SummaryDetailRow>
+          {luggageParts.length > 0 ? (
+            <SummaryDetailRow icon={Luggage} compact={compact} tone={summaryTone}>
+              {luggageParts.join(" · ")}
             </SummaryDetailRow>
-          ) : (
-            <>
-              <SummaryDetailRow icon={Users}>
-                {t("adults", { count: state.search.passengerCount })}
-              </SummaryDetailRow>
-              <SummaryDetailRow icon={Baby}>
-                {t("children", { count: state.search.childCount })}
-              </SummaryDetailRow>
-            </>
-          )}
+          ) : null}
           {scheduleLabel ? (
-            <SummaryDetailRow icon={Clock3} compact={compact}>
+            <SummaryDetailRow icon={Clock3} compact={compact} tone={summaryTone}>
               {scheduleLabel}
+            </SummaryDetailRow>
+          ) : null}
+          {state.flight.outboundFlightNumber.trim() ? (
+            <SummaryDetailRow icon={Plane} compact={compact} tone={summaryTone}>
+              {tReview("flightNumber")}: {state.flight.outboundFlightNumber.trim()}
+            </SummaryDetailRow>
+          ) : null}
+          {state.search.tripType === "ROUND_TRIP" &&
+          state.flight.returnFlightNumber.trim() ? (
+            <SummaryDetailRow icon={Plane} compact={compact} tone={summaryTone}>
+              {tReview("returnFlightNumber")}:{" "}
+              {state.flight.returnFlightNumber.trim()}
+            </SummaryDetailRow>
+          ) : null}
+          {trimmedNotes ? (
+            <SummaryDetailRow
+              icon={NotebookPen}
+              compact={compact}
+              tone={summaryTone}
+            >
+              <span className="line-clamp-2">{trimmedNotes}</span>
             </SummaryDetailRow>
           ) : null}
         </ul>
@@ -203,77 +218,62 @@ export function BookingOrderSummary({
 
       <div
         className={cn(
-          "border-t border-border/50 bg-muted/35",
-          compact ? "space-y-2 px-4 py-3" : "space-y-3 px-4 py-4 sm:px-5",
+          "border-t",
+          embedded ? "border-border/50 bg-muted/20" : "border-white/8 bg-ink/40",
+          compact ? "space-y-2 px-4 py-3" : "space-y-3 px-4 py-4",
         )}
       >
-        <div
-          className={cn(
-            "flex items-start justify-between gap-3",
-            compact ? "text-xs" : "text-sm",
+        <PricingLine
+          label={transferLabel}
+          value={formatPrice(
+            pricing.baseTransferMinor,
+            pricing.currency,
+            locale,
           )}
-        >
-          <span className="font-medium text-foreground">{transferLabel}</span>
-          <span className="shrink-0 font-semibold text-gold-deep">
-            {formatPrice(pricing.baseTransferMinor, pricing.currency, locale)}
-          </span>
-        </div>
+          compact={compact}
+          ink={!embedded}
+        />
 
         {pricing.hasExtras ? (
           <div className={cn(compact ? "space-y-1.5" : "space-y-2")}>
-            <p
-              className={cn(
-                "font-semibold text-foreground",
-                compact ? "text-xs" : "text-sm",
-              )}
-            >
-              {t("extrasTitle")}
-            </p>
-            {[...pricing.requiredExtras, ...pricing.optionalExtras].map(
-              (extra) => (
-                <div
-                  key={extra.id}
-                  className={cn(
-                    "flex items-start justify-between gap-3",
-                    compact ? "text-xs" : "text-sm",
-                  )}
-                >
-                  <span className="text-muted-foreground">
-                    {t("extraLine", {
-                      name: extra.name,
-                      count: extra.quantity,
-                    })}
-                  </span>
-                  <span className="shrink-0 font-medium text-gold-deep">
-                    {formatPrice(
-                      extra.totalPriceMinor,
-                      pricing.currency,
-                      locale,
-                    )}
-                  </span>
-                </div>
-              ),
-            )}
+            {pricing.allExtras.map((extra) => (
+              <PricingLine
+                key={extra.id}
+                label={t("extraLine", {
+                  name: extra.name,
+                  count: extra.quantity,
+                })}
+                value={formatPrice(
+                  extra.totalPriceMinor,
+                  pricing.currency,
+                  locale,
+                )}
+                compact={compact}
+                muted
+                ink={!embedded}
+              />
+            ))}
           </div>
         ) : null}
 
         <div
           className={cn(
-            "flex items-center justify-between gap-3 border-t border-border/50",
-            compact ? "pt-2" : "pt-3",
+            "flex items-center justify-between gap-3 border-t pt-3",
+            embedded ? "border-border/50" : "border-white/10",
           )}
         >
           <span
             className={cn(
-              "font-bold text-foreground",
+              "font-bold",
               compact ? "text-xs" : "text-sm",
+              embedded ? "text-foreground" : "text-white/90",
             )}
           >
             {tReview("total")}
           </span>
           <span
             className={cn(
-              "font-bold text-gold-deep",
+              "font-bold text-gold-light",
               compact ? "text-base" : "text-lg",
             )}
           >
@@ -307,38 +307,47 @@ export function BookingOrderSummary({
   );
 }
 
-function SummaryDetailRow({
-  icon: Icon,
-  children,
+function PricingLine({
+  label,
+  value,
   compact = false,
+  muted = false,
+  ink = false,
 }: {
-  icon: typeof Car;
-  children: ReactNode;
+  label: string;
+  value: string;
   compact?: boolean;
+  muted?: boolean;
+  ink?: boolean;
 }) {
   return (
-    <li
+    <div
       className={cn(
-        "flex items-center border-b border-border/40 last:border-b-0",
-        compact ? "gap-2.5 py-1.5" : "gap-3 py-3",
+        "flex items-start justify-between gap-3",
+        compact ? "text-xs" : "text-sm",
       )}
     >
       <span
         className={cn(
-          "flex shrink-0 items-center justify-center rounded-lg bg-gold/14 text-gold-deep",
-          compact ? "h-7 w-7" : "h-8 w-8",
+          muted
+            ? ink
+              ? "text-white/55"
+              : "text-muted-foreground"
+            : ink
+              ? "font-medium text-white/90"
+              : "font-medium text-foreground",
         )}
       >
-        <Icon className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} aria-hidden />
+        {label}
       </span>
       <span
         className={cn(
-          "min-w-0 flex-1 truncate font-medium leading-snug text-foreground",
-          compact ? "text-xs" : "text-sm",
+          "shrink-0 font-semibold",
+          ink ? "text-gold-light" : "text-gold-deep",
         )}
       >
-        {children}
+        {value}
       </span>
-    </li>
+    </div>
   );
 }
