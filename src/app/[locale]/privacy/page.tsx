@@ -6,11 +6,10 @@ import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 import { PrivacyContent } from "@/components/privacy/PrivacyContent";
 import { PrivacyHero } from "@/components/privacy/PrivacyHero";
-import { LOCALES } from "@/config/constants";
-import { clientEnv } from "@/config/env";
-import { db } from "@/db/client";
-import { LocaleRepository } from "@/features/locales/server/repository";
-import { resolveSiteLocales } from "@/features/locales/server/resolve-site-locales";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
+
+export const revalidate = 120;
 
 export async function generateMetadata({
   params,
@@ -18,31 +17,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "privacy.meta" });
+  const [t, enabledLocales] = await Promise.all([
+    getTranslations({ locale, namespace: "privacy.meta" }),
+    getCachedEnabledLocales(),
+  ]);
 
-  const baseUrl = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
-  const title = t("title");
-  const description = t("description");
-
-  return {
-    title,
-    description,
-    metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: `/${locale}/privacy`,
-      languages: Object.fromEntries(
-        LOCALES.map((alternate) => [alternate, `/${alternate}/privacy`]),
-      ),
-    },
-    openGraph: {
-      type: "website",
-      locale,
-      url: `${baseUrl}/${locale}/privacy`,
-      title,
-      description,
-    },
-    robots: { index: true, follow: true },
-  };
+  return buildPageMetadata({
+    locale,
+    path: "/privacy",
+    title: t("title"),
+    description: t("description"),
+    enabledLocales: enabledLocales.map((item) => item.code),
+  });
 }
 
 export default async function PrivacyPage({
@@ -53,7 +39,7 @@ export default async function PrivacyPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const enabledLocales = await resolveSiteLocales(new LocaleRepository(db));
+  const enabledLocales = await getCachedEnabledLocales();
 
   return (
     <>

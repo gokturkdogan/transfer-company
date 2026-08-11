@@ -1,4 +1,4 @@
-import { RESERVATION_STATUSES, type ReservationStatus } from "@/db/schema/enums";
+import { RESERVATION_STATUSES, type ReservationStatus } from "@/features/admin/lib/public-enums";
 import { Badge } from "@/components/ui/badge";
 import { formatReservationStatus } from "@/features/admin/copy";
 

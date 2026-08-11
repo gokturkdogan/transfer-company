@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "VIP Transfer",
+    "appName": "Royal Rhein Transfers",
     "tagline": "Premium havalimanı transfer rezervasyonu",
     "loading": "Yükleniyor...",
     "decreaseAria": "{label} azalt",
@@ -784,6 +784,25 @@
     "noPayment": {
       "title": "Online Ödeme Yok",
       "description": "Online ödeme yapmadan güvenli rezervasyon talebi gönderin."
+    }
+  },
+  "transfers": {
+    "eyebrow": "Havalimanı transferleri",
+    "title": "{district} transferi",
+    "description": "{district} için sabit fiyatlı VIP havalimanı transferinizi rezerve edin. Karşılama, uçuş takibi ve profesyonel şoförler — iki dakikadan kısa sürede rezervasyon.",
+    "cta": "Bu transferi rezerve et",
+    "browseAll": "Tüm rezervasyon seçenekleri",
+    "meta": {
+      "title": "{district} Havalimanı Transferi",
+      "description": "Antalya Havalimanı ile {district} arasında sabit fiyatlı VIP transfer. Karşılama dahil. 60 saniyede online rezervasyon.",
+      "fallbackTitle": "Havalimanı Transferi"
+    },
+    "district": {
+      "title": "{destination} havaalanı transferi",
+      "description": "Antalya Havalimanı'ndan {destination} bölgesine sabit fiyatlı VIP transfer. Karşılama ve uçuş takibi dahil.",
+      "heading": "{destination} VIP transfer",
+      "body": "Antalya Havalimanı'ndan {destination} bölgesine sabit fiyat, karşılama ve ücretsiz uçuş takibi ile konforlu seyahat.",
+      "cta": "Bu transferi rezerve et"
     }
   }
 }

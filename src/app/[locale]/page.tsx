@@ -17,22 +17,12 @@ import { HomeJsonLd } from "@/components/seo/HomeJsonLd";
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
-import { LOCALES } from "@/config/constants";
-import { clientEnv } from "@/config/env";
 import { HOMEPAGE_IMAGES } from "@/config/homepage-images";
-import { db } from "@/db/client";
-import { buildAcceptedPaymentCurrencies } from "@/features/currencies/lib/build-accepted-payment-currencies";
-import { CurrencyRepository } from "@/features/currencies/server/repository";
-import { LocationRepository } from "@/features/locations/server/repository";
-import { LocationService } from "@/features/locations/server/service";
-import { MarketingRepository } from "@/features/marketing/server/repository";
-import { MarketingService } from "@/features/marketing/server/service";
-import { LocaleRepository } from "@/features/locales/server/repository";
-import { resolveSiteLocales } from "@/features/locales/server/resolve-site-locales";
-import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
-import { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
+import { getHomePageData } from "@/features/marketing/server/get-home-page-data";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 120;
 
 export async function generateMetadata({
   params,
@@ -40,46 +30,25 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "home.meta" });
+  const [t, enabledLocales] = await Promise.all([
+    getTranslations({ locale, namespace: "home.meta" }),
+    getCachedEnabledLocales(),
+  ]);
 
-  const baseUrl = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
-  const title = t("title");
-  const description = t("description");
-
-  return {
-    title,
-    description,
+  return buildPageMetadata({
+    locale,
+    path: "",
+    title: t("title"),
+    description: t("description"),
     keywords: t("keywords"),
-    metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: `/${locale}`,
-      languages: Object.fromEntries(
-        LOCALES.map((alternate) => [alternate, `/${alternate}`]),
-      ),
+    enabledLocales: enabledLocales.map((item) => item.code),
+    image: {
+      url: HOMEPAGE_IMAGES.hero,
+      width: 1920,
+      height: 1080,
+      alt: t("title"),
     },
-    openGraph: {
-      type: "website",
-      locale,
-      url: `${baseUrl}/${locale}`,
-      title,
-      description,
-      images: [
-        {
-          url: HOMEPAGE_IMAGES.hero,
-          width: 1920,
-          height: 1080,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [HOMEPAGE_IMAGES.hero],
-    },
-    robots: { index: true, follow: true },
-  };
+  });
 }
 
 export default async function HomePage({
@@ -90,37 +59,16 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const locationService = new LocationService(new LocationRepository(db));
-  const marketingService = new MarketingService(
-    new MarketingRepository(db),
-    new VehicleFeatureRepository(db),
-    new VehicleGalleryRepository(db),
-  );
-
-  const [airports, cities, destinations, fleet, enabledLocales, enabledPaymentCurrencies] =
-    await Promise.all([
-      locationService.getAirports(locale),
-      locationService.getCities(locale),
-      marketingService.getPopularDestinations(locale),
-      marketingService.getFleet(locale),
-      resolveSiteLocales(new LocaleRepository(db)),
-      new CurrencyRepository(db).listEnabled(),
-    ]);
+  const {
+    airports,
+    cities,
+    districts,
+    destinations,
+    fleet,
+    enabledLocales,
+  } = await getHomePageData(locale);
 
   const cityId = cities.length === 1 ? (cities[0]?.id ?? "") : "";
-
-  const districts = (
-    await Promise.all(
-      cities.map((city) => locationService.getDistrictsForCity(city.id, locale)),
-    )
-  ).flat();
-
-  const defaultAirport =
-    airports.find((airport) => airport.code === "AYT") ?? airports[0];
-
-  const acceptedPaymentCurrencies = buildAcceptedPaymentCurrencies(
-    enabledPaymentCurrencies,
-  );
 
   return (
     <>
@@ -133,18 +81,12 @@ export default async function HomePage({
               airports={airports}
               cities={cities}
               districts={districts}
-              acceptedPaymentCurrencies={acceptedPaymentCurrencies}
               initialSearch={{ cityId }}
             />
           }
         />
         <TrustBar />
-        {defaultAirport && (
-          <PopularDestinations
-            destinations={destinations}
-            airportId={defaultAirport.id}
-          />
-        )}
+        <PopularDestinations destinations={destinations} />
         <StatsBand />
         <FleetSection fleet={fleet} />
         <HowItWorks />

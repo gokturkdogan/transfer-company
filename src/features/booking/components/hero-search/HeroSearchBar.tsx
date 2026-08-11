@@ -8,7 +8,7 @@ import { DateTimeSegment } from "@/features/booking/components/hero-search/DateT
 import { LocationSegment } from "@/features/booking/components/hero-search/LocationSegment";
 import { PassengerSegment } from "@/features/booking/components/hero-search/PassengerSegment";
 import { RouteSwapButton } from "@/features/booking/components/RouteSwapButton";
-import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { useSearchFormState } from "@/features/booking/hooks/use-search-form-state";
 import { todayIsoDateInProjectZone } from "@/features/booking/lib/search-datetime";
 import { cn } from "@/lib/utils";
 
@@ -30,8 +30,8 @@ export function HeroSearchBar({
 }: HeroSearchBarProps) {
   const isEmbedded = variant === "embedded";
   const t = useTranslations("booking.search");
-  const { state, airports, cities, districts, dispatch } = useBookingFlow();
-  const { search } = state;
+  const { search, airports, cities, districts, dispatch, isLoadingQuote } =
+    useSearchFormState();
 
   const minDate = useMemo(() => todayIsoDateInProjectZone(), []);
   const isRoundTrip = search.tripType === "ROUND_TRIP";
@@ -234,7 +234,7 @@ export function HeroSearchBar({
 
           <button
             type="submit"
-            disabled={!canSubmit || state.isLoadingQuote}
+            disabled={!canSubmit || isLoadingQuote}
             className={cn(
               "group relative flex h-14 w-full cursor-pointer items-center justify-center",
               "rounded-xl bg-gold-gradient text-base font-bold tracking-tight text-ink",
@@ -254,7 +254,7 @@ export function HeroSearchBar({
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </span>
             <span className="relative z-[1] inline-flex items-center gap-2">
-              {state.isLoadingQuote ? (
+              {isLoadingQuote ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
                   {t("loading")}

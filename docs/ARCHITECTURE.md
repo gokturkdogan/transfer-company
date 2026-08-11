@@ -26,10 +26,11 @@ Phase 3 exposes booking via Route Handlers:
 
 - `POST /api/quote` — vehicle availability and pricing (optional `selection` for requote)
 - `POST /api/reservations` — reservation creation
+- `GET /api/locations/hotels` — hotels for a district (`createRouteHandler` + `inputSource: "searchParams"`)
 
 Phase 4 adds the public booking UI at `/[locale]/booking` with a scoped reducer + context. Phase 5 adds `/admin/*` (outside i18n) and hierarchical locations. See [BOOKING_UI.md](./BOOKING_UI.md) and [ADMIN_PANEL.md](./ADMIN_PANEL.md).
 
-Handlers use `createRouteHandler()` from `src/server/http/route-handler.ts`. **No business logic in handlers.**
+Handlers use `createRouteHandler()` from `src/server/http/route-handler.ts`. **No business logic in handlers.** Public marketing/booking pages compose data via facades (`getHomePageData`, `getBookingPageData`) over `src/server/cache/public-catalog.ts`.
 
 ## Timezone policy
 
@@ -43,12 +44,12 @@ Handlers use `createRouteHandler()` from `src/server/http/route-handler.ts`. **N
 | Path | Responsibility |
 |------|----------------|
 | `src/app/admin/` | Admin panel routes (English, no locale prefix) |
-| `src/features/admin/` | Admin auth, location/pricing/reservation management |
+| `src/features/admin/` | Admin auth, location/pricing/reservation management; UI enums via `lib/public-enums.ts`; Server Actions split under `server/actions/` |
 | `src/app/` | Routes, layouts, pages (public `[locale]` + admin) |
 | `src/features/<domain>/` | Domain modules (components, schemas, server, types, utils) |
-| `src/server/` | Cross-cutting server infrastructure (errors, logger, action wrapper) |
+| `src/server/` | Cross-cutting server infrastructure (errors, logger, action wrapper, public catalog cache) |
 | `src/db/` | Database client and Drizzle schema |
-| `src/config/` | Typed environment and constants |
+| `src/config/` | Typed environment (`serverEnv` / `clientEnv`, including optional SMTP) and constants |
 | `src/lib/` | Pure shared utilities (money, reference codes) |
 | `src/components/ui/` | shadcn/ui primitives |
 | `src/components/shared/` | Cross-feature presentation components (incl. public `GlobalLoaderProvider` / overlay) |

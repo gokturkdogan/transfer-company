@@ -225,7 +225,7 @@ export function BookingOrderSummary({
               <button
                 type="button"
                 onClick={() => setExtrasExpanded((value) => !value)}
-                className="flex w-full items-start justify-between gap-3 text-left text-sm transition-colors hover:opacity-90"
+                className="flex w-full items-start justify-between gap-3 text-start text-sm transition-colors hover:opacity-90"
                 aria-expanded={extrasExpanded}
               >
                 <span className="flex items-center gap-1.5 font-medium text-white/90">

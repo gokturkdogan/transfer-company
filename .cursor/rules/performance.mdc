@@ -13,6 +13,11 @@ globs: src/app/**,src/features/**,src/db/**
 - Database indexes on FKs and filter columns
 - `next/image` for images
 - Lazy loading heavy client components
+- Marketing ISR (`revalidate = 120`) + `src/server/cache/public-catalog.ts` `unstable_cache` loaders
+- Page facades (`getHomePageData` / `getBookingPageData`) for route composition
+- Homepage `HomeSearchProvider` (search-only) instead of full booking flow on the hero
+- Booking `force-dynamic` for searchParams while still using cached catalog loaders
+- Lazy `next/dynamic` for heavy booking/search UI; client-only `flag-icons` CSS in `FlagIcon`
 
 ## Forbidden
 

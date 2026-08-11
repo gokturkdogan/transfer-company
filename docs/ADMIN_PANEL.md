@@ -76,7 +76,7 @@ Custom session auth — no third-party auth library.
 
 ## Location management
 
-All mutations go through Server Actions in `src/features/admin/server/actions.ts`, delegating to `LocationAdminRepository`.
+All mutations go through Server Actions under `src/features/admin/server/actions/` (barrel: `@/features/admin/server/actions`), delegating to admin repositories.
 
 ### Hierarchy rules (enforced server-side)
 

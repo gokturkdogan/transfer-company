@@ -4,7 +4,10 @@ import type { ZodType } from "zod";
 
 import { isAppError, toPublicError } from "@/server/errors";
 import { logger } from "@/server/logger";
-import type { RateLimitPolicy, RateLimiter } from "@/server/rate-limit/postgres-rate-limiter";
+import type {
+  RateLimitPolicy,
+  RateLimiter,
+} from "@/server/rate-limit/postgres-rate-limiter";
 import { failure, success, type ActionResult } from "@/server/result";
 
 type RateLimitConfig = {
@@ -15,6 +18,8 @@ type RateLimitConfig = {
 
 type RouteHandlerConfig<TInput, TOutput> = {
   schema: ZodType<TInput>;
+  /** Default `json` (POST body). Use `searchParams` for GET query validation. */
+  inputSource?: "json" | "searchParams";
   rateLimit?: RateLimitConfig;
   handler: (input: TInput, request: NextRequest) => Promise<TOutput>;
 };
@@ -71,25 +76,46 @@ async function applyRateLimit(
   return null;
 }
 
-export function createRouteHandler<TInput, TOutput>(
-  config: RouteHandlerConfig<TInput, TOutput>,
-) {
-  return async function routeHandler(request: NextRequest) {
-    let body: unknown;
+async function readInput(
+  request: NextRequest,
+  inputSource: "json" | "searchParams",
+): Promise<{ ok: true; value: unknown } | { ok: false; response: NextResponse }> {
+  if (inputSource === "searchParams") {
+    return {
+      ok: true,
+      value: Object.fromEntries(new URL(request.url).searchParams.entries()),
+    };
+  }
 
-    try {
-      body = await request.json();
-    } catch {
-      return jsonResponse(
+  try {
+    return { ok: true, value: await request.json() };
+  } catch {
+    return {
+      ok: false,
+      response: jsonResponse(
         failure({
           code: "VALIDATION_ERROR",
           message: "Invalid JSON body",
         }),
         400,
-      );
+      ),
+    };
+  }
+}
+
+export function createRouteHandler<TInput, TOutput>(
+  config: RouteHandlerConfig<TInput, TOutput>,
+) {
+  const inputSource = config.inputSource ?? "json";
+
+  return async function routeHandler(request: NextRequest) {
+    const raw = await readInput(request, inputSource);
+
+    if (!raw.ok) {
+      return raw.response;
     }
 
-    const parsed = config.schema.safeParse(body);
+    const parsed = config.schema.safeParse(raw.value);
 
     if (!parsed.success) {
       const fieldErrors = parsed.error.flatten().fieldErrors as Record<
@@ -127,11 +153,11 @@ export function createRouteHandler<TInput, TOutput>(
         error: error instanceof Error ? error.message : "Unknown error",
       });
 
-    if (isAppError(error)) {
-      return NextResponse.json(failure(toPublicError(error)), {
-        status: error.statusCode,
-      });
-    }
+      if (isAppError(error)) {
+        return NextResponse.json(failure(toPublicError(error)), {
+          status: error.statusCode,
+        });
+      }
 
       return jsonResponse(
         failure({

@@ -110,6 +110,28 @@ export class LocationRepository {
     }));
   }
 
+  async findAllDistricts(locale: string): Promise<DistrictDto[]> {
+    const rows = await this.baseSelect(locale)
+      .where(and(eq(locations.type, "DISTRICT"), eq(locations.isActive, true)))
+      .orderBy(asc(locations.sortOrder), asc(locations.defaultName));
+
+    return rows.flatMap((row) => {
+      if (row.parentId === null) {
+        return [];
+      }
+
+      return [
+        {
+          id: row.id,
+          name: translatedName(row.defaultName, row.translatedName),
+          code: row.code,
+          cityId: row.parentId,
+          sortOrder: row.sortOrder,
+        },
+      ];
+    });
+  }
+
   async findHotelsForDistrict(
     districtId: string,
     locale: string,

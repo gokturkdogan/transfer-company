@@ -18,8 +18,8 @@ import {
   formatReservationStatus,
   translateAdminError,
 } from "@/features/admin/copy";
-import type { ReservationStatus } from "@/db/schema/enums";
-import { RESERVATION_STATUSES } from "@/db/schema/enums";
+import type { ReservationStatus } from "@/features/admin/lib/public-enums";
+import { RESERVATION_STATUSES } from "@/features/admin/lib/public-enums";
 
 type ReservationStatusControlProps = {
   reservationId: string;

@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+
 import { cn } from "@/lib/utils";
 
 /** Dial-code territories that ship as subdivision assets in `flag-icons`. */
@@ -29,8 +33,13 @@ type FlagIconProps = {
  * Renders a country flag as an SVG asset (`flag-icons`) instead of an emoji,
  * because regional-indicator emoji do not render on Windows or many Androids.
  * Size follows the current font-size (width 1.333em / height 1em).
+ * CSS is loaded once on mount to keep the critical layout CSS lean.
  */
 export function FlagIcon({ iso2, label, className }: FlagIconProps) {
+  useEffect(() => {
+    void import("flag-icons/css/flag-icons.min.css");
+  }, []);
+
   return (
     <span
       role={label ? "img" : undefined}

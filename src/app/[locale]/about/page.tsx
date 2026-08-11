@@ -9,12 +9,11 @@ import { AboutValues } from "@/components/about/AboutValues";
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
-import { LOCALES } from "@/config/constants";
 import { ABOUT_IMAGES } from "@/config/about-images";
-import { clientEnv } from "@/config/env";
-import { db } from "@/db/client";
-import { LocaleRepository } from "@/features/locales/server/repository";
-import { resolveSiteLocales } from "@/features/locales/server/resolve-site-locales";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
+
+export const revalidate = 120;
 
 export async function generateMetadata({
   params,
@@ -22,45 +21,24 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "about.meta" });
+  const [t, enabledLocales] = await Promise.all([
+    getTranslations({ locale, namespace: "about.meta" }),
+    getCachedEnabledLocales(),
+  ]);
 
-  const baseUrl = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
-  const title = t("title");
-  const description = t("description");
-
-  return {
-    title,
-    description,
-    metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: `/${locale}/about`,
-      languages: Object.fromEntries(
-        LOCALES.map((alternate) => [alternate, `/${alternate}/about`]),
-      ),
+  return buildPageMetadata({
+    locale,
+    path: "/about",
+    title: t("title"),
+    description: t("description"),
+    enabledLocales: enabledLocales.map((item) => item.code),
+    image: {
+      url: ABOUT_IMAGES.hero,
+      width: 1920,
+      height: 1080,
+      alt: t("title"),
     },
-    openGraph: {
-      type: "website",
-      locale,
-      url: `${baseUrl}/${locale}/about`,
-      title,
-      description,
-      images: [
-        {
-          url: ABOUT_IMAGES.hero,
-          width: 1920,
-          height: 1080,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ABOUT_IMAGES.hero],
-    },
-    robots: { index: true, follow: true },
-  };
+  });
 }
 
 export default async function AboutPage({
@@ -71,7 +49,7 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const enabledLocales = await resolveSiteLocales(new LocaleRepository(db));
+  const enabledLocales = await getCachedEnabledLocales();
 
   return (
     <>

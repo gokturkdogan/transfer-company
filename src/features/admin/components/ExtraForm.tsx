@@ -24,7 +24,7 @@ import { AdminFormShell } from "@/features/admin/components/shell/AdminFormShell
 import { AdminSelect } from "@/features/admin/components/shell/AdminSelect";
 import { AdminToggleField } from "@/features/admin/components/shell/AdminToggleField";
 import type { EnabledLocaleRecord } from "@/features/locales/server/repository";
-import { EXTRA_PRICING_MODES } from "@/db/schema/enums";
+import { EXTRA_PRICING_MODES } from "@/features/admin/lib/public-enums";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

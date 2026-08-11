@@ -47,6 +47,7 @@ FINAL DROPOFF = Hotel in district, or custom destination in district
 ## Queries
 
 - `findDistrictsForCity(cityId)` — scoped to parent city
+- `findAllDistricts(locale)` / `getAllDistricts(locale)` — all active districts in one query (public catalog / ISR cache)
 - `findHotelsForDistrict(districtId)` — active hotels only
 - `GET /api/locations/hotels?districtId=` — client fetch after district selection
 

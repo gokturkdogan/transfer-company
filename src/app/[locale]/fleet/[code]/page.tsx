@@ -10,21 +10,20 @@ import { VehicleDetailSpecsBand } from "@/components/fleet/VehicleDetailSpecsBan
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
-import { LOCALES } from "@/config/constants";
-import { clientEnv } from "@/config/env";
 import { db } from "@/db/client";
 import { normalizeFleetVehicleCode } from "@/features/marketing/lib/fleet-vehicle-slug";
 import { MarketingRepository } from "@/features/marketing/server/repository";
 import { MarketingService } from "@/features/marketing/server/service";
-import { LocationRepository } from "@/features/locations/server/repository";
-import { LocationService } from "@/features/locations/server/service";
-import { LocaleRepository } from "@/features/locales/server/repository";
-import { resolveSiteLocales } from "@/features/locales/server/resolve-site-locales";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
 import { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+import {
+  getCachedAirports,
+  getCachedEnabledLocales,
+} from "@/server/cache/public-catalog";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 120;
 
 function createMarketingService() {
   return new MarketingService(
@@ -41,10 +40,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, code } = await params;
   const marketingService = createMarketingService();
-  const vehicle = await marketingService.getFleetVehicleDetail(
-    normalizeFleetVehicleCode(code),
-    locale,
-  );
+  const [vehicle, enabledLocales] = await Promise.all([
+    marketingService.getFleetVehicleDetail(
+      normalizeFleetVehicleCode(code),
+      locale,
+    ),
+    getCachedEnabledLocales(),
+  ]);
 
   if (!vehicle) {
     const t = await getTranslations({ locale, namespace: "fleet.meta" });
@@ -52,7 +54,6 @@ export async function generateMetadata({
   }
 
   const t = await getTranslations({ locale, namespace: "fleet.vehicleDetail" });
-  const baseUrl = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
   const title = t("metaTitle", { name: vehicle.name });
   const description =
     vehicle.shortDescription ??
@@ -60,26 +61,14 @@ export async function generateMetadata({
   const slug = code.toLowerCase();
   const heroImage = resolveVehicleCoverImage(vehicle.imageKey, vehicle.code);
 
-  return {
+  return buildPageMetadata({
+    locale,
+    path: `/fleet/${slug}`,
     title,
     description,
-    metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: `/${locale}/fleet/${slug}`,
-      languages: Object.fromEntries(
-        LOCALES.map((alternate) => [alternate, `/${alternate}/fleet/${slug}`]),
-      ),
-    },
-    openGraph: {
-      type: "website",
-      locale,
-      url: `${baseUrl}/${locale}/fleet/${slug}`,
-      title,
-      description,
-      images: [{ url: heroImage, width: 1920, height: 1080, alt: vehicle.name }],
-    },
-    robots: { index: true, follow: true },
-  };
+    enabledLocales: enabledLocales.map((item) => item.code),
+    image: { url: heroImage, width: 1920, height: 1080, alt: vehicle.name },
+  });
 }
 
 export default async function FleetVehicleDetailPage({
@@ -91,12 +80,14 @@ export default async function FleetVehicleDetailPage({
   setRequestLocale(locale);
 
   const marketingService = createMarketingService();
-  const locationService = new LocationService(new LocationRepository(db));
 
   const [vehicle, airports, enabledLocales] = await Promise.all([
-    marketingService.getFleetVehicleDetail(normalizeFleetVehicleCode(code), locale),
-    locationService.getAirports(locale),
-    resolveSiteLocales(new LocaleRepository(db)),
+    marketingService.getFleetVehicleDetail(
+      normalizeFleetVehicleCode(code),
+      locale,
+    ),
+    getCachedAirports(locale),
+    getCachedEnabledLocales(),
   ]);
 
   if (!vehicle) {

@@ -67,12 +67,6 @@ export async function HomeJsonLd({ locale }: HomeJsonLdProps) {
         opens: "00:00",
         closes: "23:59",
       },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.9",
-        reviewCount: "2400",
-        bestRating: "5",
-      },
     },
     {
       "@type": "WebSite",

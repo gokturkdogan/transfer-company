@@ -1,13 +1,19 @@
 "use client";
 
-import { useRouter } from "@/i18n/navigation";
+import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
-import { TransferSearchForm } from "@/features/booking/components/TransferSearchForm";
 import { HeroSearchBar } from "@/features/booking/components/hero-search/HeroSearchBar";
-import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { useSearchFormState } from "@/features/booking/hooks/use-search-form-state";
 import { buildBookingSearchParams } from "@/features/booking/lib/booking-search-params";
+import { useRouter } from "@/i18n/navigation";
+
+const TransferSearchForm = dynamic(() =>
+  import("@/features/booking/components/TransferSearchForm").then((module) => ({
+    default: module.TransferSearchForm,
+  })),
+);
 
 type TransferSearchLauncherProps = {
   showSecondaryCta?: boolean;
@@ -20,8 +26,7 @@ export function TransferSearchLauncher({
 }: TransferSearchLauncherProps) {
   const t = useTranslations("home");
   const router = useRouter();
-  const { state } = useBookingFlow();
-  const { search } = state;
+  const { search } = useSearchFormState();
 
   const navigateToBooking = () => {
     const params = buildBookingSearchParams(search);

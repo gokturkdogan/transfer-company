@@ -11,7 +11,6 @@ import { PublicContactProvider } from "@/features/contact/components/PublicConta
 import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 import { routing } from "@/i18n/routing";
 
-import "flag-icons/css/flag-icons.min.css";
 import "../globals.css";
 
 const manrope = Manrope({
@@ -29,8 +28,23 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "common" });
 
   return {
-    title: t("appName"),
+    title: {
+      default: t("appName"),
+      template: `%s | ${t("appName")}`,
+    },
     description: t("tagline"),
+    openGraph: {
+      type: "website",
+      locale,
+      siteName: t("appName"),
+      title: t("appName"),
+      description: t("tagline"),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("appName"),
+      description: t("tagline"),
+    },
   };
 }
 

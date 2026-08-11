@@ -18,7 +18,9 @@ The public booking experience is a progressive multi-step flow at `/[locale]/boo
 ## State ownership
 
 - **Reducer:** `booking-flow-reducer.ts` — pure state machine for step, search, quote, selection, extras, customer, idempotency
-- **Context:** `booking-flow-context.tsx` — scoped provider, API calls, no global store
+- **Context:** `booking-flow-context.tsx` — scoped provider for the booking page (API calls, quote race guard via request sequence id)
+- **Home search:** `home-search-context.tsx` — lightweight search-only provider for the homepage hero (no quote/reservation imports)
+- **Shared form adapter:** `useSearchFormState()` — HeroSearchBar / launcher read search + dispatch from home or booking context
 - **Forms:** controlled via reducer dispatch (RHF-ready structure; counters and selectors use reducer)
 
 ## Blocking loader (public only)
@@ -109,8 +111,9 @@ Only `formatMoney()` for display formatting is permitted.
 
 ## Pages
 
-- `/[locale]` — hero + `TransferSearchLauncher` → navigates to booking with query params
-- `/[locale]/booking` — full `BookingFlow` (dynamic, requires DB for locations)
+- `/[locale]` — hero + slim `HomeSearchProvider` / `HeroSearchBar` → navigates to booking with query params
+- `/[locale]/booking` — full `BookingFlow` (`force-dynamic`; catalog via cached loaders / `getBookingPageData`)
+- `/[locale]/transfers/[districtSlug]` — SEO destination landing with booking CTA
 
 ## Seed data
 

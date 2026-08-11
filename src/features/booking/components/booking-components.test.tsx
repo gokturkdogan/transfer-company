@@ -9,6 +9,14 @@ import { VehicleRecommendationCard } from "@/features/booking/components/Vehicle
 import type { TransferVehicleOptionDto } from "@/features/pricing/types/dto";
 
 const messages = {
+  home: {
+    carousel: {
+      previousImage: "{alt} — previous",
+      nextImage: "{alt} — next",
+      imageDot: "{alt} — {index}",
+      thumbnail: "{alt} — {index}",
+    },
+  },
   booking: {
     vehicle: {
       select: "Select",

@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "VIP Transfer",
+    "appName": "Royal Rhein Transfers",
     "tagline": "Premium-Flughafentransfer-Buchung",
     "loading": "Wird geladen...",
     "decreaseAria": "Verringern {label}",
@@ -784,6 +784,25 @@
     "noPayment": {
       "title": "Keine Online-Zahlung",
       "description": "Senden Sie eine sichere Reservierungsanfrage ohne Online-Zahlung."
+    }
+  },
+  "transfers": {
+    "eyebrow": "Flughafentransfers",
+    "title": "Transfer nach {district}",
+    "description": "Buchen Sie einen VIP-Flughafentransfer zum Festpreis nach {district}. Meet & Greet, Flugverfolgung und professionelle Fahrer — in unter zwei Minuten reservieren.",
+    "cta": "Diesen Transfer buchen",
+    "browseAll": "Alle Buchungsoptionen",
+    "meta": {
+      "title": "{district} Flughafentransfer",
+      "description": "VIP-Transfer zum Festpreis zwischen Flughafen Antalya und {district}. Inklusive Meet & Greet. Online in 60 Sekunden buchen.",
+      "fallbackTitle": "Flughafentransfer"
+    },
+    "district": {
+      "title": "Flughafentransfer nach {destination}",
+      "description": "Buchen Sie einen VIP-Transfer mit Festpreis vom Flughafen Antalya nach {destination}. Meet & Greet und Flugverfolgung inklusive.",
+      "heading": "VIP-Transfer nach {destination}",
+      "body": "Reisen Sie komfortabel vom Flughafen Antalya nach {destination} mit Festpreis, Meet & Greet und kostenloser Flugverfolgung.",
+      "cta": "Diesen Transfer buchen"
     }
   }
 }

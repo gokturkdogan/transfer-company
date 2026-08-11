@@ -6,6 +6,7 @@ import {
   useContext,
   useMemo,
   useReducer,
+  useRef,
   type ReactNode,
 } from "react";
 import { useLocale, useTranslations } from "next-intl";
@@ -65,7 +66,8 @@ type BookingFlowContextValue = {
   submitReservation: () => Promise<void>;
 };
 
-const BookingFlowContext = createContext<BookingFlowContextValue | null>(null);
+export const BookingFlowContext =
+  createContext<BookingFlowContextValue | null>(null);
 
 export function BookingFlowProvider({
   children,
@@ -89,6 +91,7 @@ export function BookingFlowProvider({
     bookingFlowReducer,
     createInitialBookingFlowState(initialSearch),
   );
+  const quoteRequestIdRef = useRef(0);
 
   useGlobalLoaderSync(
     state.isLoadingQuote || state.isSubmitting,
@@ -101,6 +104,7 @@ export function BookingFlowProvider({
       options?: { preserveStep?: boolean },
     ) => {
       const search = { ...state.search, ...searchOverride };
+      const requestId = ++quoteRequestIdRef.current;
 
       if (searchOverride) {
         dispatch({ type: "UPDATE_SEARCH", search: searchOverride });
@@ -111,6 +115,10 @@ export function BookingFlowProvider({
 
       const body = buildQuoteRequest(search, locale);
       const result = await fetchTransferQuote(body);
+
+      if (requestId !== quoteRequestIdRef.current) {
+        return;
+      }
 
       if (!result.success) {
         dispatch({
@@ -143,6 +151,8 @@ export function BookingFlowProvider({
         return;
       }
 
+      const requestId = ++quoteRequestIdRef.current;
+
       dispatch({
         type: "UPDATE_SEARCH",
         search: { outboundDate, outboundTime },
@@ -157,6 +167,10 @@ export function BookingFlowProvider({
       });
 
       const result = await fetchTransferQuote(body);
+
+      if (requestId !== quoteRequestIdRef.current) {
+        return;
+      }
 
       if (!result.success) {
         dispatch({
@@ -216,6 +230,8 @@ export function BookingFlowProvider({
         return;
       }
 
+      const requestId = ++quoteRequestIdRef.current;
+
       dispatch({ type: "QUOTE_LOADING" });
 
       const body = buildQuoteRequest(search, locale, {
@@ -225,6 +241,10 @@ export function BookingFlowProvider({
       });
 
       const result = await fetchTransferQuote(body);
+
+      if (requestId !== quoteRequestIdRef.current) {
+        return;
+      }
 
       if (!result.success) {
         dispatch({
@@ -405,6 +425,10 @@ export function useBookingFlow() {
   }
 
   return context;
+}
+
+export function useBookingFlowOptional() {
+  return useContext(BookingFlowContext);
 }
 
 export type { CustomerState, DestinationState, FlightState, SelectedExtra };

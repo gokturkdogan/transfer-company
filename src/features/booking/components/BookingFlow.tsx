@@ -1,11 +1,11 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { BookingFlowShell } from "@/features/booking/components/BookingFlowShell";
 import { BookingSearchPrompt } from "@/features/booking/components/BookingSearchPrompt";
-import { BookingReview } from "@/features/booking/components/BookingReview";
 import { BookingSidebar } from "@/features/booking/components/BookingSidebar";
 import { BookingStepCard } from "@/features/booking/components/BookingStepCard";
 import { BookingFormSections } from "@/features/booking/components/BookingFormSections";
@@ -15,9 +15,27 @@ import { CustomerDetailsForm } from "@/features/booking/components/CustomerDetai
 import { ExtrasSection } from "@/features/booking/components/ExtrasSection";
 import { PassengerDetailsForm } from "@/features/booking/components/PassengerDetailsForm";
 import { TransferDetailsForm } from "@/features/booking/components/TransferDetailsForm";
-import { SuccessStep } from "@/features/booking/components/SuccessStep";
-import { VehicleRecommendationList } from "@/features/booking/components/VehicleRecommendationList";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+
+const BookingReview = dynamic(() =>
+  import("@/features/booking/components/BookingReview").then((module) => ({
+    default: module.BookingReview,
+  })),
+);
+
+const SuccessStep = dynamic(() =>
+  import("@/features/booking/components/SuccessStep").then((module) => ({
+    default: module.SuccessStep,
+  })),
+);
+
+const VehicleRecommendationList = dynamic(() =>
+  import("@/features/booking/components/VehicleRecommendationList").then(
+    (module) => ({
+      default: module.VehicleRecommendationList,
+    }),
+  ),
+);
 
 export function BookingFlow() {
   const t = useTranslations("booking");

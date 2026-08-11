@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   RESERVATION_STATUSES,
   type ReservationStatus,
-} from "@/db/schema/enums";
+} from "@/features/admin/lib/public-enums";
 import { adminCopy, formatReservationStatus } from "@/features/admin/copy";
 import { cn } from "@/lib/utils";
 

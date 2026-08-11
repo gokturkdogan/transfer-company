@@ -313,3 +313,29 @@
 **Decision:** scrypt password hashes in `admin_users`, session tokens in `admin_sessions`, HttpOnly signed cookie, `requireAdminSession()` guard.
 
 **Consequences:** Minimal auth surface. `pnpm admin:create` bootstraps first user. Panel is English-only at `/admin/*`.
+
+---
+
+## ADR-025: Marketing ISR + public catalog cache
+
+**Date:** 2026-08-11
+**Status:** Accepted
+
+**Context:** Marketing pages were `force-dynamic` solely because airports, cities, districts, fleet, and locales load from Postgres. That prevented CDN caching while catalog data changes infrequently.
+
+**Decision:** Marketing routes use `revalidate = 120`. Shared catalog reads go through `unstable_cache` wrappers in `src/server/cache/public-catalog.ts` (services/repos instantiated inside the cached callback). Booking remains `force-dynamic` for `searchParams` but reuses the same cached loaders.
+
+**Consequences:** Faster TTFB on public pages with up to ~2 minutes catalog staleness. Districts load in one query (`getAllDistricts`) instead of per-city N+1. On-demand revalidation tags can be added later if admin edits need immediate visibility.
+
+---
+
+## ADR-026: Slim home search context + page data facades
+
+**Date:** 2026-08-11
+**Status:** Accepted
+
+**Context:** The homepage hero wrapped `BookingFlowProvider`, pulling quote/reservation client code into the first viewport. Admin Server Actions lived in one large file. Route pages duplicated catalog Promise wiring.
+
+**Decision:** Homepage uses `HomeSearchProvider` (search-only). Shared `useSearchFormState()` adapts home vs booking. BookingFlow steps and heavy search widgets use `next/dynamic`. Page routes call `getHomePageData` / `getBookingPageData`. Admin mutations are split under `features/admin/server/actions/`.
+
+**Consequences:** Smaller hero JS, clearer page composition, and easier admin action maintenance. Full message namespace loading remains until a safer next-intl split is validated.

@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "VIP Transfer",
+    "appName": "Royal Rhein Transfers",
     "tagline": "حجز نقل مميز من المطار",
     "loading": "جاري التحميل...",
     "decreaseAria": "تقليل {label}",
@@ -784,6 +784,25 @@
     "noPayment": {
       "title": "بدون دفع إلكتروني",
       "description": "أرسل طلب حجز آمن دون الدفع عبر الإنترنت."
+    }
+  },
+  "transfers": {
+    "eyebrow": "نقل المطار",
+    "title": "نقل إلى {district}",
+    "description": "احجز نقل VIP بأسعار ثابتة من المطار إلى {district}. استقبال في المطار وتتبع الرحلة وسائقون محترفون — احجز في أقل من دقيقتين.",
+    "cta": "احجز هذا النقل",
+    "browseAll": "كل خيارات الحجز",
+    "meta": {
+      "title": "نقل المطار إلى {district}",
+      "description": "نقل VIP بسعر ثابت بين مطار أنطاليا و{district}. يشمل الاستقبال. احجز عبر الإنترنت خلال 60 ثانية.",
+      "fallbackTitle": "نقل المطار"
+    },
+    "district": {
+      "title": "نقل المطار إلى {destination}",
+      "description": "احجز نقل VIP بسعر ثابت من مطار أنطاليا إلى {destination}. يشمل الاستقبال وتتبع الرحلة.",
+      "heading": "نقل VIP إلى {destination}",
+      "body": "سافر براحة من مطار أنطاليا إلى {destination} بأسعار ثابتة واستقبال وتتبع رحلة مجاني.",
+      "cta": "احجز هذا النقل"
     }
   }
 }

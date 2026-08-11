@@ -15,8 +15,8 @@ import type { ContactChannelRecord } from "@/features/contact/server/repository"
 import { adminCopy, translateAdminError } from "@/features/admin/copy";
 import { AdminContentCard } from "@/features/admin/components/shell/AdminContentCard";
 import { AdminFormSection } from "@/features/admin/components/shell/AdminFormSection";
-import type { ContactChannelType } from "@/db/schema/enums";
-import { CONTACT_CHANNEL_TYPES } from "@/db/schema/enums";
+import type { ContactChannelType } from "@/features/admin/lib/public-enums";
+import { CONTACT_CHANNEL_TYPES } from "@/features/admin/lib/public-enums";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

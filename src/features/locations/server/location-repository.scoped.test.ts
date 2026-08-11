@@ -25,6 +25,18 @@ describe("LocationRepository scoped queries", () => {
     expect(districts).toEqual([]);
   });
 
+  it("returns all active districts in one query", async () => {
+    const districts = await service.getAllDistricts("en");
+
+    expect(districts.map((district) => district.id)).toEqual([
+      "district-belek",
+      "district-alanya",
+    ]);
+    expect(districts.every((district) => district.cityId === "city-antalya")).toBe(
+      true,
+    );
+  });
+
   it("returns hotels scoped to the selected district", async () => {
     const hotels = await service.getHotelsForDistrict("district-belek", "en");
 

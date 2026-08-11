@@ -1,6 +1,8 @@
-import type { ReservationStatus } from "@/db/schema/enums";
-import type { TripType } from "@/db/schema/enums";
-import type { ExtraPricingMode } from "@/db/schema/enums";
+import type {
+  ExtraPricingMode,
+  ReservationStatus,
+  TripType,
+} from "@/features/admin/lib/public-enums";
 import type { AdminLocationType } from "@/features/admin/types/location";
 
 export const ADMIN_LOCALE = "tr-TR";

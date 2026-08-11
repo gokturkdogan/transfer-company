@@ -1,11 +1,11 @@
 "use client";
 
 import { CalendarDays } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { DateTimePickerPanel } from "@/features/booking/components/DateTimePickerPanel";
 import {
   SearchSegmentShell,
   SegmentValue,
@@ -13,6 +13,14 @@ import {
 import { searchEditSheetPopoverClass } from "@/features/booking/components/hero-search/search-overlay-styles";
 import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
 import { cn } from "@/lib/utils";
+
+const DateTimePickerPanel = dynamic(
+  () =>
+    import("@/features/booking/components/DateTimePickerPanel").then(
+      (module) => module.DateTimePickerPanel,
+    ),
+  { ssr: false },
+);
 
 type DateTimeSegmentProps = {
   label: string;

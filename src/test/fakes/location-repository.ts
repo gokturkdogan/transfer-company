@@ -74,6 +74,25 @@ export function createLocationRepositoryFake(
         );
     }),
 
+    findAllDistricts: vi.fn(async () => {
+      return locations
+        .filter(
+          (location) =>
+            location.type === "DISTRICT" &&
+            location.isActive &&
+            location.parentId !== null,
+        )
+        .map(
+          (location): DistrictDto => ({
+            id: location.id,
+            name: location.name,
+            code: location.code,
+            cityId: location.parentId as string,
+            sortOrder: location.sortOrder,
+          }),
+        );
+    }),
+
     findHotelsForDistrict: vi.fn(async (districtId: string) => {
       return locations
         .filter(

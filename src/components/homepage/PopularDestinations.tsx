@@ -11,12 +11,10 @@ import { formatMoney } from "@/lib/money";
 
 type PopularDestinationsProps = {
   destinations: DistrictStartingPriceDto[];
-  airportId: string;
 };
 
 export async function PopularDestinations({
   destinations,
-  airportId,
 }: PopularDestinationsProps) {
   const t = await getTranslations("home.destinations");
   const locale = await getLocale();
@@ -35,7 +33,7 @@ export async function PopularDestinations({
         />
         <PremiumCarousel label={t("title")}>
           {destinations.map((destination, index) => {
-            const bookingHref = `/booking?airport=${airportId}&district=${destination.id}`;
+            const landingHref = `/transfers/${destination.code.toLowerCase()}`;
 
             return (
               <DestinationCard
@@ -57,7 +55,7 @@ export async function PopularDestinations({
                   ),
                 })}
                 bookLabel={t("book")}
-                href={bookingHref}
+                href={landingHref}
               />
             );
           })}

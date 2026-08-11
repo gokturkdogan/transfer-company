@@ -26,6 +26,10 @@ export class LocationService {
     return this.repository.findDistrictsForCity(cityId, locale);
   }
 
+  getAllDistricts(locale: string): Promise<DistrictDto[]> {
+    return this.repository.findAllDistricts(locale);
+  }
+
   getHotelsForDistrict(
     districtId: string,
     locale: string,

@@ -9,18 +9,14 @@ import { FleetShowcase } from "@/components/fleet/FleetShowcase";
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
-import { LOCALES } from "@/config/constants";
-import { clientEnv } from "@/config/env";
 import { FLEET_PAGE_IMAGES } from "@/config/fleet-images";
-import { db } from "@/db/client";
-import { MarketingRepository } from "@/features/marketing/server/repository";
-import { MarketingService } from "@/features/marketing/server/service";
-import { LocaleRepository } from "@/features/locales/server/repository";
-import { resolveSiteLocales } from "@/features/locales/server/resolve-site-locales";
-import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
-import { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+import {
+  getCachedEnabledLocales,
+  getCachedFleet,
+} from "@/server/cache/public-catalog";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 120;
 
 export async function generateMetadata({
   params,
@@ -28,45 +24,24 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "fleet.meta" });
+  const [t, enabledLocales] = await Promise.all([
+    getTranslations({ locale, namespace: "fleet.meta" }),
+    getCachedEnabledLocales(),
+  ]);
 
-  const baseUrl = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
-  const title = t("title");
-  const description = t("description");
-
-  return {
-    title,
-    description,
-    metadataBase: new URL(baseUrl),
-    alternates: {
-      canonical: `/${locale}/fleet`,
-      languages: Object.fromEntries(
-        LOCALES.map((alternate) => [alternate, `/${alternate}/fleet`]),
-      ),
+  return buildPageMetadata({
+    locale,
+    path: "/fleet",
+    title: t("title"),
+    description: t("description"),
+    enabledLocales: enabledLocales.map((item) => item.code),
+    image: {
+      url: FLEET_PAGE_IMAGES.hero,
+      width: 1920,
+      height: 1080,
+      alt: t("title"),
     },
-    openGraph: {
-      type: "website",
-      locale,
-      url: `${baseUrl}/${locale}/fleet`,
-      title,
-      description,
-      images: [
-        {
-          url: FLEET_PAGE_IMAGES.hero,
-          width: 1920,
-          height: 1080,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [FLEET_PAGE_IMAGES.hero],
-    },
-    robots: { index: true, follow: true },
-  };
+  });
 }
 
 export default async function FleetPage({
@@ -77,15 +52,9 @@ export default async function FleetPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const marketingService = new MarketingService(
-    new MarketingRepository(db),
-    new VehicleFeatureRepository(db),
-    new VehicleGalleryRepository(db),
-  );
-
   const [fleet, enabledLocales] = await Promise.all([
-    marketingService.getFleet(locale),
-    resolveSiteLocales(new LocaleRepository(db)),
+    getCachedFleet(locale),
+    getCachedEnabledLocales(),
   ]);
 
   return (
