@@ -16,7 +16,12 @@ export function SummaryFactRow({
   variant = "ink",
 }: SummaryFactRowProps) {
   return (
-    <div className="flex items-start justify-between gap-3 py-1.5 text-xs">
+    <div
+      className={cn(
+        "flex items-start justify-between gap-3 py-1.5",
+        variant === "ink" ? "text-xs" : "text-sm",
+      )}
+    >
       <span
         className={cn(
           "flex min-w-0 items-center gap-2",

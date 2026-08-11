@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from "react";
 
+import { BookingDevReviewHydration } from "@/features/booking/components/BookingDevReviewHydration";
 import { BookingFlow } from "@/features/booking/components/BookingFlow";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { shouldActivateDevReviewMock } from "@/features/booking/lib/dev-review-mock";
 import { isLauncherSearchComplete } from "@/features/booking/lib/launcher-search";
 import type { BookingSearchState } from "@/features/booking/lib/types";
 
@@ -18,7 +20,8 @@ export function BookingFlowWithInit({
   useEffect(() => {
     if (
       initialized.current ||
-      !isLauncherSearchComplete(initialSearch)
+      !isLauncherSearchComplete(initialSearch) ||
+      shouldActivateDevReviewMock()
     ) {
       return;
     }
@@ -27,5 +30,10 @@ export function BookingFlowWithInit({
     void requestQuote();
   }, [initialSearch, requestQuote]);
 
-  return <BookingFlow />;
+  return (
+    <>
+      <BookingDevReviewHydration />
+      <BookingFlow />
+    </>
+  );
 }

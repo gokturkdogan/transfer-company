@@ -21,10 +21,10 @@ export function SummaryCard({
   return (
     <section
       className={cn(
-        "overflow-hidden rounded-2xl border shadow-[0_10px_36px_rgb(0_0_0/0.18)]",
+        "overflow-hidden border",
         variant === "ink"
-          ? "border-white/10 bg-gradient-to-br from-ink-elevated via-ink-soft to-ink"
-          : "border-border/60 bg-card/95",
+          ? "rounded-2xl border-white/10 bg-gradient-to-br from-ink-elevated via-ink-soft to-ink shadow-[0_10px_36px_rgb(0_0_0/0.18)]"
+          : "rounded-xl border-border/70 bg-muted/35 shadow-none",
         className,
       )}
     >
@@ -49,8 +49,9 @@ export function SummaryCard({
           ) : null}
           <h3
             className={cn(
-              "text-[11px] font-bold uppercase tracking-[0.14em]",
-              variant === "ink" ? "text-gold-light/90" : "text-gold-deep",
+              variant === "ink"
+                ? "text-[11px] font-bold uppercase tracking-[0.14em] text-gold-light/90"
+                : "text-sm font-bold uppercase tracking-[0.12em] text-gold-deep",
             )}
           >
             {title}

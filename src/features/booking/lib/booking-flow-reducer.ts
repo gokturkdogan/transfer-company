@@ -72,6 +72,11 @@ export type BookingFlowAction =
         selectedQuantity: number;
         selectedExtras: SelectedExtra[];
         passengers: PassengerDetails[];
+        step?: BookingStep;
+        customer?: CustomerState;
+        flight?: FlightState;
+        notes?: string;
+        idempotencyKey?: string | null;
       };
     };
 
@@ -397,6 +402,7 @@ export function bookingFlowReducer(
     case "RESTORE_SEARCH_DRAFT":
       return {
         ...state,
+        step: action.snapshot.step ?? state.step,
         search: action.snapshot.search,
         destination: action.snapshot.destination,
         quote: action.snapshot.quote,
@@ -405,7 +411,12 @@ export function bookingFlowReducer(
         selectedQuantity: action.snapshot.selectedQuantity,
         selectedExtras: action.snapshot.selectedExtras,
         passengers: action.snapshot.passengers,
+        customer: action.snapshot.customer ?? state.customer,
+        flight: action.snapshot.flight ?? state.flight,
+        notes: action.snapshot.notes ?? state.notes,
+        idempotencyKey: action.snapshot.idempotencyKey ?? state.idempotencyKey,
         isLoadingQuote: false,
+        isSubmitting: false,
         errorKey: null,
       };
 

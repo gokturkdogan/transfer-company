@@ -105,6 +105,7 @@ export function BookingReview() {
     .join(" · ");
 
   const trimmedNotes = state.notes.trim();
+  const cardVariant = "surface" as const;
 
   return (
     <div className="space-y-4">
@@ -113,17 +114,19 @@ export function BookingReview() {
       </p>
 
       <div className="grid gap-3 lg:grid-cols-2">
-        <SummaryCard icon={PlaneLanding} title={t("transfer")}>
+        <SummaryCard icon={PlaneLanding} title={t("transfer")} variant={cardVariant}>
           <div className="space-y-0.5">
             <SummaryFactRow
               label={t("origin")}
               value={endpoints.displayOrigin}
               icon={MapPin}
+              variant={cardVariant}
             />
             <SummaryFactRow
               label={t("pricingDestination")}
               value={endpoints.displayDestination}
               icon={MapPin}
+              variant={cardVariant}
             />
             <SummaryFactRow
               label={
@@ -131,27 +134,39 @@ export function BookingReview() {
               }
               value={detailLabel}
               icon={MapPin}
+              variant={cardVariant}
             />
             {state.destination.useCustomDestination &&
             state.destination.customAddress.trim() ? (
               <SummaryFactRow
                 label={tHotel("customAddress")}
                 value={state.destination.customAddress.trim()}
+                variant={cardVariant}
               />
             ) : null}
             <SummaryFactRow
               label={t("tripTypeLabel")}
               value={t(`tripType.${state.search.tripType}`)}
+              variant={cardVariant}
             />
-            <SummaryFactRow label={t("outbound")} value={outboundAt} />
+            <SummaryFactRow
+              label={t("outbound")}
+              value={outboundAt}
+              variant={cardVariant}
+            />
             {returnAt ? (
-              <SummaryFactRow label={t("return")} value={returnAt} />
+              <SummaryFactRow
+                label={t("return")}
+                value={returnAt}
+                variant={cardVariant}
+              />
             ) : null}
             {state.flight.outboundFlightNumber.trim() ? (
               <SummaryFactRow
                 label={t("flightNumber")}
                 value={state.flight.outboundFlightNumber.trim()}
                 icon={Plane}
+                variant={cardVariant}
               />
             ) : null}
             {state.search.tripType === "ROUND_TRIP" &&
@@ -160,6 +175,7 @@ export function BookingReview() {
                 label={t("returnFlightNumber")}
                 value={state.flight.returnFlightNumber.trim()}
                 icon={Plane}
+                variant={cardVariant}
               />
             ) : null}
             {luggageSummary ? (
@@ -167,14 +183,19 @@ export function BookingReview() {
                 label={t("luggage")}
                 value={luggageSummary}
                 icon={Luggage}
+                variant={cardVariant}
               />
             ) : null}
           </div>
         </SummaryCard>
 
-        <SummaryCard icon={Users} title={t("passengers")}>
+        <SummaryCard icon={Users} title={t("passengers")} variant={cardVariant}>
           <div className="space-y-0.5">
-            <SummaryFactRow label={t("guests")} value={guestsSummary} />
+            <SummaryFactRow
+              label={t("guests")}
+              value={guestsSummary}
+              variant={cardVariant}
+            />
             {state.passengers.map((passenger) => {
               const label =
                 passenger.kind === "adult"
@@ -189,6 +210,7 @@ export function BookingReview() {
                   key={`${passenger.kind}-${passenger.index}`}
                   label={label}
                   value={value}
+                  variant={cardVariant}
                 />
               );
             })}
@@ -200,21 +222,24 @@ export function BookingReview() {
                   : selectedOption.name
               }
               icon={Car}
+              variant={cardVariant}
             />
           </div>
         </SummaryCard>
       </div>
 
-      <SummaryCard icon={UserRound} title={t("customer")}>
+      <SummaryCard icon={UserRound} title={t("customer")} variant={cardVariant}>
         <div className="space-y-0.5">
           <SummaryFactRow
             label={t("name")}
             value={`${state.customer.firstName} ${state.customer.lastName}`.trim()}
+            variant={cardVariant}
           />
           <SummaryFactRow
             label={t("email")}
             value={state.customer.email}
             icon={Mail}
+            variant={cardVariant}
           />
           <SummaryFactRow
             label={t("phone")}
@@ -223,6 +248,7 @@ export function BookingReview() {
               state.customer.phone,
             )}
             icon={Phone}
+            variant={cardVariant}
           />
           {state.customer.secondaryPhone.trim() ? (
             <SummaryFactRow
@@ -232,30 +258,31 @@ export function BookingReview() {
                 state.customer.secondaryPhone,
               )}
               icon={Phone}
+              variant={cardVariant}
             />
           ) : null}
         </div>
       </SummaryCard>
 
       {pricing.hasExtras ? (
-        <SummaryCard icon={Sparkles} title={t("extras")}>
+        <SummaryCard icon={Sparkles} title={t("extras")} variant={cardVariant}>
           <ul className="space-y-2">
             {pricing.allExtras.map((extra) => (
               <li
                 key={extra.id}
-                className="flex items-start justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.03] px-3 py-2"
+                className="flex items-start justify-between gap-3 py-1"
               >
                 <div className="min-w-0">
-                  <p className="text-xs font-medium text-white/90">
+                  <p className="text-sm font-medium text-foreground">
                     {extra.name}
                   </p>
-                  <p className="mt-0.5 text-[10px] uppercase tracking-[0.1em] text-white/45">
+                  <p className="mt-0.5 text-xs text-muted-foreground">
                     {tExtras("quantity", { count: extra.quantity })}
                     {" · "}
                     {extra.required ? tExtras("required") : t("optionalExtra")}
                   </p>
                 </div>
-                <span className="shrink-0 text-xs font-semibold text-gold-light">
+                <span className="shrink-0 text-sm font-medium text-gold-deep">
                   {formatPrice(extra.totalPriceMinor, pricing.currency, locale)}
                 </span>
               </li>
@@ -265,8 +292,8 @@ export function BookingReview() {
       ) : null}
 
       {trimmedNotes ? (
-        <SummaryCard icon={NotebookPen} title={t("notes")}>
-          <p className="whitespace-pre-wrap text-xs leading-relaxed text-white/80">
+        <SummaryCard icon={NotebookPen} title={t("notes")} variant={cardVariant}>
+          <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
             {trimmedNotes}
           </p>
         </SummaryCard>
