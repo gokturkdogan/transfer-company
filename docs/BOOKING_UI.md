@@ -35,7 +35,7 @@ APIs:
 
 - `useGlobalLoader()` — `show` / `hide` / `withLoader`
 - `useGlobalLoaderSync(active, message?)` — bind an external busy flag
-- UI: `GlobalLoaderOverlay` (blocks pointer events + locks body scroll)
+- UI: `GlobalLoaderOverlay` with animated brand emblem (`BrandLoaderEmblem` — shine sweep + glow; asset `public/images/brand/loader-emblem.jpg`)
 
 Default copy: `common.loading` in `messages/*.json`.
 

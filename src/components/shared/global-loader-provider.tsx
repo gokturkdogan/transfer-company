@@ -31,11 +31,14 @@ type GlobalLoaderProviderProps = {
   children: ReactNode;
   /** Fallback label when callers do not pass a message. */
   defaultMessage?: string;
+  /** Keep the overlay visible (dev preview / mock). */
+  forceVisible?: boolean;
 };
 
 export function GlobalLoaderProvider({
   children,
   defaultMessage = "Loading...",
+  forceVisible = false,
 }: GlobalLoaderProviderProps) {
   const [depth, setDepth] = useState(0);
   const [message, setMessage] = useState(defaultMessage);
@@ -45,7 +48,7 @@ export function GlobalLoaderProvider({
     defaultMessageRef.current = defaultMessage;
   }, [defaultMessage]);
 
-  const isActive = depth > 0;
+  const isActive = forceVisible || depth > 0;
 
   useEffect(() => {
     if (!isActive) {

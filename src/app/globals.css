@@ -72,6 +72,10 @@
   --animate-glow-pulse: glow-pulse 4.5s ease-in-out infinite;
   --animate-marquee: marquee 38s linear infinite;
   --animate-scroll-hint: scroll-hint 2.2s ease-in-out infinite;
+  --animate-loader-shine: loader-shine 2.4s ease-in-out infinite;
+  --animate-loader-breathe: loader-breathe 2.8s ease-in-out infinite;
+  --animate-loader-glow: loader-glow 2.6s ease-in-out infinite;
+  --animate-loader-glint: loader-glint 2.4s ease-in-out infinite;
 }
 
 body {
@@ -173,6 +177,59 @@ body {
   50% {
     transform: translate3d(0, 8px, 0);
     opacity: 1;
+  }
+}
+
+@keyframes loader-shine {
+  0% {
+    background-position: 140% 40%;
+    opacity: 0.35;
+  }
+  45% {
+    opacity: 0.95;
+  }
+  100% {
+    background-position: -40% 60%;
+    opacity: 0.35;
+  }
+}
+
+@keyframes loader-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@keyframes loader-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes loader-glint {
+  0%,
+  55%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 0.15;
+    transform: scale(0.7);
   }
 }
 
@@ -359,6 +416,75 @@ body {
   color: var(--gold);
   box-shadow: none;
   outline: none;
+}
+
+/* Public global loader — brand emblem shine */
+.brand-loader-glow {
+  background: radial-gradient(
+    circle,
+    rgb(200 164 93 / 0.45) 0%,
+    rgb(200 164 93 / 0.12) 42%,
+    transparent 70%
+  );
+  filter: blur(8px);
+  animation: var(--animate-loader-glow);
+}
+
+.brand-loader-breathe {
+  animation: var(--animate-loader-breathe);
+  transform-origin: center center;
+}
+
+.brand-loader-shine {
+  background: linear-gradient(
+    115deg,
+    transparent 28%,
+    rgb(255 248 220 / 0.15) 40%,
+    rgb(255 255 255 / 0.7) 50%,
+    rgb(233 215 168 / 0.35) 58%,
+    transparent 72%
+  );
+  background-size: 220% 220%;
+  mix-blend-mode: soft-light;
+  animation: var(--animate-loader-shine);
+}
+
+.brand-loader-glint {
+  position: absolute;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    rgb(245 232 196 / 0.9) 35%,
+    transparent 70%
+  );
+  box-shadow:
+    0 0 10px rgb(255 255 255 / 0.75),
+    0 0 22px rgb(200 164 93 / 0.55);
+  animation: var(--animate-loader-glint);
+  pointer-events: none;
+}
+
+.brand-loader-glint--a {
+  left: 18%;
+  bottom: 22%;
+  animation-delay: 0.15s;
+}
+
+.brand-loader-glint--b {
+  left: 46%;
+  top: 18%;
+  width: 0.7rem;
+  height: 0.7rem;
+  animation-delay: 0.85s;
+}
+
+.brand-loader-glint--c {
+  right: 16%;
+  top: 42%;
+  animation-delay: 1.45s;
 }
 
 /* Scroll-reveal: hidden until observed, then animates in */

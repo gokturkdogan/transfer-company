@@ -1,5 +1,7 @@
 "use client";
 
+import { BrandLoaderEmblem } from "@/components/shared/brand-loader-emblem";
+
 type GlobalLoaderOverlayProps = {
   message: string;
 };
@@ -19,18 +21,14 @@ export function GlobalLoaderOverlay({ message }: GlobalLoaderOverlayProps) {
       aria-label={message}
     >
       <div
-        className="absolute inset-0 bg-ink/55 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-ink/70 backdrop-blur-[3px]"
         aria-hidden
       />
 
-      <div className="relative flex flex-col items-center gap-4 px-6">
-        <div className="relative h-12 w-12" aria-hidden>
-          <span className="absolute inset-0 rounded-full border-2 border-white/15" />
-          <span className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-gold border-r-gold/50" />
-          <span className="absolute inset-[5px] rounded-full bg-ink/40 shadow-gold" />
-        </div>
+      <div className="relative flex flex-col items-center gap-5 px-6">
+        <BrandLoaderEmblem alt="" />
 
-        <p className="max-w-xs text-center text-sm font-medium tracking-wide text-white/90">
+        <p className="max-w-xs text-center text-sm font-medium tracking-wide text-gold-light/90">
           {message}
         </p>
       </div>
