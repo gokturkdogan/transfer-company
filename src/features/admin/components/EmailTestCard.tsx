@@ -1,6 +1,7 @@
 "use client";
 
-import { Mail } from "lucide-react";
+import { Eye, Mail } from "lucide-react";
+import Link from "next/link";
 import { useState, useTransition } from "react";
 
 import { Alert } from "@/components/ui/alert";
@@ -44,17 +45,26 @@ export function EmailTestCard() {
         {error ? <Alert variant="destructive">{error}</Alert> : null}
         {success ? <Alert>{success}</Alert> : null}
 
-        <Button
-          type="button"
-          onClick={handleSend}
-          disabled={isPending}
-          className="gap-2"
-        >
-          <Mail className="size-4" />
-          {isPending
-            ? adminCopy.contact.emailTest.sending
-            : adminCopy.contact.emailTest.button}
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          <Button
+            type="button"
+            onClick={handleSend}
+            disabled={isPending}
+            className="gap-2"
+          >
+            <Mail className="size-4" />
+            {isPending
+              ? adminCopy.contact.emailTest.sending
+              : adminCopy.contact.emailTest.button}
+          </Button>
+
+          <Button type="button" variant="outline" className="gap-2" asChild>
+            <Link href="/admin/contact/email-preview">
+              <Eye className="size-4" />
+              {adminCopy.contact.emailTest.openPreview}
+            </Link>
+          </Button>
+        </div>
 
         <p className="text-sm text-muted-foreground">
           {adminCopy.contact.emailTest.hint}

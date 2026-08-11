@@ -200,6 +200,14 @@ export class BookingService {
         });
 
         if (!result.replayed) {
+          const vehicleCategoryIds = items
+            .map((item) => item.vehicleCategoryId)
+            .filter((value): value is string => Boolean(value));
+
+          const vehiclePresentations = await this.pricingRepository
+            .findVehiclePresentationsByIds(vehicleCategoryIds)
+            .catch(() => []);
+
           const notificationPayload = buildReservationNotificationPayload({
             reservationId: result.reservation.id,
             reference: result.reservation.reference,
@@ -210,6 +218,7 @@ export class BookingService {
             totalMinor: result.reservation.totalMinor,
             currency: result.reservation.currency,
             items,
+            vehiclePresentations,
           });
 
           await this.notificationService

@@ -1,7 +1,12 @@
 export type ReservationEmailLineItem = {
+  type: "TRANSFER_VEHICLE" | "EXTRA_SERVICE";
   name: string;
   quantity: number;
   totalPriceMinor: number;
+  imageUrl?: string;
+  passengerCapacity?: number;
+  largeLuggageCapacity?: number;
+  cabinLuggageCapacity?: number;
 };
 
 export type ReservationNotificationPayload = {

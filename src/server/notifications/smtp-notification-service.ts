@@ -10,26 +10,35 @@ import { logNotification } from "@/server/notifications/notification-log";
 import {
   buildAdminReservationEmail,
   buildCustomerReservationEmail,
+  type ReservationEmailContact,
 } from "@/server/notifications/templates/reservation-email";
 import type {
   NotificationService,
   ReservationNotificationPayload,
 } from "@/server/notifications/types";
 
-async function resolveAdminEmail(
-  config: SmtpConfig,
-): Promise<string> {
+export async function resolveReservationEmailContact(): Promise<ReservationEmailContact> {
+  try {
+    const channels = await getPublicContactChannels();
+
+    return {
+      phone: channels.phones[0],
+      email: channels.emails[0],
+      whatsapp: channels.whatsapps[0],
+    };
+  } catch {
+    return {};
+  }
+}
+
+async function resolveAdminEmail(config: SmtpConfig): Promise<string> {
   if (config.adminNotificationEmail) {
     return config.adminNotificationEmail;
   }
 
-  const channels = await getPublicContactChannels();
+  const contact = await resolveReservationEmailContact();
 
-  if (channels.emails.length > 0) {
-    return channels.emails[0]!;
-  }
-
-  return siteConfig.email;
+  return contact.email ?? siteConfig.email;
 }
 
 export class SmtpNotificationService implements NotificationService {
@@ -38,7 +47,8 @@ export class SmtpNotificationService implements NotificationService {
   async sendReservationReceived(
     payload: ReservationNotificationPayload,
   ): Promise<void> {
-    const email = buildCustomerReservationEmail(payload);
+    const contact = await resolveReservationEmailContact();
+    const email = buildCustomerReservationEmail(payload, { contact });
 
     try {
       await sendEmail(this.smtpConfig, {
@@ -79,10 +89,12 @@ export class SmtpNotificationService implements NotificationService {
     payload: ReservationNotificationPayload,
   ): Promise<void> {
     const adminEmail = await resolveAdminEmail(this.smtpConfig);
+    const contact = await resolveReservationEmailContact();
     const adminUrl = `${clientEnv.NEXT_PUBLIC_APP_URL}/admin/reservations/${payload.reservationId}`;
     const email = buildAdminReservationEmail(payload, {
       adminUrl,
-      contactEmail: siteConfig.email,
+      contactEmail: contact.email ?? siteConfig.email,
+      contact,
     });
 
     try {

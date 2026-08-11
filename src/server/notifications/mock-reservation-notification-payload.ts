@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 
+import { HOMEPAGE_IMAGES } from "@/config/homepage-images";
 import type { ReservationNotificationPayload } from "@/server/notifications/types";
 
 type CreateMockReservationNotificationPayloadInput = {
@@ -35,17 +36,24 @@ export function createMockReservationNotificationPayload(
     returnFlightNumber: "TK2422",
     items: [
       {
+        type: "TRANSFER_VEHICLE",
         name: "Mercedes-Benz Vito",
         quantity: 1,
         totalPriceMinor: 14500,
+        imageUrl: HOMEPAGE_IMAGES.fleet.VITO,
+        passengerCapacity: 6,
+        largeLuggageCapacity: 6,
+        cabinLuggageCapacity: 4,
       },
       {
+        type: "EXTRA_SERVICE",
         name: "Çocuk koltuğu",
         quantity: 1,
         totalPriceMinor: 0,
       },
       {
-        name: "Meet & Greet",
+        type: "EXTRA_SERVICE",
+        name: "Meet & Greet karşılama",
         quantity: 1,
         totalPriceMinor: 2500,
       },
@@ -60,6 +68,7 @@ export function createMockReservationNotificationPayload(
     subtotalMinor: 17000,
     totalMinor: 17000,
     currency: "EUR",
-    notes: "Bu bir test rezervasyonudur. Gerçek bir kayıt oluşturulmamıştır.",
+    notes:
+      "Uçuşumuz gece geç saatte iniyor, karşılamada bebek arabası için yer ayırabilir misiniz? (Bu bir örnek rezervasyondur.)",
   };
 }

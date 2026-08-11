@@ -18,6 +18,7 @@ import type {
   ExtraServiceWithTranslation,
   PricingReader,
   VehicleOptionRecord,
+  VehiclePresentationRecord,
 } from "@/features/pricing/server/reader";
 
 const defaultExtraServiceTranslations = alias(
@@ -138,6 +139,26 @@ export class PricingRepository implements PricingReader {
       .limit(1);
 
     return translation ?? null;
+  }
+
+  async findVehiclePresentationsByIds(
+    vehicleCategoryIds: string[],
+  ): Promise<VehiclePresentationRecord[]> {
+    if (vehicleCategoryIds.length === 0) {
+      return [];
+    }
+
+    return this.database
+      .select({
+        id: vehicleCategories.id,
+        code: vehicleCategories.code,
+        imageKey: vehicleCategories.imageKey,
+        passengerCapacity: vehicleCategories.passengerCapacity,
+        largeLuggageCapacity: vehicleCategories.largeLuggageCapacity,
+        cabinLuggageCapacity: vehicleCategories.cabinLuggageCapacity,
+      })
+      .from(vehicleCategories)
+      .where(inArray(vehicleCategories.id, vehicleCategoryIds));
   }
 
   async findVehicleOptionsForRoute(

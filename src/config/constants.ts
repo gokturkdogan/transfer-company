@@ -1,4 +1,4 @@
-export const APP_NAME = "VIP Transfer" as const;
+export const APP_NAME = "Royal Rhein Transfers" as const;
 
 export const LOCALES = ["tr", "en", "de", "ru", "ar"] as const;
 export type Locale = (typeof LOCALES)[number];

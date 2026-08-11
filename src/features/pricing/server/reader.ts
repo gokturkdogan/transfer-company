@@ -20,6 +20,15 @@ export type VehicleOptionRecord = VehicleCategoryRecord & {
   priceIsActive: boolean;
 };
 
+export type VehiclePresentationRecord = {
+  id: string;
+  code: string;
+  imageKey: string | null;
+  passengerCapacity: number;
+  largeLuggageCapacity: number;
+  cabinLuggageCapacity: number;
+};
+
 export type ExtraServiceWithTranslation = ExtraServiceRecord & {
   code: string;
   pricingMode: "FIXED" | "PER_UNIT";
@@ -52,6 +61,9 @@ export type PricingReader = {
     locale: string,
     currency: string,
   ): Promise<VehicleOptionRecord[]>;
+  findVehiclePresentationsByIds(
+    vehicleCategoryIds: string[],
+  ): Promise<VehiclePresentationRecord[]>;
   findExtraServiceById(extraServiceId: string): Promise<ExtraServiceWithTranslation | null>;
   findExtraServiceTranslation(
     extraServiceId: string,

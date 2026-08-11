@@ -1,5 +1,17 @@
 import { PROJECT_TIME_ZONE } from "@/config/constants";
+import { clientEnv } from "@/config/env";
 import { resolveIntlLocale } from "@/lib/intl-locale";
+
+export function toAbsoluteAssetUrl(url: string): string {
+  if (/^https?:\/\//i.test(url)) {
+    return url;
+  }
+
+  const base = clientEnv.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
+  const path = url.startsWith("/") ? url : `/${url}`;
+
+  return `${base}${path}`;
+}
 
 export function formatReservationDateTime(date: Date, locale: string): string {
   return new Intl.DateTimeFormat(resolveIntlLocale(locale), {

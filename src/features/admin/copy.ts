@@ -233,9 +233,21 @@ export const adminCopy = {
         "SMTP ayarlarınızı doğrulamak için örnek bir rezervasyon maili gönderin. Veritabanına kayıt oluşturulmaz.",
       button: "Mail gönder",
       sending: "Gönderiliyor...",
-      hint: "Müşteri şablonu oturum e-postanıza, admin şablonu bildirim e-postasına gider.",
+      hint: "Müşteri şablonu TEST_NOTIFICATION_EMAIL adresine, admin şablonu ADMIN_NOTIFICATION_EMAIL adresine gider.",
+      openPreview: "Şablonu önizle",
       success: (customerEmail: string, adminEmail: string) =>
         `Test mailleri gönderildi. Müşteri: ${customerEmail} · Admin: ${adminEmail}`,
+    },
+    emailPreview: {
+      title: "E-posta şablon önizleme",
+      subtitle:
+        "Rezervasyon maillerinin tarayıcıda nasıl görüneceğini inceleyin. Örnek verilerle oluşturulur.",
+      customerTab: "Müşteri maili",
+      adminTab: "Admin maili",
+      localeLabel: "Dil",
+      backToContact: "İletişim ayarlarına dön",
+      subjectLabel: "Konu satırı",
+      iframeTitle: "E-posta şablon önizlemesi",
     },
   },
   locales: {

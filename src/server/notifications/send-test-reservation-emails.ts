@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { resolveSmtpConfig } from "@/config/smtp";
 import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 import { sendEmail } from "@/server/notifications/email/send-email";
+import { resolveReservationEmailContact } from "@/server/notifications/smtp-notification-service";
 import {
   buildAdminReservationEmail,
   buildCustomerReservationEmail,
@@ -38,10 +39,12 @@ export async function sendMockReservationTestEmails(
   }
 
   const adminRecipient = await resolveAdminRecipient(smtpConfig);
-  const customerEmail = buildCustomerReservationEmail(payload);
+  const contact = await resolveReservationEmailContact();
+  const customerEmail = buildCustomerReservationEmail(payload, { contact });
   const adminEmail = buildAdminReservationEmail(payload, {
     adminUrl: `${clientEnv.NEXT_PUBLIC_APP_URL}/admin/reservations/${payload.reservationId}`,
-    contactEmail: siteConfig.email,
+    contactEmail: contact.email ?? siteConfig.email,
+    contact,
   });
 
   await sendEmail(smtpConfig, {

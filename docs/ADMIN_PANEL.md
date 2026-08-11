@@ -24,6 +24,7 @@ Phase 5 introduces a Turkish-only admin panel at `/admin/*`, **outside** the `[l
 | `/admin/reservations` | Reservation list |
 | `/admin/reservations/[id]` | Reservation detail |
 | `/admin/contact` | Contact channels (email, phone, WhatsApp) + SMTP test mail button |
+| `/admin/contact/email-preview` | Browser preview for reservation email templates |
 | `/admin/locales` | Enabled site languages for locale switcher |
 
 `[type]` is one of `airports`, `cities`, `districts`, `hotels` (URL slug maps to `AIRPORT`, `CITY`, `DISTRICT`, `HOTEL`).

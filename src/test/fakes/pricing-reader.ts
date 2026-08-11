@@ -68,6 +68,19 @@ export function createPricingReaderFake(
     findRoutePrice: async () => price,
     findVehicleCategoryById: async () => vehicle,
     findVehicleCategoryTranslation: async () => ({ name: "Sedan" }),
+    findVehiclePresentationsByIds: async (ids) =>
+      ids.includes(vehicle.id)
+        ? [
+            {
+              id: vehicle.id,
+              code: vehicle.code,
+              imageKey: vehicle.imageKey,
+              passengerCapacity: vehicle.passengerCapacity,
+              largeLuggageCapacity: vehicle.largeLuggageCapacity,
+              cabinLuggageCapacity: vehicle.cabinLuggageCapacity,
+            },
+          ]
+        : [],
     findVehicleOptionsForRoute: async () => [
       {
         ...vehicle,
