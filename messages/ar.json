@@ -304,7 +304,7 @@
       "quantityLabel": "الكمية",
       "none": "لا توجد إضافات اختيارية.",
       "includedPricing": "{included} مجانًا · ثم {price} لكل قطعة",
-      "luggageVehicleAutoAdded": "تمت إضافة مركبة أمتعة إضافية تلقائيًا لأن عدد حقائبك يتجاوز سعة المركبة المختارة ({capacity}).",
+      "luggageVehicleAutoAdded": "تمت إضافة مركبة أمتعة · تجاوزت السعة ({capacity})",
       "childSeatAutoAdded": "مقعد أطفال للرضع · {count} · {included} مجانًا"
     },
     "customer": {

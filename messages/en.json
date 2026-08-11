@@ -304,7 +304,7 @@
       "quantityLabel": "Quantity",
       "none": "No optional extras available.",
       "includedPricing": "{included} included free · {price} each after",
-      "luggageVehicleAutoAdded": "A luggage vehicle extra was added automatically because your luggage count exceeds the selected vehicle capacity ({capacity}).",
+      "luggageVehicleAutoAdded": "Luggage vehicle added · capacity ({capacity}) exceeded",
       "childSeatAutoAdded": "Child seat added for infants · {count} · {included} free"
     },
     "customer": {

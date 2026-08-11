@@ -304,7 +304,7 @@
       "quantityLabel": "Adet",
       "none": "İsteğe bağlı ekstra yok.",
       "includedPricing": "{included} adet ücretsiz · sonraki {price}/adet",
-      "luggageVehicleAutoAdded": "Valiz sayınız seçtiğiniz aracın kapasitesinden ({capacity}) fazla olduğu için bagaj aracı ekstrası otomatik eklendi.",
+      "luggageVehicleAutoAdded": "Bagaj aracı eklendi · kapasite ({capacity}) aşıldı",
       "childSeatAutoAdded": "Bebek için çocuk koltuğu eklendi · {count} adet · {included} ücretsiz"
     },
     "customer": {

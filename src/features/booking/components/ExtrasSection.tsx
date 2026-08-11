@@ -42,9 +42,9 @@ export function ExtrasSection() {
       defaultOpen
     >
       {showLuggageVehicleNotice ? (
-        <Alert className="mb-4 border-gold/30 bg-gold/5">
-          <Info className="h-4 w-4 text-gold-deep" aria-hidden />
-          <AlertDescription className="text-sm text-foreground">
+        <Alert className="mb-3 flex items-center gap-2 border-gold/30 bg-gold/5 px-3 py-2">
+          <Info className="h-3.5 w-3.5 shrink-0 text-gold-deep" aria-hidden />
+          <AlertDescription className="min-w-0 truncate text-xs leading-snug text-foreground">
             {t("luggageVehicleAutoAdded", {
               capacity: selectedOption.largeLuggageCapacity,
             })}
@@ -55,7 +55,7 @@ export function ExtrasSection() {
       {showChildSeatNotice ? (
         <Alert className="mb-3 flex items-center gap-2 border-gold/30 bg-gold/5 px-3 py-2">
           <Info className="h-3.5 w-3.5 shrink-0 text-gold-deep" aria-hidden />
-          <AlertDescription className="min-w-0 text-xs leading-snug text-foreground">
+          <AlertDescription className="min-w-0 truncate text-xs leading-snug text-foreground">
             {t("childSeatAutoAdded", {
               count: selectedOption.requiredChildSeats,
               included: childSeatIncludedQuantity,
