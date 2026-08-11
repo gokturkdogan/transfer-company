@@ -302,7 +302,7 @@
       "none": "İsteğe bağlı ekstra yok.",
       "includedPricing": "{included} adet ücretsiz · sonraki {price}/adet",
       "luggageVehicleAutoAdded": "Valiz sayınız seçtiğiniz aracın kapasitesinden ({capacity}) fazla olduğu için bagaj aracı ekstrası otomatik eklendi.",
-      "childSeatAutoAdded": "Bebek seçtiğiniz için çocuk koltuğu zorunlu olarak eklendi ({count} adet). {included} adet ücretsiz."
+      "childSeatAutoAdded": "Bebek için çocuk koltuğu eklendi · {count} adet · {included} ücretsiz"
     },
     "customer": {
       "title": "İletişim Bilgileri",
@@ -310,6 +310,7 @@
       "fullName": "Ad Soyad",
       "email": "E-posta",
       "phone": "Telefon",
+      "secondaryPhone": "İkinci telefon (isteğe bağlı)",
       "phonePlaceholder": "5XX XXX XX XX",
       "countryCode": "Ülke kodu",
       "searchCountry": "Ülke ara...",
@@ -484,6 +485,7 @@
       "name": "Ad soyad",
       "email": "E-posta",
       "phone": "Telefon",
+      "secondaryPhone": "İkinci telefon",
       "baseTransfer": "Transfer ücreti",
       "total": "Toplam",
       "edit": "Düzenle",

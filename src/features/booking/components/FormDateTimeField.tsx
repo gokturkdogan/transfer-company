@@ -6,12 +6,11 @@ import { useState } from "react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { DateTimePickerPanel } from "@/features/booking/components/DateTimePickerPanel";
+import { BookingFieldLabel } from "@/features/booking/components/BookingFieldLabel";
 import {
   bookingFormFieldGroupClass,
-  bookingFormLabelClass,
   bookingFormTriggerClass,
 } from "@/features/booking/components/booking-form-styles";
-import { Label } from "@/components/ui/label";
 import {
   formatDateTimeLabel,
   todayIsoDateInProjectZone,
@@ -26,6 +25,7 @@ type FormDateTimeFieldProps = {
   minDate?: string;
   onCommit: (date: string, time: string) => void;
   disabled?: boolean;
+  required?: boolean;
   className?: string;
 };
 
@@ -37,6 +37,7 @@ export function FormDateTimeField({
   minDate = todayIsoDateInProjectZone(),
   onCommit,
   disabled = false,
+  required = false,
   className,
 }: FormDateTimeFieldProps) {
   const locale = useLocale();
@@ -49,9 +50,7 @@ export function FormDateTimeField({
 
   return (
     <div className={cn(bookingFormFieldGroupClass, className)}>
-      <Label htmlFor={id} className={bookingFormLabelClass}>
-        {label}
-      </Label>
+      <BookingFieldLabel label={label} htmlFor={id} required={required} />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button

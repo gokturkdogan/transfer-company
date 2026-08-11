@@ -1,15 +1,15 @@
 import type { ReactNode } from "react";
 
-import { Label } from "@/components/ui/label";
+import { BookingFieldLabel } from "@/features/booking/components/BookingFieldLabel";
 import {
   bookingFormFieldGroupClass,
-  bookingFormLabelClass,
 } from "@/features/booking/components/booking-form-styles";
 import { cn } from "@/lib/utils";
 
 type BookingFormFieldProps = {
   label: string;
   htmlFor?: string;
+  required?: boolean;
   children: ReactNode;
   className?: string;
 };
@@ -17,14 +17,13 @@ type BookingFormFieldProps = {
 export function BookingFormField({
   label,
   htmlFor,
+  required = false,
   children,
   className,
 }: BookingFormFieldProps) {
   return (
     <div className={cn(bookingFormFieldGroupClass, className)}>
-      <Label htmlFor={htmlFor} className={bookingFormLabelClass}>
-        {label}
-      </Label>
+      <BookingFieldLabel label={label} htmlFor={htmlFor} required={required} />
       {children}
     </div>
   );

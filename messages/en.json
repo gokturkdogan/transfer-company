@@ -302,7 +302,7 @@
       "none": "No optional extras available.",
       "includedPricing": "{included} included free · {price} each after",
       "luggageVehicleAutoAdded": "A luggage vehicle extra was added automatically because your luggage count exceeds the selected vehicle capacity ({capacity}).",
-      "childSeatAutoAdded": "A child seat was added automatically because you selected {count} infant(s). {included} included free."
+      "childSeatAutoAdded": "Child seat added for infants · {count} · {included} free"
     },
     "customer": {
       "title": "Contact Information",
@@ -310,6 +310,7 @@
       "fullName": "Full name",
       "email": "Email",
       "phone": "Phone",
+      "secondaryPhone": "Second phone (optional)",
       "phonePlaceholder": "7XX XXX XXXX",
       "countryCode": "Country code",
       "searchCountry": "Search country...",
@@ -484,6 +485,7 @@
       "name": "Full name",
       "email": "Email",
       "phone": "Phone",
+      "secondaryPhone": "Second phone",
       "baseTransfer": "Base transfer",
       "total": "Total",
       "edit": "Edit details",

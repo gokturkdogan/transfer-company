@@ -126,7 +126,8 @@ export function createInitialBookingFlowState(
       email: "",
       phoneCountryCode: DEFAULT_PHONE_COUNTRY_CODE,
       phone: "",
-      whatsappPhone: "",
+      secondaryPhoneCountryCode: DEFAULT_PHONE_COUNTRY_CODE,
+      secondaryPhone: "",
     },
     passengers: buildPassengerSlots(
       mergedSearch.passengerCount,

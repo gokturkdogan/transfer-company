@@ -302,7 +302,7 @@
       "none": "لا توجد إضافات اختيارية.",
       "includedPricing": "{included} مجانًا · ثم {price} لكل قطعة",
       "luggageVehicleAutoAdded": "تمت إضافة مركبة أمتعة إضافية تلقائيًا لأن عدد حقائبك يتجاوز سعة المركبة المختارة ({capacity}).",
-      "childSeatAutoAdded": "تمت إضافة مقعد أطفال تلقائيًا لأنك اخترت {count} رضيعًا. {included} مجانًا."
+      "childSeatAutoAdded": "مقعد أطفال للرضع · {count} · {included} مجانًا"
     },
     "customer": {
       "title": "معلومات الاتصال",
@@ -310,6 +310,7 @@
       "fullName": "الاسم الكامل",
       "email": "البريد الإلكتروني",
       "phone": "رقم الهاتف",
+      "secondaryPhone": "رقم هاتف ثانٍ (اختياري)",
       "phonePlaceholder": "5X XXX XXXX",
       "countryCode": "رمز الدولة",
       "searchCountry": "ابحث عن دولة...",
@@ -484,6 +485,7 @@
       "name": "الاسم الكامل",
       "email": "البريد الإلكتروني",
       "phone": "الهاتف",
+      "secondaryPhone": "الهاتف الثانوي",
       "baseTransfer": "النقل الأساسي",
       "total": "المجموع",
       "edit": "تعديل التفاصيل",

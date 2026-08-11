@@ -329,7 +329,12 @@ export function BookingFlowProvider({
           state.customer.phoneCountryCode,
           state.customer.phone,
         ),
-        whatsappPhone: state.customer.whatsappPhone || undefined,
+        whatsappPhone: state.customer.secondaryPhone.trim()
+          ? formatInternationalPhone(
+              state.customer.secondaryPhoneCountryCode,
+              state.customer.secondaryPhone,
+            )
+          : undefined,
       },
       notes: appendPassengerDetailsToNotes(
         state.passengers,

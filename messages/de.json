@@ -302,7 +302,7 @@
       "none": "Keine optionalen Extras verfügbar.",
       "includedPricing": "{included} inklusive · danach {price} pro Stück",
       "luggageVehicleAutoAdded": "Ein Gepäckfahrzeug-Extra wurde automatisch hinzugefügt, weil Ihre Gepäckmenge die Kapazität des gewählten Fahrzeugs ({capacity}) übersteigt.",
-      "childSeatAutoAdded": "Ein Kindersitz wurde automatisch hinzugefügt, weil Sie {count} Baby(s) ausgewählt haben. {included} inklusive."
+      "childSeatAutoAdded": "Kindersitz für Babys · {count} · {included} gratis"
     },
     "customer": {
       "title": "Kontaktinformationen",
@@ -310,6 +310,7 @@
       "fullName": "Vollständiger Name",
       "email": "E-Mail",
       "phone": "Telefon",
+      "secondaryPhone": "Zweite Telefonnummer (optional)",
       "phonePlaceholder": "1XX XXXXXXX",
       "countryCode": "Ländervorwahl",
       "searchCountry": "Land suchen...",
@@ -484,6 +485,7 @@
       "name": "Vollständiger Name",
       "email": "E-Mail",
       "phone": "Telefon",
+      "secondaryPhone": "Zweite Telefonnummer",
       "baseTransfer": "Basis-Transfer",
       "total": "Gesamt",
       "edit": "Details bearbeiten",

@@ -39,7 +39,11 @@ export function PassengerDetailsForm() {
                 {label}
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
-                <BookingFormField label={t("fullName")} htmlFor={`passenger-name-${passengerSlotKey(passenger)}`}>
+                <BookingFormField
+                  label={t("fullName")}
+                  htmlFor={`passenger-name-${passengerSlotKey(passenger)}`}
+                  required
+                >
                   <BookingInput
                     id={`passenger-name-${passengerSlotKey(passenger)}`}
                     autoComplete="name"

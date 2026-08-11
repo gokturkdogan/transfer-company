@@ -124,6 +124,15 @@ export function BookingReview() {
             state.customer.phone,
           )}
         />
+        {state.customer.secondaryPhone.trim() ? (
+          <ReviewRow
+            label={t("secondaryPhone")}
+            value={formatInternationalPhone(
+              state.customer.secondaryPhoneCountryCode,
+              state.customer.secondaryPhone,
+            )}
+          />
+        ) : null}
       </ReviewSection>
 
       <RequiredExtrasPanel

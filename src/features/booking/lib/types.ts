@@ -44,7 +44,8 @@ export type CustomerState = {
   email: string;
   phoneCountryCode: string;
   phone: string;
-  whatsappPhone: string;
+  secondaryPhoneCountryCode: string;
+  secondaryPhone: string;
 };
 
 export type { PassengerDetails, PassengerKind } from "@/features/booking/lib/passenger-details";

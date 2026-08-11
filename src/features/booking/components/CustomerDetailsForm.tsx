@@ -24,8 +24,8 @@ export function CustomerDetailsForm() {
       description={t("subtitle")}
       icon={<UserRound className="h-4 w-4" aria-hidden />}
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <BookingFormField label={t("fullName")} htmlFor="full-name">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <BookingFormField label={t("fullName")} htmlFor="full-name" required>
           <BookingInput
             id="full-name"
             autoComplete="name"
@@ -40,7 +40,7 @@ export function CustomerDetailsForm() {
             }}
           />
         </BookingFormField>
-        <BookingFormField label={t("email")} htmlFor="email">
+        <BookingFormField label={t("email")} htmlFor="email" required>
           <BookingInput
             id="email"
             type="email"
@@ -56,8 +56,9 @@ export function CustomerDetailsForm() {
         </BookingFormField>
         <PhoneNumberField
           id="phone"
-          className="sm:col-span-2 lg:col-span-1"
+          className="sm:col-span-1"
           label={t("phone")}
+          required
           countryCode={customer.phoneCountryCode}
           nationalNumber={customer.phone}
           placeholder={t("phonePlaceholder")}
@@ -71,6 +72,26 @@ export function CustomerDetailsForm() {
             dispatch({
               type: "UPDATE_CUSTOMER",
               customer: { phone },
+            })
+          }
+        />
+        <PhoneNumberField
+          id="secondary-phone"
+          className="sm:col-span-1"
+          label={t("secondaryPhone")}
+          countryCode={customer.secondaryPhoneCountryCode}
+          nationalNumber={customer.secondaryPhone}
+          placeholder={t("phonePlaceholder")}
+          onCountryCodeChange={(secondaryPhoneCountryCode) =>
+            dispatch({
+              type: "UPDATE_CUSTOMER",
+              customer: { secondaryPhoneCountryCode },
+            })
+          }
+          onNationalNumberChange={(secondaryPhone) =>
+            dispatch({
+              type: "UPDATE_CUSTOMER",
+              customer: { secondaryPhone },
             })
           }
         />

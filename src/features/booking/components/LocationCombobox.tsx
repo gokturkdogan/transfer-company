@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/command";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { BookingFieldLabel } from "@/features/booking/components/BookingFieldLabel";
 import {
   bookingFormFieldGroupClass,
   bookingFormLabelClass,
@@ -36,6 +37,7 @@ type LocationComboboxProps = {
   emptyLabel: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  required?: boolean;
   className?: string;
   appearance?: "default" | "booking";
 };
@@ -49,6 +51,7 @@ export function LocationCombobox({
   emptyLabel,
   onChange,
   disabled = false,
+  required = false,
   className,
   appearance = "default",
 }: LocationComboboxProps) {
@@ -63,9 +66,11 @@ export function LocationCombobox({
         className,
       )}
     >
-      <Label className={appearance === "booking" ? bookingFormLabelClass : undefined}>
-        {label}
-      </Label>
+      {appearance === "booking" ? (
+        <BookingFieldLabel label={label} required={required} />
+      ) : (
+        <Label>{label}</Label>
+      )}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

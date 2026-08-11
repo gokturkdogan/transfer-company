@@ -20,6 +20,7 @@ export function CustomDestinationFields() {
         label={t("customName")}
         htmlFor="custom-name"
         className="sm:col-span-2"
+        required
       >
         <BookingInput
           id="custom-name"

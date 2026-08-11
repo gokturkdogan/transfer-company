@@ -28,6 +28,7 @@ export function TransferDetailsForm() {
           <FormDateTimeField
             id="landing-datetime"
             label={t("landingDateTime")}
+            required
             dateValue={search.outboundDate}
             timeValue={search.outboundTime}
             disabled={state.isLoadingQuote}
