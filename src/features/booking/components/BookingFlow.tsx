@@ -28,7 +28,9 @@ export function BookingFlow() {
   );
 
   const showStepCard =
-    state.step !== "vehicle" && state.step !== "search";
+    state.step !== "vehicle" &&
+    state.step !== "search" &&
+    state.step !== "success";
   const showMobileSummaryBelow = state.step === "review";
 
   return (
@@ -57,9 +59,10 @@ export function BookingFlow() {
           )}
 
           {state.step === "review" && <BookingReview />}
-          {state.step === "success" && <SuccessStep />}
         </BookingStepCard>
       )}
+
+      {state.step === "success" && <SuccessStep />}
 
       {showMobileSummaryBelow ? (
         <div className="mt-8 lg:hidden">

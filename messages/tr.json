@@ -512,6 +512,8 @@
       "title": "Rezervasyon Talebi Alındı",
       "subtitle": "Rezervasyonunuz onay bekliyor.",
       "reference": "Referans",
+      "emailNotice": "Rezervasyon bilgileriniz {email} adresine gönderilmiştir.",
+      "emailSpamHint": "E-postayı göremiyorsanız lütfen spam / gereksiz klasörünü kontrol edin.",
       "backHome": "Ana sayfaya dön"
     }
   },

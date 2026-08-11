@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
+import { BOOKING_IMAGES } from "@/config/booking-images";
 import { BookingMobileFooter } from "@/features/booking/components/BookingMobileFooter";
 import { BookingInlineSearchBar } from "@/features/booking/components/BookingInlineSearchBar";
 import { BookingSidebar } from "@/features/booking/components/BookingSidebar";
@@ -17,13 +19,15 @@ type BookingFlowShellProps = {
 export function BookingFlowShell({ children }: BookingFlowShellProps) {
   const { state } = useBookingFlow();
   const isInitialStep = useRef(true);
-  const showInlineSearch = state.step !== "success";
+  const isSuccessStep = state.step === "success";
+  const showInlineSearch = !isSuccessStep;
   const showOrderSummary =
     state.step === "customer" || state.step === "review";
   const showMobileStickySummary = state.step === "customer";
   const showStepper =
     state.step !== "search" &&
-    !(state.step === "vehicle" && !state.quote);
+    !(state.step === "vehicle" && !state.quote) &&
+    !isSuccessStep;
 
   useEffect(() => {
     if (isInitialStep.current) {
@@ -35,15 +39,40 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
   }, [state.step]);
 
   return (
-    <>
-      <BookingPageHero currentStep={state.step} />
+    <div
+      className={cn(
+        "relative",
+        isSuccessStep && "isolate min-h-[100vh]",
+      )}
+    >
+      {isSuccessStep ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        >
+          <Image
+            src={BOOKING_IMAGES.success}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[center_42%]"
+          />
+          <div className="absolute inset-0 bg-ink/35" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink/25 via-transparent to-ink/55" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/40 via-transparent to-ink/20" />
+          <div className="absolute inset-0 bg-[radial-gradient(70%_55%_at_18%_0%,rgb(200_164_93/0.12),transparent_68%)]" />
+        </div>
+      ) : (
+        <BookingPageHero currentStep={state.step} />
+      )}
 
       <div
         className={cn(
-          "relative mx-auto w-full px-4 sm:px-6",
+          "relative z-10 mx-auto w-full px-4 sm:px-6",
           showOrderSummary ? "max-w-7xl" : "max-w-6xl",
-          state.step === "success"
-            ? "py-10 md:py-14"
+          isSuccessStep
+            ? "flex min-h-[100vh] flex-col justify-center pt-32 pb-16 sm:pt-36 md:pt-44 md:pb-20"
             : cn(
                 "-mt-14 md:-mt-20",
                 showMobileStickySummary
@@ -84,6 +113,6 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
       </div>
 
       <BookingMobileFooter />
-    </>
+    </div>
   );
 }

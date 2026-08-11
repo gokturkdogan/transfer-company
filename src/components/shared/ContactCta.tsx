@@ -11,18 +11,29 @@ import {
   toTelHref,
   toWhatsappHref,
 } from "@/features/contact/domain/contact-links";
+import { cn } from "@/lib/utils";
 
-export function ContactCta() {
+type ContactCtaProps = {
+  tone?: "default" | "onDark";
+};
+
+export function ContactCta({ tone = "default" }: ContactCtaProps) {
   const t = useTranslations("contact");
   const contactChannels = usePublicContactChannels();
   const primaryPhone = pickPrimaryChannel(contactChannels.phones, "");
   const primaryWhatsapp = pickPrimaryChannel(contactChannels.whatsapps, "");
+  const onDark = tone === "onDark";
 
   return (
     <div className="flex flex-wrap justify-center gap-3">
       <a
         href={toTelHref(primaryPhone)}
-        className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium"
+        className={cn(
+          "inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium",
+          onDark
+            ? "border-white/25 bg-white/10 text-white hover:bg-white/15"
+            : "border-border",
+        )}
       >
         <Phone className="h-4 w-4" />
         {primaryPhone}

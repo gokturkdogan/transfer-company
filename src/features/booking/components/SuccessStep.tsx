@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Info } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { AcceptedPaymentCurrenciesNotice } from "@/features/booking/components/AcceptedPaymentCurrenciesNotice";
@@ -52,21 +52,21 @@ export function SuccessStep() {
   return (
     <div className="mx-auto max-w-xl space-y-8 py-4 text-center">
       <div className="space-y-3">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-gold">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 bg-gold/15 text-gold">
           <CheckCircle2 className="h-8 w-8" aria-hidden />
         </span>
-        <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
           {t("title")}
         </h2>
-        <p className="text-muted-foreground">{t("subtitle")}</p>
+        <p className="text-white/70">{t("subtitle")}</p>
       </div>
 
-      <div className="rounded-[1.25rem] border border-border/70 bg-muted/35 p-6 text-start shadow-float">
-        <p className="text-sm text-muted-foreground">{t("reference")}</p>
-        <p className="text-2xl font-bold tracking-wide text-foreground">
+      <div className="rounded-[1.25rem] border border-white/15 bg-white/8 p-6 text-start shadow-float backdrop-blur-sm">
+        <p className="text-sm text-white/55">{t("reference")}</p>
+        <p className="text-2xl font-bold tracking-wide text-gold-light">
           {state.reservation.reference}
         </p>
-        <div className="mt-4 space-y-1.5 text-sm text-foreground/85">
+        <div className="mt-4 space-y-1.5 text-sm text-white/85">
           <p>{routeLabel}</p>
           {hotelOrCustomLabel && <p>{endpoints.pickupLabel}</p>}
           <p>{outboundAt}</p>
@@ -74,12 +74,26 @@ export function SuccessStep() {
         </div>
       </div>
 
-      <AcceptedPaymentCurrenciesNotice className="text-start" />
+      <AcceptedPaymentCurrenciesNotice className="text-start" tone="onDark" />
 
-      <ContactCta />
+      <div className="space-y-4">
+        <div className="mx-auto flex max-w-md items-start gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-start">
+          <Info
+            className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold-light"
+            aria-hidden
+          />
+          <p className="text-[11px] leading-snug text-white/65">
+            {t("emailNotice", { email: state.customer.email })}{" "}
+            <span className="text-white/45">{t("emailSpamHint")}</span>
+          </p>
+        </div>
+
+        <ContactCta tone="onDark" />
+      </div>
+
       <Link
         href="/"
-        className="inline-flex text-sm font-semibold text-gold-deep underline-offset-4 hover:underline"
+        className="inline-flex text-sm font-semibold text-gold-light underline-offset-4 hover:underline"
       >
         {t("backHome")}
       </Link>

@@ -512,6 +512,8 @@
       "title": "Reservation Request Received",
       "subtitle": "Your reservation is awaiting confirmation.",
       "reference": "Reference",
+      "emailNotice": "Your reservation details have been sent to {email}.",
+      "emailSpamHint": "If you cannot find the email, please check your spam / junk folder.",
       "backHome": "Back to homepage"
     }
   },

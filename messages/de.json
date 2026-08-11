@@ -512,6 +512,8 @@
       "title": "Reservierungsanfrage erhalten",
       "subtitle": "Ihre Reservierung wartet auf Bestätigung.",
       "reference": "Referenz",
+      "emailNotice": "Ihre Reservierungsdetails wurden an {email} gesendet.",
+      "emailSpamHint": "Falls Sie die E-Mail nicht finden, prüfen Sie bitte Ihren Spam- / Junk-Ordner.",
       "backHome": "Zur Startseite"
     }
   },
