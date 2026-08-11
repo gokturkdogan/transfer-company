@@ -21,6 +21,8 @@ CITY (parentId = null)
 
 Supported location types: `CITY`, `DISTRICT`, `AIRPORT`, `HOTEL`, `TRANSFER_POINT`, `MARINA`, `CUSTOM_LOCATION`. `REGION` is deprecated (enum retained in PostgreSQL).
 
+**Transfer zones:** `DISTRICT` rows under Antalya city are customer-facing transfer zones (e.g. `KUNDU_LARA`, `COLAKLI_SIDE`), not official ilçe boundaries. Canonical list: `scripts/data/transfer-zones.ts`. Re-seed with `npm run db:migrate:transfer-zones`.
+
 ### Pricing vs drop-off
 
 | Concept | Source | Affects price |

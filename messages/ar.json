@@ -300,7 +300,9 @@
       "quantity": "الكمية: {count}",
       "quantityLabel": "الكمية",
       "none": "لا توجد إضافات اختيارية.",
-      "includedPricing": "{included} مجانًا · ثم {price} لكل قطعة"
+      "includedPricing": "{included} مجانًا · ثم {price} لكل قطعة",
+      "luggageVehicleAutoAdded": "تمت إضافة مركبة أمتعة إضافية تلقائيًا لأن عدد حقائبك يتجاوز سعة المركبة المختارة ({capacity}).",
+      "childSeatAutoAdded": "تمت إضافة مقعد أطفال تلقائيًا لأنك اخترت {count} رضيعًا. {included} مجانًا."
     },
     "customer": {
       "title": "معلومات الاتصال",
@@ -371,6 +373,7 @@
       "passengers": "الركاب",
       "adults": "بالغون",
       "children": "أطفال",
+      "infants": "رضع",
       "submit": "ابحث عن النقل",
       "loading": "جارٍ البحث...",
       "swapDirection": "تبديل المطار والوجهة",
@@ -378,7 +381,8 @@
       "mobileEditSearchTitle": "تعديل البحث",
       "mobileEditSearchClose": "إغلاق",
       "adultsShort": "{count} بالغين",
-      "childrenShort": "{count} أطفال"
+      "childrenShort": "{count} أطفال",
+      "infantsShort": "{count} رضع"
     },
     "searchPrompt": {
       "eyebrow": "ابدأ الآن",
@@ -439,7 +443,10 @@
       "landingDateTime": "تاريخ ووقت هبوط الطائرة",
       "returnFlightNumber": "رقم رحلة العودة (اختياري)",
       "notes": "ملاحظات (اختياري)",
-      "updatingSchedule": "جارٍ تحديث الموعد وإعادة حساب السعر..."
+      "updatingSchedule": "جارٍ تحديث الموعد وإعادة حساب السعر...",
+      "totalLuggage": "إجمالي عدد الحقائب",
+      "luggageCapacityHint": "سعة الأمتعة للمركبة المختارة: {capacity}",
+      "updatingLuggage": "جارٍ تحديث عدد الحقائب وإعادة حساب السعر..."
     },
     "flight": {
       "outbound": "رقم رحلة الذهاب (اختياري)",

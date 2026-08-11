@@ -300,7 +300,9 @@
       "quantity": "Adet: {count}",
       "quantityLabel": "Adet",
       "none": "İsteğe bağlı ekstra yok.",
-      "includedPricing": "{included} adet ücretsiz · sonraki {price}/adet"
+      "includedPricing": "{included} adet ücretsiz · sonraki {price}/adet",
+      "luggageVehicleAutoAdded": "Valiz sayınız seçtiğiniz aracın kapasitesinden ({capacity}) fazla olduğu için bagaj aracı ekstrası otomatik eklendi.",
+      "childSeatAutoAdded": "Bebek seçtiğiniz için çocuk koltuğu zorunlu olarak eklendi ({count} adet). {included} adet ücretsiz."
     },
     "customer": {
       "title": "İletişim Bilgileri",
@@ -371,6 +373,7 @@
       "passengers": "Yolcu",
       "adults": "Yetişkin",
       "children": "Çocuk",
+      "infants": "Bebek",
       "submit": "Transfer ara",
       "loading": "Aranıyor...",
       "swapDirection": "Havalimanı ile bölgeyi değiştir",
@@ -378,7 +381,8 @@
       "mobileEditSearchTitle": "Aramayı düzenle",
       "mobileEditSearchClose": "Kapat",
       "adultsShort": "{count} yetişkin",
-      "childrenShort": "{count} çocuk"
+      "childrenShort": "{count} çocuk",
+      "infantsShort": "{count} bebek"
     },
     "searchPrompt": {
       "eyebrow": "Başlayın",
@@ -439,7 +443,10 @@
       "landingDateTime": "Uçak iniş tarihi ve saati",
       "returnFlightNumber": "Dönüş uçuş numarası (isteğe bağlı)",
       "notes": "Notlar (isteğe bağlı)",
-      "updatingSchedule": "Tarih güncelleniyor, fiyat yenileniyor..."
+      "updatingSchedule": "Tarih güncelleniyor, fiyat yenileniyor...",
+      "totalLuggage": "Toplam valiz sayısı",
+      "luggageCapacityHint": "Seçili aracın bagaj kapasitesi: {capacity} valiz",
+      "updatingLuggage": "Valiz sayısı güncelleniyor, fiyat yenileniyor..."
     },
     "flight": {
       "outbound": "Gidiş uçuş numarası (isteğe bağlı)",

@@ -12,6 +12,7 @@ export function buildBookingSearchParams(
     outboundTime: search.outboundTime,
     passengers: String(search.passengerCount),
     children: String(search.childCount),
+    infants: String(search.infantCount),
     largeLuggage: String(search.largeLuggageCount),
   });
 

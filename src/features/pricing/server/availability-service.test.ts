@@ -14,6 +14,7 @@ describe("AvailabilityService", () => {
       tripType: "ONE_WAY",
       outboundAt: addMinutes(new Date(), 120),
       passengerCount: 3,
+      infantCount: 0,
       largeLuggageCount: 8,
       cabinLuggageCount: 0,
       locale: "en",
@@ -38,6 +39,7 @@ describe("AvailabilityService", () => {
       tripType: "ONE_WAY",
       outboundAt: addMinutes(new Date(), 120),
       passengerCount: 2,
+      infantCount: 0,
       largeLuggageCount: 0,
       cabinLuggageCount: 20,
       locale: "en",
@@ -57,6 +59,7 @@ describe("AvailabilityService", () => {
       tripType: "ONE_WAY",
       outboundAt: addMinutes(new Date(), 120),
       passengerCount: 2,
+      infantCount: 0,
       largeLuggageCount: 0,
       cabinLuggageCount: 0,
       locale: "en",
@@ -64,6 +67,31 @@ describe("AvailabilityService", () => {
 
     expect(result.routeId).toBe("route-1");
     expect(result.options[0]?.quote.totalMinor).toBe(10_000);
+  });
+
+  it("adds required child seats for infants", async () => {
+    const service = new AvailabilityService(createPricingReaderFake());
+
+    const result = await service.getTransferOptions({
+      originAirportId: "pickup-1",
+      destinationDistrictId: "dropoff-1",
+      tripType: "ONE_WAY",
+      outboundAt: addMinutes(new Date(), 120),
+      passengerCount: 2,
+      infantCount: 2,
+      largeLuggageCount: 0,
+      cabinLuggageCount: 0,
+      locale: "en",
+    });
+
+    const option = result.options[0]!;
+    expect(option.requiredChildSeats).toBe(2);
+    expect(option.requiredExtras.some((extra) => extra.quantity === 2)).toBe(
+      true,
+    );
+    expect(
+      option.optionalExtras.every((extra) => extra.extraServiceId !== "child-seat-1"),
+    ).toBe(true);
   });
 
   it("returns the same quote for repeated airport to district searches", async () => {
@@ -74,6 +102,7 @@ describe("AvailabilityService", () => {
       tripType: "ONE_WAY" as const,
       outboundAt: addMinutes(new Date(), 120),
       passengerCount: 2,
+      infantCount: 0,
       largeLuggageCount: 0,
       cabinLuggageCount: 0,
       locale: "en",

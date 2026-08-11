@@ -16,8 +16,10 @@ import { cn } from "@/lib/utils";
 type PassengerSegmentProps = {
   adults: number;
   childCount: number;
+  infantCount: number;
   onAdultsChange: (value: number) => void;
   onChildrenChange: (value: number) => void;
+  onInfantsChange: (value: number) => void;
   className?: string;
   withDivider?: boolean;
   embedded?: boolean;
@@ -30,8 +32,10 @@ type PassengerSegmentProps = {
 export function PassengerSegment({
   adults,
   childCount,
+  infantCount,
   onAdultsChange,
   onChildrenChange,
+  onInfantsChange,
   className,
   withDivider = true,
   embedded = false,
@@ -42,6 +46,7 @@ export function PassengerSegment({
   const summary = [
     t("adultsShort", { count: adults }),
     childCount > 0 ? t("childrenShort", { count: childCount }) : null,
+    infantCount > 0 ? t("infantsShort", { count: infantCount }) : null,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -89,6 +94,12 @@ export function PassengerSegment({
             value={childCount}
             max={50}
             onChange={onChildrenChange}
+          />
+          <CounterRow
+            label={t("infants")}
+            value={infantCount}
+            max={50}
+            onChange={onInfantsChange}
           />
         </div>
       </PopoverContent>

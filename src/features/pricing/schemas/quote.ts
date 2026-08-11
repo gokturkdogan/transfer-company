@@ -20,6 +20,7 @@ export const transferQuoteInputSchema = z
     routeId: z.string().uuid(),
     tripType: z.enum(TRIP_TYPES),
     passengerCount: positiveInt,
+    infantCount: nonNegativeInt.optional().default(0),
     largeLuggageCount: nonNegativeInt,
     cabinLuggageCount: nonNegativeInt.default(0),
     vehicles: z.array(quoteVehicleSelectionSchema).min(1),

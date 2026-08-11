@@ -208,6 +208,7 @@ export function TransferSearchForm({
             search={search}
             adultsLabel={t("adults")}
             childrenLabel={t("children")}
+            infantsLabel={t("infants")}
             compact
             className="min-w-0 w-full shrink xl:max-w-[17rem] xl:flex-1"
             onAdultsChange={(value) =>
@@ -215,6 +216,9 @@ export function TransferSearchForm({
             }
             onChildrenChange={(value) =>
               dispatch({ type: "UPDATE_SEARCH", search: { childCount: value } })
+            }
+            onInfantsChange={(value) =>
+              dispatch({ type: "UPDATE_SEARCH", search: { infantCount: value } })
             }
           />
 
@@ -308,11 +312,15 @@ export function TransferSearchForm({
         search={search}
         adultsLabel={t("adults")}
         childrenLabel={t("children")}
+        infantsLabel={t("infants")}
         onAdultsChange={(value) =>
           dispatch({ type: "UPDATE_SEARCH", search: { passengerCount: value } })
         }
         onChildrenChange={(value) =>
           dispatch({ type: "UPDATE_SEARCH", search: { childCount: value } })
+        }
+        onInfantsChange={(value) =>
+          dispatch({ type: "UPDATE_SEARCH", search: { infantCount: value } })
         }
       />
 
@@ -436,21 +444,25 @@ function PassengerCounters({
   search,
   adultsLabel,
   childrenLabel,
+  infantsLabel,
   onAdultsChange,
   onChildrenChange,
+  onInfantsChange,
   compact = false,
   className,
 }: {
   search: ReturnType<typeof useBookingFlow>["state"]["search"];
   adultsLabel: string;
   childrenLabel: string;
+  infantsLabel: string;
   onAdultsChange: (value: number) => void;
   onChildrenChange: (value: number) => void;
+  onInfantsChange: (value: number) => void;
   compact?: boolean;
   className?: string;
 }) {
   return (
-    <div className={cn("grid gap-2 sm:grid-cols-2", className)}>
+    <div className={cn("grid gap-2 sm:grid-cols-3", className)}>
       <CounterField
         label={adultsLabel}
         value={search.passengerCount}
@@ -465,6 +477,13 @@ function PassengerCounters({
         max={50}
         compact={compact}
         onChange={onChildrenChange}
+      />
+      <CounterField
+        label={infantsLabel}
+        value={search.infantCount}
+        max={50}
+        compact={compact}
+        onChange={onInfantsChange}
       />
     </div>
   );

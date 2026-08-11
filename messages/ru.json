@@ -300,7 +300,9 @@
       "quantity": "Количество: {count}",
       "quantityLabel": "Количество",
       "none": "Нет доступных дополнительных услуг.",
-      "includedPricing": "{included} бесплатно · далее {price} за шт."
+      "includedPricing": "{included} бесплатно · далее {price} за шт.",
+      "luggageVehicleAutoAdded": "Дополнительный багажный автомобиль был добавлен автоматически, потому что количество багажа превышает вместимость выбранного автомобиля ({capacity}).",
+      "childSeatAutoAdded": "Детское кресло было добавлено автоматически, потому что вы выбрали {count} младенца(ев). {included} бесплатно."
     },
     "customer": {
       "title": "Контактная информация",
@@ -371,6 +373,7 @@
       "passengers": "Пассажиры",
       "adults": "Взрослые",
       "children": "Дети",
+      "infants": "Младенцы",
       "submit": "Найти трансферы",
       "loading": "Поиск...",
       "swapDirection": "Поменять аэропорт и направление",
@@ -378,7 +381,8 @@
       "mobileEditSearchTitle": "Изменить поиск",
       "mobileEditSearchClose": "Закрыть",
       "adultsShort": "{count} взрослых",
-      "childrenShort": "{count} детей"
+      "childrenShort": "{count} детей",
+      "infantsShort": "{count} младенцев"
     },
     "searchPrompt": {
       "eyebrow": "Начните",
@@ -439,7 +443,10 @@
       "landingDateTime": "Дата и время прилёта",
       "returnFlightNumber": "Номер обратного рейса (необязательно)",
       "notes": "Примечания (необязательно)",
-      "updatingSchedule": "Обновление расписания и пересчёт цены..."
+      "updatingSchedule": "Обновление расписания и пересчёт цены...",
+      "totalLuggage": "Общее количество багажа",
+      "luggageCapacityHint": "Вместимость багажа выбранного автомобиля: {capacity}",
+      "updatingLuggage": "Обновление количества багажа и пересчёт цены..."
     },
     "flight": {
       "outbound": "Номер рейса туда (необязательно)",

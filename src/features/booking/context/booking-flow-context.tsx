@@ -56,6 +56,7 @@ type BookingFlowContextValue = {
     outboundDate: string,
     outboundTime: string,
   ) => Promise<void>;
+  updateLuggageCount: (largeLuggageCount: number) => Promise<void>;
   submitReservation: () => Promise<void>;
 };
 
@@ -206,6 +207,58 @@ export function BookingFlowProvider({
     ],
   );
 
+  const updateLuggageCount = useCallback(
+    async (largeLuggageCount: number) => {
+      const search = {
+        ...state.search,
+        largeLuggageCount,
+        cabinLuggageCount: 0,
+      };
+
+      if (!state.selectedVehicleCategoryId) {
+        dispatch({ type: "UPDATE_SEARCH", search, preserveFlow: true });
+        return;
+      }
+
+      dispatch({
+        type: "UPDATE_SEARCH",
+        search: { largeLuggageCount, cabinLuggageCount: 0 },
+        preserveFlow: true,
+      });
+      dispatch({ type: "QUOTE_LOADING" });
+
+      const body = buildQuoteRequest(search, locale, {
+        vehicleCategoryId: state.selectedVehicleCategoryId,
+        quantity: state.selectedQuantity,
+        extras: state.selectedExtras,
+      });
+
+      const result = await fetchTransferQuote(body);
+
+      if (!result.success) {
+        dispatch({
+          type: "QUOTE_ERROR",
+          errorKey: mapApiErrorToKey(result.error, result.status),
+        });
+        return;
+      }
+
+      dispatch({
+        type: "QUOTE_SUCCESS",
+        quote: result.data,
+        searchSignature: buildSearchSignature(search),
+        preserveStep: true,
+      });
+    },
+    [
+      locale,
+      state.search,
+      state.selectedExtras,
+      state.selectedQuantity,
+      state.selectedVehicleCategoryId,
+    ],
+  );
+
   const submitReservation = useCallback(async () => {
     if (!state.quote || !state.selectedVehicleCategoryId) {
       return;
@@ -258,6 +311,7 @@ export function BookingFlowProvider({
           ? state.flight.returnFlightNumber || undefined
           : undefined,
       passengerCount: getTotalPassengerCount(state.search),
+      infantCount: state.search.infantCount,
       largeLuggageCount: state.search.largeLuggageCount,
       cabinLuggageCount: state.search.cabinLuggageCount,
       vehicles: [
@@ -317,6 +371,7 @@ export function BookingFlowProvider({
       requestQuote,
       requestRequote,
       updateOutboundSchedule,
+      updateLuggageCount,
       submitReservation,
     }),
     [
@@ -328,6 +383,7 @@ export function BookingFlowProvider({
       requestQuote,
       requestRequote,
       updateOutboundSchedule,
+      updateLuggageCount,
       submitReservation,
     ],
   );

@@ -5,6 +5,7 @@ import { calculateExtraTotalMinor } from "@/features/pricing/domain/extra-pricin
 import type { LuggageVehicleExtra } from "@/features/capacity/types";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
+import { resolveRequiredChildSeatQuantity } from "@/features/pricing/domain/required-child-seats";
 import { assertRouteActive } from "@/features/pricing/domain/guards";
 import type { TransferAvailabilityInputDto } from "@/features/pricing/schemas/availability";
 import type { PricingReader } from "@/features/pricing/server/reader";
@@ -53,45 +54,73 @@ function resolveLuggageVehicleExtra(
 function buildRequiredExtras(
   assessment: ReturnType<typeof recommendVehicles>[number]["assessment"],
   luggageVehicleExtra: LuggageVehicleExtra | null,
+  childSeatExtra: Awaited<
+    ReturnType<PricingReader["findChildSeatExtra"]>
+  > | null,
+  infantCount: number,
   extrasById: Map<
     string,
     Awaited<ReturnType<PricingReader["findCustomerSelectableExtras"]>>[number]
   >,
-): TransferOptionExtraDto[] {
+): { extras: TransferOptionExtraDto[]; requiredChildSeats: number } {
+  const requiredExtras: TransferOptionExtraDto[] = [];
+
   if (
-    assessment.requiredLuggageVehicles <= 0 ||
-    !luggageVehicleExtra ||
-    !luggageVehicleExtra.isActive
+    assessment.requiredLuggageVehicles > 0 &&
+    luggageVehicleExtra &&
+    luggageVehicleExtra.isActive
   ) {
-    return [];
+    const extra = extrasById.get(luggageVehicleExtra.id);
+
+    if (extra) {
+      const quantity = assessment.requiredLuggageVehicles;
+
+      requiredExtras.push({
+        extraServiceId: extra.id,
+        name: extra.translatedName ?? extra.code,
+        pricingMode: extra.pricingMode,
+        quantity,
+        maxQuantity: extra.maxQuantity,
+        includedQuantity: extra.includedQuantity,
+        unitPriceMinor: extra.priceMinor,
+        totalPriceMinor: calculateExtraTotalMinor({
+          pricingMode: extra.pricingMode,
+          quantity,
+          unitPriceMinor: extra.priceMinor,
+          includedQuantity: extra.includedQuantity,
+        }),
+        required: true,
+      });
+    }
   }
 
-  const extra = extrasById.get(luggageVehicleExtra.id);
+  const requiredChildSeats = resolveRequiredChildSeatQuantity(
+    infantCount,
+    childSeatExtra,
+  );
 
-  if (!extra) {
-    return [];
-  }
+  if (requiredChildSeats > 0 && childSeatExtra) {
+    const extra = extrasById.get(childSeatExtra.id) ?? childSeatExtra;
 
-  const quantity = assessment.requiredLuggageVehicles;
-
-  return [
-    {
+    requiredExtras.push({
       extraServiceId: extra.id,
       name: extra.translatedName ?? extra.code,
       pricingMode: extra.pricingMode,
-      quantity,
+      quantity: requiredChildSeats,
       maxQuantity: extra.maxQuantity,
       includedQuantity: extra.includedQuantity,
       unitPriceMinor: extra.priceMinor,
       totalPriceMinor: calculateExtraTotalMinor({
         pricingMode: extra.pricingMode,
-        quantity,
+        quantity: requiredChildSeats,
         unitPriceMinor: extra.priceMinor,
         includedQuantity: extra.includedQuantity,
       }),
       required: true,
-    },
-  ];
+    });
+  }
+
+  return { extras: requiredExtras, requiredChildSeats };
 }
 
 function buildOptionalExtras(
@@ -156,7 +185,7 @@ export class AvailabilityService {
 
       const quoteCurrency = DEFAULT_CURRENCY;
 
-      const [vehicleOptions, luggageVehicleCandidates, selectableExtras] =
+      const [vehicleOptions, luggageVehicleCandidates, selectableExtras, childSeatExtra] =
         await Promise.all([
           this.repository.findVehicleOptionsForRoute(
             route.id,
@@ -165,6 +194,7 @@ export class AvailabilityService {
           ),
           this.repository.findLuggageVehicleExtras(input.locale),
           this.repository.findCustomerSelectableExtras(input.locale),
+          this.repository.findChildSeatExtra(input.locale),
         ]);
 
       const vehicleIds = vehicleOptions.map((option) => option.id);
@@ -204,10 +234,11 @@ export class AvailabilityService {
       );
 
       const extrasById = new Map(
-        [...luggageVehicleCandidates, ...selectableExtras].map((extra) => [
-          extra.id,
-          extra,
-        ]),
+        [
+          ...luggageVehicleCandidates,
+          ...selectableExtras,
+          ...(childSeatExtra ? [childSeatExtra] : []),
+        ].map((extra) => [extra.id, extra]),
       );
 
       const options: TransferVehicleOptionDto[] = [];
@@ -221,9 +252,11 @@ export class AvailabilityService {
           continue;
         }
 
-        const requiredExtras = buildRequiredExtras(
+        const { extras: requiredExtras, requiredChildSeats } = buildRequiredExtras(
           recommendation.assessment,
           luggageVehicleExtra,
+          childSeatExtra,
+          input.infantCount,
           extrasById,
         );
 
@@ -285,6 +318,7 @@ export class AvailabilityService {
           eligibility: recommendation.assessment.eligibility,
           requiredLuggageVehicles:
             recommendation.assessment.requiredLuggageVehicles,
+          requiredChildSeats,
           warnings: recommendation.assessment.warnings,
           requiredExtras,
           optionalExtras,
@@ -308,6 +342,7 @@ export class AvailabilityService {
           routeId: route.id,
           tripType: input.tripType,
           passengerCount: input.passengerCount,
+          infantCount: input.infantCount,
           largeLuggageCount: input.largeLuggageCount,
           cabinLuggageCount: input.cabinLuggageCount,
           vehicles: [

@@ -368,4 +368,47 @@ export class PricingRepository implements PricingReader {
         ),
       );
   }
+
+  async findChildSeatExtra(locale: string) {
+    const [extra] = await this.database
+      .select({
+        id: extraServices.id,
+        code: extraServices.code,
+        pricingMode: extraServices.pricingMode,
+        priceMinor: extraServices.priceMinor,
+        currency: extraServices.currency,
+        customerSelectable: extraServices.customerSelectable,
+        autoSuggested: extraServices.autoSuggested,
+        minQuantity: extraServices.minQuantity,
+        maxQuantity: extraServices.maxQuantity,
+        includedQuantity: extraServices.includedQuantity,
+        luggageCapacityPerUnit: extraServices.luggageCapacityPerUnit,
+        isActive: extraServices.isActive,
+        translatedName: sql<string | null>`coalesce(${extraServiceTranslations.name}, ${defaultExtraServiceTranslations.name})`,
+      })
+      .from(extraServices)
+      .leftJoin(
+        extraServiceTranslations,
+        and(
+          eq(extraServiceTranslations.extraServiceId, extraServices.id),
+          eq(extraServiceTranslations.locale, locale),
+        ),
+      )
+      .leftJoin(
+        defaultExtraServiceTranslations,
+        and(
+          eq(
+            defaultExtraServiceTranslations.extraServiceId,
+            extraServices.id,
+          ),
+          eq(defaultExtraServiceTranslations.locale, DEFAULT_LOCALE),
+        ),
+      )
+      .where(
+        and(eq(extraServices.isActive, true), eq(extraServices.code, "CHILD_SEAT")),
+      )
+      .limit(1);
+
+    return extra ?? null;
+  }
 }

@@ -23,6 +23,7 @@ export function parseBookingSearchParams(
     returnTime: get("returnTime") || "10:00",
     passengerCount: Number(get("passengers") || "2"),
     childCount: Number(get("children") || "0"),
+    infantCount: Number(get("infants") || "0"),
     largeLuggageCount: Number(get("largeLuggage") || "0"),
     cabinLuggageCount: Number(get("cabinLuggage") || "0"),
   };

@@ -5,6 +5,7 @@ import type { LuggageVehicleExtra } from "@/features/capacity/types";
 import type { TransferQuoteInputDto } from "@/features/pricing/schemas/quote";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
+import { resolveRequiredChildSeatQuantity } from "@/features/pricing/domain/required-child-seats";
 import {
   assertCurrencyConsistency,
   assertExtraBookable,
@@ -71,6 +72,13 @@ export class QuoteService {
         await this.repository.findLuggageVehicleExtras(input.locale);
       const luggageVehicleExtra = resolveLuggageVehicleExtra(
         luggageVehicleCandidates,
+      );
+      const childSeatExtra = await this.repository.findChildSeatExtra(
+        input.locale,
+      );
+      const requiredChildSeats = resolveRequiredChildSeatQuantity(
+        input.infantCount,
+        childSeatExtra,
       );
 
       const vehicleSelections: QuoteVehicleSelection[] = [];
@@ -155,6 +163,24 @@ export class QuoteService {
           oneWayPriceMinor: price.oneWayPriceMinor,
           roundTripPriceMinor: price.roundTripPriceMinor,
         });
+      }
+
+      if (requiredChildSeats > 0 && childSeatExtra) {
+        const existingChildSeat = requiredExtras.find(
+          (extra) => extra.extraServiceId === childSeatExtra.id,
+        );
+
+        if (existingChildSeat) {
+          existingChildSeat.quantity = Math.max(
+            existingChildSeat.quantity,
+            requiredChildSeats,
+          );
+        } else {
+          requiredExtras.push({
+            extraServiceId: childSeatExtra.id,
+            quantity: requiredChildSeats,
+          });
+        }
       }
 
       if (combinedEligibility === "INELIGIBLE") {

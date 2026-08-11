@@ -9,6 +9,7 @@ import { BookingInput } from "@/features/booking/components/BookingInput";
 import { CustomDestinationFields } from "@/features/booking/components/CustomDestinationFields";
 import { FormDateTimeField } from "@/features/booking/components/FormDateTimeField";
 import { HotelSelector } from "@/features/booking/components/HotelSelector";
+import { LuggageCountField } from "@/features/booking/components/LuggageCountField";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 
 export function TransferDetailsForm() {
@@ -49,6 +50,8 @@ export function TransferDetailsForm() {
           </BookingFormField>
           <HotelSelector />
         </div>
+
+        <LuggageCountField />
 
         {search.tripType === "ROUND_TRIP" && (
           <BookingFormField

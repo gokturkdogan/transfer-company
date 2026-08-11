@@ -217,6 +217,7 @@ export function HeroSearchBar({
           <PassengerSegment
             adults={search.passengerCount}
             childCount={search.childCount}
+            infantCount={search.infantCount}
             withDivider={false}
             embedded={isEmbedded}
             className="min-w-0 w-full lg:flex-[0.85_1_0%] lg:basis-0"
@@ -225,6 +226,9 @@ export function HeroSearchBar({
             }
             onChildrenChange={(value) =>
               dispatch({ type: "UPDATE_SEARCH", search: { childCount: value } })
+            }
+            onInfantsChange={(value) =>
+              dispatch({ type: "UPDATE_SEARCH", search: { infantCount: value } })
             }
           />
 

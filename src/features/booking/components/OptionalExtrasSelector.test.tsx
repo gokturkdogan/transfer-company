@@ -50,6 +50,7 @@ const quoteFixture: TransferAvailabilityResponseDto = {
       cabinLuggageCapacity: 2,
       eligibility: "ELIGIBLE",
       requiredLuggageVehicles: 0,
+      requiredChildSeats: 0,
       warnings: [],
       requiredExtras: [],
       optionalExtras: [

@@ -3,10 +3,7 @@ import { drizzle } from "drizzle-orm/neon-serverless";
 import { and, eq, isNull } from "drizzle-orm";
 
 import * as schema from "../src/db/schema";
-import {
-  ANTALYA_HOTELS_BY_DISTRICT,
-  LEGACY_HOTEL_CODES,
-} from "./data/antalya-hotels";
+import { TRANSFER_ZONE_HOTELS } from "./data/transfer-zone-hotels";
 import { buildHotelCode, slugifyHotelName } from "./lib/hotel-seed-utils";
 
 const LOCALES = ["tr", "en", "de", "ru", "ar"] as const;
@@ -42,26 +39,25 @@ async function seedAntalyaHotels() {
       ),
     );
 
-  const districtByCode = new Map(districts.map((district) => [district.code, district.id]));
+  const districtByCode = new Map(
+    districts.map((district) => [district.code, district.id]),
+  );
 
   let created = 0;
   let skippedDistricts = 0;
 
-  for (const [districtCode, hotelNames] of Object.entries(
-    ANTALYA_HOTELS_BY_DISTRICT,
-  )) {
-    const parentId = districtByCode.get(districtCode);
+  for (const [zoneCode, hotelNames] of Object.entries(TRANSFER_ZONE_HOTELS)) {
+    const parentId = districtByCode.get(zoneCode);
 
     if (!parentId) {
-      console.warn(`District not found, skipping hotels: ${districtCode}`);
+      console.warn(`Transfer zone not found, skipping hotels: ${zoneCode}`);
       skippedDistricts += 1;
       continue;
     }
 
     for (const [index, name] of hotelNames.entries()) {
       const slug = slugifyHotelName(name);
-      const code =
-        LEGACY_HOTEL_CODES[name] ?? buildHotelCode(districtCode, name);
+      const code = buildHotelCode(zoneCode, name);
 
       const [inserted] = await db
         .insert(schema.locations)
@@ -107,15 +103,17 @@ async function seedAntalyaHotels() {
           .onConflictDoNothing();
       }
     }
+
+    console.log(`${zoneCode}: ${hotelNames.length} hotels`);
   }
 
-  const totalHotels = Object.values(ANTALYA_HOTELS_BY_DISTRICT).reduce(
+  const totalHotels = Object.values(TRANSFER_ZONE_HOTELS).reduce(
     (sum, hotels) => sum + hotels.length,
     0,
   );
 
   console.log(
-    `Antalya hotels ready: ${totalHotels} defined, ${created} newly inserted, ${skippedDistricts} districts skipped.`,
+    `\nTransfer zone hotels ready: ${totalHotels} defined, ${created} newly inserted, ${skippedDistricts} zones skipped.`,
   );
 
   await pool.end();

@@ -16,6 +16,7 @@ export function buildSearchSignature(search: BookingSearchState): string {
     search.tripType === "ROUND_TRIP" ? search.returnTime : "",
     String(search.passengerCount),
     String(search.childCount),
+    String(search.infantCount),
     String(search.largeLuggageCount),
     String(search.cabinLuggageCount),
   ];
@@ -49,6 +50,7 @@ export function buildQuoteRequest(
     outboundAt,
     returnAt,
     passengerCount: getTotalPassengerCount(search),
+    infantCount: search.infantCount,
     largeLuggageCount: search.largeLuggageCount,
     cabinLuggageCount: search.cabinLuggageCount,
     locale,

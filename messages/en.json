@@ -300,7 +300,9 @@
       "quantity": "Quantity: {count}",
       "quantityLabel": "Quantity",
       "none": "No optional extras available.",
-      "includedPricing": "{included} included free · {price} each after"
+      "includedPricing": "{included} included free · {price} each after",
+      "luggageVehicleAutoAdded": "A luggage vehicle extra was added automatically because your luggage count exceeds the selected vehicle capacity ({capacity}).",
+      "childSeatAutoAdded": "A child seat was added automatically because you selected {count} infant(s). {included} included free."
     },
     "customer": {
       "title": "Contact Information",
@@ -371,6 +373,7 @@
       "passengers": "Passengers",
       "adults": "Adults",
       "children": "Children",
+      "infants": "Infants",
       "submit": "Search transfers",
       "loading": "Searching...",
       "swapDirection": "Swap airport and destination",
@@ -378,7 +381,8 @@
       "mobileEditSearchTitle": "Edit search",
       "mobileEditSearchClose": "Close",
       "adultsShort": "{count} adults",
-      "childrenShort": "{count} children"
+      "childrenShort": "{count} children",
+      "infantsShort": "{count} infants"
     },
     "searchPrompt": {
       "eyebrow": "Get started",
@@ -439,7 +443,10 @@
       "landingDateTime": "Aircraft landing date and time",
       "returnFlightNumber": "Return flight number (optional)",
       "notes": "Notes (optional)",
-      "updatingSchedule": "Updating schedule and refreshing price..."
+      "updatingSchedule": "Updating schedule and refreshing price...",
+      "totalLuggage": "Total luggage count",
+      "luggageCapacityHint": "Selected vehicle luggage capacity: {capacity}",
+      "updatingLuggage": "Updating luggage count and refreshing price..."
     },
     "flight": {
       "outbound": "Outbound flight number (optional)",

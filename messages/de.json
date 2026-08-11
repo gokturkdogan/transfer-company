@@ -300,7 +300,9 @@
       "quantity": "Menge: {count}",
       "quantityLabel": "Menge",
       "none": "Keine optionalen Extras verfügbar.",
-      "includedPricing": "{included} inklusive · danach {price} pro Stück"
+      "includedPricing": "{included} inklusive · danach {price} pro Stück",
+      "luggageVehicleAutoAdded": "Ein Gepäckfahrzeug-Extra wurde automatisch hinzugefügt, weil Ihre Gepäckmenge die Kapazität des gewählten Fahrzeugs ({capacity}) übersteigt.",
+      "childSeatAutoAdded": "Ein Kindersitz wurde automatisch hinzugefügt, weil Sie {count} Baby(s) ausgewählt haben. {included} inklusive."
     },
     "customer": {
       "title": "Kontaktinformationen",
@@ -371,6 +373,7 @@
       "passengers": "Passagiere",
       "adults": "Erwachsene",
       "children": "Kinder",
+      "infants": "Babys",
       "submit": "Transfers suchen",
       "loading": "Suche läuft...",
       "swapDirection": "Flughafen und Ziel tauschen",
@@ -378,7 +381,8 @@
       "mobileEditSearchTitle": "Suche bearbeiten",
       "mobileEditSearchClose": "Schließen",
       "adultsShort": "{count} Erwachsene",
-      "childrenShort": "{count} Kinder"
+      "childrenShort": "{count} Kinder",
+      "infantsShort": "{count} Babys"
     },
     "searchPrompt": {
       "eyebrow": "Loslegen",
@@ -439,7 +443,10 @@
       "landingDateTime": "Landezeit des Flugzeugs",
       "returnFlightNumber": "Rückflugnummer (optional)",
       "notes": "Notizen (optional)",
-      "updatingSchedule": "Termin wird aktualisiert, Preis wird neu berechnet..."
+      "updatingSchedule": "Termin wird aktualisiert, Preis wird neu berechnet...",
+      "totalLuggage": "Gesamtzahl der Koffer",
+      "luggageCapacityHint": "Gepäckkapazität des gewählten Fahrzeugs: {capacity}",
+      "updatingLuggage": "Gepäckmenge wird aktualisiert, Preis wird neu berechnet..."
     },
     "flight": {
       "outbound": "Hinflugnummer (optional)",

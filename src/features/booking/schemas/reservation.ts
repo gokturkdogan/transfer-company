@@ -44,6 +44,7 @@ export const createReservationInputSchema = z
     outboundFlightNumber: z.string().max(16).optional(),
     returnFlightNumber: z.string().max(16).optional(),
     passengerCount: positiveInt,
+    infantCount: nonNegativeInt.optional().default(0),
     largeLuggageCount: nonNegativeInt,
     cabinLuggageCount: nonNegativeInt.default(0),
     vehicles: z.array(quoteVehicleSelectionSchema).min(1),

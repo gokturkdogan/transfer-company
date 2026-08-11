@@ -21,6 +21,7 @@ export const transferAvailabilityInputSchema = z
     outboundAt: wallClockDateTimeSchema,
     returnAt: wallClockDateTimeSchema.optional(),
     passengerCount: positiveInt,
+    infantCount: nonNegativeInt.optional().default(0),
     largeLuggageCount: nonNegativeInt,
     cabinLuggageCount: nonNegativeInt.default(0),
     locale: z.string().min(2).max(5),

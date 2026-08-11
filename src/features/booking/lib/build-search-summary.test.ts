@@ -18,6 +18,7 @@ const baseSearch: BookingSearchState = {
   returnTime: "",
   passengerCount: 2,
   childCount: 1,
+  infantCount: 0,
   largeLuggageCount: 0,
   cabinLuggageCount: 0,
 };

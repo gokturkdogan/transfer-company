@@ -24,6 +24,7 @@ const baseInput = {
   tripType: "ONE_WAY" as const,
   outboundAt: addMinutes(new Date(), 120),
   passengerCount: 2,
+  infantCount: 0,
   largeLuggageCount: 0,
   cabinLuggageCount: 0,
   vehicles: [{ vehicleCategoryId: "vehicle-1", quantity: 1 }],

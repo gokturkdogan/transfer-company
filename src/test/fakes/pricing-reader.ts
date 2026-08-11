@@ -95,6 +95,7 @@ export function createPricingReaderFake(
       [luggageExtra, optionalExtra].filter((extra) => ids.includes(extra.id)),
     findCustomerSelectableExtras: async () => [optionalExtra],
     findLuggageVehicleExtras: async (_locale: string) => [luggageExtra],
+    findChildSeatExtra: async () => optionalExtra,
     ...overrides,
   };
 }

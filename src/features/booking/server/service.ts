@@ -105,6 +105,7 @@ export class BookingService {
       routeId: input.routeId,
       tripType: input.tripType,
       passengerCount: input.passengerCount,
+      infantCount: input.infantCount,
       largeLuggageCount: input.largeLuggageCount,
       cabinLuggageCount: input.cabinLuggageCount,
       vehicles: input.vehicles,

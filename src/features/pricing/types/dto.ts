@@ -25,6 +25,7 @@ export type TransferVehicleOptionDto = {
   cabinLuggageCapacity: number;
   eligibility: EligibilityStatus;
   requiredLuggageVehicles: number;
+  requiredChildSeats: number;
   warnings: CapacityWarning[];
   requiredExtras: TransferOptionExtraDto[];
   optionalExtras: TransferOptionExtraDto[];

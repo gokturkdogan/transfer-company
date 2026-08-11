@@ -25,6 +25,7 @@ export type BookingSearchState = {
   returnTime: string;
   passengerCount: number;
   childCount: number;
+  infantCount: number;
   largeLuggageCount: number;
   cabinLuggageCount: number;
 };
@@ -86,6 +87,7 @@ export type QuoteRequestBody = {
   outboundAt: string;
   returnAt?: string;
   passengerCount: number;
+  infantCount: number;
   largeLuggageCount: number;
   cabinLuggageCount: number;
   locale: string;
@@ -112,6 +114,7 @@ export type ReservationRequestBody = {
   outboundFlightNumber?: string;
   returnFlightNumber?: string;
   passengerCount: number;
+  infantCount: number;
   largeLuggageCount: number;
   cabinLuggageCount: number;
   vehicles: Array<{ vehicleCategoryId: string; quantity: number }>;
