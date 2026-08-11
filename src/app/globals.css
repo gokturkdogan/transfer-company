@@ -76,6 +76,7 @@
   --animate-loader-breathe: loader-breathe 2.8s ease-in-out infinite;
   --animate-loader-glow: loader-glow 2.6s ease-in-out infinite;
   --animate-loader-glint: loader-glint 2.4s ease-in-out infinite;
+  --animate-loader-orbit: loader-orbit 1.35s linear infinite;
 }
 
 body {
@@ -230,6 +231,12 @@ body {
   75% {
     opacity: 0.15;
     transform: scale(0.7);
+  }
+}
+
+@keyframes loader-orbit {
+  to {
+    stroke-dashoffset: -1;
   }
 }
 
@@ -422,12 +429,28 @@ body {
 .brand-loader-glow {
   background: radial-gradient(
     circle,
-    rgb(200 164 93 / 0.45) 0%,
-    rgb(200 164 93 / 0.12) 42%,
-    transparent 70%
+    rgb(200 164 93 / 0.38) 0%,
+    rgb(200 164 93 / 0.1) 45%,
+    transparent 72%
   );
-  filter: blur(8px);
+  filter: blur(10px);
   animation: var(--animate-loader-glow);
+}
+
+.brand-loader-ring-track {
+  fill: none;
+  stroke: rgb(200 164 93 / 0.26);
+  stroke-width: 1.5;
+}
+
+.brand-loader-ring-stroke {
+  fill: none;
+  stroke: url(#brand-loader-stroke);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dashoffset: 0;
+  animation: var(--animate-loader-orbit);
 }
 
 .brand-loader-breathe {

@@ -5,12 +5,6 @@ import type { ReactNode } from "react";
 
 import { GlobalLoaderProvider } from "@/components/shared/global-loader-provider";
 
-/**
- * Dev preview: keep the loader overlay on screen.
- * Set back to `false` when done reviewing the animation.
- */
-const FORCE_LOADER_VISIBLE = true;
-
 export function PublicGlobalLoaderProvider({
   children,
 }: {
@@ -19,10 +13,7 @@ export function PublicGlobalLoaderProvider({
   const t = useTranslations("common");
 
   return (
-    <GlobalLoaderProvider
-      defaultMessage={t("loading")}
-      forceVisible={FORCE_LOADER_VISIBLE}
-    >
+    <GlobalLoaderProvider defaultMessage={t("loading")}>
       {children}
     </GlobalLoaderProvider>
   );
