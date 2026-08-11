@@ -24,7 +24,7 @@ The booking engine orchestrates the creation of transfer reservation requests. A
 | Optional extras quantity | **None** — `SET_EXTRAS` + client `buildOrderPricing` (`PER_UNIT` uses `max(0, qty − includedQuantity)`) |
 | Luggage ≤ vehicle capacity | **None** — search state only |
 | Luggage crosses above capacity, changes while over, or returns under | **POST /api/quote** — server applies/updates luggage-vehicle required extras |
-| Infant / passenger search change | New search signature → full quote (child seats auto-injected on availability) |
+| Infant / passenger / other search draft edits | **None until Search** — quote stays; `requestQuote` on submit refreshes |
 ## Public API
 
 | Endpoint | Service | Purpose |
@@ -40,7 +40,7 @@ The booking engine orchestrates the creation of transfer reservation requests. A
 | `/[locale]` | Server Component | Hero + search launcher |
 | `/[locale]/booking` | Server Component | Loads airports, cities, districts; renders `BookingFlow` |
 
-State: pure `bookingFlowReducer` + `BookingFlowProvider`. Quote invalidation via search signature hash.
+State: pure `bookingFlowReducer` + `BookingFlowProvider`. Draft search edits do not clear the quote; pressing Search refreshes results.
 
 See [BOOKING_UI.md](./BOOKING_UI.md).
 

@@ -7,7 +7,7 @@ import {
 import { buildSearchSignature } from "@/features/booking/lib/search-signature";
 
 describe("bookingFlowReducer", () => {
-  it("invalidates quote when search signature changes", () => {
+  it("keeps quote and step when search draft changes before requote", () => {
     const initial = createInitialBookingFlowState({
       originAirportId: "a",
       destinationDistrictId: "b",
@@ -26,14 +26,21 @@ describe("bookingFlowReducer", () => {
       searchSignature: buildSearchSignature(initial.search),
     });
 
-    const next = bookingFlowReducer(withQuote, {
+    const selected = bookingFlowReducer(withQuote, {
+      type: "SELECT_VEHICLE",
+      vehicleCategoryId: "vehicle-1",
+      quantity: 1,
+    });
+
+    const next = bookingFlowReducer(selected, {
       type: "UPDATE_SEARCH",
       search: { passengerCount: 5 },
     });
 
-    expect(next.quote).toBeNull();
-    expect(next.selectedVehicleCategoryId).toBeNull();
-    expect(next.step).toBe("vehicle");
+    expect(next.quote).toBe(withQuote.quote);
+    expect(next.selectedVehicleCategoryId).toBe("vehicle-1");
+    expect(next.search.passengerCount).toBe(5);
+    expect(next.searchSignature).toBe(withQuote.searchSignature);
   });
 
   it("preserves customer step when search changes with preserveFlow", () => {
@@ -62,7 +69,9 @@ describe("bookingFlowReducer", () => {
     expect(onCustomerStep.step).toBe("customer");
     expect(onCustomerStep.selectedVehicleCategoryId).toBe("vehicle-1");
     expect(onCustomerStep.search.outboundTime).toBe("12:00");
-    expect(onCustomerStep.quote).toBeNull();
+    expect(onCustomerStep.searchSignature).toBe(
+      buildSearchSignature(initial.search),
+    );
   });
 
   it("clears return fields when switching to one way", () => {

@@ -57,11 +57,9 @@ Default copy: `common.loading` in `messages/*.json`.
 
 Hotel and custom destination are **excluded** from the signature — changing drop-off does not invalidate the quote.
 
-When the signature changes after a quote exists:
-- Quote cleared
-- Vehicle selection cleared
-- Optional extras cleared
-- User returned to vehicle step
+**Draft search edits** (airport, district, dates, passengers, trip type, etc.) update `search` only. They **do not** clear the current quote, vehicle selection, extras, or step. Results stay on screen until the user presses search again (`requestQuote` → `QUOTE_SUCCESS`), which replaces the quote and updates `searchSignature`.
+
+Luggage overflow on the details step still requotes explicitly when capacity is crossed (see booking engine quote refresh rules).
 
 ## Idempotency
 

@@ -177,36 +177,10 @@ function withSyncedPassengers(
 function applySearchChange(
   state: BookingFlowState,
   search: BookingSearchState,
-  preserveFlow = false,
+  _preserveFlow = false,
 ): BookingFlowState {
-  const nextSignature = buildSearchSignature(search);
-  const signatureChanged =
-    state.searchSignature !== null && nextSignature !== state.searchSignature;
-
-  if (signatureChanged) {
-    if (preserveFlow) {
-      return withSyncedPassengers(
-        {
-          ...state,
-          quote: null,
-          searchSignature: null,
-          idempotencyKey: null,
-          errorKey: null,
-        },
-        search,
-      );
-    }
-
-    return withSyncedPassengers(
-      {
-        ...clearQuoteState(state),
-        step: "vehicle",
-        errorKey: null,
-      },
-      search,
-    );
-  }
-
+  // Draft search edits must not clear an existing quote. Results stay visible
+  // until the user explicitly runs search (`requestQuote` → QUOTE_SUCCESS).
   return withSyncedPassengers({ ...state, errorKey: null }, search);
 }
 
