@@ -51,7 +51,7 @@ Handlers use `createRouteHandler()` from `src/server/http/route-handler.ts`. **N
 | `src/config/` | Typed environment and constants |
 | `src/lib/` | Pure shared utilities (money, reference codes) |
 | `src/components/ui/` | shadcn/ui primitives |
-| `src/components/shared/` | Cross-feature presentation components |
+| `src/components/shared/` | Cross-feature presentation components (incl. public `GlobalLoaderProvider` / overlay) |
 | `src/i18n/` | next-intl routing and navigation |
 | `messages/` | UI translation JSON files |
 

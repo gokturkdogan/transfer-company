@@ -21,6 +21,24 @@ The public booking experience is a progressive multi-step flow at `/[locale]/boo
 - **Context:** `booking-flow-context.tsx` — scoped provider, API calls, no global store
 - **Forms:** controlled via reducer dispatch (RHF-ready structure; counters and selectors use reducer)
 
+## Blocking loader (public only)
+
+Full-screen overlay while waiting on booking network calls. Mounted via `PublicGlobalLoaderProvider` in `src/app/[locale]/layout.tsx` (admin is intentionally out of scope).
+
+| Trigger | Mechanism |
+|---------|-----------|
+| Quote request / requote | `useGlobalLoaderSync(isLoadingQuote \|\| isSubmitting)` in `BookingFlowProvider` |
+| Reservation submit | same sync |
+| Hotel list fetch | `useGlobalLoaderSync` in `HotelSelector` |
+
+APIs:
+
+- `useGlobalLoader()` — `show` / `hide` / `withLoader`
+- `useGlobalLoaderSync(active, message?)` — bind an external busy flag
+- UI: `GlobalLoaderOverlay` (blocks pointer events + locks body scroll)
+
+Default copy: `common.loading` in `messages/*.json`.
+
 ## Server data sources
 
 | Data | Source |

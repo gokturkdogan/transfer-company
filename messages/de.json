@@ -2,6 +2,7 @@
   "common": {
     "appName": "VIP Transfer",
     "tagline": "Premium-Flughafentransfer-Buchung",
+    "loading": "Wird geladen...",
     "decreaseAria": "Verringern {label}",
     "increaseAria": "Erhöhen {label}"
   },

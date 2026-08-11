@@ -2,6 +2,7 @@
   "common": {
     "appName": "VIP Transfer",
     "tagline": "Premium havalimanı transfer rezervasyonu",
+    "loading": "Yükleniyor...",
     "decreaseAria": "{label} azalt",
     "increaseAria": "{label} artır"
   },

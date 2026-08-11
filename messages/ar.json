@@ -2,6 +2,7 @@
   "common": {
     "appName": "VIP Transfer",
     "tagline": "حجز نقل مميز من المطار",
+    "loading": "جاري التحميل...",
     "decreaseAria": "تقليل {label}",
     "increaseAria": "زيادة {label}"
   },

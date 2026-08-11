@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 
 import { isRtlLocale } from "@/config/constants";
+import { PublicGlobalLoaderProvider } from "@/components/shared/public-global-loader-provider";
 import { PublicContactProvider } from "@/features/contact/components/PublicContactProvider";
 import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 import { routing } from "@/i18n/routing";
@@ -64,9 +65,11 @@ export default async function LocaleLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
         <NextIntlClientProvider messages={messages}>
-          <PublicContactProvider channels={contactChannels}>
-            {children}
-          </PublicContactProvider>
+          <PublicGlobalLoaderProvider>
+            <PublicContactProvider channels={contactChannels}>
+              {children}
+            </PublicContactProvider>
+          </PublicGlobalLoaderProvider>
         </NextIntlClientProvider>
       </body>
     </html>

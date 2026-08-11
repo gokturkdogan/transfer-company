@@ -10,6 +10,7 @@ import {
 } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
+import { useGlobalLoaderSync } from "@/components/shared/global-loader-provider";
 import {
   bookingFlowReducer,
   createInitialBookingFlowState,
@@ -83,9 +84,15 @@ export function BookingFlowProvider({
 }) {
   const locale = useLocale();
   const tPassengers = useTranslations("booking.passengers");
+  const tCommon = useTranslations("common");
   const [state, dispatch] = useReducer(
     bookingFlowReducer,
     createInitialBookingFlowState(initialSearch),
+  );
+
+  useGlobalLoaderSync(
+    state.isLoadingQuote || state.isSubmitting,
+    tCommon("loading"),
   );
 
   const requestQuote = useCallback(

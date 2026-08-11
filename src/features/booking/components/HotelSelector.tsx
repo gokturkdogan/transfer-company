@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { LocationCombobox } from "@/features/booking/components/LocationCombobox";
 import { BookingFieldLabel } from "@/features/booking/components/BookingFieldLabel";
+import { useGlobalLoaderSync } from "@/components/shared/global-loader-provider";
 import { fetchHotelsForDistrict } from "@/features/booking/lib/api";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { isReverseDirection } from "@/features/booking/lib/route-direction";
@@ -26,6 +27,8 @@ export function HotelSelector({ className }: HotelSelectorProps) {
     Boolean(districtId) && loadedDistrictId !== districtId;
   const visibleHotels =
     loadedDistrictId === districtId ? hotels : [];
+
+  useGlobalLoaderSync(isLoading, t("loading"));
 
   useEffect(() => {
     if (!districtId) {

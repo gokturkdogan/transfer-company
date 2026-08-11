@@ -2,6 +2,7 @@
   "common": {
     "appName": "VIP Transfer",
     "tagline": "Premium airport transfer booking",
+    "loading": "Loading...",
     "decreaseAria": "Decrease {label}",
     "increaseAria": "Increase {label}"
   },

@@ -2,6 +2,7 @@
   "common": {
     "appName": "VIP Transfer",
     "tagline": "Премиальное бронирование трансфера из аэропорта",
+    "loading": "Загрузка...",
     "decreaseAria": "Уменьшить {label}",
     "increaseAria": "Увеличить {label}"
   },
