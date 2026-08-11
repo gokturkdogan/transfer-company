@@ -227,6 +227,16 @@ export const adminCopy = {
       whatsapp: "+905551234567",
     },
     empty: "Henüz kayıt yok",
+    emailTest: {
+      title: "E-posta testi",
+      description:
+        "SMTP ayarlarınızı doğrulamak için örnek bir rezervasyon maili gönderin. Veritabanına kayıt oluşturulmaz.",
+      button: "Mail gönder",
+      sending: "Gönderiliyor...",
+      hint: "Müşteri şablonu oturum e-postanıza, admin şablonu bildirim e-postasına gider.",
+      success: (customerEmail: string, adminEmail: string) =>
+        `Test mailleri gönderildi. Müşteri: ${customerEmail} · Admin: ${adminEmail}`,
+    },
   },
   locales: {
     title: "Dil seçenekleri",
@@ -470,6 +480,8 @@ const ADMIN_ERROR_MESSAGES: Record<string, string> = {
   "Extra not found": "Extra bulunamadı",
   "Vehicle not found": "Araç bulunamadı",
   INVALID_IMAGE_DATA: "Geçersiz görsel verisi",
+  SMTP_NOT_CONFIGURED:
+    "SMTP yapılandırılmamış. .env.local dosyasında SMTP_HOST, SMTP_PORT, SMTP_USER ve SMTP_PASSWORD değerlerini ayarlayın.",
   UNSUPPORTED_IMAGE_TYPE: "Desteklenmeyen görsel formatı",
   IMAGE_TOO_LARGE: "Görsel boyutu çok büyük (en fazla 10 MB)",
   EMPTY_IMAGE: "Boş görsel yüklenemez",
@@ -506,6 +518,14 @@ export function translateAdminError(message: string): string {
 
   if (message.startsWith("Invalid parent type")) {
     return "Seçilen üst konum bu konum tipi için geçerli değil";
+  }
+
+  if (
+    message.includes("535") ||
+    message.includes("Invalid login") ||
+    message.includes("BadCredentials")
+  ) {
+    return "Gmail girişi reddedildi. SMTP_USER için tam Gmail adresinizi ve bu hesap için oluşturulmuş geçerli bir App Password kullanın. SMTP_FROM_EMAIL, Gmail ile aynı adres olmalıdır.";
   }
 
   return message;

@@ -23,7 +23,7 @@ Phase 5 introduces a Turkish-only admin panel at `/admin/*`, **outside** the `[l
 | `/admin/pricing` | Airport → district price editor (currency + vehicle tabs) |
 | `/admin/reservations` | Reservation list |
 | `/admin/reservations/[id]` | Reservation detail |
-| `/admin/contact` | Contact channels (email, phone, WhatsApp) |
+| `/admin/contact` | Contact channels (email, phone, WhatsApp) + SMTP test mail button |
 | `/admin/locales` | Enabled site languages for locale switcher |
 
 `[type]` is one of `airports`, `cities`, `districts`, `hotels` (URL slug maps to `AIRPORT`, `CITY`, `DISTRICT`, `HOTEL`).

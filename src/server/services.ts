@@ -9,7 +9,7 @@ import { PricingRepository } from "@/features/pricing/server/repository";
 import { QuoteService } from "@/features/pricing/server/quote-service";
 import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
 import { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
-import { notificationService } from "@/server/notifications/logging-notification-service";
+import { notificationService } from "@/server/notifications/create-notification-service";
 
 const pricingRepository = new PricingRepository(db);
 const bookingRepository = new BookingRepository(db);

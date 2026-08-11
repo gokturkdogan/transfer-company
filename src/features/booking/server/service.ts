@@ -20,6 +20,7 @@ import {
   ValidationError,
 } from "@/server/errors";
 import { logger } from "@/server/logger";
+import { buildReservationNotificationPayload } from "@/server/notifications/build-reservation-notification-payload";
 import type { NotificationService } from "@/server/notifications/types";
 
 const IDEMPOTENCY_TTL_HOURS = 24;
@@ -199,14 +200,20 @@ export class BookingService {
         });
 
         if (!result.replayed) {
+          const notificationPayload = buildReservationNotificationPayload({
+            reservationId: result.reservation.id,
+            reference: result.reservation.reference,
+            input,
+            snapshotRouteLabel,
+            snapshotDropoffLabel: resolvedSnapshotDropoffLabel,
+            subtotalMinor: quoteResult.quote.subtotalMinor,
+            totalMinor: result.reservation.totalMinor,
+            currency: result.reservation.currency,
+            items,
+          });
+
           await this.notificationService
-            .sendReservationReceived({
-              reservationId: result.reservation.id,
-              reference: result.reservation.reference,
-              customer: input.customer,
-              totalMinor: result.reservation.totalMinor,
-              currency: result.reservation.currency,
-            })
+            .sendReservationReceived(notificationPayload)
             .catch((error) => {
               logger.error("Customer notification failed", {
                 reference: result.reservation.reference,
@@ -216,13 +223,7 @@ export class BookingService {
             });
 
           await this.notificationService
-            .sendNewReservationToAdmin({
-              reservationId: result.reservation.id,
-              reference: result.reservation.reference,
-              customer: input.customer,
-              totalMinor: result.reservation.totalMinor,
-              currency: result.reservation.currency,
-            })
+            .sendNewReservationToAdmin(notificationPayload)
             .catch((error) => {
               logger.error("Admin notification failed", {
                 reference: result.reservation.reference,

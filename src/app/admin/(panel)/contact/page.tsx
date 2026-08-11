@@ -2,6 +2,7 @@ import { Phone } from "lucide-react";
 
 import { db } from "@/db/client";
 import { ContactSettingsForm } from "@/features/admin/components/ContactSettingsForm";
+import { EmailTestCard } from "@/features/admin/components/EmailTestCard";
 import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
 import { adminCopy } from "@/features/admin/copy";
 import { ContactChannelRepository } from "@/features/contact/server/repository";
@@ -20,6 +21,8 @@ export default async function AdminContactPage() {
       />
 
       <ContactSettingsForm channels={channels} />
+
+      <EmailTestCard />
     </div>
   );
 }

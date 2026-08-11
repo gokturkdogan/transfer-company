@@ -99,6 +99,15 @@ Generated via `src/lib/reference.ts` — format `TR-XXXXXX` using `crypto.getRan
 
 `NotificationService` abstraction in `src/server/notifications/`. Invoked **after** transaction commit. Failures logged to `notification_logs` and never rethrown.
 
+When `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, and `SMTP_PASSWORD` are set (see `.env.example`), `SmtpNotificationService` sends:
+
+- **Customer email** — branded HTML confirmation with route, schedule, line items, and total (locale-aware).
+- **Admin email** — same reservation summary plus customer contact details and a link to `/admin/reservations/[id]`.
+
+Admin recipient resolution: `ADMIN_NOTIFICATION_EMAIL` → first active `contact_channels` email → `siteConfig.email` fallback.
+
+If SMTP is not configured, notifications are logged as `SKIPPED` via `LoggingNotificationService`.
+
 ## Module location
 
 - Availability: `src/features/pricing/server/availability-service.ts`
