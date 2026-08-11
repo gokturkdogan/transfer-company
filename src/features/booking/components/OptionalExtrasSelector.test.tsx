@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
@@ -19,10 +19,15 @@ vi.mock("@/features/booking/lib/api", () => ({
 import { fetchTransferQuote } from "@/features/booking/lib/api";
 
 const messages = {
+  common: {
+    decreaseAria: "Decrease {label}",
+    increaseAria: "Increase {label}",
+  },
   booking: {
     extras: {
       quantityLabel: "Quantity",
       none: "No optional extras",
+      includedPricing: "{included} free · then {price}/each",
     },
   },
 };
@@ -78,8 +83,12 @@ const quoteFixture: TransferAvailabilityResponseDto = {
   ],
 };
 
-function ExtrasStepHarness() {
-  const { dispatch } = useBookingFlow();
+function ExtrasStepHarness({
+  onExtras,
+}: {
+  onExtras: (extras: Array<{ extraServiceId: string; quantity: number }>) => void;
+}) {
+  const { dispatch, state } = useBookingFlow();
   const initialized = useRef(false);
 
   useEffect(() => {
@@ -100,10 +109,16 @@ function ExtrasStepHarness() {
     });
   }, [dispatch]);
 
+  useEffect(() => {
+    onExtras(state.selectedExtras);
+  }, [onExtras, state.selectedExtras]);
+
   return <OptionalExtrasSelector />;
 }
 
-function renderExtrasStep() {
+function renderExtrasStep(
+  onExtras: (extras: Array<{ extraServiceId: string; quantity: number }>) => void,
+) {
   return render(
     <NextIntlClientProvider locale="en" messages={messages}>
       <BookingFlowProvider
@@ -119,47 +134,25 @@ function renderExtrasStep() {
           outboundTime: "10:00",
         }}
       >
-        <ExtrasStepHarness />
+        <ExtrasStepHarness onExtras={onExtras} />
       </BookingFlowProvider>
     </NextIntlClientProvider>,
   );
 }
 
 describe("OptionalExtrasSelector", () => {
-  it("triggers debounced requote when optional extra changes", async () => {
-    vi.mocked(fetchTransferQuote).mockResolvedValue({
-      success: true,
-      data: {
-        ...quoteFixture,
-        selection: {
-          vehicleCategoryId: "vehicle-1",
-          quantity: 1,
-          eligibility: "ELIGIBLE",
-          requiredExtras: [],
-          quote: {
-            currency: "EUR",
-            baseItems: [],
-            extraItems: [],
-            subtotalMinor: 10500,
-            totalMinor: 10500,
-          },
-          allItems: [],
-        },
-      },
-    });
-
+  it("updates selected extras locally without requoting", async () => {
+    const onExtras = vi.fn();
     const user = userEvent.setup();
-    renderExtrasStep();
+    renderExtrasStep(onExtras);
 
     await screen.findByText("Child seat");
 
     await user.click(screen.getByRole("button", { name: "Increase Child seat" }));
 
-    await waitFor(
-      () => {
-        expect(fetchTransferQuote).toHaveBeenCalled();
-      },
-      { timeout: 1000 },
-    );
+    expect(onExtras).toHaveBeenCalledWith([
+      { extraServiceId: "child-seat", quantity: 1 },
+    ]);
+    expect(fetchTransferQuote).not.toHaveBeenCalled();
   });
 });

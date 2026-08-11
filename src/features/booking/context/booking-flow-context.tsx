@@ -16,6 +16,7 @@ import {
   type BookingFlowAction,
 } from "@/features/booking/lib/booking-flow-reducer";
 import { fetchReservation, fetchTransferQuote } from "@/features/booking/lib/api";
+import { buildOrderPricing } from "@/features/booking/lib/build-order-pricing";
 import { mapApiErrorToKey } from "@/features/booking/lib/error-messages";
 import {
   appendPassengerDetailsToNotes,
@@ -54,7 +55,7 @@ type BookingFlowContextValue = {
     searchOverride?: Partial<BookingSearchState>,
     options?: { preserveStep?: boolean },
   ) => Promise<void>;
-  requestRequote: (extras: SelectedExtra[]) => Promise<void>;
+  setSelectedExtras: (extras: SelectedExtra[]) => void;
   updateOutboundSchedule: (
     outboundDate: string,
     outboundTime: string,
@@ -122,45 +123,9 @@ export function BookingFlowProvider({
     [locale, state.search],
   );
 
-  const requestRequote = useCallback(
-    async (extras: SelectedExtra[]) => {
-      if (!state.selectedVehicleCategoryId) {
-        return;
-      }
-
-      dispatch({ type: "QUOTE_LOADING" });
-
-      const body = buildQuoteRequest(state.search, locale, {
-        vehicleCategoryId: state.selectedVehicleCategoryId,
-        quantity: state.selectedQuantity,
-        extras,
-      });
-
-      const result = await fetchTransferQuote(body);
-
-      if (!result.success) {
-        dispatch({
-          type: "QUOTE_ERROR",
-          errorKey: mapApiErrorToKey(result.error, result.status),
-        });
-        return;
-      }
-
-      dispatch({
-        type: "QUOTE_SUCCESS",
-        quote: result.data,
-        searchSignature: buildSearchSignature(state.search),
-        preserveStep: true,
-      });
-      dispatch({ type: "SET_EXTRAS", extras });
-    },
-    [
-      locale,
-      state.search,
-      state.selectedQuantity,
-      state.selectedVehicleCategoryId,
-    ],
-  );
+  const setSelectedExtras = useCallback((extras: SelectedExtra[]) => {
+    dispatch({ type: "SET_EXTRAS", extras });
+  }, []);
 
   const updateOutboundSchedule = useCallback(
     async (outboundDate: string, outboundTime: string) => {
@@ -218,16 +183,32 @@ export function BookingFlowProvider({
         cabinLuggageCount: 0,
       };
 
-      if (!state.selectedVehicleCategoryId) {
-        dispatch({ type: "UPDATE_SEARCH", search, preserveFlow: true });
+      const selectedOption = state.quote?.options.find(
+        (option) =>
+          option.vehicleCategoryId === state.selectedVehicleCategoryId,
+      );
+
+      dispatch({
+        type: "UPDATE_LUGGAGE",
+        largeLuggageCount,
+        cabinLuggageCount: 0,
+      });
+
+      if (!state.selectedVehicleCategoryId || !selectedOption) {
         return;
       }
 
-      dispatch({
-        type: "UPDATE_SEARCH",
-        search: { largeLuggageCount, cabinLuggageCount: 0 },
-        preserveFlow: true,
-      });
+      const capacity =
+        selectedOption.largeLuggageCapacity * state.selectedQuantity;
+      const previousCount = state.search.largeLuggageCount;
+      const previouslyOverCapacity = previousCount > capacity;
+      const nextOverCapacity = largeLuggageCount > capacity;
+      const requiresRequote = previouslyOverCapacity || nextOverCapacity;
+
+      if (!requiresRequote) {
+        return;
+      }
+
       dispatch({ type: "QUOTE_LOADING" });
 
       const body = buildQuoteRequest(search, locale, {
@@ -255,6 +236,7 @@ export function BookingFlowProvider({
     },
     [
       locale,
+      state.quote,
       state.search,
       state.selectedExtras,
       state.selectedQuantity,
@@ -280,14 +262,17 @@ export function BookingFlowProvider({
         ? `${state.search.returnDate}T${state.search.returnTime}`
         : undefined;
 
-    const pricedSelection = state.quote.selection;
-    const totalMinor =
-      pricedSelection?.quote.totalMinor ??
-      state.quote.options.find(
-        (option) =>
-          option.vehicleCategoryId === state.selectedVehicleCategoryId,
-      )?.quote.totalMinor ??
-      0;
+    const selectedOption = state.quote.options.find(
+      (option) =>
+        option.vehicleCategoryId === state.selectedVehicleCategoryId,
+    );
+    const clientQuotedTotalMinor = selectedOption
+      ? buildOrderPricing(
+          selectedOption,
+          state.quote,
+          state.selectedExtras,
+        ).totalMinor
+      : 0;
 
     const body = {
       routeId: state.quote.routeId,
@@ -351,7 +336,7 @@ export function BookingFlowProvider({
         state.notes,
       ),
       locale,
-      clientQuotedTotalMinor: totalMinor,
+      clientQuotedTotalMinor,
       website: "",
       formStartedAt: state.formStartedAt,
     };
@@ -379,7 +364,7 @@ export function BookingFlowProvider({
       acceptedPaymentCurrencies,
       dispatch,
       requestQuote,
-      requestRequote,
+      setSelectedExtras,
       updateOutboundSchedule,
       updateLuggageCount,
       submitReservation,
@@ -391,7 +376,7 @@ export function BookingFlowProvider({
       districts,
       acceptedPaymentCurrencies,
       requestQuote,
-      requestRequote,
+      setSelectedExtras,
       updateOutboundSchedule,
       updateLuggageCount,
       submitReservation,

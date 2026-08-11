@@ -11,12 +11,20 @@ The booking engine orchestrates the creation of transfer reservation requests. A
 2. User selects airport, city (auto-resolved when single city), and district
 3. POST /api/quote resolves airport→district route and returns eligible vehicle options
 4. User selects vehicle(s) based on capacity and eligibility
-5. User selects optional extras (required luggage vehicles are auto-injected)
+5. User selects optional extras locally (summary prices with `includedQuantity`; no quote round-trip). Required child seats / luggage vehicles come from the initial quote (or a luggage-overflow requote).
 6. User selects hotel or custom drop-off (Step 4 — does not affect price)
 7. POST /api/reservations recalculates quote server-side and creates reservation
 8. Notifications attempted after commit (failures logged, never block persistence)
 ```
 
+### Quote refresh rules (details step)
+
+| Change | Network |
+|--------|---------|
+| Optional extras quantity | **None** — `SET_EXTRAS` + client `buildOrderPricing` (`PER_UNIT` uses `max(0, qty − includedQuantity)`) |
+| Luggage ≤ vehicle capacity | **None** — search state only |
+| Luggage crosses above capacity, changes while over, or returns under | **POST /api/quote** — server applies/updates luggage-vehicle required extras |
+| Infant / passenger search change | New search signature → full quote (child seats auto-injected on availability) |
 ## Public API
 
 | Endpoint | Service | Purpose |

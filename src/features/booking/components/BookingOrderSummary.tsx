@@ -6,8 +6,6 @@ import {
   Clock3,
   Luggage,
   MapPin,
-  NotebookPen,
-  Plane,
   PlaneLanding,
   Users,
 } from "lucide-react";
@@ -126,7 +124,6 @@ export function BookingOrderSummary({
       : null,
   ].filter(Boolean);
 
-  const trimmedNotes = state.notes.trim();
   const summaryTone = embedded ? "surface" : "ink";
   const canCollapseExtras = !embedded && pricing.hasExtras;
   const extrasTotalMinor = pricing.allExtras.reduce(
@@ -199,27 +196,6 @@ export function BookingOrderSummary({
           {scheduleLabel ? (
             <SummaryDetailRow icon={Clock3} compact={compact} tone={summaryTone}>
               {scheduleLabel}
-            </SummaryDetailRow>
-          ) : null}
-          {state.flight.outboundFlightNumber.trim() ? (
-            <SummaryDetailRow icon={Plane} compact={compact} tone={summaryTone}>
-              {tReview("flightNumber")}: {state.flight.outboundFlightNumber.trim()}
-            </SummaryDetailRow>
-          ) : null}
-          {state.search.tripType === "ROUND_TRIP" &&
-          state.flight.returnFlightNumber.trim() ? (
-            <SummaryDetailRow icon={Plane} compact={compact} tone={summaryTone}>
-              {tReview("returnFlightNumber")}:{" "}
-              {state.flight.returnFlightNumber.trim()}
-            </SummaryDetailRow>
-          ) : null}
-          {trimmedNotes ? (
-            <SummaryDetailRow
-              icon={NotebookPen}
-              compact={compact}
-              tone={summaryTone}
-            >
-              <span className="line-clamp-2">{trimmedNotes}</span>
             </SummaryDetailRow>
           ) : null}
         </ul>

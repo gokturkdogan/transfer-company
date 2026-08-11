@@ -32,6 +32,9 @@ export function LuggageCountField() {
     return null;
   }
 
+  const capacity =
+    selectedOption.largeLuggageCapacity * (state.selectedQuantity || selectedOption.quantity);
+
   return (
     <div className="space-y-2 lg:max-w-sm">
       <CounterField
@@ -46,9 +49,14 @@ export function LuggageCountField() {
             clearTimeout(debounceRef.current);
           }
 
+          // Debounce only when a requote may be needed (capacity overflow path).
+          const previouslyOver = state.search.largeLuggageCount > capacity;
+          const nextOver = value > capacity;
+          const delay = previouslyOver || nextOver ? 400 : 0;
+
           debounceRef.current = setTimeout(() => {
             void updateLuggageCount(value);
-          }, 400);
+          }, delay);
         }}
       />
       <p className="text-xs text-muted-foreground">

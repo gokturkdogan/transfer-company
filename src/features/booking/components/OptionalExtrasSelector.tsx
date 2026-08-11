@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { CounterField } from "@/features/booking/components/CounterField";
@@ -21,14 +21,13 @@ export function OptionalExtrasSelector({
 }: OptionalExtrasSelectorProps) {
   const t = useTranslations("booking.extras");
   const locale = useLocale();
-  const { state, requestRequote } = useBookingFlow();
+  const { state, setSelectedExtras } = useBookingFlow();
 
   const selectedOption = state.quote?.options.find(
     (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
   );
 
   const optionalExtras = selectedOption?.optionalExtras ?? [];
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const quantities = useMemo(() => {
     const map = new Map<string, number>();
@@ -37,14 +36,6 @@ export function OptionalExtrasSelector({
     }
     return map;
   }, [state.selectedExtras]);
-
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-    };
-  }, []);
 
   if (!selectedOption) {
     return null;
@@ -101,20 +92,14 @@ export function OptionalExtrasSelector({
                 }))
                 .filter((item) => item.quantity > 0);
 
-              if (debounceRef.current) {
-                clearTimeout(debounceRef.current);
-              }
-
-              debounceRef.current = setTimeout(() => {
-                track({
-                  name: "extra_selected",
-                  payload: {
-                    extraServiceId: extra.extraServiceId,
-                    quantity: value,
-                  },
-                });
-                void requestRequote(nextExtras);
-              }, 400);
+              track({
+                name: "extra_selected",
+                payload: {
+                  extraServiceId: extra.extraServiceId,
+                  quantity: value,
+                },
+              });
+              setSelectedExtras(nextExtras);
             }}
           />
         </div>

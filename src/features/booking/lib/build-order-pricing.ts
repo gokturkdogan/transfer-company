@@ -1,3 +1,4 @@
+import { calculateExtraTotalMinor } from "@/features/pricing/domain/extra-pricing";
 import type { SelectedExtra } from "@/features/booking/lib/types";
 import type {
   TransferAvailabilityResponseDto,
@@ -43,18 +44,34 @@ export function buildOrderPricing(
         return null;
       }
 
+      const quantity =
+        extra.pricingMode === "FIXED" ? 1 : selected.quantity;
+
       return {
         id: extra.extraServiceId,
         name: extra.name,
-        quantity: selected.quantity,
-        totalPriceMinor: extra.unitPriceMinor * selected.quantity,
+        quantity,
+        totalPriceMinor: calculateExtraTotalMinor({
+          pricingMode: extra.pricingMode,
+          quantity: selected.quantity,
+          unitPriceMinor: extra.unitPriceMinor,
+          includedQuantity: extra.includedQuantity,
+        }),
         required: false,
       };
     })
     .filter((item): item is OrderExtraLine => item !== null);
 
+  const requiredExtrasMinor = requiredExtras.reduce(
+    (sum, extra) => sum + extra.totalPriceMinor,
+    0,
+  );
+  const optionalExtrasMinor = optionalExtras.reduce(
+    (sum, extra) => sum + extra.totalPriceMinor,
+    0,
+  );
   const totalMinor =
-    quote.selection?.quote.totalMinor ?? selectedOption.quote.totalMinor;
+    baseTransferMinor + requiredExtrasMinor + optionalExtrasMinor;
 
   return {
     currency,

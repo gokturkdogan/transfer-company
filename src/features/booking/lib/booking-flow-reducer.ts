@@ -46,6 +46,11 @@ export type BookingFlowAction =
   | { type: "QUOTE_ERROR"; errorKey: string }
   | { type: "SELECT_VEHICLE"; vehicleCategoryId: string; quantity: number }
   | { type: "SET_EXTRAS"; extras: SelectedExtra[] }
+  | {
+      type: "UPDATE_LUGGAGE";
+      largeLuggageCount: number;
+      cabinLuggageCount?: number;
+    }
   | { type: "UPDATE_CUSTOMER"; customer: Partial<CustomerState> }
   | {
       type: "UPDATE_PASSENGER";
@@ -341,6 +346,24 @@ export function bookingFlowReducer(
 
     case "SET_EXTRAS":
       return { ...state, selectedExtras: action.extras };
+
+    case "UPDATE_LUGGAGE": {
+      const search: BookingSearchState = {
+        ...state.search,
+        largeLuggageCount: action.largeLuggageCount,
+        cabinLuggageCount: action.cabinLuggageCount ?? 0,
+      };
+
+      return {
+        ...state,
+        search,
+        // Keep the current quote visible; capacity-safe luggage edits do not
+        // need a requote. Overflow paths requote explicitly afterward.
+        searchSignature: state.searchSignature
+          ? buildSearchSignature(search)
+          : null,
+      };
+    }
 
     case "UPDATE_CUSTOMER":
       return {
