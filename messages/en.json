@@ -289,7 +289,10 @@
       "oneWayTransfer": "One-way transfer",
       "roundTripTransfer": "Round-trip transfer",
       "extrasTitle": "Extras:",
-      "extraLine": "{name} x {count}"
+      "extraLine": "{name} x {count}",
+      "extrasToggle": "{count} extras",
+      "extrasShow": "Show",
+      "extrasHide": "Hide"
     },
     "extras": {
       "sectionTitle": "Extras",

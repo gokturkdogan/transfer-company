@@ -2,6 +2,7 @@
 
 import {
   Car,
+  ChevronDown,
   Clock3,
   Luggage,
   MapPin,
@@ -13,7 +14,7 @@ import {
 import Image from "next/image";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { SummaryDetailRow } from "@/features/booking/components/summary/SummaryDetailRow";
@@ -49,6 +50,7 @@ export function BookingOrderSummary({
   const tReview = useTranslations("booking.review");
   const locale = useLocale();
   const { state, airports, districts } = useBookingFlow();
+  const [extrasExpanded, setExtrasExpanded] = useState(false);
 
   const selectedOption = state.quote?.options.find(
     (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
@@ -126,6 +128,12 @@ export function BookingOrderSummary({
 
   const trimmedNotes = state.notes.trim();
   const summaryTone = embedded ? "surface" : "ink";
+  const canCollapseExtras = !embedded && pricing.hasExtras;
+  const extrasTotalMinor = pricing.allExtras.reduce(
+    (sum, extra) => sum + extra.totalPriceMinor,
+    0,
+  );
+  const showExtrasList = !canCollapseExtras || extrasExpanded;
 
   return (
     <div
@@ -134,7 +142,8 @@ export function BookingOrderSummary({
         embedded
           ? "rounded-none border-0 bg-transparent shadow-none"
           : cn(
-              "rounded-[1.35rem] border border-white/10 bg-gradient-to-br from-ink-elevated via-ink-soft to-ink",
+              "rounded-[1.35rem] border border-white/10",
+              "bg-gradient-to-br from-ink-elevated via-ink-soft to-ink",
               "shadow-[0_16px_48px_rgb(0_0_0/0.32)]",
             ),
         state.isLoadingQuote && "opacity-70 transition-opacity",
@@ -236,23 +245,53 @@ export function BookingOrderSummary({
 
         {pricing.hasExtras ? (
           <div className={cn(compact ? "space-y-1.5" : "space-y-2")}>
-            {pricing.allExtras.map((extra) => (
-              <PricingLine
-                key={extra.id}
-                label={t("extraLine", {
-                  name: extra.name,
-                  count: extra.quantity,
-                })}
-                value={formatPrice(
-                  extra.totalPriceMinor,
-                  pricing.currency,
-                  locale,
-                )}
-                compact={compact}
-                muted
-                ink={!embedded}
-              />
-            ))}
+            {canCollapseExtras ? (
+              <button
+                type="button"
+                onClick={() => setExtrasExpanded((value) => !value)}
+                className="flex w-full items-start justify-between gap-3 text-left text-sm transition-colors hover:opacity-90"
+                aria-expanded={extrasExpanded}
+              >
+                <span className="flex items-center gap-1.5 font-medium text-white/90">
+                  {t("extrasToggle", { count: pricing.allExtras.length })}
+                  <ChevronDown
+                    className={cn(
+                      "h-3.5 w-3.5 text-white/55 transition-transform duration-200",
+                      extrasExpanded && "rotate-180",
+                    )}
+                    aria-hidden
+                  />
+                  <span className="text-[11px] font-normal text-white/45">
+                    {extrasExpanded ? t("extrasHide") : t("extrasShow")}
+                  </span>
+                </span>
+                <span className="shrink-0 font-semibold text-gold-light">
+                  {formatPrice(extrasTotalMinor, pricing.currency, locale)}
+                </span>
+              </button>
+            ) : null}
+
+            {showExtrasList ? (
+              <div className="space-y-2">
+                {pricing.allExtras.map((extra) => (
+                  <PricingLine
+                    key={extra.id}
+                    label={t("extraLine", {
+                      name: extra.name,
+                      count: extra.quantity,
+                    })}
+                    value={formatPrice(
+                      extra.totalPriceMinor,
+                      pricing.currency,
+                      locale,
+                    )}
+                    compact={compact}
+                    muted
+                    ink={!embedded}
+                  />
+                ))}
+              </div>
+            ) : null}
           </div>
         ) : null}
 

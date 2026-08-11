@@ -289,7 +289,10 @@
       "oneWayTransfer": "Трансфер в одну сторону",
       "roundTripTransfer": "Трансфер туда-обратно",
       "extrasTitle": "Доп. услуги:",
-      "extraLine": "{name} x {count}"
+      "extraLine": "{name} x {count}",
+      "extrasToggle": "{count} доп.",
+      "extrasShow": "Показать",
+      "extrasHide": "Скрыть"
     },
     "extras": {
       "sectionTitle": "Доп. услуги",

@@ -289,7 +289,10 @@
       "oneWayTransfer": "Tek Yön Transfer",
       "roundTripTransfer": "Gidiş-Dönüş Transfer",
       "extrasTitle": "Ekstralar:",
-      "extraLine": "{name} x {count}"
+      "extraLine": "{name} x {count}",
+      "extrasToggle": "{count} ekstra",
+      "extrasShow": "Göster",
+      "extrasHide": "Gizle"
     },
     "extras": {
       "sectionTitle": "Ekstralar",

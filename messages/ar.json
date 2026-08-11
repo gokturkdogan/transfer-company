@@ -289,7 +289,10 @@
       "oneWayTransfer": "نقل ذهاب",
       "roundTripTransfer": "نقل ذهاب وإياب",
       "extrasTitle": "الإضافات:",
-      "extraLine": "{name} x {count}"
+      "extraLine": "{name} x {count}",
+      "extrasToggle": "{count} إضافات",
+      "extrasShow": "عرض",
+      "extrasHide": "إخفاء"
     },
     "extras": {
       "sectionTitle": "الإضافات",
