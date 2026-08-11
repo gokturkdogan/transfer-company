@@ -319,9 +319,10 @@
     },
     "passengers": {
       "title": "Yolcu Bilgileri",
-      "subtitle": "Her yolcu için ad soyad girin. Kimlik veya pasaport numarası isteğe bağlıdır.",
+      "subtitle": "Her yolcu, çocuk ve bebek için ad soyad girin. Kimlik veya pasaport numarası isteğe bağlıdır.",
       "adultLabel": "{index}. Yolcu",
       "childLabel": "{index}. Çocuk",
+      "infantLabel": "{index}. Bebek",
       "fullName": "Ad Soyad",
       "idDocument": "TC / Pasaport No (opsiyonel)",
       "idDocumentPlaceholder": "TC veya pasaport numarası",

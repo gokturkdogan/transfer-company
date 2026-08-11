@@ -12,6 +12,7 @@ import type { LocationRepository } from "@/features/locations/server/repository"
 const notificationService: NotificationService = {
   sendReservationReceived: vi.fn(async () => undefined),
   sendNewReservationToAdmin: vi.fn(async () => undefined),
+  sendReservationStatusUpdate: vi.fn(async () => undefined),
 };
 
 function createLocationRepositoryFake(): LocationRepository {

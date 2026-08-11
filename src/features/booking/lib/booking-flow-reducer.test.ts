@@ -118,17 +118,19 @@ describe("bookingFlowReducer", () => {
     const initial = createInitialBookingFlowState({
       passengerCount: 2,
       childCount: 0,
+      infantCount: 0,
     });
 
     const next = bookingFlowReducer(initial, {
       type: "UPDATE_SEARCH",
-      search: { passengerCount: 1, childCount: 1 },
+      search: { passengerCount: 1, childCount: 1, infantCount: 1 },
       preserveFlow: true,
     });
 
-    expect(next.passengers).toHaveLength(2);
+    expect(next.passengers).toHaveLength(3);
     expect(next.passengers[0]).toMatchObject({ kind: "adult", index: 1 });
     expect(next.passengers[1]).toMatchObject({ kind: "child", index: 1 });
+    expect(next.passengers[2]).toMatchObject({ kind: "infant", index: 1 });
   });
 
   it("updates a passenger entry", () => {

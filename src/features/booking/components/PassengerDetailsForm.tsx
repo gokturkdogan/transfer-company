@@ -7,7 +7,7 @@ import { BookingFormField } from "@/features/booking/components/BookingFormField
 import { BookingFormSection } from "@/features/booking/components/BookingFormSection";
 import { BookingInput } from "@/features/booking/components/BookingInput";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
-import { passengerSlotKey } from "@/features/booking/lib/passenger-details";
+import { passengerSlotKey, resolvePassengerKindLabel } from "@/features/booking/lib/passenger-details";
 
 export function PassengerDetailsForm() {
   const t = useTranslations("booking.passengers");
@@ -25,10 +25,11 @@ export function PassengerDetailsForm() {
     >
       <div className="space-y-5">
         {state.passengers.map((passenger) => {
-          const label =
-            passenger.kind === "adult"
-              ? t("adultLabel", { index: passenger.index })
-              : t("childLabel", { index: passenger.index });
+          const label = resolvePassengerKindLabel(passenger, {
+            adult: (index) => t("adultLabel", { index }),
+            child: (index) => t("childLabel", { index }),
+            infant: (index) => t("infantLabel", { index }),
+          });
 
           return (
             <div

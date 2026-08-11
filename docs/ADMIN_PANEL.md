@@ -151,6 +151,8 @@ Three distinct destination facets:
 2. **Pricing destination** — district used for route price (`dropoffLocationId`)
 3. **Actual drop-off** — `snapshotDropoffLabel` (hotel name or custom destination)
 
+**Status management** — admins can set any of `PENDING`, `CONFIRMED`, `CANCELLED`, `COMPLETED` from the detail page. On change, a customer status notification email is sent (same branded template as booking confirmation). Status is persisted even if SMTP fails; the UI shows whether the email was sent.
+
 ## Forbidden
 
 - Pricing a route to a hotel

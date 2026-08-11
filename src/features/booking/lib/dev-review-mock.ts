@@ -219,6 +219,12 @@ export function buildDevReviewSnapshot({
         fullName: "Can Yılmaz",
         idDocument: "",
       },
+      {
+        kind: "infant",
+        index: 1,
+        fullName: "Deniz Yılmaz",
+        idDocument: "",
+      },
     ],
     customer: {
       firstName: "Ahmet",

@@ -1,3 +1,5 @@
+import type { ReservationStatus } from "@/db/schema/enums";
+
 export type ReservationEmailLineItem = {
   type: "TRANSFER_VEHICLE" | "EXTRA_SERVICE";
   name: string;
@@ -38,11 +40,20 @@ export type ReservationNotificationPayload = {
   notes?: string;
 };
 
+export type ReservationStatusUpdateNotificationPayload =
+  ReservationNotificationPayload & {
+    previousStatus: ReservationStatus;
+    nextStatus: ReservationStatus;
+  };
+
 export type NotificationService = {
   sendReservationReceived(
     payload: ReservationNotificationPayload,
   ): Promise<void>;
   sendNewReservationToAdmin(
     payload: ReservationNotificationPayload,
+  ): Promise<void>;
+  sendReservationStatusUpdate(
+    payload: ReservationStatusUpdateNotificationPayload,
   ): Promise<void>;
 };

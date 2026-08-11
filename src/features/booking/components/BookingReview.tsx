@@ -23,6 +23,7 @@ import { buildOrderPricing } from "@/features/booking/lib/build-order-pricing";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
 import { resolveTransferEndpointLabels } from "@/features/booking/lib/route-direction";
+import { resolvePassengerKindLabel } from "@/features/booking/lib/passenger-details";
 import { formatInternationalPhone } from "@/lib/phone/format";
 
 export function BookingReview() {
@@ -197,10 +198,11 @@ export function BookingReview() {
               variant={cardVariant}
             />
             {state.passengers.map((passenger) => {
-              const label =
-                passenger.kind === "adult"
-                  ? tPassengers("adultLabel", { index: passenger.index })
-                  : tPassengers("childLabel", { index: passenger.index });
+              const label = resolvePassengerKindLabel(passenger, {
+                adult: (index) => tPassengers("adultLabel", { index }),
+                child: (index) => tPassengers("childLabel", { index }),
+                infant: (index) => tPassengers("infantLabel", { index }),
+              });
               const value = passenger.idDocument.trim()
                 ? `${passenger.fullName} (${passenger.idDocument.trim()})`
                 : passenger.fullName;

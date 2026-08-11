@@ -15,6 +15,7 @@ import { addMinutes } from "@/lib/datetime";
 const notificationService: NotificationService = {
   sendReservationReceived: vi.fn(async () => undefined),
   sendNewReservationToAdmin: vi.fn(async () => undefined),
+  sendReservationStatusUpdate: vi.fn(async () => undefined),
 };
 
 const baseInput = {

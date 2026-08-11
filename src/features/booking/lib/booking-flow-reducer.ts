@@ -137,6 +137,7 @@ export function createInitialBookingFlowState(
     passengers: buildPassengerSlots(
       mergedSearch.passengerCount,
       mergedSearch.childCount,
+      mergedSearch.infantCount,
     ),
     flight: {
       outboundFlightNumber: "",
@@ -163,6 +164,7 @@ function withSyncedPassengers(
       state.passengers,
       search.passengerCount,
       search.childCount,
+      search.infantCount,
     ),
   };
 }

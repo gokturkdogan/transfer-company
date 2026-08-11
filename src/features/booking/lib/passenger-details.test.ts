@@ -8,25 +8,27 @@ import {
 } from "@/features/booking/lib/passenger-details";
 
 describe("passenger-details", () => {
-  it("builds adult and child slots in order", () => {
-    expect(buildPassengerSlots(2, 1)).toEqual([
+  it("builds adult, child, and infant slots in order", () => {
+    expect(buildPassengerSlots(2, 1, 1)).toEqual([
       { kind: "adult", index: 1, fullName: "", idDocument: "" },
       { kind: "adult", index: 2, fullName: "", idDocument: "" },
       { kind: "child", index: 1, fullName: "", idDocument: "" },
+      { kind: "infant", index: 1, fullName: "", idDocument: "" },
     ]);
   });
 
   it("preserves existing passenger data when counts change", () => {
-    const current = buildPassengerSlots(2, 1);
+    const current = buildPassengerSlots(2, 1, 1);
     current[0] = { ...current[0], fullName: "Ada Lovelace", idDocument: "123" };
     current[2] = { ...current[2], fullName: "Kid" };
+    current[3] = { ...current[3], fullName: "Baby" };
 
-    const synced = syncPassengersWithSearch(current, 3, 0);
+    const synced = syncPassengersWithSearch(current, 3, 0, 1);
 
-    expect(synced).toHaveLength(3);
+    expect(synced).toHaveLength(4);
     expect(synced[0].fullName).toBe("Ada Lovelace");
     expect(synced[0].idDocument).toBe("123");
-    expect(synced[2].fullName).toBe("");
+    expect(synced[3].fullName).toBe("Baby");
   });
 
   it("requires every passenger name", () => {

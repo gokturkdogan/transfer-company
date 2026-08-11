@@ -17,7 +17,10 @@ import {
 } from "@/features/booking/lib/booking-flow-reducer";
 import { fetchReservation, fetchTransferQuote } from "@/features/booking/lib/api";
 import { mapApiErrorToKey } from "@/features/booking/lib/error-messages";
-import { appendPassengerDetailsToNotes } from "@/features/booking/lib/passenger-details";
+import {
+  appendPassengerDetailsToNotes,
+  resolvePassengerKindLabel,
+} from "@/features/booking/lib/passenger-details";
 import { formatInternationalPhone } from "@/lib/phone/format";
 import { getTotalPassengerCount } from "@/features/booking/lib/passenger-count";
 import {
@@ -339,9 +342,11 @@ export function BookingFlowProvider({
       notes: appendPassengerDetailsToNotes(
         state.passengers,
         (passenger) =>
-          passenger.kind === "adult"
-            ? tPassengers("adultLabel", { index: passenger.index })
-            : tPassengers("childLabel", { index: passenger.index }),
+          resolvePassengerKindLabel(passenger, {
+            adult: (index) => tPassengers("adultLabel", { index }),
+            child: (index) => tPassengers("childLabel", { index }),
+            infant: (index) => tPassengers("infantLabel", { index }),
+          }),
         tPassengers("notesSectionTitle"),
         state.notes,
       ),

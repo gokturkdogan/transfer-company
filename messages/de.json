@@ -319,9 +319,10 @@
     },
     "passengers": {
       "title": "Passagierinformationen",
-      "subtitle": "Geben Sie für jeden Passagier den vollständigen Namen ein. Ausweis- oder Passnummer ist optional.",
+      "subtitle": "Geben Sie für jeden Passagier, jedes Kind und jedes Kleinkind den vollständigen Namen ein. Ausweis- oder Passnummer ist optional.",
       "adultLabel": "Passagier {index}",
       "childLabel": "Kind {index}",
+      "infantLabel": "Kleinkind {index}",
       "fullName": "Vollständiger Name",
       "idDocument": "Ausweis / Pass-Nr. (optional)",
       "idDocumentPlaceholder": "Personalausweis- oder Passnummer",

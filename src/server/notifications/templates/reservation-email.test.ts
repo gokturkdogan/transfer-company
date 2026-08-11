@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { BRAND_IMAGES } from "@/config/brand";
-import { buildCustomerReservationEmail } from "@/server/notifications/templates/reservation-email";
+import {
+  buildCustomerReservationEmail,
+  buildCustomerReservationStatusEmail,
+} from "@/server/notifications/templates/reservation-email";
 import type { ReservationNotificationPayload } from "@/server/notifications/types";
 
 const samplePayload: ReservationNotificationPayload = {
@@ -73,5 +76,22 @@ describe("buildCustomerReservationEmail", () => {
     const email = buildCustomerReservationEmail(samplePayload);
 
     expect(email.html).toContain("Dahil");
+  });
+});
+
+describe("buildCustomerReservationStatusEmail", () => {
+  it("builds localized status update email with new status details", () => {
+    const email = buildCustomerReservationStatusEmail({
+      ...samplePayload,
+      previousStatus: "PENDING",
+      nextStatus: "CONFIRMED",
+    });
+
+    expect(email.subject).toContain("TR123456");
+    expect(email.html).toContain("Onaylandı");
+    expect(email.html).toContain("Önceki durum");
+    expect(email.html).toContain(BRAND_IMAGES.logo);
+    expect(email.html).toContain('bgcolor="#101019"');
+    expect(email.text).toContain("Rezervasyonunuz onaylandı");
   });
 });

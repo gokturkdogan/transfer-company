@@ -319,9 +319,10 @@
     },
     "passengers": {
       "title": "Passenger Information",
-      "subtitle": "Enter a full name for each passenger. ID or passport number is optional.",
+      "subtitle": "Enter a full name for each passenger, child, and infant. ID or passport number is optional.",
       "adultLabel": "Passenger {index}",
       "childLabel": "Child {index}",
+      "infantLabel": "Infant {index}",
       "fullName": "Full name",
       "idDocument": "ID / Passport No. (optional)",
       "idDocumentPlaceholder": "National ID or passport number",

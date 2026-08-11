@@ -1,6 +1,6 @@
 import "server-only";
 
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, inArray } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 
 import type { Database } from "@/db/client";
@@ -9,8 +9,11 @@ import {
   locations,
   reservationItems,
   reservations,
+  vehicleCategories,
 } from "@/db/schema";
 import type { ReservationStatus, TripType } from "@/db/schema/enums";
+import { RESERVATION_STATUSES } from "@/db/schema/enums";
+import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { NotFoundError } from "@/server/errors";
 
 export type AdminReservationListItem = {
@@ -43,19 +46,41 @@ export type AdminReservationDetail = AdminReservationListItem & {
   notes: string | null;
   customerEmail: string;
   customerPhone: string;
+  customerWhatsappPhone: string | null;
+  createdAt: Date;
   items: Array<{
     itemType: string;
     snapshotName: string;
     quantity: number;
     unitPriceMinor: number;
     totalPriceMinor: number;
+    vehicleCategoryId: string | null;
+    imageUrl?: string;
   }>;
 };
+
+export function parseReservationStatusFilter(
+  value: string | undefined,
+): ReservationStatus | "all" {
+  if (!value || value === "all") {
+    return "all";
+  }
+
+  if ((RESERVATION_STATUSES as readonly string[]).includes(value)) {
+    return value as ReservationStatus;
+  }
+
+  return "all";
+}
 
 export class ReservationAdminRepository {
   constructor(private readonly database: Database) {}
 
-  async listReservations(limit = 100): Promise<AdminReservationListItem[]> {
+  async listReservations(options?: {
+    status?: ReservationStatus;
+    limit?: number;
+  }): Promise<AdminReservationListItem[]> {
+    const limit = options?.limit ?? 100;
     const pickupLocation = alias(locations, "pickup_location");
     const dropoffLocation = alias(locations, "dropoff_location");
 
@@ -84,6 +109,9 @@ export class ReservationAdminRepository {
       .innerJoin(
         dropoffLocation,
         eq(reservations.dropoffLocationId, dropoffLocation.id),
+      )
+      .where(
+        options?.status ? eq(reservations.status, options.status) : undefined,
       )
       .orderBy(desc(reservations.outboundAt))
       .limit(limit);
@@ -132,6 +160,7 @@ export class ReservationAdminRepository {
         totalMinor: reservations.totalMinor,
         currency: reservations.currency,
         notes: reservations.notes,
+        createdAt: reservations.createdAt,
         originName: pickupLocation.defaultName,
         pricingDestinationName: dropoffLocation.defaultName,
         hotelName: hotelLocation.defaultName,
@@ -139,6 +168,7 @@ export class ReservationAdminRepository {
         customerLastName: customers.lastName,
         customerEmail: customers.email,
         customerPhone: customers.phone,
+        customerWhatsappPhone: customers.whatsappPhone,
       })
       .from(reservations)
       .innerJoin(customers, eq(reservations.customerId, customers.id))
@@ -168,9 +198,43 @@ export class ReservationAdminRepository {
         quantity: reservationItems.quantity,
         unitPriceMinor: reservationItems.unitPriceMinor,
         totalPriceMinor: reservationItems.totalPriceMinor,
+        vehicleCategoryId: reservationItems.vehicleCategoryId,
       })
       .from(reservationItems)
       .where(eq(reservationItems.reservationId, id));
+
+    const vehicleCategoryIds = items
+      .map((item) => item.vehicleCategoryId)
+      .filter((value): value is string => Boolean(value));
+
+    const vehicleRows =
+      vehicleCategoryIds.length > 0
+        ? await this.database
+            .select({
+              id: vehicleCategories.id,
+              code: vehicleCategories.code,
+              imageKey: vehicleCategories.imageKey,
+            })
+            .from(vehicleCategories)
+            .where(inArray(vehicleCategories.id, vehicleCategoryIds))
+        : [];
+
+    const vehiclesById = new Map(
+      vehicleRows.map((vehicle) => [vehicle.id, vehicle]),
+    );
+
+    const itemsWithImages = items.map((item) => {
+      const vehicle = item.vehicleCategoryId
+        ? vehiclesById.get(item.vehicleCategoryId)
+        : undefined;
+
+      return {
+        ...item,
+        imageUrl: vehicle
+          ? resolveVehicleCoverImage(vehicle.imageKey, vehicle.code)
+          : undefined,
+      };
+    });
 
     return {
       id: row.id,
@@ -202,7 +266,26 @@ export class ReservationAdminRepository {
       customerName: `${row.customerFirstName} ${row.customerLastName}`,
       customerEmail: row.customerEmail,
       customerPhone: row.customerPhone,
-      items,
+      customerWhatsappPhone: row.customerWhatsappPhone,
+      createdAt: row.createdAt,
+      items: itemsWithImages,
     };
+  }
+
+  async updateReservationStatus(
+    id: string,
+    status: ReservationStatus,
+  ): Promise<AdminReservationDetail> {
+    const [updated] = await this.database
+      .update(reservations)
+      .set({ status })
+      .where(eq(reservations.id, id))
+      .returning({ id: reservations.id });
+
+    if (!updated) {
+      throw new NotFoundError("Reservation not found");
+    }
+
+    return this.getReservationById(id);
   }
 }

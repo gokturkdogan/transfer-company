@@ -1,14 +1,24 @@
 import { DEFAULT_LOCALE, type Locale } from "@/config/constants";
+import type { ReservationStatus } from "@/db/schema/enums";
 
 export type ReservationEmailMessages = {
   customerSubject: string;
   adminSubject: string;
+  statusUpdateSubject: string;
   brandTagline: string;
   greeting: string;
   customerIntro: string;
   adminIntro: string;
   statusLabel: string;
   statusPending: string;
+  statusConfirmed: string;
+  statusCancelled: string;
+  statusCompleted: string;
+  previousStatusLabel: string;
+  statusPendingIntro: string;
+  statusConfirmedIntro: string;
+  statusCancelledIntro: string;
+  statusCompletedIntro: string;
   referenceLabel: string;
   vehicleSectionLabel: string;
   journeySectionLabel: string;
@@ -52,6 +62,7 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
   tr: {
     customerSubject: "Rezervasyonunuz alındı — {reference}",
     adminSubject: "Yeni rezervasyon — {reference}",
+    statusUpdateSubject: "Rezervasyon durumu güncellendi — {reference}",
     brandTagline: "Premium Havalimanı Transfer Hizmeti",
     greeting: "Sayın {name},",
     customerIntro:
@@ -59,6 +70,18 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     adminIntro: "Yeni bir transfer rezervasyonu oluşturuldu.",
     statusLabel: "Durum",
     statusPending: "Onay bekleniyor",
+    statusConfirmed: "Onaylandı",
+    statusCancelled: "İptal edildi",
+    statusCompleted: "Tamamlandı",
+    previousStatusLabel: "Önceki durum",
+    statusPendingIntro:
+      "Rezervasyonunuz tekrar inceleme aşamasına alındı. Ekibimiz kısa süre içinde sizinle iletişime geçecektir.",
+    statusConfirmedIntro:
+      "Rezervasyonunuz onaylandı. Transferiniz planlandığı şekilde gerçekleştirilecektir.",
+    statusCancelledIntro:
+      "Rezervasyonunuz iptal edilmiştir. Sorularınız için bizimle iletişime geçebilirsiniz.",
+    statusCompletedIntro:
+      "Transferiniz başarıyla tamamlandı. Bizi tercih ettiğiniz için teşekkür ederiz.",
     referenceLabel: "Rezervasyon numarası",
     vehicleSectionLabel: "Seçilen araç",
     journeySectionLabel: "Yolculuk detayları",
@@ -100,6 +123,7 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
   en: {
     customerSubject: "Your reservation is received — {reference}",
     adminSubject: "New reservation — {reference}",
+    statusUpdateSubject: "Reservation status updated — {reference}",
     brandTagline: "Premium Airport Transfer Service",
     greeting: "Dear {name},",
     customerIntro:
@@ -107,6 +131,18 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     adminIntro: "A new transfer reservation has been created.",
     statusLabel: "Status",
     statusPending: "Awaiting confirmation",
+    statusConfirmed: "Confirmed",
+    statusCancelled: "Cancelled",
+    statusCompleted: "Completed",
+    previousStatusLabel: "Previous status",
+    statusPendingIntro:
+      "Your reservation has been moved back to review. Our team will contact you shortly.",
+    statusConfirmedIntro:
+      "Your reservation has been confirmed. Your transfer will proceed as scheduled.",
+    statusCancelledIntro:
+      "Your reservation has been cancelled. Please contact us if you have any questions.",
+    statusCompletedIntro:
+      "Your transfer has been completed successfully. Thank you for choosing us.",
     referenceLabel: "Reservation number",
     vehicleSectionLabel: "Selected vehicle",
     journeySectionLabel: "Journey details",
@@ -148,6 +184,7 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
   de: {
     customerSubject: "Ihre Reservierung ist eingegangen — {reference}",
     adminSubject: "Neue Reservierung — {reference}",
+    statusUpdateSubject: "Reservierungsstatus aktualisiert — {reference}",
     brandTagline: "Premium Flughafen-Transferservice",
     greeting: "Sehr geehrte(r) {name},",
     customerIntro:
@@ -155,6 +192,18 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     adminIntro: "Eine neue Transferreservierung wurde erstellt.",
     statusLabel: "Status",
     statusPending: "Bestätigung ausstehend",
+    statusConfirmed: "Bestätigt",
+    statusCancelled: "Storniert",
+    statusCompleted: "Abgeschlossen",
+    previousStatusLabel: "Vorheriger Status",
+    statusPendingIntro:
+      "Ihre Reservierung wurde erneut zur Prüfung vorgelegt. Unser Team wird sich in Kürze bei Ihnen melden.",
+    statusConfirmedIntro:
+      "Ihre Reservierung wurde bestätigt. Ihr Transfer findet wie geplant statt.",
+    statusCancelledIntro:
+      "Ihre Reservierung wurde storniert. Bei Fragen kontaktieren Sie uns bitte.",
+    statusCompletedIntro:
+      "Ihr Transfer wurde erfolgreich abgeschlossen. Vielen Dank für Ihr Vertrauen.",
     referenceLabel: "Reservierungsnummer",
     vehicleSectionLabel: "Ausgewähltes Fahrzeug",
     journeySectionLabel: "Reisedetails",
@@ -196,6 +245,7 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
   ru: {
     customerSubject: "Ваша бронь получена — {reference}",
     adminSubject: "Новая бронь — {reference}",
+    statusUpdateSubject: "Статус брони обновлён — {reference}",
     brandTagline: "Премиальный трансфер из аэропорта",
     greeting: "Уважаемый(ая) {name},",
     customerIntro:
@@ -203,6 +253,18 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     adminIntro: "Создано новое бронирование трансфера.",
     statusLabel: "Статус",
     statusPending: "Ожидает подтверждения",
+    statusConfirmed: "Подтверждено",
+    statusCancelled: "Отменено",
+    statusCompleted: "Завершено",
+    previousStatusLabel: "Предыдущий статус",
+    statusPendingIntro:
+      "Ваша бронь снова находится на рассмотрении. Наша команда свяжется с вами в ближайшее время.",
+    statusConfirmedIntro:
+      "Ваша бронь подтверждена. Трансфер будет выполнен по расписанию.",
+    statusCancelledIntro:
+      "Ваша бронь отменена. Если у вас есть вопросы, свяжитесь с нами.",
+    statusCompletedIntro:
+      "Ваш трансфер успешно завершён. Спасибо, что выбрали нас.",
     referenceLabel: "Номер брони",
     vehicleSectionLabel: "Выбранный автомобиль",
     journeySectionLabel: "Детали поездки",
@@ -244,6 +306,7 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
   ar: {
     customerSubject: "تم استلام حجزك — {reference}",
     adminSubject: "حجز جديد — {reference}",
+    statusUpdateSubject: "تم تحديث حالة الحجز — {reference}",
     brandTagline: "خدمة نقل فاخرة من المطار",
     greeting: "عزيزي {name}،",
     customerIntro:
@@ -251,6 +314,18 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     adminIntro: "تم إنشاء حجز نقل جديد.",
     statusLabel: "الحالة",
     statusPending: "بانتظار التأكيد",
+    statusConfirmed: "مؤكد",
+    statusCancelled: "ملغى",
+    statusCompleted: "مكتمل",
+    previousStatusLabel: "الحالة السابقة",
+    statusPendingIntro:
+      "تمت إعادة حجزك إلى مرحلة المراجعة. سيتواصل معك فريقنا قريبًا.",
+    statusConfirmedIntro:
+      "تم تأكيد حجزك. سيتم تنفيذ النقل كما هو مخطط.",
+    statusCancelledIntro:
+      "تم إلغاء حجزك. يرجى التواصل معنا إذا كانت لديك أي أسئلة.",
+    statusCompletedIntro:
+      "تم إكمال النقل بنجاح. شكرًا لاختياركم لنا.",
     referenceLabel: "رقم الحجز",
     vehicleSectionLabel: "المركبة المختارة",
     journeySectionLabel: "تفاصيل الرحلة",
@@ -290,6 +365,42 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     quantityLabel: "{quantity}×",
   },
 };
+
+export function getReservationStatusLabel(
+  status: ReservationStatus,
+  messages: ReservationEmailMessages,
+): string {
+  switch (status) {
+    case "PENDING":
+      return messages.statusPending;
+    case "CONFIRMED":
+      return messages.statusConfirmed;
+    case "CANCELLED":
+      return messages.statusCancelled;
+    case "COMPLETED":
+      return messages.statusCompleted;
+    default:
+      return status;
+  }
+}
+
+export function getReservationStatusIntro(
+  status: ReservationStatus,
+  messages: ReservationEmailMessages,
+): string {
+  switch (status) {
+    case "PENDING":
+      return messages.statusPendingIntro;
+    case "CONFIRMED":
+      return messages.statusConfirmedIntro;
+    case "CANCELLED":
+      return messages.statusCancelledIntro;
+    case "COMPLETED":
+      return messages.statusCompletedIntro;
+    default:
+      return messages.statusConfirmedIntro;
+  }
+}
 
 export function getReservationEmailMessages(
   locale: string,

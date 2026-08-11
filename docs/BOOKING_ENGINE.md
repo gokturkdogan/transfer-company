@@ -103,6 +103,7 @@ When `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, and `SMTP_PASSWORD` are set (see `.e
 
 - **Customer email** — branded HTML confirmation with route, schedule, line items, and total (locale-aware).
 - **Admin email** — same reservation summary plus customer contact details and a link to `/admin/reservations/[id]`.
+- **Status update email** — sent to the customer when an admin changes reservation status via `/admin/reservations/[id]`. Same dark branded template; includes previous and new status plus trip summary. Logged as `EMAIL_STATUS_CUSTOMER`.
 
 Admin recipient resolution: `ADMIN_NOTIFICATION_EMAIL` → first active `contact_channels` email → `siteConfig.email` fallback.
 

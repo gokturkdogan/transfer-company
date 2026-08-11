@@ -127,6 +127,13 @@
       "when": 1786173100000,
       "tag": "0017_cash_payment_currencies_only",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1786173200000,
+      "tag": "0018_reservation_items_included_unit_totals",
+      "breakpoints": true
     }
   ]
 }

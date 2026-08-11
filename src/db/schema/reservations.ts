@@ -117,9 +117,17 @@ export const reservationItems = pgTable(
       "reservation_items_quantity_positive",
       sql`${table.quantity} > 0`,
     ),
+    // Allows included free units on PER_UNIT extras:
+    // total = unit × billableQty where billableQty ≤ quantity
+    // (e.g. 3 child seats, 1 included → unit 500, qty 3, total 1000).
     check(
-      "reservation_items_total_equals_unit_times_quantity",
-      sql`${table.totalPriceMinor} = ${table.unitPriceMinor} * ${table.quantity}`,
+      "reservation_items_total_consistent_with_unit_quantity",
+      sql`${table.totalPriceMinor} >= 0
+        AND ${table.totalPriceMinor} <= ${table.unitPriceMinor} * ${table.quantity}
+        AND (
+          ${table.unitPriceMinor} = 0
+          OR ${table.totalPriceMinor} % ${table.unitPriceMinor} = 0
+        )`,
     ),
     check(
       "reservation_items_transfer_vehicle_ref",

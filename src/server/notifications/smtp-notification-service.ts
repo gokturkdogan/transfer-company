@@ -10,11 +10,13 @@ import { logNotification } from "@/server/notifications/notification-log";
 import {
   buildAdminReservationEmail,
   buildCustomerReservationEmail,
+  buildCustomerReservationStatusEmail,
   type ReservationEmailContact,
 } from "@/server/notifications/templates/reservation-email";
 import type {
   NotificationService,
   ReservationNotificationPayload,
+  ReservationStatusUpdateNotificationPayload,
 } from "@/server/notifications/types";
 
 export async function resolveReservationEmailContact(): Promise<ReservationEmailContact> {
@@ -124,6 +126,49 @@ export class SmtpNotificationService implements NotificationService {
         reservationId: payload.reservationId,
         channel: "EMAIL_ADMIN",
         recipientType: "ADMIN",
+        status: "FAILED",
+        error: message,
+      });
+
+      throw error;
+    }
+  }
+
+  async sendReservationStatusUpdate(
+    payload: ReservationStatusUpdateNotificationPayload,
+  ): Promise<void> {
+    const contact = await resolveReservationEmailContact();
+    const email = buildCustomerReservationStatusEmail(payload, { contact });
+
+    try {
+      await sendEmail(this.smtpConfig, {
+        to: payload.customer.email,
+        subject: email.subject,
+        html: email.html,
+        text: email.text,
+      });
+
+      await logNotification({
+        reservationId: payload.reservationId,
+        channel: "EMAIL_STATUS_CUSTOMER",
+        recipientType: "CUSTOMER",
+        status: "SENT",
+      });
+
+      logger.info("Customer reservation status email sent", {
+        reference: payload.reference,
+        email: payload.customer.email,
+        previousStatus: payload.previousStatus,
+        nextStatus: payload.nextStatus,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Unknown SMTP error";
+
+      await logNotification({
+        reservationId: payload.reservationId,
+        channel: "EMAIL_STATUS_CUSTOMER",
+        recipientType: "CUSTOMER",
         status: "FAILED",
         error: message,
       });

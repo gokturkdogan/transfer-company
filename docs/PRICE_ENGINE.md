@@ -32,6 +32,8 @@ Luggage vehicle is a standard extra with optional `luggageCapacityPerUnit`. No h
 
 `includedQuantity` on `extra_services` defines how many units are free per booking for `PER_UNIT` extras (e.g. child seat: 1 free, additional units charged). Fixed extras ignore this field.
 
+Persisted `reservation_items` keep the requested `quantity` and catalogue `unit_price_minor`, while `total_price_minor` reflects only billable units. The DB check allows `total ≤ unit × quantity` with totals that are multiples of the unit price (included free units).
+
 ## Quote calculation
 
 Pure function: `calculateQuote()` in `src/features/pricing/domain/calculate-quote.ts`

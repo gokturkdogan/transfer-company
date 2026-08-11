@@ -1,4 +1,4 @@
-export type PassengerKind = "adult" | "child";
+export type PassengerKind = "adult" | "child" | "infant";
 
 export type PassengerDetails = {
   kind: PassengerKind;
@@ -14,6 +14,7 @@ export function passengerSlotKey(passenger: Pick<PassengerDetails, "kind" | "ind
 export function buildPassengerSlots(
   adultCount: number,
   childCount: number,
+  infantCount = 0,
 ): PassengerDetails[] {
   const passengers: PassengerDetails[] = [];
 
@@ -35,6 +36,15 @@ export function buildPassengerSlots(
     });
   }
 
+  for (let index = 1; index <= infantCount; index += 1) {
+    passengers.push({
+      kind: "infant",
+      index,
+      fullName: "",
+      idDocument: "",
+    });
+  }
+
   return passengers;
 }
 
@@ -42,8 +52,9 @@ export function syncPassengersWithSearch(
   current: PassengerDetails[],
   adultCount: number,
   childCount: number,
+  infantCount = 0,
 ): PassengerDetails[] {
-  const nextSlots = buildPassengerSlots(adultCount, childCount);
+  const nextSlots = buildPassengerSlots(adultCount, childCount, infantCount);
   const currentByKey = new Map(
     current.map((passenger) => [passengerSlotKey(passenger), passenger]),
   );
@@ -94,4 +105,24 @@ export function appendPassengerDetailsToNotes(
   const trimmedNotes = existingNotes?.trim();
 
   return trimmedNotes ? `${trimmedNotes}\n\n${block}` : block;
+}
+
+export function resolvePassengerKindLabel(
+  passenger: Pick<PassengerDetails, "kind" | "index">,
+  labels: {
+    adult: (index: number) => string;
+    child: (index: number) => string;
+    infant: (index: number) => string;
+  },
+): string {
+  switch (passenger.kind) {
+    case "adult":
+      return labels.adult(passenger.index);
+    case "child":
+      return labels.child(passenger.index);
+    case "infant":
+      return labels.infant(passenger.index);
+    default:
+      return labels.adult(passenger.index);
+  }
 }

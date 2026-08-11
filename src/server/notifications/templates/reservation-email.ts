@@ -1,6 +1,7 @@
 import { APP_NAME, isRtlLocale } from "@/config/constants";
 import { BRAND_IMAGES } from "@/config/brand";
 import { siteConfig } from "@/config/site";
+import type { ReservationStatus } from "@/db/schema/enums";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import {
   escapeHtml,
@@ -9,12 +10,15 @@ import {
 } from "@/server/notifications/email/email-utils";
 import {
   getReservationEmailMessages,
+  getReservationStatusIntro,
+  getReservationStatusLabel,
   interpolate,
   type ReservationEmailMessages,
 } from "@/server/notifications/messages/reservation-email";
 import type {
   ReservationEmailLineItem,
   ReservationNotificationPayload,
+  ReservationStatusUpdateNotificationPayload,
 } from "@/server/notifications/types";
 
 const BRAND = {
@@ -147,9 +151,19 @@ function renderChip(textValue: string): string {
   return `<span ${colorStyle(BRAND.goldLight, `display:inline-block;margin:0 6px 6px 0;padding:6px 12px;border:1px solid ${BRAND.goldDeep};border-radius:999px;font-family:${SANS};font-size:11px;font-weight:600;letter-spacing:0.06em;`)}>${escapeHtml(textValue)}</span>`;
 }
 
+function renderStatusBadge(
+  status: ReservationStatus,
+  messages: ReservationEmailMessages,
+): string {
+  const label = getReservationStatusLabel(status, messages);
+
+  return `<span ${bg(BRAND.goldTint, `display:inline-block;padding:6px 14px;border-radius:999px;border:1px solid ${BRAND.goldDeep};`)} ${colorStyle(BRAND.goldLight, `font-family:${SANS};font-size:11px;font-weight:600;letter-spacing:0.08em;`)}>${escapeHtml(label)}</span>`;
+}
+
 function renderReferencePanel(
   payload: ReservationNotificationPayload,
   messages: ReservationEmailMessages,
+  status: ReservationStatus = "PENDING",
 ): string {
   return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-panel" ${bg(BRAND.panel, `margin:0 0 32px;border:1px solid ${BRAND.border};border-radius:14px;`)}>
     <tr>
@@ -157,7 +171,29 @@ function renderReferencePanel(
       <td ${bg(BRAND.panel, "padding:22px 24px;")}>
         <div class="email-gold" ${colorStyle(BRAND.gold, `font-family:${SANS};font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:8px;`)}>${escapeHtml(messages.referenceLabel)}</div>
         <div class="email-white" ${colorStyle(BRAND.white, `font-family:${SERIF};font-size:30px;line-height:1.1;font-weight:700;letter-spacing:0.1em;margin-bottom:14px;`)}>${escapeHtml(payload.reference)}</div>
-        <span ${bg(BRAND.goldTint, `display:inline-block;padding:6px 14px;border-radius:999px;border:1px solid ${BRAND.goldDeep};`)} ${colorStyle(BRAND.goldLight, `font-family:${SANS};font-size:11px;font-weight:600;letter-spacing:0.08em;`)}>${escapeHtml(messages.statusPending)}</span>
+        ${renderStatusBadge(status, messages)}
+      </td>
+    </tr>
+  </table>`;
+}
+
+function renderStatusChangePanel(
+  payload: ReservationStatusUpdateNotificationPayload,
+  messages: ReservationEmailMessages,
+): string {
+  const previousLabel = getReservationStatusLabel(
+    payload.previousStatus,
+    messages,
+  );
+  const nextLabel = getReservationStatusLabel(payload.nextStatus, messages);
+
+  return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-panel-soft" ${bg(BRAND.panelSoft, `margin:0 0 32px;border:1px solid ${BRAND.borderSoft};border-radius:14px;`)}>
+    <tr>
+      <td ${bg(BRAND.panelSoft, "padding:20px 24px;")}>
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+          ${renderDetailRow(messages.previousStatusLabel, previousLabel)}
+          ${renderDetailRow(messages.statusLabel, nextLabel)}
+        </table>
       </td>
     </tr>
   </table>`;
@@ -698,6 +734,59 @@ export function buildAdminReservationEmail(
     "",
     `${messages.adminViewReservation}: ${options.adminUrl}`,
     `${messages.footerContact}: ${contact.email}`,
+  ].join("\n");
+
+  return { subject, html, text };
+}
+
+export function buildCustomerReservationStatusEmail(
+  payload: ReservationStatusUpdateNotificationPayload,
+  options?: { contact?: ReservationEmailContact },
+): { subject: string; html: string; text: string } {
+  const messages = getReservationEmailMessages(payload.locale);
+  const contact = resolveContact(options?.contact);
+  const intro = getReservationStatusIntro(payload.nextStatus, messages);
+  const statusLabel = getReservationStatusLabel(payload.nextStatus, messages);
+  const subject = interpolate(messages.statusUpdateSubject, {
+    reference: payload.reference,
+  });
+
+  const bodyHtml = `
+    <h1 class="email-white" ${colorStyle(BRAND.white, `margin:0 0 14px;font-family:${SERIF};font-size:26px;line-height:1.35;font-weight:400;`)}>${escapeHtml(interpolate(messages.greeting, { name: payload.customer.firstName }))}</h1>
+    <p class="email-muted" ${colorStyle(BRAND.muted, `margin:0 0 30px;font-family:${SANS};font-size:15px;line-height:1.75;`)}>${escapeHtml(intro)}</p>
+    ${renderReferencePanel(payload, messages, payload.nextStatus)}
+    ${renderStatusChangePanel(payload, messages)}
+    ${renderVehicleSection(payload, messages)}
+    ${renderJourneySection(payload, messages)}
+    ${renderExtrasSection(payload, messages)}
+    ${renderSummarySection(payload, messages)}
+    ${payload.notes ? renderNotesSection(payload.notes, messages) : ""}
+    ${renderSupportSection(messages, contact)}
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td ${bg(BRAND.card, "height:28px;font-size:0;line-height:0;")}>&nbsp;</td></tr></table>
+  `;
+
+  const html = renderEmailLayout({
+    locale: payload.locale,
+    title: subject,
+    preheader: `${messages.statusLabel}: ${statusLabel} — ${payload.reference}`,
+    bodyHtml,
+    timezoneNote: messages.timezoneNote,
+    tagline: messages.brandTagline,
+  });
+
+  const text = [
+    interpolate(messages.greeting, { name: payload.customer.firstName }),
+    "",
+    intro,
+    "",
+    `${messages.referenceLabel}: ${payload.reference}`,
+    `${messages.previousStatusLabel}: ${getReservationStatusLabel(payload.previousStatus, messages)}`,
+    `${messages.statusLabel}: ${statusLabel}`,
+    "",
+    ...buildPlainTextLines(payload, messages, payload.items),
+    "",
+    `${messages.footerContact}: ${contact.phone} · ${contact.email}`,
+    messages.timezoneNote,
   ].join("\n");
 
   return { subject, html, text };

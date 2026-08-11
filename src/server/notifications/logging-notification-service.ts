@@ -5,6 +5,7 @@ import { logNotification } from "@/server/notifications/notification-log";
 import type {
   NotificationService,
   ReservationNotificationPayload,
+  ReservationStatusUpdateNotificationPayload,
 } from "@/server/notifications/types";
 
 export class LoggingNotificationService implements NotificationService {
@@ -36,6 +37,25 @@ export class LoggingNotificationService implements NotificationService {
       reservationId: payload.reservationId,
       channel: "EMAIL_ADMIN",
       recipientType: "ADMIN",
+      status: "SKIPPED",
+      error: "SMTP is not configured",
+    });
+  }
+
+  async sendReservationStatusUpdate(
+    payload: ReservationStatusUpdateNotificationPayload,
+  ): Promise<void> {
+    logger.info("Reservation status notification skipped", {
+      reference: payload.reference,
+      email: payload.customer.email,
+      previousStatus: payload.previousStatus,
+      nextStatus: payload.nextStatus,
+    });
+
+    await logNotification({
+      reservationId: payload.reservationId,
+      channel: "EMAIL_STATUS_CUSTOMER",
+      recipientType: "CUSTOMER",
       status: "SKIPPED",
       error: "SMTP is not configured",
     });
