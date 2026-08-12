@@ -37,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       : [DEFAULT_LOCALE];
 
   const fleetRoutes = vehicleCodes.map((code) => ({
-    path: `/fleet/${code}`,
+    path: `/fleet/${code.toLowerCase()}`,
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
