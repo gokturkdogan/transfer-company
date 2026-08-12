@@ -329,8 +329,7 @@
       "infantLabel": "الرضيع {index}",
       "fullName": "الاسم الكامل",
       "idDocument": "الهوية / جواز السفر (اختياري)",
-      "idDocumentPlaceholder": "رقم الهوية أو جواز السفر",
-      "notesSectionTitle": "--- معلومات الركاب ---"
+      "idDocumentPlaceholder": "رقم الهوية أو جواز السفر"
     },
     "errors": {
       "rateLimit": "طلبات كثيرة جداً. يرجى المحاولة لاحقاً.",

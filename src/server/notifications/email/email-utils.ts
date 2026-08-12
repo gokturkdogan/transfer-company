@@ -33,3 +33,8 @@ export function escapeHtml(value: string): string {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
 }
+
+/** Escape HTML then preserve line breaks for email clients. */
+export function formatMultilineHtml(value: string): string {
+  return escapeHtml(value).replace(/\r\n|\r|\n/g, "<br />");
+}

@@ -20,10 +20,7 @@ import {
 import { fetchReservation, fetchTransferQuote } from "@/features/booking/lib/api";
 import { buildOrderPricing } from "@/features/booking/lib/build-order-pricing";
 import { mapApiErrorToKey } from "@/features/booking/lib/error-messages";
-import {
-  appendPassengerDetailsToNotes,
-  resolvePassengerKindLabel,
-} from "@/features/booking/lib/passenger-details";
+import { toReservationPassengerSnapshots } from "@/features/booking/lib/passenger-details";
 import { formatInternationalPhone } from "@/lib/phone/format";
 import { getTotalPassengerCount } from "@/features/booking/lib/passenger-count";
 import {
@@ -85,7 +82,6 @@ export function BookingFlowProvider({
   initialSearch?: Partial<BookingSearchState>;
 }) {
   const locale = useLocale();
-  const tPassengers = useTranslations("booking.passengers");
   const tCommon = useTranslations("common");
   const [state, dispatch] = useReducer(
     bookingFlowReducer,
@@ -351,17 +347,8 @@ export function BookingFlowProvider({
             )
           : undefined,
       },
-      notes: appendPassengerDetailsToNotes(
-        state.passengers,
-        (passenger) =>
-          resolvePassengerKindLabel(passenger, {
-            adult: (index) => tPassengers("adultLabel", { index }),
-            child: (index) => tPassengers("childLabel", { index }),
-            infant: (index) => tPassengers("infantLabel", { index }),
-          }),
-        tPassengers("notesSectionTitle"),
-        state.notes,
-      ),
+      passengers: toReservationPassengerSnapshots(state.passengers),
+      notes: state.notes.trim() || undefined,
       locale,
       clientQuotedTotalMinor,
       website: "",
@@ -380,7 +367,7 @@ export function BookingFlowProvider({
 
     dispatch({ type: "SUBMIT_SUCCESS", reservation: result.data });
     track({ name: "booking_success", payload: { reference: result.data.reference } });
-  }, [locale, state, tPassengers]);
+  }, [locale, state]);
 
   const value = useMemo(
     () => ({

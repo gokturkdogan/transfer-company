@@ -61,7 +61,7 @@ Parent entities also carry `default_name` as admin fallback when translation is 
 | `extra_service_prices` | Per-currency extra prices (admin-managed) |
 | `contact_channels` | Site contact emails, phones, WhatsApp numbers |
 | `enabled_locales` | Admin-enabled site languages for locale switcher |
-| `reservations` | Booking header; district pricing + hotel/custom drop-off |
+| `reservations` | Booking header; district pricing + hotel/custom drop-off; `passenger_details` jsonb for named passengers; `notes` free-text only |
 | `reservation_items` | Snapshot line items (vehicles + extras) |
 | `admin_users` | Admin credentials (scrypt hash) |
 | `admin_sessions` | Hashed session tokens |

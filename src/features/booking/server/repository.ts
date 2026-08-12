@@ -249,6 +249,7 @@ export class BookingRepository implements BookingWriter {
             totalMinor: payload.totalMinor,
             currency: payload.currency,
             notes: payload.notes,
+            passengerDetails: payload.passengerDetails ?? null,
           })
           .returning({
             id: reservations.id,

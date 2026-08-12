@@ -58,6 +58,7 @@ See [API_CONTRACTS.md](./API_CONTRACTS.md) for request/response shapes.
 ## Validation rules
 
 - Passenger count must be positive
+- `passengers[]` is required and must match `passengerCount + infantCount`
 - Luggage counts must be non-negative
 - `outboundAt` must be at least `MIN_BOOKING_LEAD_MINUTES` in the future
 - Round-trip requires `returnAt` after `outboundAt`
@@ -77,6 +78,7 @@ On reservation creation, the system:
 1. Recalculates quote via `QuoteService.calculateTransferQuote()`
 2. Maps quote lines to `reservation_items` via `buildReservationItems()`
 3. Stores reservation-level `snapshotRouteLabel` (airport → district), `snapshotDropoffLabel`, `subtotalMinor`, `totalMinor`, `currency`
+4. Stores `passenger_details` from the request `passengers` array; `notes` stays customer free-text only
 
 Each `reservation_item` preserves:
 

@@ -329,8 +329,7 @@
       "infantLabel": "Младенец {index}",
       "fullName": "ФИО",
       "idDocument": "Удостоверение / Паспорт (необязательно)",
-      "idDocumentPlaceholder": "Номер удостоверения или паспорта",
-      "notesSectionTitle": "--- Информация о пассажирах ---"
+      "idDocumentPlaceholder": "Номер удостоверения или паспорта"
     },
     "errors": {
       "rateLimit": "Слишком много запросов. Пожалуйста, попробуйте позже.",

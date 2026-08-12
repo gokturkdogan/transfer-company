@@ -39,7 +39,9 @@ export function buildReservationNotificationPayloadFromAdminDetail(
     snapshotDropoffLabel:
       detail.snapshotDropoffLabel ?? detail.actualDropoffLabel,
     passengerCount: detail.passengerCount,
-    infantCount: 0,
+    infantCount:
+      detail.passengerDetails?.filter((passenger) => passenger.kind === "infant")
+        .length ?? 0,
     largeLuggageCount: detail.largeLuggageCount,
     cabinLuggageCount: detail.cabinLuggageCount,
     outboundFlightNumber: detail.outboundFlightNumber ?? undefined,
@@ -58,6 +60,7 @@ export function buildReservationNotificationPayloadFromAdminDetail(
       phone: detail.customerPhone,
       whatsappPhone: detail.customerWhatsappPhone ?? undefined,
     },
+    passengers: detail.passengerDetails ?? undefined,
     subtotalMinor: detail.subtotalMinor,
     totalMinor: detail.totalMinor,
     currency: detail.currency,

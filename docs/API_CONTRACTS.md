@@ -149,6 +149,11 @@ Creates a reservation request. Requires `Idempotency-Key` header.
     "whatsappPhone": "+905551112233"
   },
   "notes": "Meet at arrivals",
+  "passengers": [
+    { "kind": "adult", "index": 1, "fullName": "Ada Lovelace", "idDocument": "12345678901" },
+    { "kind": "adult", "index": 2, "fullName": "Grace Hopper" },
+    { "kind": "child", "index": 1, "fullName": "Child Name" }
+  ],
   "locale": "en",
   "clientQuotedTotalMinor": 12500,
   "website": "",
@@ -156,6 +161,8 @@ Creates a reservation request. Requires `Idempotency-Key` header.
 }
 ```
 
+- `passengers` is required; length must equal `passengerCount + infantCount` (children are included in `passengerCount`)
+- `notes` is free-text customer notes only — passenger names are stored separately in `passenger_details`
 - `clientQuotedTotalMinor` is informational only; server recalculates and ignores mismatches
 - `hotelLocationId` and `customDestination` are mutually exclusive
 - When `hotelLocationId` is set, server verifies hotel is active and belongs to `destinationDistrictId`

@@ -4,7 +4,12 @@ import { siteConfig } from "@/config/site";
 import type { ReservationStatus } from "@/db/schema/enums";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import {
+  formatPassengerDisplayLine,
+  resolvePassengerKindLabel,
+} from "@/features/booking/lib/passenger-details";
+import {
   escapeHtml,
+  formatMultilineHtml,
   formatReservationDateTime,
   toAbsoluteAssetUrl,
 } from "@/server/notifications/email/email-utils";
@@ -18,6 +23,7 @@ import {
 import type {
   ReservationEmailLineItem,
   ReservationNotificationPayload,
+  ReservationPassengerNotification,
   ReservationStatusUpdateNotificationPayload,
 } from "@/server/notifications/types";
 
@@ -484,7 +490,67 @@ function renderNotesSection(
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-panel-soft" ${bg(BRAND.panelSoft, `border:1px solid ${BRAND.borderSoft};border-radius:14px;`)}>
           <tr>
             <td ${bg(BRAND.goldDeep, "width:3px;font-size:0;line-height:0;")}>&nbsp;</td>
-            <td ${bg(BRAND.panelSoft, "padding:16px 20px;")} class="email-text" ${colorStyle(BRAND.text, `font-family:${SANS};font-size:14px;line-height:1.7;font-style:italic;`)}>${escapeHtml(notes)}</td>
+            <td ${bg(BRAND.panelSoft, "padding:16px 20px;")} class="email-text" ${colorStyle(BRAND.text, `font-family:${SANS};font-size:14px;line-height:1.7;`)}>${formatMultilineHtml(notes)}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>`;
+}
+
+function resolvePassengerKindMessage(
+  passenger: ReservationPassengerNotification,
+  messages: ReservationEmailMessages,
+): string {
+  return resolvePassengerKindLabel(passenger, {
+    adult: (index) =>
+      interpolate(messages.passengerAdultLabel, { index: String(index) }),
+    child: (index) =>
+      interpolate(messages.passengerChildLabel, { index: String(index) }),
+    infant: (index) =>
+      interpolate(messages.passengerInfantLabel, { index: String(index) }),
+  });
+}
+
+function formatPassengerLines(
+  passengers: ReservationPassengerNotification[],
+  messages: ReservationEmailMessages,
+): string[] {
+  return passengers.map((passenger) =>
+    formatPassengerDisplayLine(
+      passenger,
+      resolvePassengerKindMessage(passenger, messages),
+    ),
+  );
+}
+
+function renderPassengerDetailsSection(
+  passengers: ReservationPassengerNotification[],
+  messages: ReservationEmailMessages,
+): string {
+  if (passengers.length === 0) {
+    return "";
+  }
+
+  const rows = formatPassengerLines(passengers, messages)
+    .map(
+      (line) =>
+        `<tr>
+          <td ${bg(BRAND.panelSoft, "padding:10px 20px;")} class="email-text" ${colorStyle(BRAND.text, `font-family:${SANS};font-size:14px;line-height:1.6;`)}>${escapeHtml(line)}</td>
+        </tr>`,
+    )
+    .join("");
+
+  return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" ${bg(BRAND.card, "margin:0 0 32px;")}>
+    <tr>
+      <td ${bg(BRAND.card)}>
+        ${renderSectionHeading(messages.passengerDetailsLabel)}
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-panel-soft" ${bg(BRAND.panelSoft, `border:1px solid ${BRAND.borderSoft};border-radius:14px;`)}>
+          <tr>
+            <td ${bg(BRAND.goldDeep, "width:3px;font-size:0;line-height:0;")}>&nbsp;</td>
+            <td ${bg(BRAND.panelSoft, "padding:6px 0;")}>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${rows}</table>
+            </td>
           </tr>
         </table>
       </td>
@@ -618,6 +684,17 @@ function buildPlainTextLines(
     `${messages.totalLabel}: ${formatPrice(payload.totalMinor, payload.currency, payload.locale)}`,
   );
 
+  if (payload.passengers && payload.passengers.length > 0) {
+    lines.push("", `${messages.passengerDetailsLabel}:`);
+    for (const line of formatPassengerLines(payload.passengers, messages)) {
+      lines.push(`- ${line}`);
+    }
+  }
+
+  if (payload.notes?.trim()) {
+    lines.push("", `${messages.notesLabel}:`, payload.notes.trim());
+  }
+
   return lines;
 }
 
@@ -639,6 +716,7 @@ export function buildCustomerReservationEmail(
     ${renderJourneySection(payload, messages)}
     ${renderExtrasSection(payload, messages)}
     ${renderSummarySection(payload, messages)}
+    ${payload.passengers?.length ? renderPassengerDetailsSection(payload.passengers, messages) : ""}
     ${payload.notes ? renderNotesSection(payload.notes, messages) : ""}
     ${renderSupportSection(messages, contact)}
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td ${bg(BRAND.card, "height:28px;font-size:0;line-height:0;")}>&nbsp;</td></tr></table>
@@ -709,6 +787,7 @@ export function buildAdminReservationEmail(
     ${renderJourneySection(payload, messages)}
     ${renderExtrasSection(payload, messages)}
     ${renderSummarySection(payload, messages)}
+    ${payload.passengers?.length ? renderPassengerDetailsSection(payload.passengers, messages) : ""}
     ${payload.notes ? renderNotesSection(payload.notes, messages) : ""}
     ${renderGoldButton(options.adminUrl, messages.adminViewReservation)}
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td ${bg(BRAND.card, "height:28px;font-size:0;line-height:0;")}>&nbsp;</td></tr></table>
@@ -760,6 +839,7 @@ export function buildCustomerReservationStatusEmail(
     ${renderJourneySection(payload, messages)}
     ${renderExtrasSection(payload, messages)}
     ${renderSummarySection(payload, messages)}
+    ${payload.passengers?.length ? renderPassengerDetailsSection(payload.passengers, messages) : ""}
     ${payload.notes ? renderNotesSection(payload.notes, messages) : ""}
     ${renderSupportSection(messages, contact)}
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td ${bg(BRAND.card, "height:28px;font-size:0;line-height:0;")}>&nbsp;</td></tr></table>

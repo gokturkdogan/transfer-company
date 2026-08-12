@@ -81,30 +81,39 @@ export function arePassengerDetailsValid(passengers: PassengerDetails[]): boolea
   );
 }
 
-export function appendPassengerDetailsToNotes(
+export type ReservationPassengerSnapshot = {
+  kind: PassengerKind;
+  index: number;
+  fullName: string;
+  idDocument?: string;
+};
+
+export function toReservationPassengerSnapshots(
   passengers: PassengerDetails[],
-  formatLabel: (passenger: PassengerDetails) => string,
-  sectionTitle: string,
-  existingNotes?: string,
-): string | undefined {
-  const lines = passengers
+): ReservationPassengerSnapshot[] {
+  return passengers
     .filter((passenger) => passenger.fullName.trim().length > 0)
     .map((passenger) => {
-      const name = passenger.fullName.trim();
-      const document = passenger.idDocument.trim();
-      const label = formatLabel(passenger);
+      const idDocument = passenger.idDocument.trim();
 
-      return document ? `${label}: ${name} (${document})` : `${label}: ${name}`;
+      return {
+        kind: passenger.kind,
+        index: passenger.index,
+        fullName: passenger.fullName.trim(),
+        ...(idDocument ? { idDocument } : {}),
+      };
     });
+}
 
-  if (lines.length === 0) {
-    return existingNotes?.trim() || undefined;
-  }
+export function formatPassengerDisplayLine(
+  passenger: Pick<ReservationPassengerSnapshot, "fullName" | "idDocument">,
+  kindLabel: string,
+): string {
+  const idDocument = passenger.idDocument?.trim();
 
-  const block = [sectionTitle, ...lines].join("\n");
-  const trimmedNotes = existingNotes?.trim();
-
-  return trimmedNotes ? `${trimmedNotes}\n\n${block}` : block;
+  return idDocument
+    ? `${kindLabel}: ${passenger.fullName} (${idDocument})`
+    : `${kindLabel}: ${passenger.fullName}`;
 }
 
 export function resolvePassengerKindLabel(

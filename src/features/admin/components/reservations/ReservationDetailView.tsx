@@ -28,6 +28,10 @@ import { ReservationStatusControl } from "@/features/admin/components/reservatio
 import { formatReservationOutboundDate } from "@/features/admin/lib/format-admin-datetime";
 import type { AdminReservationDetail } from "@/features/admin/server/reservation-admin-repository";
 import { ADMIN_LOCALE, adminCopy, formatTripType } from "@/features/admin/copy";
+import {
+  formatPassengerDisplayLine,
+  resolvePassengerKindLabel,
+} from "@/features/booking/lib/passenger-details";
 import { formatMoney } from "@/lib/money";
 import { cn } from "@/lib/utils";
 
@@ -517,12 +521,40 @@ export function ReservationDetailView({ reservation }: ReservationDetailViewProp
       </DetailSection>
 
       <DetailSection
+        title={adminCopy.reservations.detail.passengerDetails}
+        description={adminCopy.reservations.detail.passengerDetailsHint}
+        icon={Users}
+      >
+        {reservation.passengerDetails && reservation.passengerDetails.length > 0 ? (
+          <ul className="space-y-2 rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-4 text-sm text-slate-800">
+            {reservation.passengerDetails.map((passenger) => {
+              const kindLabel = resolvePassengerKindLabel(passenger, {
+                adult: adminCopy.reservations.detail.passengerAdult,
+                child: adminCopy.reservations.detail.passengerChild,
+                infant: adminCopy.reservations.detail.passengerInfant,
+              });
+
+              return (
+                <li key={`${passenger.kind}-${passenger.index}`}>
+                  {formatPassengerDisplayLine(passenger, kindLabel)}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="text-sm text-slate-500">
+            {adminCopy.reservations.detail.passengerDetailsEmpty}
+          </p>
+        )}
+      </DetailSection>
+
+      <DetailSection
         title={adminCopy.reservations.detail.notes}
         description={adminCopy.reservations.detail.notesHint}
         icon={MessageSquareText}
       >
         {reservation.notes ? (
-          <div className="rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-4 text-sm leading-relaxed text-slate-800">
+          <div className="whitespace-pre-wrap rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-4 text-sm leading-relaxed text-slate-800">
             {reservation.notes}
           </div>
         ) : (

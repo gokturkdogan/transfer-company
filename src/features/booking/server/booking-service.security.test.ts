@@ -69,6 +69,10 @@ const baseInput = {
     email: "ada@example.com",
     phone: "+905551112233",
   },
+  passengers: [
+    { kind: "adult" as const, index: 1, fullName: "Ada Lovelace" },
+    { kind: "adult" as const, index: 2, fullName: "Grace Hopper" },
+  ],
   locale: "en",
 };
 
@@ -131,6 +135,11 @@ describe("BookingService security", () => {
         {
           ...baseInput,
           passengerCount: 20,
+          passengers: Array.from({ length: 20 }, (_, index) => ({
+            kind: "adult" as const,
+            index: index + 1,
+            fullName: `Passenger ${index + 1}`,
+          })),
         },
         { idempotencyKey: "key-4" },
       ),

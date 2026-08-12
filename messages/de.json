@@ -329,8 +329,7 @@
       "infantLabel": "Kleinkind {index}",
       "fullName": "Vollständiger Name",
       "idDocument": "Ausweis / Pass-Nr. (optional)",
-      "idDocumentPlaceholder": "Personalausweis- oder Passnummer",
-      "notesSectionTitle": "--- Passagierinformationen ---"
+      "idDocumentPlaceholder": "Personalausweis- oder Passnummer"
     },
     "errors": {
       "rateLimit": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",

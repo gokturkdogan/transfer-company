@@ -77,6 +77,37 @@ describe("buildCustomerReservationEmail", () => {
 
     expect(email.html).toContain("Dahil");
   });
+
+  it("renders passenger details separately from notes", () => {
+    const email = buildCustomerReservationEmail({
+      ...samplePayload,
+      notes: "deneme not",
+      passengers: [
+        {
+          kind: "adult",
+          index: 1,
+          fullName: "Göktürk Doğan",
+          idDocument: "12345678901",
+        },
+      ],
+    });
+
+    expect(email.html).toContain("Yolcu bilgileri");
+    expect(email.html).toContain("1. Yolcu: Göktürk Doğan (12345678901)");
+    expect(email.html).toContain("deneme not");
+    expect(email.html).not.toContain("--- Yolcu Bilgileri ---");
+    expect(email.text).toContain("Yolcu bilgileri:");
+    expect(email.text).toContain("- 1. Yolcu: Göktürk Doğan (12345678901)");
+  });
+
+  it("preserves note line breaks in html", () => {
+    const email = buildCustomerReservationEmail({
+      ...samplePayload,
+      notes: "satır bir\n\nsatır iki",
+    });
+
+    expect(email.html).toContain("satır bir<br /><br />satır iki");
+  });
 });
 
 describe("buildCustomerReservationStatusEmail", () => {

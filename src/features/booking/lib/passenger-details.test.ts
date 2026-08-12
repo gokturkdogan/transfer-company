@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  appendPassengerDetailsToNotes,
   arePassengerDetailsValid,
   buildPassengerSlots,
+  formatPassengerDisplayLine,
   syncPassengersWithSearch,
+  toReservationPassengerSnapshots,
 } from "@/features/booking/lib/passenger-details";
 
 describe("passenger-details", () => {
@@ -41,24 +42,37 @@ describe("passenger-details", () => {
     expect(arePassengerDetailsValid(passengers)).toBe(true);
   });
 
-  it("formats passenger block for notes", () => {
+  it("maps filled passengers to reservation snapshots without empty slots", () => {
     const passengers = buildPassengerSlots(1, 1);
     passengers[0].fullName = "Ada Lovelace";
     passengers[0].idDocument = "12345678901";
     passengers[1].fullName = "Child Name";
 
-    const notes = appendPassengerDetailsToNotes(
-      passengers,
-      (passenger) =>
-        passenger.kind === "adult"
-          ? `${passenger.index}. Adult`
-          : `${passenger.index}. Child`,
-      "Passengers",
-      "Flight arrives late",
-    );
+    expect(toReservationPassengerSnapshots(passengers)).toEqual([
+      {
+        kind: "adult",
+        index: 1,
+        fullName: "Ada Lovelace",
+        idDocument: "12345678901",
+      },
+      {
+        kind: "child",
+        index: 1,
+        fullName: "Child Name",
+      },
+    ]);
+  });
 
-    expect(notes).toContain("Flight arrives late");
-    expect(notes).toContain("1. Adult: Ada Lovelace (12345678901)");
-    expect(notes).toContain("1. Child: Child Name");
+  it("formats a passenger display line with optional id", () => {
+    expect(
+      formatPassengerDisplayLine(
+        { fullName: "Ada Lovelace", idDocument: "123" },
+        "1. Adult",
+      ),
+    ).toBe("1. Adult: Ada Lovelace (123)");
+
+    expect(
+      formatPassengerDisplayLine({ fullName: "Child Name" }, "1. Child"),
+    ).toBe("1. Child: Child Name");
   });
 });

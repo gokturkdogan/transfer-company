@@ -36,6 +36,10 @@ const baseInput = {
     email: "ada@example.com",
     phone: "+905551112233",
   },
+  passengers: [
+    { kind: "adult" as const, index: 1, fullName: "Ada Lovelace" },
+    { kind: "adult" as const, index: 2, fullName: "Grace Hopper" },
+  ],
   locale: "en",
 };
 

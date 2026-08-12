@@ -74,9 +74,17 @@ export function buildReservationNotificationPayload(
     returnFlightNumber: params.input.returnFlightNumber,
     items: params.items.map((item) => toEmailLineItem(item, vehiclesById)),
     customer: params.input.customer,
+    passengers: params.input.passengers.map((passenger) => ({
+      kind: passenger.kind,
+      index: passenger.index,
+      fullName: passenger.fullName.trim(),
+      ...(passenger.idDocument?.trim()
+        ? { idDocument: passenger.idDocument.trim() }
+        : {}),
+    })),
     subtotalMinor: params.subtotalMinor,
     totalMinor: params.totalMinor,
     currency: params.currency,
-    notes: params.input.notes,
+    notes: params.input.notes?.trim() || undefined,
   };
 }

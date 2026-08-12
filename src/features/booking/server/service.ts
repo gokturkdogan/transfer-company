@@ -194,7 +194,15 @@ export class BookingService {
             subtotalMinor: quoteResult.quote.subtotalMinor,
             totalMinor: quoteResult.quote.totalMinor,
             currency: quoteResult.quote.currency,
-            notes: input.notes,
+            notes: input.notes?.trim() || undefined,
+            passengerDetails: input.passengers.map((passenger) => ({
+              kind: passenger.kind,
+              index: passenger.index,
+              fullName: passenger.fullName.trim(),
+              ...(passenger.idDocument?.trim()
+                ? { idDocument: passenger.idDocument.trim() }
+                : {}),
+            })),
             items,
           },
         });

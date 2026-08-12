@@ -3,6 +3,7 @@ import {
   check,
   index,
   integer,
+  jsonb,
   pgTable,
   text,
   timestamp,
@@ -23,6 +24,13 @@ import { extraServices } from "./extras";
 import { locations } from "./locations";
 import { routes } from "./routes";
 import { vehicleCategories } from "./vehicles";
+
+export type ReservationPassengerDetailsJson = Array<{
+  kind: "adult" | "child" | "infant";
+  index: number;
+  fullName: string;
+  idDocument?: string;
+}>;
 
 export const reservations = pgTable(
   "reservations",
@@ -65,6 +73,7 @@ export const reservations = pgTable(
     totalMinor: integer("total_minor").notNull(),
     currency: currency(),
     notes: text("notes"),
+    passengerDetails: jsonb("passenger_details").$type<ReservationPassengerDetailsJson | null>(),
     ...timestamps,
   },
   (table) => [

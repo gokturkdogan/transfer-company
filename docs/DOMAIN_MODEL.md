@@ -58,6 +58,8 @@ Extra fields include `pricingMode` (`FIXED` | `PER_UNIT`), `customerSelectable`,
 - **Reservation**: transfer request with trip metadata and immutable totals
 - **ReservationItem**: line items of type `TRANSFER_VEHICLE` or `EXTRA_SERVICE` with snapshot pricing
 
+Reservation passenger names are stored in `passenger_details` (JSON array of `{ kind, index, fullName, idDocument? }`). `notes` is free-text customer notes only and must not contain passenger identity blocks.
+
 ## Reservation lifecycle
 
 ```

@@ -153,6 +153,8 @@ Three distinct destination facets:
 
 **Status management** — admins can set any of `PENDING`, `CONFIRMED`, `CANCELLED`, `COMPLETED` from the detail page. On change, a customer status notification email is sent (same branded template as booking confirmation). Status is persisted even if SMTP fails; the UI shows whether the email was sent.
 
+**Passenger details** — named passengers from `passenger_details` are shown in their own section. `notes` is customer free-text only and does not include passenger names.
+
 ## Forbidden
 
 - Pricing a route to a hotel

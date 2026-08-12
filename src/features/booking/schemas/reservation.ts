@@ -30,6 +30,13 @@ export const customDestinationInputSchema = z.object({
   address: z.string().max(1000).optional(),
 });
 
+export const reservationPassengerInputSchema = z.object({
+  kind: z.enum(["adult", "child", "infant"]),
+  index: z.number().int().positive(),
+  fullName: z.string().min(1).max(200),
+  idDocument: z.string().max(64).optional(),
+});
+
 export const createReservationInputSchema = z
   .object({
     routeId: z.string().uuid(),
@@ -50,6 +57,7 @@ export const createReservationInputSchema = z
     vehicles: z.array(quoteVehicleSelectionSchema).min(1),
     extras: z.array(quoteExtraSelectionSchema).default([]),
     customer: customerInputSchema,
+    passengers: z.array(reservationPassengerInputSchema).min(1),
     notes: z.string().max(2000).optional(),
     locale: z.string().min(2).max(5),
     clientQuotedTotalMinor: z.number().int().min(0).optional(),
@@ -57,6 +65,17 @@ export const createReservationInputSchema = z
   })
   .strict()
   .superRefine((value, ctx) => {
+    const expectedPassengerSlots =
+      value.passengerCount + (value.infantCount ?? 0);
+
+    if (value.passengers.length !== expectedPassengerSlots) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passenger details count must match passenger and infant counts",
+        path: ["passengers"],
+      });
+    }
+
     const minimumOutboundAt = addMinutes(new Date(), MIN_BOOKING_LEAD_MINUTES);
 
     if (value.outboundAt < minimumOutboundAt) {

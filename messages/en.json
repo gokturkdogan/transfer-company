@@ -329,8 +329,7 @@
       "infantLabel": "Infant {index}",
       "fullName": "Full name",
       "idDocument": "ID / Passport No. (optional)",
-      "idDocumentPlaceholder": "National ID or passport number",
-      "notesSectionTitle": "--- Passenger Information ---"
+      "idDocumentPlaceholder": "National ID or passport number"
     },
     "errors": {
       "rateLimit": "Too many requests. Please try again later.",

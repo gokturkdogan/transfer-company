@@ -329,8 +329,7 @@
       "infantLabel": "{index}. Bebek",
       "fullName": "Ad Soyad",
       "idDocument": "TC / Pasaport No (opsiyonel)",
-      "idDocumentPlaceholder": "TC veya pasaport numarası",
-      "notesSectionTitle": "--- Yolcu Bilgileri ---"
+      "idDocumentPlaceholder": "TC veya pasaport numarası"
     },
     "errors": {
       "rateLimit": "Çok fazla istek. Lütfen daha sonra tekrar deneyin.",

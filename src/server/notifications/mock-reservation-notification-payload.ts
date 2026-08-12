@@ -67,8 +67,13 @@ export function createMockReservationNotificationPayload(
     },
     subtotalMinor: 17000,
     totalMinor: 17000,
-    currency: "EUR",
-    notes:
-      "Uçuşumuz gece geç saatte iniyor, karşılamada bebek arabası için yer ayırabilir misiniz? (Bu bir örnek rezervasyondur.)",
-  };
+  currency: "EUR",
+  notes:
+    "Uçuşumuz gece geç saatte iniyor, karşılamada bebek arabası için yer ayırabilir misiniz? (Bu bir örnek rezervasyondur.)",
+  passengers: [
+    { kind: "adult", index: 1, fullName: "Test Müşteri" },
+    { kind: "adult", index: 2, fullName: "İkinci Yolcu" },
+    { kind: "infant", index: 1, fullName: "Bebek" },
+  ],
+};
 }

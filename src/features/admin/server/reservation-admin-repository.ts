@@ -13,6 +13,7 @@ import {
 } from "@/db/schema";
 import type { ReservationStatus, TripType } from "@/db/schema/enums";
 import { RESERVATION_STATUSES } from "@/db/schema/enums";
+import type { ReservationPassengerDetailsJson } from "@/db/schema/reservations";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { NotFoundError } from "@/server/errors";
 
@@ -44,6 +45,7 @@ export type AdminReservationDetail = AdminReservationListItem & {
   returnFlightNumber: string | null;
   subtotalMinor: number;
   notes: string | null;
+  passengerDetails: ReservationPassengerDetailsJson | null;
   customerEmail: string;
   customerPhone: string;
   customerWhatsappPhone: string | null;
@@ -160,6 +162,7 @@ export class ReservationAdminRepository {
         totalMinor: reservations.totalMinor,
         currency: reservations.currency,
         notes: reservations.notes,
+        passengerDetails: reservations.passengerDetails,
         createdAt: reservations.createdAt,
         originName: pickupLocation.defaultName,
         pricingDestinationName: dropoffLocation.defaultName,
@@ -263,6 +266,7 @@ export class ReservationAdminRepository {
       totalMinor: row.totalMinor,
       currency: row.currency,
       notes: row.notes,
+      passengerDetails: row.passengerDetails,
       customerName: `${row.customerFirstName} ${row.customerLastName}`,
       customerEmail: row.customerEmail,
       customerPhone: row.customerPhone,

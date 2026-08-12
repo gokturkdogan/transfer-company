@@ -40,6 +40,10 @@ export type ReservationEmailMessages = {
   subtotalLabel: string;
   totalLabel: string;
   notesLabel: string;
+  passengerDetailsLabel: string;
+  passengerAdultLabel: string;
+  passengerChildLabel: string;
+  passengerInfantLabel: string;
   customerNameLabel: string;
   emailLabel: string;
   phoneLabel: string;
@@ -103,6 +107,10 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     subtotalLabel: "Ara toplam",
     totalLabel: "Genel toplam",
     notesLabel: "Notlarınız",
+    passengerDetailsLabel: "Yolcu bilgileri",
+    passengerAdultLabel: "{index}. Yolcu",
+    passengerChildLabel: "{index}. Çocuk",
+    passengerInfantLabel: "{index}. Bebek",
     customerNameLabel: "Müşteri",
     emailLabel: "E-posta",
     phoneLabel: "Telefon",
@@ -164,6 +172,10 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     subtotalLabel: "Subtotal",
     totalLabel: "Grand total",
     notesLabel: "Your notes",
+    passengerDetailsLabel: "Passenger details",
+    passengerAdultLabel: "Passenger {index}",
+    passengerChildLabel: "Child {index}",
+    passengerInfantLabel: "Infant {index}",
     customerNameLabel: "Customer",
     emailLabel: "Email",
     phoneLabel: "Phone",
@@ -225,6 +237,10 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     subtotalLabel: "Zwischensumme",
     totalLabel: "Gesamtbetrag",
     notesLabel: "Ihre Anmerkungen",
+    passengerDetailsLabel: "Passagierinformationen",
+    passengerAdultLabel: "Passagier {index}",
+    passengerChildLabel: "Kind {index}",
+    passengerInfantLabel: "Kleinkind {index}",
     customerNameLabel: "Kunde",
     emailLabel: "E-Mail",
     phoneLabel: "Telefon",
@@ -286,6 +302,10 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     subtotalLabel: "Промежуточный итог",
     totalLabel: "Итого к оплате",
     notesLabel: "Ваши примечания",
+    passengerDetailsLabel: "Данные пассажиров",
+    passengerAdultLabel: "Пассажир {index}",
+    passengerChildLabel: "Ребёнок {index}",
+    passengerInfantLabel: "Младенец {index}",
     customerNameLabel: "Клиент",
     emailLabel: "Email",
     phoneLabel: "Телефон",
@@ -347,6 +367,10 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     subtotalLabel: "المجموع الفرعي",
     totalLabel: "الإجمالي النهائي",
     notesLabel: "ملاحظاتك",
+    passengerDetailsLabel: "معلومات الركاب",
+    passengerAdultLabel: "الراكب {index}",
+    passengerChildLabel: "الطفل {index}",
+    passengerInfantLabel: "الرضيع {index}",
     customerNameLabel: "العميل",
     emailLabel: "البريد الإلكتروني",
     phoneLabel: "الهاتف",

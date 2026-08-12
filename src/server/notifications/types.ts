@@ -11,6 +11,13 @@ export type ReservationEmailLineItem = {
   cabinLuggageCapacity?: number;
 };
 
+export type ReservationPassengerNotification = {
+  kind: "adult" | "child" | "infant";
+  index: number;
+  fullName: string;
+  idDocument?: string;
+};
+
 export type ReservationNotificationPayload = {
   reservationId: string;
   reference: string;
@@ -34,6 +41,7 @@ export type ReservationNotificationPayload = {
     phone: string;
     whatsappPhone?: string;
   };
+  passengers?: ReservationPassengerNotification[];
   subtotalMinor: number;
   totalMinor: number;
   currency: string;

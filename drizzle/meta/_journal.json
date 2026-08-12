@@ -134,6 +134,13 @@
       "when": 1786173200000,
       "tag": "0018_reservation_items_included_unit_totals",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1786512000000,
+      "tag": "0019_reservation_passenger_details",
+      "breakpoints": true
     }
   ]
 }

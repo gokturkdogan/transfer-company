@@ -24,6 +24,12 @@ export type CreateReservationRecordInput = {
   totalMinor: number;
   currency: string;
   notes?: string;
+  passengerDetails?: Array<{
+    kind: "adult" | "child" | "infant";
+    index: number;
+    fullName: string;
+    idDocument?: string;
+  }>;
   items: ReservationItemInsert[];
 };
 
