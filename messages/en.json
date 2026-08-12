@@ -18,7 +18,7 @@
     },
     "hero": {
       "title": "Antalya Airport VIP Transfer",
-      "subtitle": "Fixed prices, complimentary meet & greet and free flight tracking — premium transfers from Antalya Airport across the whole Turkish Riviera, 24/7. Book in 60 seconds.",
+      "subtitle": "Fixed prices, complimentary meet & greet and free flight tracking, premium transfers from Antalya Airport across the whole Turkish Riviera, 24/7. Book in 60 seconds.",
       "badge": "Antalya's Premium Transfer Service",
       "titleAccent": "Fixed Prices · Premium 24/7 Service",
       "rating": "4.9 / 5 · 2,400+ guest reviews",
@@ -26,11 +26,12 @@
       "scrollHint": "Explore"
     },
     "nav": {
-      "reserve": "Reserve Now",
+      "reserve": "Reservation",
       "destinations": "Destinations",
       "fleet": "Fleet",
-      "createReservation": "Create Reservation",
+      "createReservation": "Reservation",
       "about": "About",
+      "guides": "Our Guides",
       "menu": "Menu",
       "close": "Close menu",
       "selectLanguage": "Select language"
@@ -39,10 +40,10 @@
       "prev": "Previous",
       "next": "Next",
       "goToSlide": "Go to slide {index}",
-      "previousImage": "{alt} — previous",
-      "nextImage": "{alt} — next",
-      "imageDot": "{alt} — image {index}",
-      "thumbnail": "{alt} — thumbnail {index}",
+      "previousImage": "{alt}, previous",
+      "nextImage": "{alt}, next",
+      "imageDot": "{alt}, image {index}",
+      "thumbnail": "{alt}, thumbnail {index}",
       "slideOf": "{current} / {total}",
       "carouselRole": "carousel",
       "slideRole": "slide"
@@ -106,7 +107,7 @@
         },
         {
           "title": "Fixed Pricing",
-          "description": "Know your price before you book — no hidden fees."
+          "description": "Know your price before you book, no hidden fees."
         },
         {
           "title": "24/7 Availability",
@@ -118,7 +119,7 @@
         },
         {
           "title": "No Online Payment",
-          "description": "Reserve securely — pay your driver on arrival."
+          "description": "Reserve securely, pay your driver on arrival."
         },
         {
           "title": "Flight Monitoring",
@@ -219,11 +220,11 @@
       "title": "Everything you need to know about Antalya Airport transfers",
       "intro": "Antalya Airport (AYT) welcomes more than 35 million passengers a year. The most comfortable way to reach the coastline stretching from Lara to Kemer, Belek, Side and Alanya is a pre-booked private VIP transfer.",
       "imageAlt": "Meet and greet service in the Antalya Airport arrivals hall",
-      "imageCaption": "Name-board greeting in the arrivals hall — included with every transfer",
+      "imageCaption": "Name-board greeting in the arrivals hall, included with every transfer",
       "blocks": {
         "routes": {
           "title": "Popular routes and journey times",
-          "body": "From Antalya Airport it takes roughly 15 minutes to Lara, 40 minutes to Belek, 45 minutes to Kemer, 65 minutes to Side and 2 hours to Alanya. Every route is door to door — we drop you off at your hotel reception."
+          "body": "From Antalya Airport it takes roughly 15 minutes to Lara, 40 minutes to Belek, 45 minutes to Kemer, 65 minutes to Side and 2 hours to Alanya. Every route is door to door, we drop you off at your hotel reception."
         },
         "pricing": {
           "title": "How fixed pricing works",
@@ -231,7 +232,7 @@
         },
         "comfort": {
           "title": "Vehicle comfort and meet & greet",
-          "body": "Our fleet covers Mercedes Vito, Sprinter and luxury sedan classes — all air-conditioned, with complimentary water and child seats on request. Your driver tracks your flight and waits in the arrivals hall with a name board."
+          "body": "Our fleet covers Mercedes Vito, Sprinter and luxury sedan classes, all air-conditioned, with complimentary water and child seats on request. Your driver tracks your flight and waits in the arrivals hall with a name board."
         }
       },
       "highlights": {
@@ -523,7 +524,7 @@
   "about": {
     "meta": {
       "title": "About Us",
-      "description": "Meet the team behind premium VIP airport transfers across Antalya and the Turkish Riviera — our values, service promise and guest-first approach."
+      "description": "Meet the team behind premium VIP airport transfers across Antalya and the Turkish Riviera, our values, service promise and guest-first approach."
     },
     "hero": {
       "badge": "Antalya Premium Transfer",
@@ -541,7 +542,7 @@
       "title": "Simple, seamless transfers for every guest",
       "paragraphs": {
         "0": "At Royal Rhein Transfers our goal is to remove the friction from booking. Fixed prices, complimentary meet & greet and flight tracking keep every journey stress-free.",
-        "1": "With experienced chauffeurs and a well-maintained fleet we deliver the same premium standard from Lara to Alanya. Pay on arrival — no online payment pressure."
+        "1": "With experienced chauffeurs and a well-maintained fleet we deliver the same premium standard from Lara to Alanya. Pay on arrival, no online payment pressure."
       },
       "imageAlt": "Professional VIP chauffeur beside a luxury transfer vehicle",
       "imageBadge": "Professional Team"
@@ -564,7 +565,7 @@
         "2": {
           "badge": "24/7",
           "title": "Always Here",
-          "description": "Flight delays, late arrivals or last-minute changes — our support team is ready."
+          "description": "Flight delays, late arrivals or last-minute changes, our support team is ready."
         }
       }
     },
@@ -581,7 +582,7 @@
     },
     "cta": {
       "title": "Ready to plan your transfer?",
-      "subtitle": "Send a reservation request in a few steps — we'll handle the rest.",
+      "subtitle": "Send a reservation request in a few steps, we'll handle the rest.",
       "button": "Book a Transfer"
     }
   },
@@ -604,11 +605,11 @@
     "highlights": {
       "eyebrow": "Why Our Fleet",
       "title": "Premium standard in every detail",
-      "subtitle": "More than vehicles — we deliver trust, comfort and consistent service.",
+      "subtitle": "More than vehicles, we deliver trust, comfort and consistent service.",
       "items": {
         "0": {
           "title": "Luxury Mercedes Vehicles",
-          "description": "Sedan, Vito and Sprinter classes — clean, modern and regularly maintained."
+          "description": "Sedan, Vito and Sprinter classes, clean, modern and regularly maintained."
         },
         "1": {
           "title": "Safe & Fully Insured",
@@ -624,7 +625,7 @@
       "eyebrow": "Our Vehicles",
       "title": "Choose your vehicle",
       "subtitle": "Select the best fit for your passengers and luggage during booking.",
-      "vehicleHint": "{code} class — ideal for Antalya Airport transfers."
+      "vehicleHint": "{code} class, ideal for Antalya Airport transfers."
     },
     "experience": {
       "eyebrow": "Journey Experience",
@@ -643,7 +644,7 @@
     },
     "cta": {
       "title": "Pick your vehicle and go",
-      "subtitle": "Book online in 60 seconds — pay your chauffeur after the transfer.",
+      "subtitle": "Book online in 60 seconds, pay your chauffeur after the transfer.",
       "button": "Create Reservation"
     },
     "vehicleDetail": {
@@ -656,8 +657,8 @@
       "passengers": "Up to {count} passengers",
       "largeLuggage": "{count} large bags",
       "cabinLuggage": "{count} cabin bags",
-      "fallbackShortDescription": "{name} — premium comfort and generous space for Antalya Airport transfers.",
-      "fallbackDescription": "Travel in comfort and style with the {name} — a reliable choice for families and groups.",
+      "fallbackShortDescription": "{name}, premium comfort and generous space for Antalya Airport transfers.",
+      "fallbackDescription": "Travel in comfort and style with the {name}, a reliable choice for families and groups.",
       "experienceParagraph": "The {name} is built for door-to-door premium transfers from Antalya Airport to hotels and resorts. A quiet cabin, generous seating and professional chauffeurs keep comfort first on every journey.",
       "specsTitle": "Capacity",
       "specsBandTitle": "{name} at a glance",
@@ -670,13 +671,13 @@
       "idealForHeading": "Premium transfers with the {name}",
       "idealForParagraphs": {
         "0": "A great fit for family holidays, business trips and small groups. The {code} class balances passenger and luggage needs with ease.",
-        "1": "Plan your Antalya transfer with flight tracking, complimentary meet & greet and fixed pricing — no surprise fees on arrival."
+        "1": "Plan your Antalya transfer with flight tracking, complimentary meet & greet and fixed pricing, no surprise fees on arrival."
       },
       "includedTitle": "Included with every booking",
       "includedItems": {
         "0": "Complimentary airport meet & greet",
         "1": "Flight tracking and waiting time",
-        "2": "Fixed price — no surprises",
+        "2": "Fixed price, no surprises",
         "3": "24/7 operations support"
       },
       "promises": {
@@ -744,7 +745,7 @@
       },
       "noMarketing": {
         "title": "No marketing cookies",
-        "body": "We do not use Google Analytics, ad pixels, social media trackers or similar third-party analytics. We therefore do not show a cookie consent banner — we do not track or profile visitors."
+        "body": "We do not use Google Analytics, ad pixels, social media trackers or similar third-party analytics. We therefore do not show a cookie consent banner, we do not track or profile visitors."
       },
       "thirdParty": {
         "title": "Third-party services",
@@ -788,7 +789,7 @@
   "transfers": {
     "eyebrow": "Airport transfers",
     "title": "Transfer to {district}",
-    "description": "Book a fixed-price VIP airport transfer to {district}. Meet & greet, flight tracking, and professional drivers — reserve in under two minutes.",
+    "description": "Book a fixed-price VIP airport transfer to {district}. Meet & greet, flight tracking, and professional drivers, reserve in under two minutes.",
     "cta": "Book this transfer",
     "browseAll": "All booking options",
     "meta": {
@@ -802,6 +803,31 @@
       "heading": "VIP transfer to {destination}",
       "body": "Travel in comfort from Antalya Airport to {destination} with fixed pricing, complimentary meet & greet, and free flight tracking.",
       "cta": "Book this transfer"
+    }
+  },
+  "blog": {
+    "footerTitle": "Transfer Guides",
+    "allGuides": "All guides",
+    "readMore": "Read more",
+    "readingTime": "{minutes} min read",
+    "published": "{date}",
+    "backToGuides": "Back to all guides",
+    "editorsNote": "Quick note",
+    "practicalTips": "Practical tips",
+    "faqTitle": "Common questions",
+    "sidebarCtaTitle": "Plan your transfer",
+    "sidebarCtaBody": "Send a booking request in minutes. Fixed price, meet & greet and flight tracking included.",
+    "bookCta": "Book a transfer",
+    "transferCta": "Destination transfer page",
+    "moreGuidesTitle": "More guides",
+    "moreGuidesSubtitle": "Short, practical notes on Antalya airport transfers.",
+    "hub": {
+      "badge": "Transfer guides",
+      "title": "Antalya transfer guides",
+      "subtitle": "Arrivals, pricing and popular zones, field notes instead of filler articles.",
+      "note": "New guides are added over time. Use the main menu to book.",
+      "metaTitle": "Transfer Guides",
+      "metaDescription": "Practical Antalya airport transfer guides: arrivals, fixed pricing and the Belek route."
     }
   }
 }

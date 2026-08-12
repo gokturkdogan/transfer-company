@@ -26,11 +26,12 @@
       "scrollHint": "Keşfet"
     },
     "nav": {
-      "reserve": "Hemen Rezervasyon",
+      "reserve": "Rezervasyon",
       "destinations": "Destinasyonlar",
       "fleet": "Filo",
-      "createReservation": "Rezervasyon Oluştur",
+      "createReservation": "Rezervasyon",
       "about": "Hakkımızda",
+      "guides": "Rehberlerimiz",
       "menu": "Menü",
       "close": "Menüyü kapat",
       "selectLanguage": "Dil seçin"
@@ -39,10 +40,10 @@
       "prev": "Önceki",
       "next": "Sonraki",
       "goToSlide": "{index}. slayta git",
-      "previousImage": "{alt} — önceki",
-      "nextImage": "{alt} — sonraki",
-      "imageDot": "{alt} — görsel {index}",
-      "thumbnail": "{alt} — küçük görsel {index}",
+      "previousImage": "{alt}, önceki",
+      "nextImage": "{alt}, sonraki",
+      "imageDot": "{alt}, görsel {index}",
+      "thumbnail": "{alt}, küçük görsel {index}",
       "slideOf": "{current} / {total}",
       "carouselRole": "kaydırıcı",
       "slideRole": "slayt"
@@ -106,7 +107,7 @@
         },
         {
           "title": "Sabit Fiyat",
-          "description": "Rezervasyon öncesi fiyatınızı bilin — gizli ücret yok."
+          "description": "Rezervasyon öncesi fiyatınızı bilin, gizli ücret yok."
         },
         {
           "title": "7/24 Hizmet",
@@ -118,7 +119,7 @@
         },
         {
           "title": "Online Ödeme Yok",
-          "description": "Güvenle rezervasyon yapın — ödemeyi varışta yapın."
+          "description": "Güvenle rezervasyon yapın, ödemeyi varışta yapın."
         },
         {
           "title": "Uçuş Takibi",
@@ -219,7 +220,7 @@
       "title": "Antalya Havalimanı transferi hakkında bilmeniz gereken her şey",
       "intro": "Antalya Havalimanı (AYT) yılda 35 milyondan fazla yolcu ağırlıyor. Lara'dan Kemer, Belek, Side ve Alanya'ya uzanan sahil şeridine ulaşmanın en konforlu yolu, önceden rezerve edilmiş özel bir VIP transfer.",
       "imageAlt": "Antalya Havalimanı varış salonunda karşılama hizmeti",
-      "imageCaption": "Varış salonunda isim tabelasıyla karşılama — her transferde ücretsiz",
+      "imageCaption": "Varış salonunda isim tabelasıyla karşılama, her transferde ücretsiz",
       "blocks": {
         "routes": {
           "title": "Popüler transfer rotaları ve süreleri",
@@ -541,7 +542,7 @@
       "title": "Misafirlerimiz için sade ve kusursuz transfer",
       "paragraphs": {
         "0": "Royal Rhein Transfers olarak amacımız karmaşık rezervasyon süreçlerini ortadan kaldırmak. Sabit fiyat, ücretsiz karşılama ve uçuş takibiyle yolculuğunuzun her adımında yanınızdayız.",
-        "1": "Deneyimli şoförlerimiz ve bakımlı filomuzla Lara'dan Alanya'ya kadar her rotada aynı premium standardı sunuyoruz. Ödeme varışta — online ödeme stresi yok."
+        "1": "Deneyimli şoförlerimiz ve bakımlı filomuzla Lara'dan Alanya'ya kadar her rotada aynı premium standardı sunuyoruz. Ödeme varışta, online ödeme stresi yok."
       },
       "imageAlt": "Profesyonel VIP şoför ve lüks transfer aracı",
       "imageBadge": "Profesyonel Ekip"
@@ -564,7 +565,7 @@
         "2": {
           "badge": "7/24",
           "title": "Her An Yanınızda",
-          "description": "Uçuş gecikmeleri, gece varışları veya son dakika değişiklikleri — destek ekibimiz hazır."
+          "description": "Uçuş gecikmeleri, gece varışları veya son dakika değişiklikleri, destek ekibimiz hazır."
         }
       }
     },
@@ -624,7 +625,7 @@
       "eyebrow": "Araçlarımız",
       "title": "Filonuzdan birini seçin",
       "subtitle": "Yolcu ve bagaj ihtiyacınıza göre en uygun aracı rezervasyon sırasında seçebilirsiniz.",
-      "vehicleHint": "{code} sınıfı — Antalya Havalimanı transferleri için ideal."
+      "vehicleHint": "{code} sınıfı, Antalya Havalimanı transferleri için ideal."
     },
     "experience": {
       "eyebrow": "Yolculuk Deneyimi",
@@ -656,7 +657,7 @@
       "passengers": "En fazla {count} yolcu",
       "largeLuggage": "{count} büyük bagaj",
       "cabinLuggage": "{count} kabin bagajı",
-      "fallbackShortDescription": "{name} — Antalya Havalimanı transferlerinde premium konfor ve geniş iç mekan.",
+      "fallbackShortDescription": "{name}, Antalya Havalimanı transferlerinde premium konfor ve geniş iç mekan.",
       "fallbackDescription": "{name} ile grup ve aile transferlerinde konforlu, şık ve güvenilir bir yolculuk deneyimi yaşayın.",
       "experienceParagraph": "{name}, Antalya Havalimanı'ndan otel ve villalara kadar kapıdan kapıya premium transferler için tasarlandı. Sessiz kabin, geniş oturma düzeni ve profesyonel şoför kadromuzla yolculuğunuzun her anında konfor önceliğimizdir.",
       "specsTitle": "Kapasite",
@@ -676,7 +677,7 @@
       "includedItems": {
         "0": "Ücretsiz havalimanı karşılama",
         "1": "Uçuş takibi ve bekleme süresi",
-        "2": "Sabit fiyat — sürpriz yok",
+        "2": "Sabit fiyat, sürpriz yok",
         "3": "7/24 operasyon desteği"
       },
       "promises": {
@@ -788,7 +789,7 @@
   "transfers": {
     "eyebrow": "Havalimanı transferleri",
     "title": "{district} transferi",
-    "description": "{district} için sabit fiyatlı VIP havalimanı transferinizi rezerve edin. Karşılama, uçuş takibi ve profesyonel şoförler — iki dakikadan kısa sürede rezervasyon.",
+    "description": "{district} için sabit fiyatlı VIP havalimanı transferinizi rezerve edin. Karşılama, uçuş takibi ve profesyonel şoförler, iki dakikadan kısa sürede rezervasyon.",
     "cta": "Bu transferi rezerve et",
     "browseAll": "Tüm rezervasyon seçenekleri",
     "meta": {
@@ -802,6 +803,31 @@
       "heading": "{destination} VIP transfer",
       "body": "Antalya Havalimanı'ndan {destination} bölgesine sabit fiyat, karşılama ve ücretsiz uçuş takibi ile konforlu seyahat.",
       "cta": "Bu transferi rezerve et"
+    }
+  },
+  "blog": {
+    "footerTitle": "Transfer Rehberi",
+    "allGuides": "Tüm rehberler",
+    "readMore": "Devamını oku",
+    "readingTime": "{minutes} dk okuma",
+    "published": "{date}",
+    "backToGuides": "Tüm rehberlere dön",
+    "editorsNote": "Kısa not",
+    "practicalTips": "Pratik ipuçları",
+    "faqTitle": "Sık sorulanlar",
+    "sidebarCtaTitle": "Transferinizi planlayın",
+    "sidebarCtaBody": "Birkaç dakikada rezervasyon talebi gönderin. Sabit fiyat, karşılama ve uçuş takibi dahil.",
+    "bookCta": "Rezervasyon yap",
+    "transferCta": "Bölge transfer sayfası",
+    "moreGuidesTitle": "Diğer rehberler",
+    "moreGuidesSubtitle": "Antalya transferine dair kısa ve uygulanabilir yazılar.",
+    "hub": {
+      "badge": "Transfer rehberi",
+      "title": "Antalya transfer rehberleri",
+      "subtitle": "Havalimanı varışı, fiyat mantığı ve popüler bölgeler uzun makaleler yerine sahada işe yarayan notlar.",
+      "note": "Yeni rehberler düzenli eklenir. Rezervasyon için ana menüyü kullanın.",
+      "metaTitle": "Transfer Rehberi",
+      "metaDescription": "Antalya Havalimanı transferi için pratik rehberler: varış süreci, sabit fiyatlar ve Belek rotası."
     }
   }
 }

@@ -676,7 +676,7 @@ function buildPlainTextLines(
         ? messages.includedLabel
         : formatPrice(item.totalPriceMinor, payload.currency, payload.locale);
 
-    lines.push(`- ${item.quantity}x ${item.name} — ${price}`);
+    lines.push(`- ${item.quantity}x ${item.name}, ${price}`);
   }
 
   lines.push(
@@ -725,7 +725,7 @@ export function buildCustomerReservationEmail(
   const html = renderEmailLayout({
     locale: payload.locale,
     title: subject,
-    preheader: `${messages.referenceLabel}: ${payload.reference} — ${messages.customerIntro}`,
+    preheader: `${messages.referenceLabel}: ${payload.reference}, ${messages.customerIntro}`,
     bodyHtml,
     timezoneNote: messages.timezoneNote,
     tagline: messages.brandTagline,
@@ -796,7 +796,7 @@ export function buildAdminReservationEmail(
   const html = renderEmailLayout({
     locale: payload.locale,
     title: subject,
-    preheader: `${messages.referenceLabel}: ${payload.reference} — ${customerName}`,
+    preheader: `${messages.referenceLabel}: ${payload.reference}, ${customerName}`,
     bodyHtml,
     timezoneNote: messages.timezoneNote,
     tagline: messages.brandTagline,
@@ -848,7 +848,7 @@ export function buildCustomerReservationStatusEmail(
   const html = renderEmailLayout({
     locale: payload.locale,
     title: subject,
-    preheader: `${messages.statusLabel}: ${statusLabel} — ${payload.reference}`,
+    preheader: `${messages.statusLabel}: ${statusLabel}, ${payload.reference}`,
     bodyHtml,
     timezoneNote: messages.timezoneNote,
     tagline: messages.brandTagline,

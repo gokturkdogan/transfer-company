@@ -1,8 +1,9 @@
 "use client";
 
-import { CalendarCheck, Mail, Phone } from "lucide-react";
+import { CalendarCheck, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { EmailIcon } from "@/components/shared/EmailIcon";
 import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import { Link } from "@/i18n/navigation";
 
@@ -52,7 +53,7 @@ export function MobileContactBar({ variant = "default" }: MobileContactBarProps)
             href={toMailtoHref(primaryEmail)}
             className={actionLinkClassName}
           >
-            <Mail className="h-4 w-4 shrink-0 text-gold" aria-hidden />
+            <EmailIcon className="h-4 w-4 shrink-0 text-gold" aria-hidden />
             <span>{t("email")}</span>
           </a>
         ) : (

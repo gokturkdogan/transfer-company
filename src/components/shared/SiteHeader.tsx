@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { ArrowRight, Menu, Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/Container";
+import { EmailIcon } from "@/components/shared/EmailIcon";
 import { LocaleSwitcher } from "@/components/shared/LocaleSwitcher";
 import { MobileNavDrawer } from "@/components/shared/MobileNavDrawer";
 import { SiteLogo } from "@/components/shared/SiteLogo";
@@ -18,6 +19,7 @@ import {
 import { useActiveSiteNavKey } from "@/components/shared/use-site-nav-active";
 import {
   pickPrimaryChannel,
+  toMailtoHref,
   toTelHref,
   toWhatsappHref,
 } from "@/features/contact/domain/contact-links";
@@ -75,6 +77,7 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
   const contactChannels = usePublicContactChannels();
   const primaryPhone = pickPrimaryChannel(contactChannels.phones, "");
   const primaryWhatsapp = pickPrimaryChannel(contactChannels.whatsapps, "");
+  const primaryEmail = pickPrimaryChannel(contactChannels.emails, "");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -166,6 +169,14 @@ export function SiteHeader({ enabledLocales }: SiteHeaderProps) {
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/8 text-white/80 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold-light"
               >
                 <WhatsAppIcon className="h-4 w-4" aria-hidden />
+              </a>
+
+              <a
+                href={toMailtoHref(primaryEmail)}
+                aria-label={tContact("email")}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/8 text-white/80 backdrop-blur-md transition-colors hover:border-gold/50 hover:text-gold-light"
+              >
+                <EmailIcon className="h-4 w-4" aria-hidden />
               </a>
 
               <Link

@@ -11,10 +11,10 @@ import type { TransferVehicleOptionDto } from "@/features/pricing/types/dto";
 const messages = {
   home: {
     carousel: {
-      previousImage: "{alt} — previous",
-      nextImage: "{alt} — next",
-      imageDot: "{alt} — {index}",
-      thumbnail: "{alt} — {index}",
+      previousImage: "{alt}, previous",
+      nextImage: "{alt}, next",
+      imageDot: "{alt}, {index}",
+      thumbnail: "{alt}, {index}",
     },
   },
   booking: {
@@ -132,11 +132,11 @@ describe("VehicleRecommendationCard", () => {
       />,
     );
 
-    expect(screen.getAllByLabelText(/Mercedes Vito — 1/).length).toBeGreaterThan(0);
-    expect(screen.getAllByLabelText(/Mercedes Vito — 2/).length).toBeGreaterThan(0);
-    expect(screen.getAllByLabelText(/Mercedes Vito — 3/).length).toBeGreaterThan(0);
-    expect(screen.getByLabelText(/Mercedes Vito — previous/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Mercedes Vito — next/)).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/Mercedes Vito, 1/).length).toBeGreaterThan(0);
+    expect(screen.getAllByLabelText(/Mercedes Vito, 2/).length).toBeGreaterThan(0);
+    expect(screen.getAllByLabelText(/Mercedes Vito, 3/).length).toBeGreaterThan(0);
+    expect(screen.getByLabelText(/Mercedes Vito, previous/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Mercedes Vito, next/)).toBeInTheDocument();
   });
 
   it("disables ineligible vehicles", () => {

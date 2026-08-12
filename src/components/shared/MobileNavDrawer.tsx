@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Mail, Phone, X } from "lucide-react";
+import { ArrowRight, Phone, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { getLocaleEmoji } from "@/config/locales";
@@ -12,6 +12,7 @@ import {
 } from "@/features/contact/domain/contact-links";
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { SiteLogo } from "@/components/shared/SiteLogo";
+import { EmailIcon } from "@/components/shared/EmailIcon";
 import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import {
   getMobileSiteNavLinkClassName,
@@ -178,7 +179,7 @@ export function MobileNavDrawer({
               href={toMailtoHref(email)}
               className="flex items-center gap-2.5 text-sm font-medium text-white/80 transition-colors hover:text-gold-light"
             >
-              <Mail className="h-4 w-4 text-gold" aria-hidden />
+              <EmailIcon className="h-4 w-4 text-gold" aria-hidden />
               {email}
             </a>
           ))}

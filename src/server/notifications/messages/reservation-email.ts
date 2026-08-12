@@ -64,9 +64,9 @@ export type ReservationEmailMessages = {
 
 const MESSAGES: Record<Locale, ReservationEmailMessages> = {
   tr: {
-    customerSubject: "Rezervasyonunuz alındı — {reference}",
-    adminSubject: "Yeni rezervasyon — {reference}",
-    statusUpdateSubject: "Rezervasyon durumu güncellendi — {reference}",
+    customerSubject: "Rezervasyonunuz alındı, {reference}",
+    adminSubject: "Yeni rezervasyon, {reference}",
+    statusUpdateSubject: "Rezervasyon durumu güncellendi, {reference}",
     brandTagline: "Premium Havalimanı Transfer Hizmeti",
     greeting: "Sayın {name},",
     customerIntro:
@@ -129,9 +129,9 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     quantityLabel: "{quantity}×",
   },
   en: {
-    customerSubject: "Your reservation is received — {reference}",
-    adminSubject: "New reservation — {reference}",
-    statusUpdateSubject: "Reservation status updated — {reference}",
+    customerSubject: "Your reservation is received, {reference}",
+    adminSubject: "New reservation, {reference}",
+    statusUpdateSubject: "Reservation status updated, {reference}",
     brandTagline: "Premium Airport Transfer Service",
     greeting: "Dear {name},",
     customerIntro:
@@ -194,9 +194,9 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     quantityLabel: "{quantity}×",
   },
   de: {
-    customerSubject: "Ihre Reservierung ist eingegangen — {reference}",
-    adminSubject: "Neue Reservierung — {reference}",
-    statusUpdateSubject: "Reservierungsstatus aktualisiert — {reference}",
+    customerSubject: "Ihre Reservierung ist eingegangen, {reference}",
+    adminSubject: "Neue Reservierung, {reference}",
+    statusUpdateSubject: "Reservierungsstatus aktualisiert, {reference}",
     brandTagline: "Premium Flughafen-Transferservice",
     greeting: "Sehr geehrte(r) {name},",
     customerIntro:
@@ -259,9 +259,9 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     quantityLabel: "{quantity}×",
   },
   ru: {
-    customerSubject: "Ваша бронь получена — {reference}",
-    adminSubject: "Новая бронь — {reference}",
-    statusUpdateSubject: "Статус брони обновлён — {reference}",
+    customerSubject: "Ваша бронь получена, {reference}",
+    adminSubject: "Новая бронь, {reference}",
+    statusUpdateSubject: "Статус брони обновлён, {reference}",
     brandTagline: "Премиальный трансфер из аэропорта",
     greeting: "Уважаемый(ая) {name},",
     customerIntro:
@@ -324,9 +324,9 @@ const MESSAGES: Record<Locale, ReservationEmailMessages> = {
     quantityLabel: "{quantity}×",
   },
   ar: {
-    customerSubject: "تم استلام حجزك — {reference}",
-    adminSubject: "حجز جديد — {reference}",
-    statusUpdateSubject: "تم تحديث حالة الحجز — {reference}",
+    customerSubject: "تم استلام حجزك, {reference}",
+    adminSubject: "حجز جديد, {reference}",
+    statusUpdateSubject: "تم تحديث حالة الحجز, {reference}",
     brandTagline: "خدمة نقل فاخرة من المطار",
     greeting: "عزيزي {name}،",
     customerIntro:

@@ -1,11 +1,17 @@
-import { Clock, Mail, Phone } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { Clock, Phone } from "lucide-react";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
+import { EmailIcon } from "@/components/shared/EmailIcon";
 import { SiteLogo } from "@/components/shared/SiteLogo";
 import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
+import {
+  FEATURED_BLOG_SLUGS,
+  getBlogLocaleContent,
+  getBlogPostBySlug,
+} from "@/content/blog/registry";
 import {
   toMailtoHref,
   toTelHref,
@@ -15,20 +21,32 @@ import { getPublicContactChannels } from "@/features/contact/server/public-conta
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link } from "@/i18n/navigation";
 
-const EXPLORE_LINKS = [
-  { key: "fleet", href: "/fleet", type: "route" },
-  { key: "createReservation", href: "/booking", type: "route" },
-] as const;
-
 export async function SiteFooter({
   enabledLocales,
 }: {
   enabledLocales: SiteLocaleOption[];
 }) {
   const t = await getTranslations("home.footer");
+  const blogT = await getTranslations("blog");
   const nav = await getTranslations("home.nav");
   const common = await getTranslations("common");
+  const locale = await getLocale();
   const contactChannels = await getPublicContactChannels();
+
+  const guideLinks = FEATURED_BLOG_SLUGS.map((slug) => {
+    const post = getBlogPostBySlug(slug);
+
+    if (!post) {
+      return null;
+    }
+
+    const content = getBlogLocaleContent(post, locale);
+
+    return {
+      slug,
+      title: content.title,
+    };
+  }).filter((item): item is { slug: string; title: string } => item !== null);
 
   return (
     <footer className="relative overflow-hidden border-t border-white/10 surface-ink text-white">
@@ -42,7 +60,7 @@ export async function SiteFooter({
       />
 
       <Container className="relative py-16 md:py-20">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+        <div className="grid gap-12 md:grid-cols-2 xl:grid-cols-4">
           <div className="space-y-5">
             <div className="flex items-center">
               <SiteLogo alt={common("appName")} size="header" />
@@ -65,29 +83,30 @@ export async function SiteFooter({
             </div>
           </div>
 
-          <FooterColumn title={t("exploreTitle")}>
-            {EXPLORE_LINKS.map((link) => (
-              <li key={link.key}>
-                {link.type === "route" ? (
-                  <Link
-                    href={link.href}
-                    className="transition-colors hover:text-gold-light"
-                  >
-                    {nav(link.key)}
-                  </Link>
-                ) : (
-                  <a
-                    href={link.href}
-                    className="transition-colors hover:text-gold-light"
-                  >
-                    {nav(link.key)}
-                  </a>
-                )}
+          <FooterColumn title={blogT("footerTitle")}>
+            <li>
+              <Link href="/blog" className="transition-colors hover:text-gold-light">
+                {blogT("allGuides")}
+              </Link>
+            </li>
+            {guideLinks.map((guide) => (
+              <li key={guide.slug}>
+                <Link
+                  href={`/blog/${guide.slug}`}
+                  className="transition-colors hover:text-gold-light"
+                >
+                  {truncateGuideTitle(guide.title)}
+                </Link>
               </li>
             ))}
           </FooterColumn>
 
           <FooterColumn title={t("linksTitle")}>
+            <li>
+              <Link href="/fleet" className="transition-colors hover:text-gold-light">
+                {nav("fleet")}
+              </Link>
+            </li>
             <li>
               <Link href="/about" className="transition-colors hover:text-gold-light">
                 {nav("about")}
@@ -104,14 +123,6 @@ export async function SiteFooter({
                 className="transition-colors hover:text-gold-light"
               >
                 {t("bookTransfer")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/booking"
-                className="transition-colors hover:text-gold-light"
-              >
-                {t("fullBooking")}
               </Link>
             </li>
           </FooterColumn>
@@ -147,7 +158,7 @@ export async function SiteFooter({
                   href={toMailtoHref(email)}
                   className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
                 >
-                  <Mail className="h-4 w-4 text-gold" aria-hidden />
+                  <EmailIcon className="h-4 w-4 text-gold" aria-hidden />
                   {email}
                 </a>
               </li>
@@ -166,6 +177,14 @@ export async function SiteFooter({
       </Container>
     </footer>
   );
+}
+
+function truncateGuideTitle(title: string, maxLength = 42): string {
+  if (title.length <= maxLength) {
+    return title;
+  }
+
+  return `${title.slice(0, maxLength - 1).trimEnd()}…`;
 }
 
 function FooterColumn({

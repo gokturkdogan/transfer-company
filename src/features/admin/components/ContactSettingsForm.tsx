@@ -2,7 +2,6 @@
 
 import type { ComponentType, SVGProps } from "react";
 import {
-  Mail,
   Phone,
   Plus,
   Trash2,
@@ -20,6 +19,7 @@ import { CONTACT_CHANNEL_TYPES } from "@/features/admin/lib/public-enums";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { EmailIcon } from "@/components/shared/EmailIcon";
 import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import { cn } from "@/lib/utils";
 
@@ -50,7 +50,7 @@ const SECTION_CONFIG: Record<
     description: adminCopy.contact.sectionHints.email,
     addLabel: adminCopy.contact.addEmail,
     placeholder: adminCopy.contact.placeholders.email,
-    icon: Mail,
+    icon: EmailIcon,
   },
   PHONE: {
     title: adminCopy.contact.sections.phone,

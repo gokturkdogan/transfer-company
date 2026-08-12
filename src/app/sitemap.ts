@@ -8,12 +8,14 @@ import {
   getCachedEnabledLocales,
   getCachedPopularDestinations,
 } from "@/server/cache/public-catalog";
+import { getAllBlogSlugs } from "@/content/blog/registry";
 
 const STATIC_ROUTES = [
   { path: "", changeFrequency: "daily" as const, priority: 1 },
   { path: "/about", changeFrequency: "monthly" as const, priority: 0.7 },
   { path: "/booking", changeFrequency: "weekly" as const, priority: 0.9 },
   { path: "/fleet", changeFrequency: "weekly" as const, priority: 0.8 },
+  { path: "/blog", changeFrequency: "weekly" as const, priority: 0.75 },
   { path: "/privacy", changeFrequency: "yearly" as const, priority: 0.3 },
 ];
 
@@ -46,7 +48,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  const routes = [...STATIC_ROUTES, ...fleetRoutes, ...transferRoutes];
+  const blogRoutes = getAllBlogSlugs().map((slug) => ({
+    path: `/blog/${slug}`,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  const routes = [...STATIC_ROUTES, ...fleetRoutes, ...transferRoutes, ...blogRoutes];
 
   return localeCodes.flatMap((locale) =>
     routes.map((route) => ({

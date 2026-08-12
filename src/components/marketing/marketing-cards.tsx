@@ -29,7 +29,7 @@ export function DestinationCard({
   return (
     <Link
       href={href}
-      aria-label={`${name} — ${bookLabel}`}
+      aria-label={`${name}, ${bookLabel}`}
       className={cn(
         "group relative block overflow-hidden rounded-3xl bg-ink shadow-float",
         "transition-all duration-500 hover:-translate-y-1.5 hover:shadow-premium",
