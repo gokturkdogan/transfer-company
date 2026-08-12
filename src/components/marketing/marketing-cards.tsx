@@ -2,6 +2,8 @@ import { ArrowRight, Luggage, Quote, Users } from "lucide-react";
 import Image from "next/image";
 import { type ReactNode } from "react";
 
+import type { ComponentProps } from "react";
+
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +12,7 @@ type DestinationCardProps = {
   imageSrc: string;
   priceLabel: string;
   bookLabel: string;
-  href: string;
+  href: ComponentProps<typeof Link>["href"];
   className?: string;
   compact?: boolean;
   priority?: boolean;

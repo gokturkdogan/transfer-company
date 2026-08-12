@@ -33,8 +33,15 @@ export async function getBookingPageData(
   );
   const initialSearch = parseBookingSearchParams(query);
 
+  const districtCityId = initialSearch.destinationDistrictId
+    ? districts.find(
+        (district) => district.id === initialSearch.destinationDistrictId,
+      )?.cityId
+    : undefined;
+
   const cityId =
     initialSearch.cityId ||
+    districtCityId ||
     airports.find((airport) => airport.id === initialSearch.originAirportId)
       ?.cityId ||
     (cities.length === 1 ? cities[0]?.id : "") ||

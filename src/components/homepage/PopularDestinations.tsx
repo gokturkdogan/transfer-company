@@ -33,8 +33,6 @@ export async function PopularDestinations({
         />
         <PremiumCarousel label={t("title")}>
           {destinations.map((destination, index) => {
-            const landingHref = `/transfers/${destination.code.toLowerCase()}`;
-
             return (
               <DestinationCard
                 key={destination.id}
@@ -55,7 +53,10 @@ export async function PopularDestinations({
                   ),
                 })}
                 bookLabel={t("book")}
-                href={landingHref}
+                href={{
+                  pathname: "/booking",
+                  query: { district: destination.id },
+                }}
               />
             );
           })}
