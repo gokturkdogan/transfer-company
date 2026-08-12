@@ -17,10 +17,10 @@
       "titleAccent": "60 Sekunden entfernt"
     },
     "hero": {
-      "title": "Vom Flughafen zu Ihrem Hotel",
-      "subtitle": "Festpreise, kostenloser Meet & Greet und Flugverfolgung — premium VIP-Transfers vom Flughafen Antalya an die gesamte Türkische Riviera, rund um die Uhr. In 60 Sekunden gebucht.",
-      "badge": "Antalyas Premium VIP-Transferservice",
-      "titleAccent": "Makelloser Luxustransfer",
+      "title": "Flughafentransfer Antalya VIP",
+      "subtitle": "Festpreise, kostenloser Meet & Greet und Flugverfolgung — Premium-Transfers vom Flughafen Antalya an die gesamte Türkische Riviera, rund um die Uhr. In 60 Sekunden gebucht.",
+      "badge": "Antalyas Premium-Transferservice",
+      "titleAccent": "Festpreise · Premium-Service 24/7",
       "rating": "4,9 / 5 · 2.400+ Gästebewertungen",
       "guarantee": "Festpreisgarantie · Zahlung bei Ankunft",
       "scrollHint": "Entdecken"
@@ -182,9 +182,9 @@
       "fullBooking": "Vollständige Buchungsseite",
       "contactTitle": "Kontakt",
       "languagesTitle": "Sprachen",
-      "copyright": "© {year} VIP Transfer. Alle Rechte vorbehalten.",
+      "copyright": "© {year} {appName}. Alle Rechte vorbehalten.",
       "exploreTitle": "Entdecken",
-      "tagline": "Antalya · Premium VIP Transfer",
+      "tagline": "Antalya · Royal Rhein Transfers",
       "privacyPolicy": "Datenschutz & Cookies"
     },
     "meta": {
@@ -522,7 +522,7 @@
   },
   "about": {
     "meta": {
-      "title": "Über uns | VIP Transfer",
+      "title": "Über uns",
       "description": "Lernen Sie unser Team für Premium-VIP-Flughafentransfers in Antalya und an der Türkischen Riviera kennen."
     },
     "hero": {
@@ -587,7 +587,7 @@
   },
   "fleet": {
     "meta": {
-      "title": "Premium Flotte | VIP Transfer",
+      "title": "Premium Flotte",
       "description": "Entdecken Sie unsere Mercedes-basierte Premium-VIP-Transferflotte. Sedan, Vito und Sprinter für komfortable Antalya-Flughafentransfers."
     },
     "hero": {
@@ -647,7 +647,7 @@
       "button": "Reservierung erstellen"
     },
     "vehicleDetail": {
-      "metaTitle": "{name} | VIP Transfer Flotte",
+      "metaTitle": "{name}",
       "backToFleet": "Zurück zur Flotte",
       "overviewTitle": "Überblick",
       "featuresTitle": "Highlights",
@@ -702,8 +702,8 @@
   },
   "privacy": {
     "meta": {
-      "title": "Datenschutz & Cookie-Richtlinie | VIP Transfer",
-      "description": "Erfahren Sie, welche Cookies VIP Transfer verwendet, wie wir Daten verarbeiten und welche Rechte Sie haben."
+      "title": "Datenschutz & Cookie-Richtlinie",
+      "description": "Erfahren Sie, welche Cookies Royal Rhein Transfers verwendet, wie wir Daten verarbeiten und welche Rechte Sie haben."
     },
     "hero": {
       "badge": "Transparenz",
@@ -720,7 +720,7 @@
       "overview": {
         "title": "Überblick",
         "paragraphs": {
-          "0": "Bei VIP Transfer nehmen wir Ihre Privatsphäre ernst. Diese Seite erklärt, welche Cookies verwendet werden, wenn Sie unsere Website besuchen oder eine Reservierung anfragen.",
+          "0": "Bei Royal Rhein Transfers nehmen wir Ihre Privatsphäre ernst. Diese Seite erklärt, welche Cookies verwendet werden, wenn Sie unsere Website besuchen oder eine Reservierung anfragen.",
           "1": "Buchungsdaten werden serverseitig verarbeitet. Wir setzen keine Marketing- oder Profiling-Cookies in Ihrem Browser. Ein begrenztes Cookie kann nur verwendet werden, um Ihre Sprachauswahl zu speichern."
         }
       },

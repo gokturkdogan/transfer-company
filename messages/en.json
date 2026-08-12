@@ -17,10 +17,10 @@
       "titleAccent": "60 seconds away"
     },
     "hero": {
-      "title": "From the Airport to Your Hotel",
-      "subtitle": "Fixed prices, complimentary meet & greet and free flight tracking — premium VIP transfers from Antalya Airport across the whole Turkish Riviera, 24/7. Book in 60 seconds.",
-      "badge": "Antalya's Premium VIP Transfer Service",
-      "titleAccent": "Flawless Luxury Transfers",
+      "title": "Antalya Airport VIP Transfer",
+      "subtitle": "Fixed prices, complimentary meet & greet and free flight tracking — premium transfers from Antalya Airport across the whole Turkish Riviera, 24/7. Book in 60 seconds.",
+      "badge": "Antalya's Premium Transfer Service",
+      "titleAccent": "Fixed Prices · Premium 24/7 Service",
       "rating": "4.9 / 5 · 2,400+ guest reviews",
       "guarantee": "Fixed-price guarantee · Pay on arrival",
       "scrollHint": "Explore"
@@ -182,9 +182,9 @@
       "fullBooking": "Full Booking Page",
       "contactTitle": "Contact",
       "languagesTitle": "Languages",
-      "copyright": "© {year} VIP Transfer. All rights reserved.",
+      "copyright": "© {year} {appName}. All rights reserved.",
       "exploreTitle": "Explore",
-      "tagline": "Antalya · Premium VIP Transfer",
+      "tagline": "Antalya · Royal Rhein Transfers",
       "privacyPolicy": "Privacy & Cookies"
     },
     "meta": {
@@ -522,12 +522,12 @@
   },
   "about": {
     "meta": {
-      "title": "About Us | VIP Transfer",
+      "title": "About Us",
       "description": "Meet the team behind premium VIP airport transfers across Antalya and the Turkish Riviera — our values, service promise and guest-first approach."
     },
     "hero": {
       "badge": "Antalya Premium Transfer",
-      "title": "Trusted VIP Transfers",
+      "title": "Trusted Premium Transfers",
       "titleAccent": "Built on Experience",
       "subtitle": "As a local team we deliver comfortable, transparent and premium transfers from Antalya Airport to every corner of the Turkish Riviera.",
       "stats": {
@@ -540,7 +540,7 @@
       "eyebrow": "Our Story",
       "title": "Simple, seamless transfers for every guest",
       "paragraphs": {
-        "0": "At VIP Transfer our goal is to remove the friction from booking. Fixed prices, complimentary meet & greet and flight tracking keep every journey stress-free.",
+        "0": "At Royal Rhein Transfers our goal is to remove the friction from booking. Fixed prices, complimentary meet & greet and flight tracking keep every journey stress-free.",
         "1": "With experienced chauffeurs and a well-maintained fleet we deliver the same premium standard from Lara to Alanya. Pay on arrival — no online payment pressure."
       },
       "imageAlt": "Professional VIP chauffeur beside a luxury transfer vehicle",
@@ -587,7 +587,7 @@
   },
   "fleet": {
     "meta": {
-      "title": "Premium Fleet | VIP Transfer",
+      "title": "Premium Fleet",
       "description": "Explore our Mercedes-based premium VIP transfer fleet. Sedan, Vito and Sprinter options for comfortable Antalya Airport transfers."
     },
     "hero": {
@@ -647,7 +647,7 @@
       "button": "Create Reservation"
     },
     "vehicleDetail": {
-      "metaTitle": "{name} | VIP Transfer Fleet",
+      "metaTitle": "{name}",
       "backToFleet": "Back to fleet",
       "overviewTitle": "Overview",
       "featuresTitle": "Highlights",
@@ -702,8 +702,8 @@
   },
   "privacy": {
     "meta": {
-      "title": "Privacy & Cookie Policy | VIP Transfer",
-      "description": "Learn which cookies VIP Transfer uses, how we handle data, and your privacy rights."
+      "title": "Privacy & Cookie Policy",
+      "description": "Learn which cookies Royal Rhein Transfers uses, how we handle data, and your privacy rights."
     },
     "hero": {
       "badge": "Transparency",
@@ -720,7 +720,7 @@
       "overview": {
         "title": "Overview",
         "paragraphs": {
-          "0": "At VIP Transfer we respect your privacy. This page explains which cookies are used when you visit our website or submit a reservation request.",
+          "0": "At Royal Rhein Transfers we respect your privacy. This page explains which cookies are used when you visit our website or submit a reservation request.",
           "1": "Booking data is processed on our servers. We do not use marketing or profiling cookies in your browser. A limited cookie may be used only to remember your language preference."
         }
       },

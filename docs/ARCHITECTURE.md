@@ -2,7 +2,9 @@
 
 ## Overview
 
-VIP Transfer is a **modular monolith** built on Next.js 16 App Router. The system handles multilingual VIP airport transfer **reservation requests** (not online payments).
+Royal Rhein Transfers is a **modular monolith** built on Next.js 16 App Router. The system handles multilingual VIP airport transfer **reservation requests** (not online payments).
+
+Public brand name: **Royal Rhein Transfers** (`common.appName`, `APP_NAME`).
 
 ## Layering
 

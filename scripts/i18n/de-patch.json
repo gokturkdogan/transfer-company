@@ -83,7 +83,7 @@
       "bookTransfer": "Transfer buchen",
       "fullBooking": "Vollständige Buchungsseite",
       "contactTitle": "Kontakt",
-      "copyright": "© {year} VIP Transfer. Alle Rechte vorbehalten."
+      "copyright": "© {year} {appName}. Alle Rechte vorbehalten."
     }
   },
   "booking": {

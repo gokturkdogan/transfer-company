@@ -160,7 +160,7 @@ export async function SiteFooter({
         </div>
 
         <div className="mt-14 flex flex-col items-center gap-3 border-t border-white/8 pt-8 text-xs text-white/40 sm:flex-row sm:justify-between">
-          <p>{t("copyright", { year: new Date().getFullYear() })}</p>
+          <p>{t("copyright", { year: new Date().getFullYear(), appName: common("appName") })}</p>
           <p className="tracking-[0.14em] uppercase">{t("tagline")}</p>
         </div>
       </Container>

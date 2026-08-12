@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { DEFAULT_LOCALE } from "@/config/constants";
+import { APP_NAME, DEFAULT_LOCALE } from "@/config/constants";
 import { clientEnv } from "@/config/env";
 
 function normalizePath(path: string): string {
@@ -34,6 +34,15 @@ export function buildLanguageAlternates(
   return alternates;
 }
 
+/** Page title with canonical brand suffix; bypasses layout title template. */
+export function buildPageTitle(pageTitle: string): string {
+  if (pageTitle.includes(APP_NAME)) {
+    return pageTitle;
+  }
+
+  return `${pageTitle} | ${APP_NAME}`;
+}
+
 export function buildPageMetadata(opts: {
   locale: string;
   path: string;
@@ -47,9 +56,10 @@ export function buildPageMetadata(opts: {
   const normalizedPath = normalizePath(opts.path);
   const canonicalPath = `/${opts.locale}${normalizedPath}`;
   const pageUrl = `${baseUrl}${canonicalPath}`;
+  const displayTitle = buildPageTitle(opts.title);
 
   return {
-    title: opts.title,
+    title: { absolute: displayTitle },
     description: opts.description,
     ...(opts.keywords ? { keywords: opts.keywords } : {}),
     metadataBase: new URL(baseUrl),
@@ -65,7 +75,7 @@ export function buildPageMetadata(opts: {
       type: "website",
       locale: opts.locale,
       url: pageUrl,
-      title: opts.title,
+      title: displayTitle,
       description: opts.description,
       ...(opts.image
         ? {
@@ -82,7 +92,7 @@ export function buildPageMetadata(opts: {
     },
     twitter: {
       card: "summary_large_image",
-      title: opts.title,
+      title: displayTitle,
       description: opts.description,
       ...(opts.image ? { images: [opts.image.url] } : {}),
     },

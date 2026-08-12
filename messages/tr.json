@@ -17,10 +17,10 @@
       "titleAccent": "60 saniye uzağınızda"
     },
     "hero": {
-      "title": "Havalimanından Otelinize",
-      "subtitle": "Sabit fiyat, ücretsiz karşılama ve uçuş takibiyle Antalya Havalimanı'ndan tüm Türk Rivierası'na 7/24 premium VIP transfer. Rezervasyonunuzu 60 saniyede tamamlayın.",
-      "badge": "Antalya'nın Premium VIP Transfer Servisi",
-      "titleAccent": "Kusursuz Lüks Transfer",
+      "title": "Antalya Havalimanı VIP Transfer",
+      "subtitle": "Sabit fiyat, ücretsiz karşılama ve uçuş takibiyle Antalya Havalimanı'ndan tüm Türk Rivierası'na 7/24 premium transfer. Rezervasyonunuzu 60 saniyede tamamlayın.",
+      "badge": "Antalya'nın Premium Transfer Servisi",
+      "titleAccent": "Sabit Fiyat · 7/24 Premium Hizmet",
       "rating": "4,9 / 5 · 2.400+ misafir yorumu",
       "guarantee": "Sabit fiyat garantisi · Ödeme varışta",
       "scrollHint": "Keşfet"
@@ -182,9 +182,9 @@
       "fullBooking": "Tam Rezervasyon Sayfası",
       "contactTitle": "İletişim",
       "languagesTitle": "Dil seçenekleri",
-      "copyright": "© {year} VIP Transfer. Tüm hakları saklıdır.",
+      "copyright": "© {year} {appName}. Tüm hakları saklıdır.",
       "exploreTitle": "Keşfet",
-      "tagline": "Antalya · Premium VIP Transfer",
+      "tagline": "Antalya · Royal Rhein Transfers",
       "privacyPolicy": "Gizlilik ve Çerezler"
     },
     "meta": {
@@ -522,12 +522,12 @@
   },
   "about": {
     "meta": {
-      "title": "Hakkımızda | VIP Transfer",
+      "title": "Hakkımızda",
       "description": "Antalya ve Türk Rivierası'nda premium VIP havalimanı transfer hizmeti sunan ekibimizi, değerlerimizi ve misafir odaklı yaklaşımımızı keşfedin."
     },
     "hero": {
       "badge": "Antalya Premium Transfer",
-      "title": "Güvenilir VIP Transfer",
+      "title": "Güvenilir Transfer",
       "titleAccent": "Deneyimi ve Tutku",
       "subtitle": "Yerel bir ekip olarak Antalya Havalimanı'ndan Türk Rivierası'nın her noktasına konforlu, şeffaf ve premium transfer hizmeti sunuyoruz.",
       "stats": {
@@ -540,7 +540,7 @@
       "eyebrow": "Hikayemiz",
       "title": "Misafirlerimiz için sade ve kusursuz transfer",
       "paragraphs": {
-        "0": "VIP Transfer olarak amacımız karmaşık rezervasyon süreçlerini ortadan kaldırmak. Sabit fiyat, ücretsiz karşılama ve uçuş takibiyle yolculuğunuzun her adımında yanınızdayız.",
+        "0": "Royal Rhein Transfers olarak amacımız karmaşık rezervasyon süreçlerini ortadan kaldırmak. Sabit fiyat, ücretsiz karşılama ve uçuş takibiyle yolculuğunuzun her adımında yanınızdayız.",
         "1": "Deneyimli şoförlerimiz ve bakımlı filomuzla Lara'dan Alanya'ya kadar her rotada aynı premium standardı sunuyoruz. Ödeme varışta — online ödeme stresi yok."
       },
       "imageAlt": "Profesyonel VIP şoför ve lüks transfer aracı",
@@ -587,7 +587,7 @@
   },
   "fleet": {
     "meta": {
-      "title": "Premium Filo | VIP Transfer",
+      "title": "Premium Filo",
       "description": "Mercedes tabanlı premium VIP transfer filomuzu keşfedin. Sedan, Vito ve Sprinter seçenekleriyle Antalya Havalimanı transferlerinde konfor ve stil."
     },
     "hero": {
@@ -647,7 +647,7 @@
       "button": "Rezervasyon Oluştur"
     },
     "vehicleDetail": {
-      "metaTitle": "{name} | VIP Transfer Filo",
+      "metaTitle": "{name}",
       "backToFleet": "Filoya dön",
       "overviewTitle": "Genel bakış",
       "featuresTitle": "Öne çıkan özellikler",
@@ -702,8 +702,8 @@
   },
   "privacy": {
     "meta": {
-      "title": "Gizlilik ve Çerez Politikası | VIP Transfer",
-      "description": "VIP Transfer web sitesinde kullanılan çerezler, veri işleme yaklaşımımız ve gizlilik haklarınız hakkında bilgi edinin."
+      "title": "Gizlilik ve Çerez Politikası",
+      "description": "Royal Rhein Transfers web sitesinde kullanılan çerezler, veri işleme yaklaşımımız ve gizlilik haklarınız hakkında bilgi edinin."
     },
     "hero": {
       "badge": "Şeffaflık",
@@ -720,7 +720,7 @@
       "overview": {
         "title": "Genel bilgilendirme",
         "paragraphs": {
-          "0": "VIP Transfer olarak kişisel verilerinizi ve gizliliğinizi önemsiyoruz. Bu sayfa, web sitemizi ziyaret ettiğinizde veya rezervasyon talebi gönderdiğinizde hangi çerezlerin kullanıldığını açıklar.",
+          "0": "Royal Rhein Transfers olarak kişisel verilerinizi ve gizliliğinizi önemsiyoruz. Bu sayfa, web sitemizi ziyaret ettiğinizde veya rezervasyon talebi gönderdiğinizde hangi çerezlerin kullanıldığını açıklar.",
           "1": "Rezervasyon bilgileriniz sunucu tarafında işlenir; tarayıcınızda pazarlama veya profil çıkarma amaçlı çerezler kullanılmaz. Yalnızca dil tercihinizi hatırlamak için sınırlı bir çerez kullanılabilir."
         }
       },

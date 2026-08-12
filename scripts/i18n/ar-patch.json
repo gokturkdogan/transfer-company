@@ -83,7 +83,7 @@
       "bookTransfer": "احجز نقل",
       "fullBooking": "صفحة الحجز الكاملة",
       "contactTitle": "اتصل بنا",
-      "copyright": "© {year} VIP Transfer. جميع الحقوق محفوظة."
+      "copyright": "© {year} {appName}. جميع الحقوق محفوظة."
     },
     "stats": {
       "items": {

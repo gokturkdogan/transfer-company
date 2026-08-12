@@ -44,5 +44,6 @@ import {
 ```
 
 - `buildPageMetadata` sets title, description, canonical, hreflang, Open Graph, Twitter, and robots
+- Page titles use `buildPageTitle()` to append `APP_NAME` (`Royal Rhein Transfers`) once, with `absolute` metadata to avoid layout template duplication
 - Base URL comes from `clientEnv.NEXT_PUBLIC_APP_URL`
 - Prefer these helpers on public marketing pages for consistent hreflang behavior

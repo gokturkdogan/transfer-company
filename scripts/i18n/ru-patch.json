@@ -83,7 +83,7 @@
       "bookTransfer": "Забронировать трансфер",
       "fullBooking": "Полная страница бронирования",
       "contactTitle": "Контакты",
-      "copyright": "© {year} VIP Transfer. Все права защищены."
+      "copyright": "© {year} {appName}. Все права защищены."
     }
   },
   "booking": {
