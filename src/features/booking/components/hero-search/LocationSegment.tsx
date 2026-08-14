@@ -4,15 +4,17 @@ import { Check, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 
 import {
-  Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
-  CommandList,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { ComboboxOption } from "@/features/booking/components/LocationCombobox";
+import { LocationPickerPanel } from "@/features/booking/components/LocationPickerPanel";
+import {
+  locationPickerItemClassName,
+  locationPickerItemStateClass,
+  locationPickerPopoverClassName,
+} from "@/features/booking/components/location-picker-styles";
 import {
   SearchSegmentShell,
   SegmentValue,
@@ -59,6 +61,10 @@ export function LocationSegment({
     <CommandItem
       key={option.id}
       value={`${option.label} ${option.group ?? ""} ${option.id}`}
+      className={cn(
+        locationPickerItemClassName,
+        locationPickerItemStateClass(value === option.id),
+      )}
       onSelect={() => {
         onChange(option.id);
         setOpen(false);
@@ -66,7 +72,7 @@ export function LocationSegment({
     >
       <Check
         className={cn(
-          "me-2 h-4 w-4 text-gold-deep",
+          "me-2 h-4 w-4 shrink-0 text-gold-bright",
           value === option.id ? "opacity-100" : "opacity-0",
         )}
       />
@@ -105,25 +111,25 @@ export function LocationSegment({
         side="top"
         align="start"
         className={cn(
-          "w-[min(22rem,calc(100vw-2rem))] rounded-2xl border-border/70 p-0 shadow-premium",
+          locationPickerPopoverClassName,
+          "w-[min(22rem,calc(100vw-2rem))]",
           embedded && searchEditSheetPopoverClass,
         )}
       >
-        <Command>
-          <CommandInput placeholder={searchPlaceholder} />
-          <CommandList>
-            <CommandEmpty>{emptyLabel}</CommandEmpty>
-            {groups.length > 0
-              ? groups.map((group) => (
-                  <CommandGroup key={group} heading={group}>
-                    {options
-                      .filter((option) => option.group === group)
-                      .map(renderOption)}
-                  </CommandGroup>
-                ))
-              : options.map(renderOption)}
-          </CommandList>
-        </Command>
+        <LocationPickerPanel
+          searchPlaceholder={searchPlaceholder}
+          emptyLabel={emptyLabel}
+        >
+          {groups.length > 0
+            ? groups.map((group) => (
+                <CommandGroup key={group} heading={group}>
+                  {options
+                    .filter((option) => option.group === group)
+                    .map(renderOption)}
+                </CommandGroup>
+              ))
+            : options.map(renderOption)}
+        </LocationPickerPanel>
       </PopoverContent>
     </Popover>
   );

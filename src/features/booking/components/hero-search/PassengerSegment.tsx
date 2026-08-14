@@ -4,13 +4,21 @@ import { Minus, Plus, Users } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   SearchSegmentShell,
   SegmentValue,
 } from "@/features/booking/components/hero-search/SearchSegment";
 import { searchEditSheetPopoverClass } from "@/features/booking/components/hero-search/search-overlay-styles";
+import {
+  goldPickerPanelClassName,
+  goldPickerPopoverClassName,
+  passengerPickerBodyClassName,
+  passengerPickerCounterBtnClassName,
+  passengerPickerLabelClassName,
+  passengerPickerRowClassName,
+  passengerPickerValueClassName,
+} from "@/features/booking/components/picker-panel-styles";
 import { cn } from "@/lib/utils";
 
 type PassengerSegmentProps = {
@@ -77,11 +85,12 @@ export function PassengerSegment({
         side={embedded ? "bottom" : "top"}
         align={embedded ? "center" : "end"}
         className={cn(
-          "w-[min(20rem,calc(100vw-2rem))] rounded-2xl border-border/70 p-2 shadow-premium",
+          goldPickerPopoverClassName,
+          "w-[min(20rem,calc(100vw-2rem))]",
           embedded && searchEditSheetPopoverClass,
         )}
       >
-        <div className="divide-y divide-border/70">
+        <div className={cn(goldPickerPanelClassName, passengerPickerBodyClassName)}>
           <CounterRow
             label={t("adults")}
             value={adults}
@@ -121,34 +130,28 @@ function CounterRow({
   onChange: (value: number) => void;
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 px-2 py-2.5">
-      <span className="text-sm font-medium text-foreground">{label}</span>
+    <div className={passengerPickerRowClassName}>
+      <span className={passengerPickerLabelClassName}>{label}</span>
       <div className="flex items-center gap-1.5">
-        <Button
+        <button
           type="button"
-          variant="outline"
-          size="icon"
-          className="h-8 w-8 cursor-pointer rounded-lg"
+          className={passengerPickerCounterBtnClassName}
           aria-label={`${label} -`}
           disabled={value <= min}
           onClick={() => onChange(Math.max(min, value - 1))}
         >
           <Minus className="h-3.5 w-3.5" />
-        </Button>
-        <span className="min-w-6 text-center text-sm font-semibold tabular-nums">
-          {value}
-        </span>
-        <Button
+        </button>
+        <span className={passengerPickerValueClassName}>{value}</span>
+        <button
           type="button"
-          variant="outline"
-          size="icon"
-          className="h-8 w-8 cursor-pointer rounded-lg"
+          className={passengerPickerCounterBtnClassName}
           aria-label={`${label} +`}
           disabled={value >= max}
           onClick={() => onChange(Math.min(max, value + 1))}
         >
           <Plus className="h-3.5 w-3.5" />
-        </Button>
+        </button>
       </div>
     </div>
   );

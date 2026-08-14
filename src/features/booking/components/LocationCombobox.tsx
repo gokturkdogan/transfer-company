@@ -5,16 +5,18 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
-  CommandList,
 } from "@/components/ui/command";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { BookingFieldLabel } from "@/features/booking/components/BookingFieldLabel";
+import { LocationPickerPanel } from "@/features/booking/components/LocationPickerPanel";
+import {
+  locationPickerItemClassName,
+  locationPickerItemStateClass,
+  locationPickerPopoverClassName,
+} from "@/features/booking/components/location-picker-styles";
 import {
   bookingFormFieldGroupClass,
   bookingFormLabelClass,
@@ -59,6 +61,29 @@ export function LocationCombobox({
   const selected = options.find((option) => option.id === value);
   const groups = [...new Set(options.map((option) => option.group).filter(Boolean))];
 
+  const renderOption = (option: ComboboxOption) => (
+    <CommandItem
+      key={option.id}
+      value={`${option.label} ${option.group ?? ""} ${option.id}`}
+      className={cn(
+        locationPickerItemClassName,
+        locationPickerItemStateClass(value === option.id),
+      )}
+      onSelect={() => {
+        onChange(option.id);
+        setOpen(false);
+      }}
+    >
+      <Check
+        className={cn(
+          "me-2 h-4 w-4 shrink-0 text-gold-bright",
+          value === option.id ? "opacity-100" : "opacity-0",
+        )}
+      />
+      {option.label}
+    </CommandItem>
+  );
+
   return (
     <div
       className={cn(
@@ -90,56 +115,26 @@ export function LocationCombobox({
             <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
-          <Command>
-            <CommandInput placeholder={searchPlaceholder} />
-            <CommandList>
-              <CommandEmpty>{emptyLabel}</CommandEmpty>
-              {groups.length > 0
-                ? groups.map((group) => (
-                    <CommandGroup key={group} heading={group}>
-                      {options
-                        .filter((option) => option.group === group)
-                        .map((option) => (
-                          <CommandItem
-                            key={option.id}
-                            value={`${option.label} ${option.id}`}
-                            onSelect={() => {
-                              onChange(option.id);
-                              setOpen(false);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "me-2 h-4 w-4",
-                                value === option.id ? "opacity-100" : "opacity-0",
-                              )}
-                            />
-                            {option.label}
-                          </CommandItem>
-                        ))}
-                    </CommandGroup>
-                  ))
-                : options.map((option) => (
-                    <CommandItem
-                      key={option.id}
-                      value={`${option.label} ${option.id}`}
-                      onSelect={() => {
-                        onChange(option.id);
-                        setOpen(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "me-2 h-4 w-4",
-                          value === option.id ? "opacity-100" : "opacity-0",
-                        )}
-                      />
-                      {option.label}
-                    </CommandItem>
-                  ))}
-            </CommandList>
-          </Command>
+        <PopoverContent
+          className={cn(
+            locationPickerPopoverClassName,
+            "w-[var(--radix-popover-trigger-width)]",
+          )}
+        >
+          <LocationPickerPanel
+            searchPlaceholder={searchPlaceholder}
+            emptyLabel={emptyLabel}
+          >
+            {groups.length > 0
+              ? groups.map((group) => (
+                  <CommandGroup key={group} heading={group}>
+                    {options
+                      .filter((option) => option.group === group)
+                      .map(renderOption)}
+                  </CommandGroup>
+                ))
+              : options.map(renderOption)}
+          </LocationPickerPanel>
         </PopoverContent>
       </Popover>
     </div>
