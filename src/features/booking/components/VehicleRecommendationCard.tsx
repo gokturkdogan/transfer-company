@@ -2,7 +2,6 @@
 
 import {
   BadgeCheck,
-  CupSoda,
   Droplets,
   Luggage,
   Sparkles,
@@ -37,7 +36,6 @@ const INCLUDED_SERVICES = [
   { key: "tv", icon: Tv },
   { key: "wifi", icon: Wifi },
   { key: "water", icon: Droplets },
-  { key: "softDrinks", icon: CupSoda },
   { key: "welcomeWithName", icon: BadgeCheck },
 ] as const;
 

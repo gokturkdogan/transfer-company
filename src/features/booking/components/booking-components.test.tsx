@@ -30,7 +30,6 @@ const messages = {
         tv: "TV",
         wifi: "Wi-Fi",
         water: "Water",
-        softDrinks: "Soft Drinks",
         welcomeWithName: "Welcome with Name",
       },
       totalLabel: "Total",

@@ -7,6 +7,7 @@ import { LocationCombobox } from "@/features/booking/components/LocationCombobox
 import { BookingFieldLabel } from "@/features/booking/components/BookingFieldLabel";
 import { useGlobalLoaderSync } from "@/components/shared/global-loader-provider";
 import { fetchHotelsForDistrict } from "@/features/booking/lib/api";
+import { CUSTOM_HOTEL_OPTION_ID } from "@/features/booking/lib/combobox-filter";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { isReverseDirection } from "@/features/booking/lib/route-direction";
 import type { HotelDto } from "@/features/locations/types";
@@ -81,18 +82,19 @@ export function HotelSelector({ className }: HotelSelectorProps) {
         }
         value={
           state.destination.useCustomDestination
-            ? "__custom__"
+            ? CUSTOM_HOTEL_OPTION_ID
             : state.destination.hotelLocationId
         }
         options={[
           ...visibleHotels.map((hotel) => ({ id: hotel.id, label: hotel.name })),
-          { id: "__custom__", label: t("notListed") },
+          { id: CUSTOM_HOTEL_OPTION_ID, label: t("notListed") },
         ]}
+        alwaysVisibleOptionIds={[CUSTOM_HOTEL_OPTION_ID]}
         placeholder={t("selectHotel")}
         searchPlaceholder={t("searchHotel")}
         emptyLabel={t("empty")}
         onChange={(value) => {
-          if (value === "__custom__") {
+          if (value === CUSTOM_HOTEL_OPTION_ID) {
             dispatch({
               type: "SET_CUSTOM_DESTINATION",
               destination: { useCustomDestination: true },

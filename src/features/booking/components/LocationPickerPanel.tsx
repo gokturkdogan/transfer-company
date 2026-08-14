@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 import {
   Command,
@@ -16,6 +16,7 @@ type LocationPickerPanelProps = {
   emptyLabel: string;
   children: ReactNode;
   className?: string;
+  filter?: ComponentProps<typeof Command>["filter"];
 };
 
 export function LocationPickerPanel({
@@ -23,9 +24,13 @@ export function LocationPickerPanel({
   emptyLabel,
   children,
   className,
+  filter,
 }: LocationPickerPanelProps) {
   return (
-    <Command className={cn(locationPickerPanelClassName, "bg-transparent", className)}>
+    <Command
+      filter={filter}
+      className={cn(locationPickerPanelClassName, "bg-transparent", className)}
+    >
       <CommandInput placeholder={searchPlaceholder} />
       <CommandList className="location-picker-list">
         <CommandEmpty className="location-picker-empty">{emptyLabel}</CommandEmpty>

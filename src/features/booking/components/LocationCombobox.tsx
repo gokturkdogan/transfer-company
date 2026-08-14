@@ -13,6 +13,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { BookingFieldLabel } from "@/features/booking/components/BookingFieldLabel";
 import { LocationPickerPanel } from "@/features/booking/components/LocationPickerPanel";
 import {
+  createComboboxFilter,
+  CUSTOM_HOTEL_OPTION_ID,
+} from "@/features/booking/lib/combobox-filter";
+import {
   locationPickerItemClassName,
   locationPickerItemStateClass,
   locationPickerPopoverClassName,
@@ -42,6 +46,8 @@ type LocationComboboxProps = {
   required?: boolean;
   className?: string;
   appearance?: "default" | "booking";
+  /** Option ids that stay visible while the user filters the list (e.g. custom hotel). */
+  alwaysVisibleOptionIds?: readonly string[];
 };
 
 export function LocationCombobox({
@@ -56,10 +62,12 @@ export function LocationCombobox({
   required = false,
   className,
   appearance = "default",
+  alwaysVisibleOptionIds = [],
 }: LocationComboboxProps) {
   const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.id === value);
   const groups = [...new Set(options.map((option) => option.group).filter(Boolean))];
+  const comboboxFilter = createComboboxFilter(alwaysVisibleOptionIds);
 
   const renderOption = (option: ComboboxOption) => (
     <CommandItem
@@ -124,6 +132,7 @@ export function LocationCombobox({
           <LocationPickerPanel
             searchPlaceholder={searchPlaceholder}
             emptyLabel={emptyLabel}
+            filter={comboboxFilter}
           >
             {groups.length > 0
               ? groups.map((group) => (
