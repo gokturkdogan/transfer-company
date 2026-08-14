@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
 import type { FleetVehicleDetailDto } from "@/features/marketing/types";
+import { formatFleetDisplayLabel } from "@/features/marketing/lib/fleet-vehicle-slug";
 import { resolveFleetDetailImages } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { Link } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
@@ -37,6 +38,7 @@ export async function VehicleDetailContent({
     },
     locale,
   );
+  const codeLabel = formatFleetDisplayLabel(vehicle.code);
 
   return (
     <Section>
@@ -61,7 +63,7 @@ export async function VehicleDetailContent({
               <p className="text-sm leading-relaxed text-muted-foreground/90 sm:text-base">
                 {t("experienceParagraph", {
                   name: vehicle.name,
-                  code: vehicle.code,
+                  code: codeLabel,
                 })}
               </p>
             </div>
@@ -80,7 +82,9 @@ export async function VehicleDetailContent({
                       <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/12 text-gold-deep">
                         <Check className="h-3.5 w-3.5" aria-hidden />
                       </span>
-                      <span className="min-w-0 leading-snug">{feature}</span>
+                      <span className="min-w-0 leading-snug">
+                        {formatFleetDisplayLabel(feature)}
+                      </span>
                     </li>
                   ))}
                 </ul>

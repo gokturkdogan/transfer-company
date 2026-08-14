@@ -6,6 +6,7 @@ import { Section } from "@/components/layout/Section";
 import { FeatureCard } from "@/components/marketing/marketing-cards";
 import { Reveal } from "@/components/motion/Reveal";
 import type { FleetVehicleDetailDto } from "@/features/marketing/types";
+import { formatFleetDisplayLabel } from "@/features/marketing/lib/fleet-vehicle-slug";
 
 const PARAGRAPH_KEYS = ["0", "1"] as const;
 const PROMISE_KEYS = ["0", "1", "2", "3"] as const;
@@ -19,6 +20,7 @@ export async function VehicleDetailPremiumBand({
   vehicle,
 }: VehicleDetailPremiumBandProps) {
   const t = await getTranslations("fleet.vehicleDetail");
+  const codeLabel = formatFleetDisplayLabel(vehicle.code);
 
   return (
     <Section variant="muted">
@@ -36,7 +38,7 @@ export async function VehicleDetailPremiumBand({
                 <p key={key}>
                   {t(`idealForParagraphs.${key}`, {
                     name: vehicle.name,
-                    code: vehicle.code,
+                    code: codeLabel,
                   })}
                 </p>
               ))}

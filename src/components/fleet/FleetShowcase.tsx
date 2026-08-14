@@ -7,7 +7,7 @@ import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
 import type { FleetVehicleDto } from "@/features/marketing/types";
-import { toFleetVehiclePath } from "@/features/marketing/lib/fleet-vehicle-slug";
+import { toFleetVehiclePath, formatFleetDisplayLabel } from "@/features/marketing/lib/fleet-vehicle-slug";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { Link } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
@@ -33,6 +33,7 @@ export async function FleetShowcase({ fleet }: FleetShowcaseProps) {
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {fleet.map((vehicle, index) => {
             const isFeatured = index === 0 && fleet.length > 1;
+            const codeLabel = formatFleetDisplayLabel(vehicle.code);
 
             return (
               <Reveal
@@ -72,7 +73,7 @@ export async function FleetShowcase({ fleet }: FleetShowcaseProps) {
                       className="pointer-events-none absolute inset-0 futuristic-grid opacity-20 [mask-image:linear-gradient(to_bottom,transparent,black_40%,transparent)]"
                     />
                     <span className="absolute start-4 top-4 rounded-full border border-white/20 bg-ink/55 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-gold-light backdrop-blur-md">
-                      {vehicle.code}
+                      {codeLabel}
                     </span>
                     <span
                       aria-hidden
@@ -86,7 +87,7 @@ export async function FleetShowcase({ fleet }: FleetShowcaseProps) {
                         {vehicle.name}
                       </h3>
                       <p className="text-sm leading-relaxed text-muted-foreground">
-                        {t("vehicleHint", { code: vehicle.code })}
+                        {t("vehicleHint", { code: codeLabel })}
                       </p>
                     </div>
 

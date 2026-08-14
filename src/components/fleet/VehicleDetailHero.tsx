@@ -3,12 +3,9 @@ import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
-import { FleetVehicleGallery } from "@/components/fleet/FleetVehicleGallery";
 import type { FleetVehicleDetailDto } from "@/features/marketing/types";
-import {
-  resolveFleetDetailImages,
-  resolveVehicleCoverImage,
-} from "@/features/vehicles/lib/resolve-vehicle-cover-image";
+import { formatFleetDisplayLabel } from "@/features/marketing/lib/fleet-vehicle-slug";
+import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { Link } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 
@@ -21,6 +18,7 @@ export async function VehicleDetailHero({ vehicle }: VehicleDetailHeroProps) {
   const locale = await getLocale();
   const heroImage = resolveVehicleCoverImage(vehicle.imageKey, vehicle.code);
   const brandModel = [vehicle.brand, vehicle.model].filter(Boolean).join(" ");
+  const codeLabel = formatFleetDisplayLabel(vehicle.code);
 
   return (
     <section className="relative isolate min-h-[46vh] overflow-hidden bg-ink lg:min-h-[50vh]">
@@ -62,7 +60,7 @@ export async function VehicleDetailHero({ vehicle }: VehicleDetailHeroProps) {
 
           <div className="flex flex-wrap items-center gap-2">
             <span className="ring-gold-hairline rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-gold-light backdrop-blur-md">
-              {vehicle.code}
+              {codeLabel}
             </span>
             {brandModel ? (
               <span className="rounded-full border border-white/12 bg-white/5 px-3 py-1 text-xs font-semibold text-white/75 backdrop-blur-md">
