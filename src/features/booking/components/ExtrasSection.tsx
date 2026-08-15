@@ -25,7 +25,8 @@ export function ExtrasSection() {
   const requiredExtras = selectedOption.requiredExtras;
   const optionalExtras = selectedOption.optionalExtras;
   const hasExtras = requiredExtras.length > 0 || optionalExtras.length > 0;
-  const showLuggageVehicleNotice = selectedOption.requiredLuggageVehicles > 0;
+  const showLuggageVehicleNotice = Boolean(selectedOption.requiredLuggageVehicle);
+  const luggageFleetVehicle = selectedOption.requiredLuggageVehicle;
   const showChildSeatNotice = selectedOption.requiredChildSeats > 0;
   const childSeatExtra = requiredExtras.find((extra) => extra.includedQuantity > 0);
   const childSeatIncludedQuantity = childSeatExtra?.includedQuantity ?? 1;
@@ -46,6 +47,8 @@ export function ExtrasSection() {
           <Info className="h-3.5 w-3.5 shrink-0 text-gold-deep" aria-hidden />
           <AlertDescription className="min-w-0 truncate text-xs leading-snug text-foreground">
             {t("luggageVehicleAutoAdded", {
+              vehicle: luggageFleetVehicle?.vehicleCategoryName ?? "",
+              count: luggageFleetVehicle?.quantity ?? 0,
               capacity: selectedOption.largeLuggageCapacity,
             })}
           </AlertDescription>

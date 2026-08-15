@@ -4,14 +4,6 @@ import type {
   VehicleCapacityInput,
 } from "../types";
 
-function ceilDivision(numerator: number, denominator: number): number {
-  if (denominator <= 0) {
-    throw new Error("Denominator must be positive");
-  }
-
-  return Math.ceil(numerator / denominator);
-}
-
 export function assessVehicleCapacity(
   input: VehicleCapacityInput,
 ): CapacityAssessment {
@@ -83,52 +75,9 @@ export function assessVehicleCapacity(
     code: "LARGE_LUGGAGE_OVERFLOW",
     message: `Large luggage exceeds vehicle capacity by ${largeLuggageOverflow}`,
   });
-
-  const luggageExtra = input.luggageVehicleExtra;
-
-  if (!luggageExtra || !luggageExtra.isActive) {
-    warnings.push({
-      code: "LUGGAGE_VEHICLE_UNAVAILABLE",
-      message: "No active luggage vehicle extra is available to resolve overflow",
-    });
-
-    return {
-      eligibility: "INELIGIBLE",
-      passengerOverflow,
-      largeLuggageOverflow,
-      cabinLuggageOverflow,
-      requiredLuggageVehicles: 0,
-      warnings,
-    };
-  }
-
-  const requiredLuggageVehicles = ceilDivision(
-    largeLuggageOverflow,
-    luggageExtra.luggageCapacityPerUnit,
-  );
-
-  if (
-    luggageExtra.maxQuantity !== null &&
-    requiredLuggageVehicles > luggageExtra.maxQuantity
-  ) {
-    warnings.push({
-      code: "LUGGAGE_VEHICLE_MAX_EXCEEDED",
-      message: `Required luggage vehicles (${requiredLuggageVehicles}) exceed maximum allowed (${luggageExtra.maxQuantity})`,
-    });
-
-    return {
-      eligibility: "INELIGIBLE",
-      passengerOverflow,
-      largeLuggageOverflow,
-      cabinLuggageOverflow,
-      requiredLuggageVehicles,
-      warnings,
-    };
-  }
-
   warnings.push({
     code: "LUGGAGE_VEHICLE_REQUIRED",
-    message: `${requiredLuggageVehicles} luggage vehicle(s) required for overflow`,
+    message: `Additional fleet vehicle required for ${largeLuggageOverflow} overflow luggage item(s)`,
   });
 
   return {
@@ -136,7 +85,7 @@ export function assessVehicleCapacity(
     passengerOverflow,
     largeLuggageOverflow,
     cabinLuggageOverflow,
-    requiredLuggageVehicles,
+    requiredLuggageVehicles: 0,
     warnings,
   };
 }

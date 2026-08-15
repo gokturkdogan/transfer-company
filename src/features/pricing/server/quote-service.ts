@@ -1,10 +1,11 @@
 import "server-only";
 
 import { assessVehicleCapacity } from "@/features/capacity/domain/assess-capacity";
-import type { LuggageVehicleExtra } from "@/features/capacity/types";
+import { selectCheapestLuggageFleetVehicle } from "@/features/capacity/domain/select-cheapest-luggage-fleet-vehicle";
 import type { TransferQuoteInputDto } from "@/features/pricing/schemas/quote";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
+import { mapVehicleOptionsToLuggageFleetCandidates } from "@/features/pricing/domain/luggage-fleet-vehicle";
 import { resolveRequiredChildSeatQuantity } from "@/features/pricing/domain/required-child-seats";
 import {
   assertCurrencyConsistency,
@@ -37,25 +38,6 @@ function mapDomainError(error: unknown): never {
   throw error;
 }
 
-function resolveLuggageVehicleExtra(
-  extras: Awaited<ReturnType<PricingReader["findLuggageVehicleExtras"]>>,
-): LuggageVehicleExtra | null {
-  const candidate = extras.find(
-    (extra) => extra.luggageCapacityPerUnit !== null,
-  );
-
-  if (!candidate || candidate.luggageCapacityPerUnit === null) {
-    return null;
-  }
-
-  return {
-    id: candidate.id,
-    isActive: candidate.isActive,
-    luggageCapacityPerUnit: candidate.luggageCapacityPerUnit,
-    maxQuantity: candidate.maxQuantity,
-  };
-}
-
 export class QuoteService {
   constructor(private readonly repository: PricingReader) {}
 
@@ -68,13 +50,16 @@ export class QuoteService {
 
       const pricingCurrency = DEFAULT_CURRENCY;
 
-      const luggageVehicleCandidates =
-        await this.repository.findLuggageVehicleExtras(input.locale);
-      const luggageVehicleExtra = resolveLuggageVehicleExtra(
-        luggageVehicleCandidates,
-      );
-      const childSeatExtra = await this.repository.findChildSeatExtra(
-        input.locale,
+      const [fleetVehicleOptions, childSeatExtra] = await Promise.all([
+        this.repository.findVehicleOptionsForRoute(
+          input.routeId,
+          input.locale,
+          pricingCurrency,
+        ),
+        this.repository.findChildSeatExtra(input.locale),
+      ]);
+      const luggageFleetCandidates = mapVehicleOptionsToLuggageFleetCandidates(
+        fleetVehicleOptions,
       );
       const requiredChildSeats = resolveRequiredChildSeatQuantity(
         input.infantCount,
@@ -92,6 +77,8 @@ export class QuoteService {
       const requiredExtras: Array<{ extraServiceId: string; quantity: number }> =
         [];
       let quoteCurrency: string | null = null;
+      let primaryAssessment: ReturnType<typeof assessVehicleCapacity> | null =
+        null;
 
       for (const selection of input.vehicles) {
         const category = await this.repository.findVehicleCategoryById(
@@ -130,9 +117,9 @@ export class QuoteService {
           passengerCapacity: category.passengerCapacity,
           largeLuggageCapacity: category.largeLuggageCapacity,
           cabinLuggageCapacity: category.cabinLuggageCapacity,
-          luggageVehicleExtra,
         });
 
+        primaryAssessment = assessment;
         allWarnings.push(...assessment.warnings);
 
         if (assessment.eligibility === "INELIGIBLE") {
@@ -144,17 +131,6 @@ export class QuoteService {
           combinedEligibility = "ELIGIBLE_WITH_EXTRAS";
         }
 
-        if (
-          assessment.requiredLuggageVehicles > 0 &&
-          luggageVehicleExtra &&
-          luggageVehicleExtra.isActive
-        ) {
-          requiredExtras.push({
-            extraServiceId: luggageVehicleExtra.id,
-            quantity: assessment.requiredLuggageVehicles,
-          });
-        }
-
         vehicleSelections.push({
           vehicleCategoryId: selection.vehicleCategoryId,
           vehicleCategoryName:
@@ -163,6 +139,54 @@ export class QuoteService {
           oneWayPriceMinor: price.oneWayPriceMinor,
           roundTripPriceMinor: price.roundTripPriceMinor,
         });
+      }
+
+      if (
+        primaryAssessment &&
+        primaryAssessment.largeLuggageOverflow > 0 &&
+        combinedEligibility !== "INELIGIBLE"
+      ) {
+        const luggageFleetVehicle = selectCheapestLuggageFleetVehicle(
+          primaryAssessment.largeLuggageOverflow,
+          luggageFleetCandidates,
+          input.tripType,
+        );
+
+        if (!luggageFleetVehicle) {
+          combinedEligibility = "INELIGIBLE";
+          allWarnings.push({
+            code: "LUGGAGE_VEHICLE_UNAVAILABLE",
+            message:
+              "No priced fleet vehicle is available to carry overflow luggage",
+          });
+        } else {
+          const luggageFleetOption = fleetVehicleOptions.find(
+            (option) => option.id === luggageFleetVehicle.vehicleCategoryId,
+          );
+
+          if (!luggageFleetOption || !luggageFleetOption.priceIsActive) {
+            combinedEligibility = "INELIGIBLE";
+            allWarnings.push({
+              code: "LUGGAGE_VEHICLE_UNAVAILABLE",
+              message:
+                "No priced fleet vehicle is available to carry overflow luggage",
+            });
+          } else {
+            assertCurrencyConsistency(
+              quoteCurrency!,
+              luggageFleetOption.currency,
+              "route price",
+            );
+
+            vehicleSelections.push({
+              vehicleCategoryId: luggageFleetVehicle.vehicleCategoryId,
+              vehicleCategoryName: luggageFleetVehicle.vehicleCategoryName,
+              quantity: luggageFleetVehicle.quantity,
+              oneWayPriceMinor: luggageFleetOption.oneWayPriceMinor,
+              roundTripPriceMinor: luggageFleetOption.roundTripPriceMinor,
+            });
+          }
+        }
       }
 
       if (requiredChildSeats > 0 && childSeatExtra) {

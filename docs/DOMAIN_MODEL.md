@@ -78,8 +78,8 @@ Online payment is **not** part of the system. A reservation is initially only a 
 
 - Passenger overflow is **never** solvable by a luggage vehicle → `INELIGIBLE`
 - Cabin luggage overflow is **never** solvable by a luggage vehicle → `INELIGIBLE`
-- Large luggage overflow **may** be solvable by an active extra with `luggageCapacityPerUnit`
-- Required luggage vehicles: `ceil(largeLuggageOverflow / luggageCapacityPerUnit)`, capped by `maxQuantity`
+- Large luggage overflow is resolved by the **cheapest priced fleet vehicle** on the same route (route matrix price × quantity needed), not a separate extra catalogue price
+- Required luggage fleet: `selectCheapestLuggageFleetVehicle(overflow, fleet options, tripType)` — minimum total route price among active priced categories
 - Eligibility states: `ELIGIBLE`, `ELIGIBLE_WITH_EXTRAS`, `INELIGIBLE`
 
 ## Multi-vehicle support

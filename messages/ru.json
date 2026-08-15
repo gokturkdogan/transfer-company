@@ -306,7 +306,7 @@
       "quantityLabel": "Количество",
       "none": "Нет доступных дополнительных услуг.",
       "includedPricing": "{included} бесплатно · далее {price} за шт.",
-      "luggageVehicleAutoAdded": "Багажный автомобиль добавлен · вместимость ({capacity}) превышена",
+      "luggageVehicleAutoAdded": "Добавлен багажный автомобиль: {vehicle} · {count} · вместимость ({capacity}) превышена",
       "childSeatAutoAdded": "Детское кресло для младенцев · {count} · {included} бесплатно"
     },
     "customer": {

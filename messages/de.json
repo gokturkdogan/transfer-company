@@ -306,7 +306,7 @@
       "quantityLabel": "Menge",
       "none": "Keine optionalen Extras verfügbar.",
       "includedPricing": "{included} inklusive · danach {price} pro Stück",
-      "luggageVehicleAutoAdded": "Gepäckfahrzeug hinzugefügt · Kapazität ({capacity}) überschritten",
+      "luggageVehicleAutoAdded": "Zusätzliches Gepäckfahrzeug: {vehicle} · {count} · Kapazität ({capacity}) überschritten",
       "childSeatAutoAdded": "Kindersitz für Babys · {count} · {included} gratis"
     },
     "customer": {

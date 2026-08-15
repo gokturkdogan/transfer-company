@@ -5,7 +5,7 @@ import { createPricingReaderFake } from "@/test/fakes/pricing-reader";
 import { addMinutes } from "@/lib/datetime";
 
 describe("AvailabilityService", () => {
-  it("returns eligible vehicle options with required luggage extras", async () => {
+  it("returns eligible vehicle options with required luggage fleet vehicles", async () => {
     const service = new AvailabilityService(createPricingReaderFake());
 
     const result = await service.getTransferOptions({
@@ -26,8 +26,14 @@ describe("AvailabilityService", () => {
     const option = result.options[0]!;
     expect(option.eligibility).toBe("ELIGIBLE_WITH_EXTRAS");
     expect(option.requiredLuggageVehicles).toBeGreaterThan(0);
-    expect(option.requiredExtras[0]?.required).toBe(true);
-    expect(option.quote.totalMinor).toBeGreaterThan(option.quote.baseItems[0]!.totalPriceMinor);
+    expect(option.requiredLuggageVehicle).not.toBeNull();
+    expect(option.requiredExtras.every((extra) => extra.extraServiceId !== "luggage-extra-1")).toBe(
+      true,
+    );
+    expect(option.quote.baseItems.length).toBe(2);
+    expect(option.quote.totalMinor).toBeGreaterThan(
+      option.quote.baseItems[0]!.totalPriceMinor,
+    );
   });
 
   it("includes ineligible options for cabin luggage overflow", async () => {

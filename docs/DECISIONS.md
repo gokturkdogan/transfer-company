@@ -111,13 +111,26 @@
 ## ADR-009: Luggage vehicle as configurable extra
 
 **Date:** 2026-08-08
-**Status:** Accepted
+**Status:** Superseded by ADR-029
 
 **Context:** Luggage overflow could be hardcoded as special logic.
 
 **Decision:** Any extra with `luggage_capacity_per_unit` can act as a luggage vehicle. Capacity engine uses `ceil(overflow / capacity)`. No hardcoded prices, codes, or quantities.
 
 **Consequences:** Admin-configurable. Multiple luggage vehicle types possible in future.
+
+---
+
+## ADR-029: Luggage overflow priced as fleet route vehicle
+
+**Date:** 2026-08-15
+**Status:** Accepted
+
+**Context:** Luggage overflow was billed via a separate extra (`LUGGAGE_VAN` catalogue price), not the route matrix.
+
+**Decision:** When large luggage exceeds the selected vehicle capacity, the system auto-adds the **cheapest active fleet vehicle** on the same route that can carry the overflow. Price = that vehicle's `route_prices` row (one-way or round-trip) × quantity required (`ceil(overflow / largeLuggageCapacity)`). Line item type: `TRANSFER_VEHICLE`, not `EXTRA_SERVICE`.
+
+**Consequences:** Luggage overflow aligns with fleet pricing. `selectCheapestLuggageFleetVehicle()` in capacity domain. Legacy `luggage_capacity_per_unit` extras are no longer used for overflow billing.
 
 ---
 

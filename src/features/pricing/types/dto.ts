@@ -1,3 +1,4 @@
+import type { LuggageFleetVehicleSelection } from "@/features/capacity/domain/select-cheapest-luggage-fleet-vehicle";
 import type { EligibilityStatus, CapacityWarning } from "@/features/capacity/types";
 import type { ExtraPricingMode, TransferQuote } from "@/features/pricing/types";
 
@@ -25,6 +26,7 @@ export type TransferVehicleOptionDto = {
   cabinLuggageCapacity: number;
   eligibility: EligibilityStatus;
   requiredLuggageVehicles: number;
+  requiredLuggageVehicle: LuggageFleetVehicleSelection | null;
   requiredChildSeats: number;
   warnings: CapacityWarning[];
   requiredExtras: TransferOptionExtraDto[];

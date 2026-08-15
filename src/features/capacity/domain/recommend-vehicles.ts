@@ -1,6 +1,5 @@
 import { assessVehicleCapacity } from "./assess-capacity";
 import type {
-  LuggageVehicleExtra,
   VehicleCategoryCapacity,
   VehicleRecommendation,
 } from "../types";
@@ -10,7 +9,6 @@ export type RecommendVehiclesInput = {
   largeLuggageCount: number;
   cabinLuggageCount: number;
   vehicleCategories: VehicleCategoryCapacity[];
-  luggageVehicleExtra: LuggageVehicleExtra | null;
 };
 
 function minimumVehicleQuantity(
@@ -49,7 +47,6 @@ export function recommendVehicles(
       passengerCapacity: category.passengerCapacity,
       largeLuggageCapacity: category.largeLuggageCapacity,
       cabinLuggageCapacity: category.cabinLuggageCapacity,
-      luggageVehicleExtra: input.luggageVehicleExtra,
     });
 
     if (assessment.eligibility === "INELIGIBLE" && !includeIneligible) {

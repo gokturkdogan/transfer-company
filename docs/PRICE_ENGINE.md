@@ -28,7 +28,7 @@ Each extra has `pricingMode`:
 | `FIXED` | Flat price regardless of quantity (quantity stored as 1 on line item) |
 | `PER_UNIT` | `unitPriceMinor × max(0, quantity − includedQuantity)` |
 
-Luggage vehicle is a standard extra with optional `luggageCapacityPerUnit`. No hardcoded pricing.
+Luggage overflow is billed as an additional **fleet vehicle line** at route matrix price (cheapest suitable category), not as a separate extra catalogue item.
 
 `includedQuantity` on `extra_services` defines how many units are free per booking for `PER_UNIT` extras (e.g. child seat: 1 free, additional units charged). Fixed extras ignore this field.
 

@@ -168,11 +168,11 @@ export function VehicleRecommendationCard({
             )}
           </div>
 
-          {option.requiredLuggageVehicles > 0 && (
+          {option.requiredLuggageVehicle ? (
             <p className="rounded-lg border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-sm text-amber-900">
               {t("luggageVehicleRequired")}
             </p>
-          )}
+          ) : null}
 
           {option.warnings.length > 0 && (
             <ul className="space-y-1 text-sm text-muted-foreground">

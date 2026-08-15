@@ -34,7 +34,6 @@ export type VehicleCapacityInput = {
   passengerCapacity: number;
   largeLuggageCapacity: number;
   cabinLuggageCapacity: number;
-  luggageVehicleExtra: LuggageVehicleExtra | null;
 };
 
 export type CapacityAssessment = {

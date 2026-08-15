@@ -186,12 +186,11 @@ describe("BookingService security", () => {
       { idempotencyKey: "key-7" },
     );
 
-    const luggageLine = result.items.find(
-      (item) => item.type === "EXTRA_SERVICE",
+    const vehicleLines = result.items.filter(
+      (item) => item.type === "TRANSFER_VEHICLE",
     );
 
-    expect(luggageLine).toBeDefined();
-    expect(luggageLine!.quantity).toBeGreaterThan(0);
+    expect(vehicleLines.length).toBe(2);
     expect(result.totalMinor).toBeGreaterThan(10_000);
   });
 
