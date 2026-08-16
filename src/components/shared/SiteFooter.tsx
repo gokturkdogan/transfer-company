@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Container } from "@/components/layout/Container";
 import { EmailIcon } from "@/components/shared/EmailIcon";
 import { SiteLogo } from "@/components/shared/SiteLogo";
+import { SocialMediaIconLinks } from "@/components/shared/SocialMediaIconLinks";
 import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
@@ -20,6 +21,7 @@ import {
 import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link } from "@/i18n/navigation";
+import { getCachedSocialMediaLinks } from "@/server/cache/social-media";
 
 export async function SiteFooter({
   enabledLocales,
@@ -32,6 +34,7 @@ export async function SiteFooter({
   const common = await getTranslations("common");
   const locale = await getLocale();
   const contactChannels = await getPublicContactChannels();
+  const socialMediaLinks = await getCachedSocialMediaLinks();
 
   const guideLinks = FEATURED_BLOG_SLUGS.map((slug) => {
     const post = getBlogPostBySlug(slug);
@@ -170,9 +173,23 @@ export async function SiteFooter({
           </FooterColumn>
         </div>
 
-        <div className="mt-14 flex flex-col items-center gap-3 border-t border-white/8 pt-8 text-xs text-white/40 sm:flex-row sm:justify-between">
-          <p>{t("copyright", { year: new Date().getFullYear(), appName: common("appName") })}</p>
-          <p className="tracking-[0.14em] uppercase">{t("tagline")}</p>
+        <div className="mt-14 border-t border-white/8 pt-8">
+          <div className="flex flex-col items-center gap-3 text-xs text-white/40 sm:flex-row sm:justify-between">
+            <p>
+              {t("copyright", {
+                year: new Date().getFullYear(),
+                appName: common("appName"),
+              })}
+            </p>
+            <p className="tracking-[0.14em] uppercase">{t("tagline")}</p>
+          </div>
+
+          <SocialMediaIconLinks
+            links={socialMediaLinks}
+            size="sm"
+            className="mt-5"
+            listClassName="justify-center"
+          />
         </div>
       </Container>
     </footer>

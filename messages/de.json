@@ -216,41 +216,41 @@
       }
     },
     "seo": {
-      "eyebrow": "Antalya Transfer-Guide",
-      "title": "Alles Wichtige zum Flughafentransfer in Antalya",
-      "intro": "Der Flughafen Antalya (AYT) empfängt jährlich über 35 Millionen Passagiere. Der komfortabelste Weg an die Küste von Lara über Kemer, Belek und Side bis Alanya ist ein vorab gebuchter privater VIP-Transfer.",
-      "imageAlt": "Begrüßungsservice in der Ankunftshalle des Flughafens Antalya",
+      "eyebrow": "Transfer-Guide",
+      "title": "Wichtiges zum Premium-Flughafentransfer",
+      "intro": "Ein privater VIP-Transfer ist die entspannteste Option ohne Wartezeiten und Überraschungskosten. Planen Sie im Voraus mit Festpreis, kostenloser Begrüßung und Flugverfolgung.",
+      "imageAlt": "Begrüßungsservice in der Ankunftshalle",
       "imageCaption": "Begrüßung mit Namensschild in der Ankunftshalle, bei jedem Transfer inklusive",
       "blocks": {
-        "routes": {
-          "title": "Beliebte Strecken und Fahrzeiten",
-          "body": "Vom Flughafen Antalya sind es etwa 15 Minuten nach Lara, 40 Minuten nach Belek, 45 Minuten nach Kemer, 65 Minuten nach Side und 2 Stunden nach Alanya. Alle Strecken fahren wir von Tür zu Tür, bis zur Hotelrezeption."
+        "service": {
+          "title": "Privater Transfer von Tür zu Tür",
+          "body": "Kein Sammelbus und kein Taxistreifen: Ihr privater VIP-Transfer ist bei Ankunft bereit und bringt Sie direkt und komfortabel zum Hotel oder zur Adresse."
         },
         "pricing": {
           "title": "So funktionieren unsere Festpreise",
-          "body": "Die Preise stehen nach Fahrzeugklasse und Entfernung im Voraus fest, ohne Zuschläge für Verkehr, Wartezeit oder Nachtankünfte. Der Betrag bei der Buchung ist der Endbetrag, und Sie zahlen Ihrem Fahrer nach dem Transfer."
+          "body": "Die Preise stehen nach Ihrer Fahrzeugwahl im Voraus fest, ohne Zuschläge für Verkehr, Wartezeit oder Nachtankünfte. Der Betrag bei der Buchung ist der Endbetrag."
         },
-        "comfort": {
-          "title": "Fahrzeugkomfort und Meet & Greet",
-          "body": "Unsere Flotte umfasst Mercedes Vito, Sprinter und Luxuslimousinen, alle klimatisiert, mit Wasser und Kindersitzen auf Anfrage. Ihr Fahrer verfolgt Ihren Flug und wartet mit Namensschild in der Ankunftshalle."
+        "experience": {
+          "title": "Meet & Greet und Flugverfolgung",
+          "body": "Ihr Fahrer verfolgt Ihren Flug und erwartet Sie mit Namensschild in der Ankunftshalle. Verspätungen werden ohne Zusatzkosten berücksichtigt, mit professionellem Service während der Fahrt."
         }
       },
       "highlights": {
-        "duration": {
-          "title": "Durchschnittliche Dauer",
-          "value": "15–120 Min. ab Flughafen"
+        "support": {
+          "title": "24/7 Support",
+          "value": "Live-Support, wann immer Sie ihn brauchen"
         },
-        "vehicles": {
-          "title": "Fahrzeugklassen",
-          "value": "Vito, Sprinter und Luxuslimousine"
+        "fleet": {
+          "title": "Premium-Flotte",
+          "value": "Gepflegte, klimatisierte VIP-Fahrzeuge"
         },
         "payment": {
           "title": "Zahlung",
           "value": "Bar oder Karte, nach dem Transfer"
         },
-        "coverage": {
-          "title": "Servicegebiet",
-          "value": "Lara, Kemer, Belek, Side, Alanya"
+        "booking": {
+          "title": "Online-Buchung",
+          "value": "Anfrage in wenigen Minuten"
         }
       }
     }
@@ -546,6 +546,18 @@
       },
       "imageAlt": "Professioneller VIP-Chauffeur neben einem Luxus-Transferfahrzeug",
       "imageBadge": "Professionelles Team"
+    },
+    "social": {
+      "eyebrow": "Social Media",
+      "title": "Folgen Sie uns",
+      "subtitle": "Besuchen Sie unsere Social-Media-Kanäle für Neuigkeiten, Transfer-Tipps und Einblicke in unseren Premium-Service.",
+      "platforms": {
+        "INSTAGRAM": "Instagram",
+        "FACEBOOK": "Facebook",
+        "X": "X",
+        "YOUTUBE": "YouTube",
+        "TIKTOK": "TikTok"
+      }
     },
     "values": {
       "eyebrow": "Unsere Werte",

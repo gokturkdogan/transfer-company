@@ -90,3 +90,5 @@ export function getCachedActiveVehicleCodes() {
     { revalidate: REVALIDATE_SECONDS },
   )();
 }
+
+export { getCachedSocialMediaLinks } from "@/server/cache/social-media";

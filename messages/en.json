@@ -216,41 +216,41 @@
       }
     },
     "seo": {
-      "eyebrow": "Antalya Transfer Guide",
-      "title": "Everything you need to know about Antalya Airport transfers",
-      "intro": "Antalya Airport (AYT) welcomes more than 35 million passengers a year. The most comfortable way to reach the coastline stretching from Lara to Kemer, Belek, Side and Alanya is a pre-booked private VIP transfer.",
-      "imageAlt": "Meet and greet service in the Antalya Airport arrivals hall",
+      "eyebrow": "Transfer Guide",
+      "title": "What you need to know about premium airport transfers",
+      "intro": "A private VIP transfer is the most relaxed way to travel without airport queues or surprise fees. Plan ahead with fixed pricing, free meet & greet and flight tracking.",
+      "imageAlt": "Meet and greet service in the airport arrivals hall",
       "imageCaption": "Name-board greeting in the arrivals hall, included with every transfer",
       "blocks": {
-        "routes": {
-          "title": "Popular routes and journey times",
-          "body": "From Antalya Airport it takes roughly 15 minutes to Lara, 40 minutes to Belek, 45 minutes to Kemer, 65 minutes to Side and 2 hours to Alanya. Every route is door to door, we drop you off at your hotel reception."
+        "service": {
+          "title": "Door-to-door private transfer",
+          "body": "Skip shared shuttles and taxi queues. Your private VIP transfer is ready when you land and takes you directly to your hotel or address in comfort."
         },
         "pricing": {
           "title": "How fixed pricing works",
-          "body": "Prices are set in advance by vehicle class and distance, with no surcharges for traffic, waiting or night arrivals. The amount you see when booking is the final amount, and you pay your driver after the transfer."
+          "body": "Prices are set in advance based on your vehicle choice, with no surcharges for traffic, waiting or night arrivals. The amount you see when booking is the final amount."
         },
-        "comfort": {
-          "title": "Vehicle comfort and meet & greet",
-          "body": "Our fleet covers Mercedes Vito, Sprinter and luxury sedan classes, all air-conditioned, with complimentary water and child seats on request. Your driver tracks your flight and waits in the arrivals hall with a name board."
+        "experience": {
+          "title": "Meet & greet and flight tracking",
+          "body": "Your driver tracks your flight and waits in the arrivals hall with a name board. Delays are handled without extra charges, with professional service throughout the journey."
         }
       },
       "highlights": {
-        "duration": {
-          "title": "Average duration",
-          "value": "15–120 min from the airport"
+        "support": {
+          "title": "24/7 support",
+          "value": "Live support line whenever you need it"
         },
-        "vehicles": {
-          "title": "Vehicle classes",
-          "value": "Vito, Sprinter and luxury sedan"
+        "fleet": {
+          "title": "Premium fleet",
+          "value": "Well-maintained, air-conditioned VIP vehicles"
         },
         "payment": {
           "title": "Payment",
           "value": "Cash or card, after the transfer"
         },
-        "coverage": {
-          "title": "Service area",
-          "value": "Lara, Kemer, Belek, Side, Alanya"
+        "booking": {
+          "title": "Online booking",
+          "value": "Submit your request in minutes"
         }
       }
     }
@@ -552,6 +552,18 @@
       },
       "imageAlt": "Professional VIP chauffeur beside a luxury transfer vehicle",
       "imageBadge": "Professional Team"
+    },
+    "social": {
+      "eyebrow": "Social media",
+      "title": "Follow us",
+      "subtitle": "Visit our social channels for updates, transfer tips and a glimpse of our premium travel experience.",
+      "platforms": {
+        "INSTAGRAM": "Instagram",
+        "FACEBOOK": "Facebook",
+        "X": "X",
+        "YOUTUBE": "YouTube",
+        "TIKTOK": "TikTok"
+      }
     },
     "values": {
       "eyebrow": "Our Values",

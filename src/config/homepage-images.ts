@@ -1,5 +1,5 @@
 export const HOMEPAGE_IMAGES = {
-  hero: "/images/homepage/hero-airport-transfer.jpg",
+  hero: "/images/homepage/hero-airport-transfer.png",
   destinations: {
     BELEK: "/images/homepage/dest-belek.jpg",
     KEMER: "/images/homepage/dest-kemer.jpg",
@@ -13,7 +13,7 @@ export const HOMEPAGE_IMAGES = {
     SEDAN: "/images/homepage/fleet-sedan.jpg",
   },
   howItWorks: {
-    meetGreet: "/images/homepage/how-meet-greet.jpg",
+    meetGreet: "/images/homepage/meet.png",
   },
 } as const;
 

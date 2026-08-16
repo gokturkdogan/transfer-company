@@ -25,6 +25,7 @@ export const adminCopy = {
     pricing: "Fiyatlandırma",
     reservations: "Rezervasyonlar",
     contact: "İletişim bilgileri",
+    socialMedia: "Sosyal medya",
     locales: "Dil seçenekleri",
     signOut: "Çıkış yap",
   },
@@ -250,6 +251,37 @@ export const adminCopy = {
       backToContact: "İletişim ayarlarına dön",
       subjectLabel: "Konu satırı",
       iframeTitle: "E-posta şablon önizlemesi",
+    },
+  },
+  socialMedia: {
+    title: "Sosyal medya",
+    subtitle:
+      "Hakkımızda sayfasında gösterilecek sosyal medya hesap linklerini yönetin.",
+    formTitle: "Sosyal medya hesapları",
+    hint: "İstediğiniz profil linkini yazabilirsiniz. https:// yoksa otomatik eklenir. Pasif veya boş URL olan hesaplar sitede gösterilmez.",
+    saveHint: "Kaydettiğinizde Hakkımızda sayfası güncellenir.",
+    summary: (active: number, total: number) =>
+      `${active}/${total} hesap aktif`,
+    save: "Kaydet",
+    saving: "Kaydediliyor...",
+    saved: "Sosyal medya linkleri güncellendi.",
+    fields: {
+      url: "Profil URL",
+      active: "Aktif",
+    },
+    platforms: {
+      instagram: "Instagram",
+      facebook: "Facebook",
+      x: "X (Twitter)",
+      youtube: "YouTube",
+      tiktok: "TikTok",
+    },
+    placeholders: {
+      instagram: "https://instagram.com/...",
+      facebook: "https://facebook.com/...",
+      x: "https://x.com/...",
+      youtube: "https://youtube.com/...",
+      tiktok: "https://tiktok.com/@...",
     },
   },
   locales: {

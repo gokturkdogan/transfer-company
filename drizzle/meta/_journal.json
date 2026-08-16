@@ -141,6 +141,13 @@
       "when": 1786512000000,
       "tag": "0019_reservation_passenger_details",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1786515600000,
+      "tag": "0020_social_media_links",
+      "breakpoints": true
     }
   ]
 }

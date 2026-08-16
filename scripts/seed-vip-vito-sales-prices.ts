@@ -7,6 +7,9 @@ import * as schema from "../src/db/schema";
 const AIRPORT_CODE = "AYT";
 const CURRENCY = "EUR";
 
+const SALES_TIER_PREMIUM_EUR = 5;
+
+/** Ultra VIP Vito — AYT → transfer zone one-way EUR (major units). */
 const VITO_ZONE_ONE_WAY_EUR: Record<string, number> = {
   KUNDU_LARA: 40,
   KALE_ICI: 40,
@@ -47,11 +50,23 @@ const SPRINTER_ZONE_ONE_WAY_EUR: Record<string, number> = {
   MAHMUTLAR: 140,
 };
 
+function withOneWayPremium(
+  zonePrices: Record<string, number>,
+): Record<string, number> {
+  return Object.fromEntries(
+    Object.entries(zonePrices).map(([zone, oneWayEur]) => [
+      zone,
+      oneWayEur + SALES_TIER_PREMIUM_EUR,
+    ]),
+  );
+}
+
 /** vehicle code → transfer zone one-way EUR prices */
 const VEHICLE_SALES_PRICES: Record<string, Record<string, number>> = {
-  VITO_ULTRA: VITO_ZONE_ONE_WAY_EUR,
-  VITO_WHITE: VITO_ZONE_ONE_WAY_EUR,
+  ULTRA_VIP_VITO: VITO_ZONE_ONE_WAY_EUR,
+  ULTRA_MAYBACK_VIP_VITO: withOneWayPremium(VITO_ZONE_ONE_WAY_EUR),
   SPRINTER_ULTRA: SPRINTER_ZONE_ONE_WAY_EUR,
+  PREMIUM_VIP_SPRINTER: withOneWayPremium(SPRINTER_ZONE_ONE_WAY_EUR),
 };
 
 function toMinor(eurMajor: number): number {

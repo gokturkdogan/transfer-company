@@ -9,7 +9,11 @@ import {
 } from "./data/transfer-zones";
 
 const LOCALES = ["tr", "en", "de", "ru", "ar"] as const;
-const VIP_VEHICLE_CODES = ["VITO_ULTRA", "VITO_WHITE"] as const;
+const VIP_VEHICLE_CODES = [
+  "ULTRA_VIP_VITO",
+  "ULTRA_MAYBACK_VIP_VITO",
+] as const;
+const MAYBACH_ONE_WAY_PREMIUM_EUR = 5;
 const AIRPORT_CODE = "AYT";
 const CITY_CODE = "ANTALYA";
 const REGION_CODE = "ANTALYA";
@@ -275,6 +279,16 @@ async function main(): Promise<void> {
     )
     .map((vehicle) => vehicle.id);
 
+  const vipVehicleCodeById = new Map(
+    vehicles
+      .filter((vehicle) =>
+        VIP_VEHICLE_CODES.includes(
+          vehicle.code as (typeof VIP_VEHICLE_CODES)[number],
+        ),
+      )
+      .map((vehicle) => [vehicle.id, vehicle.code]),
+  );
+
   const nonVipVehicleIds = vehicles
     .filter(
       (vehicle) =>
@@ -319,6 +333,7 @@ async function main(): Promise<void> {
     const routeId = await upsertRoute(db, airport.id, zoneId);
 
     for (const vehicleId of vipVehicleIds) {
+      const vehicleCode = vipVehicleCodeById.get(vehicleId);
       const [existingPrice] = await db
         .select({ id: schema.routePrices.id })
         .from(schema.routePrices)
@@ -341,7 +356,11 @@ async function main(): Promise<void> {
         continue;
       }
 
-      const oneWayMinor = toMinor(zone.oneWayEur);
+      const oneWayEur =
+        vehicleCode === "ULTRA_MAYBACK_VIP_VITO"
+          ? zone.oneWayEur + MAYBACH_ONE_WAY_PREMIUM_EUR
+          : zone.oneWayEur;
+      const oneWayMinor = toMinor(oneWayEur);
       const roundTripMinor = oneWayMinor * 2;
 
       if (existingPrice) {

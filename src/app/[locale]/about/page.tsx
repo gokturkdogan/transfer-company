@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AboutCta } from "@/components/about/AboutCta";
 import { AboutHero } from "@/components/about/AboutHero";
 import { AboutPromise } from "@/components/about/AboutPromise";
+import { AboutSocialMedia } from "@/components/about/AboutSocialMedia";
 import { AboutStory } from "@/components/about/AboutStory";
 import { AboutValues } from "@/components/about/AboutValues";
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
@@ -57,6 +58,7 @@ export default async function AboutPage({
       <main className="flex flex-1 flex-col pb-20 md:pb-0">
         <AboutHero />
         <AboutStory />
+        <AboutSocialMedia />
         <AboutValues />
         <AboutPromise />
         <AboutCta />

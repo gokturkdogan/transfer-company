@@ -67,3 +67,18 @@ export const contactChannelTypeEnum = pgEnum(
   "contact_channel_type",
   CONTACT_CHANNEL_TYPES,
 );
+
+export const SOCIAL_MEDIA_PLATFORMS = [
+  "INSTAGRAM",
+  "FACEBOOK",
+  "X",
+  "YOUTUBE",
+  "TIKTOK",
+] as const;
+
+export type SocialMediaPlatform = (typeof SOCIAL_MEDIA_PLATFORMS)[number];
+
+export const socialMediaPlatformEnum = pgEnum(
+  "social_media_platform",
+  SOCIAL_MEDIA_PLATFORMS,
+);

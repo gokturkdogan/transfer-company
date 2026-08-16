@@ -11,6 +11,7 @@ import {
   MapPin,
   PackagePlus,
   Phone,
+  Share2,
   Shield,
   TableProperties,
 } from "lucide-react";
@@ -64,6 +65,11 @@ const NAV_ITEMS = [
     href: "/admin/contact",
     label: adminCopy.sidebar.contact,
     icon: Phone,
+  },
+  {
+    href: "/admin/social-media",
+    label: adminCopy.sidebar.socialMedia,
+    icon: Share2,
   },
   {
     href: "/admin/locales",

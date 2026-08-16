@@ -7,8 +7,8 @@ import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
 import { HOMEPAGE_IMAGES } from "@/config/homepage-images";
 
-const BLOCK_KEYS = ["routes", "pricing", "comfort"] as const;
-const HIGHLIGHT_KEYS = ["duration", "vehicles", "payment", "coverage"] as const;
+const BLOCK_KEYS = ["service", "pricing", "experience"] as const;
+const HIGHLIGHT_KEYS = ["support", "fleet", "payment", "booking"] as const;
 
 /**
  * Long-form editorial block. Carries the crawlable keyword context the rest of

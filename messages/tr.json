@@ -216,41 +216,41 @@
       }
     },
     "seo": {
-      "eyebrow": "Antalya Transfer Rehberi",
-      "title": "Antalya Havalimanı transferi hakkında bilmeniz gereken her şey",
-      "intro": "Antalya Havalimanı (AYT) yılda 35 milyondan fazla yolcu ağırlıyor. Lara'dan Kemer, Belek, Side ve Alanya'ya uzanan sahil şeridine ulaşmanın en konforlu yolu, önceden rezerve edilmiş özel bir VIP transfer.",
-      "imageAlt": "Antalya Havalimanı varış salonunda karşılama hizmeti",
+      "eyebrow": "Transfer Rehberi",
+      "title": "Premium havalimanı transferi hakkında bilmeniz gerekenler",
+      "intro": "Özel VIP transfer, havalimanı çıkışında bekleme ve sürpriz ücretlerden uzak en rahat yolculuk seçeneğidir. Sabit fiyat, ücretsiz karşılama ve uçuş takibiyle transferinizi önceden planlayın.",
+      "imageAlt": "Havalimanı varış salonunda karşılama hizmeti",
       "imageCaption": "Varış salonunda isim tabelasıyla karşılama, her transferde ücretsiz",
       "blocks": {
-        "routes": {
-          "title": "Popüler transfer rotaları ve süreleri",
-          "body": "Antalya Havalimanı'ndan Lara'ya yaklaşık 15 dakika, Belek'e 40 dakika, Kemer'e 45 dakika, Side'ye 65 dakika ve Alanya'ya 2 saat sürüyor. Tüm rotalarda kapıdan kapıya hizmet veriyor, sizi otel resepsiyonunuza kadar bırakıyoruz."
+        "service": {
+          "title": "Kapıdan kapıya özel transfer",
+          "body": "Paylaşımlı shuttle veya taksi aramak yerine özel VIP transferiniz varışınızda hazır. Havalimanından otelinize veya adresinize doğrudan, konforlu ve zaman kaybetmeden ulaşırsınız."
         },
         "pricing": {
           "title": "Sabit fiyat nasıl çalışır?",
-          "body": "Fiyatlar araç sınıfına ve mesafeye göre önceden belirlenir; trafik, bekleme veya gece varışları için ek ücret alınmaz. Rezervasyon ekranında gördüğünüz tutar ödeyeceğiniz son tutardır ve ödemeyi transferden sonra şoförünüze yapabilirsiniz."
+          "body": "Fiyatlar araç seçiminize göre önceden belirlenir; trafik, bekleme veya gece varışları için ek ücret alınmaz. Rezervasyon ekranında gördüğünüz tutar ödeyeceğiniz son tutardır."
         },
-        "comfort": {
-          "title": "Araç konforu ve karşılama hizmeti",
-          "body": "Filomuz Mercedes Vito, Sprinter ve lüks sedan sınıflarından oluşur; tümü klimalı, ücretsiz su ikramlı ve talep üzerine bebek koltuklu. Şoförünüz uçuşunuzu takip eder ve varış salonunda isminizin yazılı olduğu tabelayla sizi karşılar."
+        "experience": {
+          "title": "Karşılama ve uçuş takibi",
+          "body": "Şoförünüz uçuşunuzu takip eder ve varış salonunda isim tabelasıyla sizi karşılar. Gecikmelerde ek ücret olmadan bekleme süresi ayarlanır; yolculuk boyunca profesyonel ve güvenli hizmet sunulur."
         }
       },
       "highlights": {
-        "duration": {
-          "title": "Ortalama süre",
-          "value": "Havalimanından 15–120 dakika"
+        "support": {
+          "title": "7/24 destek",
+          "value": "Canlı destek hattı her an yanınızda"
         },
-        "vehicles": {
-          "title": "Araç sınıfları",
-          "value": "Vito, Sprinter ve lüks sedan"
+        "fleet": {
+          "title": "Premium filo",
+          "value": "Bakımlı, klimalı VIP araçlar"
         },
         "payment": {
           "title": "Ödeme",
           "value": "Nakit veya kart, transfer sonrası"
         },
-        "coverage": {
-          "title": "Hizmet bölgesi",
-          "value": "Lara, Kemer, Belek, Side, Alanya"
+        "booking": {
+          "title": "Online rezervasyon",
+          "value": "Dakikalar içinde talep oluşturun"
         }
       }
     }
@@ -552,6 +552,18 @@
       },
       "imageAlt": "Profesyonel VIP şoför ve lüks transfer aracı",
       "imageBadge": "Profesyonel Ekip"
+    },
+    "social": {
+      "eyebrow": "Sosyal medya",
+      "title": "Bizi takip edin",
+      "subtitle": "Güncel haberler, transfer ipuçları ve premium yolculuk deneyimimiz için sosyal medya hesaplarımızı ziyaret edin.",
+      "platforms": {
+        "INSTAGRAM": "Instagram",
+        "FACEBOOK": "Facebook",
+        "X": "X",
+        "YOUTUBE": "YouTube",
+        "TIKTOK": "TikTok"
+      }
     },
     "values": {
       "eyebrow": "Değerlerimiz",
