@@ -5,7 +5,8 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 
-import { isRtlLocale } from "@/config/constants";
+import { DEFAULT_LOCALE, isRtlLocale } from "@/config/constants";
+import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
 import { BRAND_IMAGES } from "@/config/brand";
 import { PublicGlobalLoaderProvider } from "@/components/shared/public-global-loader-provider";
 import { PublicContactProvider } from "@/features/contact/components/PublicContactProvider";
@@ -55,8 +56,14 @@ export async function generateMetadata({
   };
 }
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
+export async function generateStaticParams() {
+  const enabledLocales = await getCachedEnabledLocales();
+
+  if (enabledLocales.length === 0) {
+    return [{ locale: DEFAULT_LOCALE }];
+  }
+
+  return enabledLocales.map((locale) => ({ locale: locale.code }));
 }
 
 export default async function LocaleLayout({

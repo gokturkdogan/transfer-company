@@ -10,16 +10,37 @@ import { VehicleDetailSpecsBand } from "@/components/fleet/VehicleDetailSpecsBan
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
+import { DEFAULT_LOCALE } from "@/config/constants";
 import { normalizeFleetVehicleCode } from "@/features/marketing/lib/fleet-vehicle-slug";
 import { getFleetVehicleDetailForPage } from "@/features/marketing/server/get-fleet-vehicle-detail";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import {
+  getCachedActiveVehicleCodes,
   getCachedAirports,
   getCachedEnabledLocales,
 } from "@/server/cache/public-catalog";
 
 export const revalidate = 120;
+
+export async function generateStaticParams() {
+  const [enabledLocales, vehicleCodes] = await Promise.all([
+    getCachedEnabledLocales(),
+    getCachedActiveVehicleCodes(),
+  ]);
+
+  const localeCodes =
+    enabledLocales.length > 0
+      ? enabledLocales.map((locale) => locale.code)
+      : [DEFAULT_LOCALE];
+
+  return localeCodes.flatMap((locale) =>
+    vehicleCodes.map((code) => ({
+      locale,
+      code: code.toLowerCase(),
+    })),
+  );
+}
 
 export async function generateMetadata({
   params,

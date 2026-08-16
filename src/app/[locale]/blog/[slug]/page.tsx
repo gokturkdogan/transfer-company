@@ -7,18 +7,24 @@ import { BlogMoreGuides } from "@/components/blog/BlogMoreGuides";
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
-import { getTransferPathForPost } from "@/content/blog/registry";
+import { BlogArticleJsonLd } from "@/components/seo/BlogArticleJsonLd";
+import { DEFAULT_LOCALE } from "@/config/constants";
+import { listPublishedLocalesForPost } from "@/features/blog/domain/blog-published-locales";
 import {
   resolveBlogCoverImageAlt,
   resolveBlogLocaleContent,
 } from "@/features/blog/domain/resolve-locale-content";
+import { getBookingHrefForPost } from "@/features/blog/lib/booking-path-for-post";
 import { buildBlogArticleMetadata } from "@/features/blog/lib/blog-metadata";
 import {
   getCachedBlogPostBySlug,
   getCachedBlogSlugs,
   getCachedBlogSummaries,
 } from "@/server/cache/blog-posts";
-import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
+import {
+  getCachedDistricts,
+  getCachedEnabledLocales,
+} from "@/server/cache/public-catalog";
 
 export const revalidate = 120;
 
@@ -27,9 +33,19 @@ type PageParams = {
 };
 
 export async function generateStaticParams() {
-  const slugs = await getCachedBlogSlugs();
+  const [enabledLocales, slugs] = await Promise.all([
+    getCachedEnabledLocales(),
+    getCachedBlogSlugs(),
+  ]);
 
-  return slugs.map((slug) => ({ slug }));
+  const localeCodes =
+    enabledLocales.length > 0
+      ? enabledLocales.map((locale) => locale.code)
+      : [DEFAULT_LOCALE];
+
+  return localeCodes.flatMap((locale) =>
+    slugs.map((slug) => ({ locale, slug })),
+  );
 }
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
@@ -41,12 +57,10 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   }
 
   const enabledLocales = await getCachedEnabledLocales();
+  const localeCodes = enabledLocales.map((item) => item.code);
+  const publishedLocales = listPublishedLocalesForPost(post, localeCodes);
 
-  return buildBlogArticleMetadata(
-    locale,
-    post,
-    enabledLocales.map((item) => item.code),
-  );
+  return buildBlogArticleMetadata(locale, post, publishedLocales);
 }
 
 export default async function BlogArticlePage({ params }: PageParams) {
@@ -61,22 +75,25 @@ export default async function BlogArticlePage({ params }: PageParams) {
 
   const { content } = resolveBlogLocaleContent(post.content, locale);
   const coverImageAlt = resolveBlogCoverImageAlt(post.coverImageAlt, locale);
-  const transferHref = getTransferPathForPost(post);
 
-  const [enabledLocales, allSummaries] = await Promise.all([
+  const [enabledLocales, allSummaries, districts] = await Promise.all([
     getCachedEnabledLocales(),
     getCachedBlogSummaries(locale),
+    getCachedDistricts(locale),
   ]);
+
+  const districtBookingHref = getBookingHrefForPost(post, districts);
 
   return (
     <>
+      <BlogArticleJsonLd locale={locale} post={post} content={content} />
       <SiteHeader enabledLocales={enabledLocales} />
       <main className="flex flex-1 flex-col pb-20 md:pb-0">
         <BlogArticleView
           post={post}
           content={content}
           coverImageAlt={coverImageAlt}
-          transferHref={transferHref}
+          districtBookingHref={districtBookingHref}
         />
         <BlogMoreGuides articles={allSummaries} currentSlug={slug} />
       </main>

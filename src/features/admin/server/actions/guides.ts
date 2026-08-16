@@ -188,6 +188,7 @@ export async function deleteGuideAction(rawInput: unknown) {
 function revalidateBlog(slug?: string) {
   revalidatePath("/admin/guides");
   revalidateTag("blog-posts", "max");
+  revalidatePath("/sitemap.xml");
 
   if (slug) {
     revalidatePath(`/blog/${slug}`);

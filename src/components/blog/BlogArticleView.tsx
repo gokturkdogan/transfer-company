@@ -4,20 +4,21 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
 import type { BlogLocaleContent, BlogPostDefinition } from "@/content/blog/types";
+import type { BookingHref } from "@/features/blog/lib/booking-path-for-post";
 import { Link } from "@/i18n/navigation";
 
 type BlogArticleViewProps = {
   post: BlogPostDefinition;
   content: BlogLocaleContent;
   coverImageAlt: string;
-  transferHref: string | null;
+  districtBookingHref: BookingHref | null;
 };
 
 export async function BlogArticleView({
   post,
   content,
   coverImageAlt,
-  transferHref,
+  districtBookingHref,
 }: BlogArticleViewProps) {
   const t = await getTranslations("blog");
   const locale = await getLocale();
@@ -152,9 +153,9 @@ export async function BlogArticleView({
                   {t("bookCta")}
                   <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
                 </Link>
-                {transferHref && (
+                {districtBookingHref && (
                   <Link
-                    href={transferHref}
+                    href={districtBookingHref}
                     className="mt-3 flex h-11 w-full items-center justify-center rounded-full border border-border text-sm font-semibold text-foreground transition-colors hover:border-gold/40 hover:text-gold-deep"
                   >
                     {t("transferCta")}

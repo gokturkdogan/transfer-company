@@ -111,7 +111,7 @@ Only `formatMoney()` for display formatting is permitted.
 
 - `/[locale]` — hero + slim `HomeSearchProvider` / `HeroSearchBar` → navigates to booking with query params
 - `/[locale]/booking` — full `BookingFlow` (`force-dynamic`; catalog via cached loaders / `getBookingPageData`)
-- `/[locale]/transfers/[districtSlug]` — SEO destination landing with booking CTA
+- Homepage popular destinations and guide district CTAs deep-link to `/booking?district={districtId}` (no `/transfers/*` landing pages)
 
 ## Seed data
 
