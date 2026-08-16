@@ -74,6 +74,19 @@ const serverSchema = z
         path: ["SMTP_HOST"],
       });
     }
+
+    if (
+      data.NODE_ENV === "production" &&
+      (!data.ADMIN_SESSION_SECRET ||
+        data.ADMIN_SESSION_SECRET.length < 32)
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "ADMIN_SESSION_SECRET is required in production and must be at least 32 characters.",
+        path: ["ADMIN_SESSION_SECRET"],
+      });
+    }
   });
 
 const clientSchema = z.object({

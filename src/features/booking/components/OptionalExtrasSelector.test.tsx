@@ -9,6 +9,8 @@ import {
   BookingFlowProvider,
   useBookingFlow,
 } from "@/features/booking/context/booking-flow-context";
+import { createInitialBookingFlowState } from "@/features/booking/lib/booking-flow-reducer";
+import { buildSearchSignature } from "@/features/booking/lib/search-signature";
 import type { TransferAvailabilityResponseDto } from "@/features/pricing/types/dto";
 
 vi.mock("@/features/booking/lib/api", () => ({
@@ -37,6 +39,18 @@ import {
   testCities,
   testDistricts,
 } from "@/features/booking/test/booking-test-fixtures";
+
+const initialSearch = {
+  originAirportId: "loc-a",
+  destinationDistrictId: "loc-b",
+  cityId: "city-1",
+  outboundDate: "2026-08-10",
+  outboundTime: "10:00",
+};
+
+const searchSignature = buildSearchSignature(
+  createInitialBookingFlowState(initialSearch).search,
+);
 
 const quoteFixture: TransferAvailabilityResponseDto = {
   routeId: "route-1",
@@ -101,7 +115,7 @@ function ExtrasStepHarness({
     dispatch({
       type: "QUOTE_SUCCESS",
       quote: quoteFixture,
-      searchSignature: "sig",
+      searchSignature,
     });
     dispatch({
       type: "SELECT_VEHICLE",
@@ -127,13 +141,7 @@ function renderExtrasStep(
         cities={testCities}
         districts={testDistricts}
         acceptedPaymentCurrencies={[]}
-        initialSearch={{
-          originAirportId: "loc-a",
-          destinationDistrictId: "loc-b",
-          cityId: "city-1",
-          outboundDate: "2026-08-10",
-          outboundTime: "10:00",
-        }}
+        initialSearch={initialSearch}
       >
         <ExtrasStepHarness onExtras={onExtras} />
       </BookingFlowProvider>

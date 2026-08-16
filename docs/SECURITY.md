@@ -21,6 +21,7 @@
 - Client vars: `NEXT_PUBLIC_*` prefix only
 - Never access `process.env` directly elsewhere
 - Never expose secrets in client bundles
+- Production boot requires `ADMIN_SESSION_SECRET` (min 32 chars); set `SKIP_ENV_VALIDATION=false` on deploy
 
 ## Error handling
 

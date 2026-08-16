@@ -37,6 +37,7 @@ describe("buildReservationItems", () => {
       totalPriceMinor: 4500,
       currency: "EUR",
       sortOrder: 0,
+      isLuggageOverflowVehicle: false,
     });
 
     items[0]!.unitPriceMinor = 9999;

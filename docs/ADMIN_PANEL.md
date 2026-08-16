@@ -68,7 +68,9 @@ Custom session auth — no third-party auth library.
 
 ### Environment
 
-- `ADMIN_SESSION_SECRET` — required in production; dev fallback when `SKIP_ENV_VALIDATION=true`
+- `ADMIN_SESSION_SECRET` — **required in production** (min 32 characters); validated at boot via `src/config/env.ts`
+- `SKIP_ENV_VALIDATION` — must be `false` in production (never bypass Zod env checks on deploy)
+- Dev/test fallback secret only applies when `SKIP_ENV_VALIDATION=true`
 
 ### Proxy
 
