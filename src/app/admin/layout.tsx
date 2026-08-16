@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { BRAND_IMAGES } from "@/config/brand";
 import { adminCopy } from "@/features/admin/copy";
 
 import "../globals.css";
@@ -17,6 +18,11 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: adminCopy.brand.pageTitle,
+  icons: {
+    icon: [
+      { url: BRAND_IMAGES.icon192, type: "image/png", sizes: "192x192" },
+    ],
+  },
 };
 
 export default function AdminRootLayout({

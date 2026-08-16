@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 
 import { isRtlLocale } from "@/config/constants";
+import { BRAND_IMAGES } from "@/config/brand";
 import { PublicGlobalLoaderProvider } from "@/components/shared/public-global-loader-provider";
 import { PublicContactProvider } from "@/features/contact/components/PublicContactProvider";
 import { getPublicContactChannels } from "@/features/contact/server/public-contact";
@@ -33,6 +34,12 @@ export async function generateMetadata({
       template: `%s | ${t("appName")}`,
     },
     description: t("tagline"),
+    icons: {
+      icon: [
+        { url: BRAND_IMAGES.icon192, type: "image/png", sizes: "192x192" },
+        { url: BRAND_IMAGES.icon512, type: "image/png", sizes: "512x512" },
+      ],
+    },
     openGraph: {
       type: "website",
       locale,
