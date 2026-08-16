@@ -169,4 +169,41 @@ describe("calculateQuote", () => {
 
     expect(() => calculateQuote(input)).toThrow(PricingDomainError);
   });
+
+  it("doubles extras and luggage overflow vehicle for Arabic pricing adjustments", () => {
+    const luggageVehicle = {
+      vehicleCategoryId: "sprinter-id",
+      vehicleCategoryName: "Sprinter",
+      quantity: 1,
+      oneWayPriceMinor: 3000,
+      roundTripPriceMinor: 5500,
+      isLuggageOverflowVehicle: true,
+    };
+
+    const result = calculateQuote({
+      tripType: "ONE_WAY",
+      currency: "EUR",
+      vehicles: [vitoVehicle, luggageVehicle],
+      extras: [
+        {
+          extraServiceId: "meet-greet",
+          extraServiceName: "VIP Meet and Greet",
+          pricingMode: "FIXED",
+          quantity: 1,
+          includedQuantity: 0,
+          unitPriceMinor: 2500,
+          currency: "EUR",
+        },
+      ],
+      pricingAdjustments: {
+        extraPriceMultiplier: 2,
+        luggageVehiclePriceMultiplier: 2,
+      },
+    });
+
+    expect(result.quote.baseItems[0]?.totalPriceMinor).toBe(4500);
+    expect(result.quote.baseItems[1]?.totalPriceMinor).toBe(6000);
+    expect(result.quote.extraItems[0]?.totalPriceMinor).toBe(5000);
+    expect(result.quote.totalMinor).toBe(15500);
+  });
 });

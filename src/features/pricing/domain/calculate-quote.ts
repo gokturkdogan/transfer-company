@@ -1,5 +1,6 @@
 import { createMoney, sumMoney } from "@/lib/money";
 
+import { applyPriceMultiplier } from "./arabic-locale-pricing";
 import { PricingDomainError } from "./errors";
 import { calculateExtraTotalMinor } from "./extra-pricing";
 import type {
@@ -37,8 +38,15 @@ function resolveVehicleUnitPrice(
 function buildVehicleLineItem(
   vehicle: TransferQuoteInput["vehicles"][number],
   tripType: TransferQuoteInput["tripType"],
+  pricingAdjustments: TransferQuoteInput["pricingAdjustments"],
 ): QuoteLineItem {
-  const unitPriceMinor = resolveVehicleUnitPrice(vehicle, tripType);
+  const baseUnitPriceMinor = resolveVehicleUnitPrice(vehicle, tripType);
+  const unitPriceMinor = vehicle.isLuggageOverflowVehicle
+    ? applyPriceMultiplier(
+        baseUnitPriceMinor,
+        pricingAdjustments?.luggageVehiclePriceMultiplier ?? 1,
+      )
+    : baseUnitPriceMinor;
 
   return {
     type: "TRANSFER_VEHICLE",
@@ -52,13 +60,18 @@ function buildVehicleLineItem(
 
 function buildExtraLineItem(
   extra: TransferQuoteInput["extras"][number],
+  extraPriceMultiplier: number,
 ): QuoteLineItem {
+  const unitPriceMinor = applyPriceMultiplier(
+    extra.unitPriceMinor,
+    extraPriceMultiplier,
+  );
   const effectiveQuantity =
     extra.pricingMode === "FIXED" ? 1 : extra.quantity;
   const totalPriceMinor = calculateExtraTotalMinor({
     pricingMode: extra.pricingMode,
     quantity: extra.quantity,
-    unitPriceMinor: extra.unitPriceMinor,
+    unitPriceMinor,
     includedQuantity: extra.includedQuantity,
   });
 
@@ -67,7 +80,7 @@ function buildExtraLineItem(
     referenceId: extra.extraServiceId,
     name: extra.extraServiceName,
     quantity: effectiveQuantity,
-    unitPriceMinor: extra.unitPriceMinor,
+    unitPriceMinor,
     totalPriceMinor,
   };
 }
@@ -77,13 +90,16 @@ export function calculateQuote(input: TransferQuoteInput): TransferQuoteResult {
     throw new PricingDomainError("At least one vehicle selection is required");
   }
 
+  const extraPriceMultiplier =
+    input.pricingAdjustments?.extraPriceMultiplier ?? 1;
+
   const baseItems = input.vehicles.map((vehicle) =>
-    buildVehicleLineItem(vehicle, input.tripType),
+    buildVehicleLineItem(vehicle, input.tripType, input.pricingAdjustments),
   );
 
   const extraItems = input.extras.map((extra) => {
     assertCurrencyMatch(input.currency, extra.currency, extra.extraServiceName);
-    return buildExtraLineItem(extra);
+    return buildExtraLineItem(extra, extraPriceMultiplier);
   });
 
   const allItems = [...baseItems, ...extraItems];

@@ -74,6 +74,15 @@ See [API_CONTRACTS.md](./API_CONTRACTS.md) for the response shape.
 }
 ```
 
+## Arabic locale surcharge
+
+When the booking locale is `ar`, `resolveArabicPricingAdjustments()` applies a **2× multiplier** to:
+
+- All extra service line items (customer-selected and auto-required extras)
+- Auto-added luggage overflow fleet vehicles (`isLuggageOverflowVehicle`)
+
+Primary transfer vehicle line items keep matrix prices unchanged. The multiplier is applied in `calculateQuote()` via `pricingAdjustments`; orchestrators pass the booking `locale` from availability and reservation flows.
+
 ## Rules
 
 - **Never trust client-supplied prices.** Input schemas have no price fields.

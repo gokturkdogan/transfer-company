@@ -8,6 +8,7 @@ export type QuoteVehicleSelection = {
   quantity: number;
   oneWayPriceMinor: number;
   roundTripPriceMinor: number | null;
+  isLuggageOverflowVehicle?: boolean;
 };
 
 export type QuoteExtraSelection = {
@@ -34,6 +35,10 @@ export type TransferQuoteInput = {
   currency: string;
   vehicles: QuoteVehicleSelection[];
   extras: QuoteExtraSelection[];
+  pricingAdjustments?: {
+    extraPriceMultiplier: number;
+    luggageVehiclePriceMultiplier: number;
+  };
 };
 
 export type TransferQuote = {

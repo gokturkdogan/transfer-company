@@ -6,6 +6,7 @@ import { selectCheapestLuggageFleetVehicle } from "@/features/capacity/domain/se
 import { sumFleetCapacityTotals } from "@/features/capacity/domain/sum-fleet-capacity";
 import type { TransferQuoteInputDto } from "@/features/pricing/schemas/quote";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
+import { resolveArabicPricingAdjustments } from "@/features/pricing/domain/arabic-locale-pricing";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
 import { mapVehicleOptionsToLuggageFleetCandidates } from "@/features/pricing/domain/luggage-fleet-vehicle";
 import {
@@ -50,6 +51,8 @@ export class QuoteService {
     input: TransferQuoteInputDto,
   ): Promise<TransferQuoteResponse> {
     try {
+      const pricingAdjustments = resolveArabicPricingAdjustments(input.locale);
+
       const route = await this.repository.findRouteById(input.routeId);
       assertRouteActive(route);
 
@@ -188,6 +191,7 @@ export class QuoteService {
               quantity: luggageFleetVehicle.quantity,
               oneWayPriceMinor: luggageFleetOption.oneWayPriceMinor,
               roundTripPriceMinor: luggageFleetOption.roundTripPriceMinor,
+              isLuggageOverflowVehicle: true,
             });
           }
         }
@@ -291,6 +295,7 @@ export class QuoteService {
         currency: quoteCurrency!,
         vehicles: vehicleSelections,
         extras: extraSelections,
+        pricingAdjustments: pricingAdjustments ?? undefined,
       });
 
       return {

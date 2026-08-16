@@ -5,6 +5,8 @@ export type Locale = (typeof LOCALES)[number];
 
 export const DEFAULT_LOCALE: Locale = "tr";
 
+export const ARABIC_LOCALE: Locale = "ar";
+
 export const RTL_LOCALES: readonly Locale[] = ["ar"] as const;
 
 export const DEFAULT_CURRENCY = "EUR" as const;

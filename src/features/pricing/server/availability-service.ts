@@ -10,6 +10,10 @@ import {
 } from "@/features/pricing/domain/required-child-seats";
 import { mapVehicleOptionsToLuggageFleetCandidates } from "@/features/pricing/domain/luggage-fleet-vehicle";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
+import {
+  resolveArabicPricingAdjustments,
+  resolveExtraUnitPriceMinor,
+} from "@/features/pricing/domain/arabic-locale-pricing";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
 import { assertRouteActive } from "@/features/pricing/domain/guards";
 import type { TransferAvailabilityInputDto } from "@/features/pricing/schemas/availability";
@@ -21,6 +25,7 @@ import type {
   TransferOptionExtraDto,
   TransferVehicleOptionDto,
 } from "@/features/pricing/types/dto";
+import type { QuoteVehicleSelection } from "@/features/pricing/types";
 import { assertPriceableEndpoints } from "@/features/locations/domain/hierarchy";
 import { LocationDomainError } from "@/features/locations/domain/errors";
 import type { LocationRepository } from "@/features/locations/server/repository";
@@ -46,6 +51,7 @@ function buildRequiredExtras(
     string,
     Awaited<ReturnType<PricingReader["findCustomerSelectableExtras"]>>[number]
   >,
+  pricingAdjustments: ReturnType<typeof resolveArabicPricingAdjustments>,
 ): { extras: TransferOptionExtraDto[]; requiredChildSeats: number } {
   const requiredExtras: TransferOptionExtraDto[] = [];
 
@@ -68,11 +74,17 @@ function buildRequiredExtras(
       quantity: requiredChildSeats,
       maxQuantity: extra.maxQuantity,
       includedQuantity,
-      unitPriceMinor: extra.priceMinor,
+      unitPriceMinor: resolveExtraUnitPriceMinor(
+        extra.priceMinor,
+        pricingAdjustments,
+      ),
       totalPriceMinor: calculateExtraTotalMinor({
         pricingMode: extra.pricingMode,
         quantity: requiredChildSeats,
-        unitPriceMinor: extra.priceMinor,
+        unitPriceMinor: resolveExtraUnitPriceMinor(
+          extra.priceMinor,
+          pricingAdjustments,
+        ),
         includedQuantity,
       }),
       required: true,
@@ -85,25 +97,33 @@ function buildRequiredExtras(
 function buildOptionalExtras(
   extras: Awaited<ReturnType<PricingReader["findCustomerSelectableExtras"]>>,
   requiredExtraIds: Set<string>,
+  pricingAdjustments: ReturnType<typeof resolveArabicPricingAdjustments>,
 ): TransferOptionExtraDto[] {
   return extras
     .filter((extra) => !requiredExtraIds.has(extra.id))
-    .map((extra) => ({
-      extraServiceId: extra.id,
-      name: extra.translatedName ?? extra.code,
-      pricingMode: extra.pricingMode,
-      quantity: extra.minQuantity,
-      maxQuantity: extra.maxQuantity,
-      includedQuantity: extra.includedQuantity,
-      unitPriceMinor: extra.priceMinor,
-      totalPriceMinor: calculateExtraTotalMinor({
+    .map((extra) => {
+      const unitPriceMinor = resolveExtraUnitPriceMinor(
+        extra.priceMinor,
+        pricingAdjustments,
+      );
+
+      return {
+        extraServiceId: extra.id,
+        name: extra.translatedName ?? extra.code,
         pricingMode: extra.pricingMode,
         quantity: extra.minQuantity,
-        unitPriceMinor: extra.priceMinor,
+        maxQuantity: extra.maxQuantity,
         includedQuantity: extra.includedQuantity,
-      }),
-      required: false,
-    }));
+        unitPriceMinor,
+        totalPriceMinor: calculateExtraTotalMinor({
+          pricingMode: extra.pricingMode,
+          quantity: extra.minQuantity,
+          unitPriceMinor,
+          includedQuantity: extra.includedQuantity,
+        }),
+        required: false,
+      };
+    });
 }
 
 export class AvailabilityService {
@@ -141,6 +161,8 @@ export class AvailabilityService {
       );
 
       assertRouteActive(route);
+
+      const pricingAdjustments = resolveArabicPricingAdjustments(input.locale);
 
       const quoteCurrency = DEFAULT_CURRENCY;
 
@@ -215,6 +237,7 @@ export class AvailabilityService {
           childSeatExtra,
           input.infantCount,
           extrasById,
+          pricingAdjustments,
         );
 
         let eligibility = recommendation.assessment.eligibility;
@@ -247,6 +270,7 @@ export class AvailabilityService {
         const optionalExtras = buildOptionalExtras(
           selectableExtras,
           requiredExtraIds,
+          pricingAdjustments,
         );
 
         let quote = {
@@ -258,7 +282,7 @@ export class AvailabilityService {
         };
 
         if (eligibility !== "INELIGIBLE") {
-          const quoteVehicles = [
+          const quoteVehicles: QuoteVehicleSelection[] = [
             {
               vehicleCategoryId: vehicleOption.id,
               vehicleCategoryName:
@@ -284,6 +308,7 @@ export class AvailabilityService {
                 quantity: requiredLuggageVehicle.quantity,
                 oneWayPriceMinor: luggageFleetOption.oneWayPriceMinor,
                 roundTripPriceMinor: luggageFleetOption.roundTripPriceMinor,
+                isLuggageOverflowVehicle: true,
               });
             }
           }
@@ -292,15 +317,21 @@ export class AvailabilityService {
             tripType: input.tripType,
             currency: vehicleOption.currency,
             vehicles: quoteVehicles,
-            extras: requiredExtras.map((extra) => ({
-              extraServiceId: extra.extraServiceId,
-              extraServiceName: extra.name,
-              pricingMode: extra.pricingMode,
-              quantity: extra.quantity,
-              includedQuantity: extra.includedQuantity,
-              unitPriceMinor: extra.unitPriceMinor,
-              currency: vehicleOption.currency,
-            })),
+            extras: requiredExtras.map((extra) => {
+              const catalogueExtra = extrasById.get(extra.extraServiceId);
+              const unitPriceMinor = catalogueExtra?.priceMinor ?? extra.unitPriceMinor;
+
+              return {
+                extraServiceId: extra.extraServiceId,
+                extraServiceName: extra.name,
+                pricingMode: extra.pricingMode,
+                quantity: extra.quantity,
+                includedQuantity: extra.includedQuantity,
+                unitPriceMinor,
+                currency: vehicleOption.currency,
+              };
+            }),
+            pricingAdjustments: pricingAdjustments ?? undefined,
           });
 
           quote = quoteResult.quote;
