@@ -13,8 +13,8 @@ export const adminCopy = {
   },
   brand: {
     panel: "Yönetim",
-    title: "Transfer Company",
-    pageTitle: "Yönetim | Transfer Company",
+    title: "Royal Rhein",
+    pageTitle: "Yönetim | Royal Rhein",
   },
   sidebar: {
     dashboard: "Genel bakış",

@@ -363,6 +363,16 @@ export class AvailabilityService {
         options.find((option) => option.quote.currency)?.quote.currency ??
         vehicleOptions[0]?.currency;
 
+      if (options.length === 0) {
+        return {
+          routeId: route.id,
+          currency: quoteCurrency,
+          timeZone: PROJECT_TIME_ZONE,
+          options: [],
+          pricingUnavailable: true,
+        };
+      }
+
       if (!currency) {
         throw new DomainRuleError("No vehicle options available for this route");
       }

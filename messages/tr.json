@@ -446,7 +446,10 @@
         "ELIGIBLE": "Uygun",
         "ELIGIBLE_WITH_EXTRAS": "Ek bagaj ile uygun",
         "INELIGIBLE": "Uygun değil"
-      }
+      },
+      "pricingContactTitle": "Rezervasyon için lütfen iletişime geçiniz",
+      "pricingContactSubtitle":
+        "Telefon veya WhatsApp ile bize ulaşın; ekibimiz transferinizi birlikte planlayıp rezervasyonunuzu tamamlamanız için yardımcı olur."
     },
     "transfer": {
       "title": "Transfer Bilgileri",

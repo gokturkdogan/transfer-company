@@ -446,7 +446,10 @@
         "ELIGIBLE": "Suitable",
         "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",
         "INELIGIBLE": "Not suitable"
-      }
+      },
+      "pricingContactTitle": "Please contact us to book",
+      "pricingContactSubtitle":
+        "Call or message us on WhatsApp — our team will help you plan your transfer and complete your reservation."
     },
     "transfer": {
       "title": "Transfer Details",

@@ -234,6 +234,7 @@ export class DashboardAdminRepository {
       .where(
         and(
           eq(reservationItems.itemType, "TRANSFER_VEHICLE"),
+          eq(reservationItems.isLuggageOverflowVehicle, false),
           ne(reservations.status, "CANCELLED"),
         ),
       )

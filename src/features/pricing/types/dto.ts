@@ -56,6 +56,7 @@ export type TransferAvailabilityResponseDto = {
   timeZone: string;
   options: TransferVehicleOptionDto[];
   selection?: PricedSelectionDto;
+  pricingUnavailable?: boolean;
 };
 
 export type ReservationLineItemDto = {

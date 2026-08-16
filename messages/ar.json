@@ -440,7 +440,10 @@
         "ELIGIBLE": "مناسب",
         "ELIGIBLE_WITH_EXTRAS": "مناسب مع أمتعة إضافية",
         "INELIGIBLE": "غير مناسب"
-      }
+      },
+      "pricingContactTitle": "يرجى التواصل معنا لإتمام الحجز",
+      "pricingContactSubtitle":
+        "تواصل معنا عبر الهاتف أو واتساب — سيساعدك فريقنا في تخطيط النقل وإتمام الحجز."
     },
     "transfer": {
       "title": "معلومات النقل",

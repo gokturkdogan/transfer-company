@@ -38,7 +38,7 @@ Operational overview for reservations and quoted revenue (no payment gateway —
 | KPI cards | Total reservations, upcoming vs completed, cancellation rate, passengers, trip type split |
 | Currency cards | One card per supported currency (EUR, TRY, USD, GBP, RUB, AED): total / upcoming / completed / cancelled revenue and counts |
 | Trend chart | Weekly (12 weeks) or monthly (12 months) reservation counts by `created_at` |
-| Vehicle donut | Top vehicle line items (`TRANSFER_VEHICLE` quantities) |
+| Vehicle donut | Top primary transfer vehicle line items (`TRANSFER_VEHICLE`, excludes auto-added luggage overflow vehicles) |
 | Routes bar | Top `snapshot_route_label` counts |
 | Status donut | `PENDING`, `CONFIRMED`, `COMPLETED`, `CANCELLED` |
 | Weekday bar | Outbound date day-of-week density |

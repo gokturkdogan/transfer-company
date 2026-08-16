@@ -440,7 +440,10 @@
         "ELIGIBLE": "Подходит",
         "ELIGIBLE_WITH_EXTRAS": "Подходит с доп. багажом",
         "INELIGIBLE": "Не подходит"
-      }
+      },
+      "pricingContactTitle": "Для бронирования свяжитесь с нами",
+      "pricingContactSubtitle":
+        "Позвоните или напишите в WhatsApp — мы поможем спланировать трансфер и завершить бронирование."
     },
     "transfer": {
       "title": "Данные трансфера",

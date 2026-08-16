@@ -36,9 +36,15 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
       getRequiredCapacityPassengerCount(state.search),
       state.quote.options,
     );
+  const isPricingContactOnly =
+    state.quote?.pricingUnavailable === true ||
+    (state.step === "vehicle" &&
+      state.quote !== null &&
+      state.quote.options.length === 0);
   const showStepper =
     state.step !== "search" &&
     !(state.step === "vehicle" && !state.quote) &&
+    !isPricingContactOnly &&
     !isSuccessStep;
 
   useEffect(() => {

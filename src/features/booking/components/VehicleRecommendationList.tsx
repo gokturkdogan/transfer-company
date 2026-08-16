@@ -1,9 +1,8 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-
 import { Skeleton } from "@/components/ui/skeleton";
 import { BookingSearchPrompt } from "@/features/booking/components/BookingSearchPrompt";
+import { BookingPricingContactPrompt } from "@/features/booking/components/BookingPricingContactPrompt";
 import { VehicleRecommendationCard } from "@/features/booking/components/VehicleRecommendationCard";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import {
@@ -14,7 +13,6 @@ import {
 } from "@/features/booking/lib/vehicle-selection";
 
 export function VehicleRecommendationList() {
-  const t = useTranslations("booking.vehicle");
   const { state, dispatch } = useBookingFlow();
 
   if (state.isLoadingQuote) {
@@ -34,8 +32,12 @@ export function VehicleRecommendationList() {
     return <BookingSearchPrompt />;
   }
 
+  if (state.quote.pricingUnavailable) {
+    return <BookingPricingContactPrompt />;
+  }
+
   if (state.quote.options.length === 0) {
-    return <p className="text-sm text-muted-foreground">{t("empty")}</p>;
+    return <BookingPricingContactPrompt />;
   }
 
   const requiredPassengers = getRequiredCapacityPassengerCount(state.search);

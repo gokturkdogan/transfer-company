@@ -307,6 +307,12 @@ export function bookingFlowReducer(
         isLoadingQuote: false,
         step: action.preserveStep ? state.step : "vehicle",
         errorKey: null,
+        selectedVehicles: action.quote.pricingUnavailable
+          ? []
+          : state.selectedVehicles,
+        selectedExtras: action.quote.pricingUnavailable
+          ? []
+          : state.selectedExtras,
       };
 
     case "QUOTE_ERROR":

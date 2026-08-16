@@ -179,4 +179,27 @@ describe("AvailabilityService", () => {
       second.options[0]?.quote.totalMinor,
     );
   });
+
+  it("returns pricing unavailable when route has no active vehicle prices", async () => {
+    const service = new AvailabilityService(
+      createPricingReaderFake({
+        findVehicleOptionsForRoute: async () => [],
+      }),
+    );
+
+    const result = await service.getTransferOptions({
+      originAirportId: "pickup-1",
+      destinationDistrictId: "dropoff-1",
+      tripType: "ONE_WAY",
+      outboundAt: addMinutes(new Date(), 120),
+      passengerCount: 2,
+      infantCount: 0,
+      largeLuggageCount: 0,
+      cabinLuggageCount: 0,
+      locale: "en",
+    });
+
+    expect(result.pricingUnavailable).toBe(true);
+    expect(result.options).toEqual([]);
+  });
 });

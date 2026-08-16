@@ -31,7 +31,7 @@ export async function PopularDestinations({
           title={t("title")}
           subtitle={t("subtitle")}
         />
-        <PremiumCarousel label={t("title")}>
+        <PremiumCarousel label={t("title")} loop>
           {destinations.map((destination, index) => {
             return (
               <DestinationCard

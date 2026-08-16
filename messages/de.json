@@ -440,7 +440,10 @@
         "ELIGIBLE": "Geeignet",
         "ELIGIBLE_WITH_EXTRAS": "Mit Zusatzgepäck geeignet",
         "INELIGIBLE": "Nicht geeignet"
-      }
+      },
+      "pricingContactTitle": "Bitte kontaktieren Sie uns für eine Buchung",
+      "pricingContactSubtitle":
+        "Rufen Sie uns an oder schreiben Sie per WhatsApp — wir helfen Ihnen bei der Planung und Buchung Ihres Transfers."
     },
     "transfer": {
       "title": "Transferdetails",
