@@ -51,14 +51,16 @@ export function BookingMobileStickySummary() {
   }, [expanded]);
 
   const selectedOption = state.quote?.options.find(
-    (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
+    (option) =>
+      option.vehicleCategoryId === state.selectedVehicles[0]?.vehicleCategoryId,
   );
 
   if (
     !mounted ||
     state.step !== "customer" ||
     !state.quote ||
-    !selectedOption
+    !selectedOption ||
+    state.selectedVehicles.length === 0
   ) {
     return null;
   }

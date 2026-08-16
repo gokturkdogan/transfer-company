@@ -38,7 +38,9 @@ describe("bookingFlowReducer", () => {
     });
 
     expect(next.quote).toBe(withQuote.quote);
-    expect(next.selectedVehicleCategoryId).toBe("vehicle-1");
+    expect(next.selectedVehicles).toEqual([
+      { vehicleCategoryId: "vehicle-1", quantity: 1 },
+    ]);
     expect(next.search.passengerCount).toBe(5);
     expect(next.searchSignature).toBe(withQuote.searchSignature);
   });
@@ -55,8 +57,7 @@ describe("bookingFlowReducer", () => {
       {
         ...initial,
         step: "customer",
-        selectedVehicleCategoryId: "vehicle-1",
-        selectedQuantity: 1,
+        selectedVehicles: [{ vehicleCategoryId: "vehicle-1", quantity: 1 }],
         searchSignature: buildSearchSignature(initial.search),
       },
       {
@@ -67,7 +68,9 @@ describe("bookingFlowReducer", () => {
     );
 
     expect(onCustomerStep.step).toBe("customer");
-    expect(onCustomerStep.selectedVehicleCategoryId).toBe("vehicle-1");
+    expect(onCustomerStep.selectedVehicles).toEqual([
+      { vehicleCategoryId: "vehicle-1", quantity: 1 },
+    ]);
     expect(onCustomerStep.search.outboundTime).toBe("12:00");
     expect(onCustomerStep.searchSignature).toBe(
       buildSearchSignature(initial.search),
@@ -196,8 +199,7 @@ describe("bookingFlowReducer", () => {
         destination: withQuote.destination,
         quote: withQuote.quote,
         searchSignature: withQuote.searchSignature,
-        selectedVehicleCategoryId: withQuote.selectedVehicleCategoryId,
-        selectedQuantity: withQuote.selectedQuantity,
+        selectedVehicles: withQuote.selectedVehicles,
         selectedExtras: withQuote.selectedExtras,
         passengers: withQuote.passengers,
       },

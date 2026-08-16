@@ -22,6 +22,7 @@ import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
 import { resolveTransferEndpointLabels } from "@/features/booking/lib/route-direction";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { getSelectedVehicleOptions } from "@/features/booking/lib/vehicle-selection";
 import { cn } from "@/lib/utils";
 
 type SummaryPrimaryAction = {
@@ -50,25 +51,44 @@ export function BookingOrderSummary({
   const { state, airports, districts } = useBookingFlow();
   const [extrasExpanded, setExtrasExpanded] = useState(false);
 
-  const selectedOption = state.quote?.options.find(
-    (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
+  const selectedOptions = getSelectedVehicleOptions(
+    state.selectedVehicles,
+    state.quote?.options ?? [],
   );
+  const selectedOption = selectedOptions[0];
 
   const pricing = useMemo(() => {
-    if (!selectedOption || !state.quote) {
+    if (!state.quote || state.selectedVehicles.length === 0) {
       return null;
     }
 
     return buildOrderPricing(
-      selectedOption,
       state.quote,
+      state.selectedVehicles,
       state.selectedExtras,
     );
-  }, [selectedOption, state.quote, state.selectedExtras]);
+  }, [state.quote, state.selectedExtras, state.selectedVehicles]);
 
   if (!selectedOption || !state.quote || !pricing) {
     return null;
   }
+
+  const vehicleSummaryLabel = state.selectedVehicles
+    .map((selection) => {
+      const option = state.quote!.options.find(
+        (item) => item.vehicleCategoryId === selection.vehicleCategoryId,
+      );
+
+      if (!option) {
+        return null;
+      }
+
+      return selection.quantity > 1
+        ? `${selection.quantity} × ${option.name}`
+        : option.name;
+    })
+    .filter(Boolean)
+    .join(" · ");
 
   const airportName =
     airports.find((airport) => airport.id === state.search.originAirportId)
@@ -158,7 +178,7 @@ export function BookingOrderSummary({
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 px-4 pb-3">
-            <p className="text-sm font-semibold text-white">{selectedOption.name}</p>
+            <p className="text-sm font-semibold text-white">{vehicleSummaryLabel}</p>
             <p className="text-[11px] text-white/55">{transferLabel}</p>
           </div>
         </div>
@@ -172,7 +192,7 @@ export function BookingOrderSummary({
         <ul>
           {embedded ? (
             <SummaryDetailRow icon={Car} compact={compact} tone={summaryTone}>
-              {selectedOption.name}
+              {vehicleSummaryLabel}
             </SummaryDetailRow>
           ) : null}
           <SummaryDetailRow

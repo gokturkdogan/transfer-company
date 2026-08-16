@@ -16,6 +16,7 @@ import { ExtrasSection } from "@/features/booking/components/ExtrasSection";
 import { PassengerDetailsForm } from "@/features/booking/components/PassengerDetailsForm";
 import { TransferDetailsForm } from "@/features/booking/components/TransferDetailsForm";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { resolveActiveVehicleContext } from "@/features/booking/lib/vehicle-selection-context";
 
 const BookingReview = dynamic(() =>
   import("@/features/booking/components/BookingReview").then((module) => ({
@@ -41,9 +42,11 @@ export function BookingFlow() {
   const t = useTranslations("booking");
   const { state } = useBookingFlow();
 
-  const selectedOption = state.quote?.options.find(
-    (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
+  const { selectedOptions } = resolveActiveVehicleContext(
+    state.quote,
+    state.selectedVehicles,
   );
+  const selectedOption = selectedOptions[0];
 
   const showStepCard =
     state.step !== "vehicle" &&

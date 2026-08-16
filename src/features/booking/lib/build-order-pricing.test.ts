@@ -82,9 +82,10 @@ const quoteFixture: TransferAvailabilityResponseDto = {
 };
 
 describe("buildOrderPricing", () => {
+  const selectedVehicles = [{ vehicleCategoryId: "vehicle-1", quantity: 1 }];
+
   it("applies includedQuantity when pricing optional extras locally", () => {
-    const option = quoteFixture.options[0]!;
-    const pricing = buildOrderPricing(option, quoteFixture, [
+    const pricing = buildOrderPricing(quoteFixture, selectedVehicles, [
       { extraServiceId: "extra-seat", quantity: 3 },
     ]);
 
@@ -93,8 +94,7 @@ describe("buildOrderPricing", () => {
   });
 
   it("includes required extras already priced by the server", () => {
-    const option = quoteFixture.options[0]!;
-    const pricing = buildOrderPricing(option, quoteFixture, [
+    const pricing = buildOrderPricing(quoteFixture, selectedVehicles, [
       { extraServiceId: "flower", quantity: 1 },
     ]);
 

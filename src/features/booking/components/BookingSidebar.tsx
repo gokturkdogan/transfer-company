@@ -18,9 +18,11 @@ export function BookingSidebar({ className }: BookingSidebarProps) {
 
   const hasSelection =
     state.quote &&
-    state.selectedVehicleCategoryId &&
-    state.quote.options.some(
-      (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
+    state.selectedVehicles.length > 0 &&
+    state.selectedVehicles.every((selection) =>
+      state.quote!.options.some(
+        (option) => option.vehicleCategoryId === selection.vehicleCategoryId,
+      ),
     );
 
   if ((state.step !== "customer" && state.step !== "review") || !hasSelection) {

@@ -1,5 +1,7 @@
 import { calculateExtraTotalMinor } from "@/features/pricing/domain/extra-pricing";
-import type { SelectedExtra } from "@/features/booking/lib/types";
+import type { SelectedExtra, SelectedVehicle } from "@/features/booking/lib/types";
+import { mergeOptionalExtras } from "@/features/booking/lib/vehicle-selection-context";
+import { getSelectedVehicleOptions } from "@/features/booking/lib/vehicle-selection";
 import type {
   TransferAvailabilityResponseDto,
   TransferVehicleOptionDto,
@@ -14,29 +16,66 @@ export type OrderExtraLine = {
 };
 
 export function buildOrderPricing(
-  selectedOption: TransferVehicleOptionDto,
   quote: TransferAvailabilityResponseDto,
+  selectedVehicles: SelectedVehicle[],
   selectedExtras: SelectedExtra[],
 ) {
   const currency = quote.currency;
-  const baseTransferMinor = selectedOption.quote.baseItems.reduce(
-    (sum, item) => sum + item.totalPriceMinor,
-    0,
+  const selectedOptions = getSelectedVehicleOptions(
+    selectedVehicles,
+    quote.options,
   );
 
-  const requiredExtras: OrderExtraLine[] = selectedOption.requiredExtras.map(
-    (extra) => ({
+  let baseTransferMinor = 0;
+  let requiredExtras: OrderExtraLine[] = [];
+
+  if (quote.selection) {
+    baseTransferMinor = quote.selection.quote.baseItems.reduce(
+      (sum, item) => sum + item.totalPriceMinor,
+      0,
+    );
+    requiredExtras = quote.selection.requiredExtras.map((extra) => ({
       id: extra.extraServiceId,
       name: extra.name,
       quantity: extra.quantity,
       totalPriceMinor: extra.totalPriceMinor,
       required: true,
-    }),
-  );
+    }));
+  } else if (selectedOptions.length === 1) {
+    const selectedOption = selectedOptions[0]!;
+    baseTransferMinor = selectedOption.quote.baseItems.reduce(
+      (sum, item) => sum + item.totalPriceMinor,
+      0,
+    );
+    requiredExtras = selectedOption.requiredExtras.map((extra) => ({
+      id: extra.extraServiceId,
+      name: extra.name,
+      quantity: extra.quantity,
+      totalPriceMinor: extra.totalPriceMinor,
+      required: true,
+    }));
+  } else {
+    for (const selection of selectedVehicles) {
+      const option = quote.options.find(
+        (item) => item.vehicleCategoryId === selection.vehicleCategoryId,
+      );
+
+      if (!option) {
+        continue;
+      }
+
+      baseTransferMinor += option.quote.baseItems.reduce(
+        (sum, item) => sum + item.totalPriceMinor * selection.quantity,
+        0,
+      );
+    }
+  }
+
+  const optionalCatalogue = mergeOptionalExtras(selectedOptions);
 
   const optionalExtras: OrderExtraLine[] = selectedExtras
     .map((selected) => {
-      const extra = selectedOption.optionalExtras.find(
+      const extra = optionalCatalogue.find(
         (item) => item.extraServiceId === selected.extraServiceId,
       );
 

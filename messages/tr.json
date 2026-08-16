@@ -339,6 +339,7 @@
       "noVehicles": "Bu arama için uygun araç bulunamadı.",
       "noRoute": "Bu rota için transfer şu anda mevcut değil.",
       "vehicleUnavailable": "Bu araç artık müsait değil. Lütfen başka bir seçenek seçin.",
+      "insufficientPassengerCapacity": "Yolcu kapasitesi dolmadı. Lütfen daha fazla araç seçin.",
       "network": "Ağ hatası. Bağlantınızı kontrol edip tekrar deneyin.",
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
     },
@@ -435,6 +436,11 @@
       "luggageVehicleRequired": "Bagajınız bu aracın kapasitesini aşıyor. Ek bagaj aracı gereklidir.",
       "select": "Seç",
       "selected": "Seçildi",
+      "multiSelectHint": "Yolcu kapasitesi dolana kadar birden fazla araç seçin.",
+      "capacityProgress": "{covered} / {required} yolcu kapasitesi",
+      "continueSelection": "Devam et",
+      "increaseQuantity": "Araç adedini artır",
+      "decreaseQuantity": "Araç adedini azalt",
       "eligibility": {
         "ELIGIBLE": "Uygun",
         "ELIGIBLE_WITH_EXTRAS": "Ek bagaj ile uygun",

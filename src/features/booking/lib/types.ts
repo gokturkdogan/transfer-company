@@ -60,14 +60,18 @@ export type SelectedExtra = {
   quantity: number;
 };
 
+export type SelectedVehicle = {
+  vehicleCategoryId: string;
+  quantity: number;
+};
+
 export type BookingFlowState = {
   step: BookingStep;
   search: BookingSearchState;
   destination: DestinationState;
   quote: TransferAvailabilityResponseDto | null;
   searchSignature: string | null;
-  selectedVehicleCategoryId: string | null;
-  selectedQuantity: number;
+  selectedVehicles: SelectedVehicle[];
   selectedExtras: SelectedExtra[];
   customer: CustomerState;
   passengers: PassengerDetails[];
@@ -93,9 +97,8 @@ export type QuoteRequestBody = {
   cabinLuggageCount: number;
   locale: string;
   selection?: {
-    vehicleCategoryId: string;
-    quantity: number;
-    extras: SelectedExtra[];
+    vehicles: SelectedVehicle[];
+    extras: Array<{ extraServiceId: string; quantity: number }>;
   };
 };
 

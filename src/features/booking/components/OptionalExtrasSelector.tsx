@@ -9,6 +9,7 @@ import {
   bookingExtrasGridClass,
 } from "@/features/booking/components/booking-form-styles";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { resolveActiveVehicleContext } from "@/features/booking/lib/vehicle-selection-context";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import { track } from "@/lib/analytics";
 
@@ -23,11 +24,10 @@ export function OptionalExtrasSelector({
   const locale = useLocale();
   const { state, setSelectedExtras } = useBookingFlow();
 
-  const selectedOption = state.quote?.options.find(
-    (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
+  const { optionalExtras } = resolveActiveVehicleContext(
+    state.quote,
+    state.selectedVehicles,
   );
-
-  const optionalExtras = selectedOption?.optionalExtras ?? [];
 
   const quantities = useMemo(() => {
     const map = new Map<string, number>();
@@ -37,7 +37,7 @@ export function OptionalExtrasSelector({
     return map;
   }, [state.selectedExtras]);
 
-  if (!selectedOption) {
+  if (state.selectedVehicles.length === 0) {
     return null;
   }
 
@@ -62,14 +62,14 @@ export function OptionalExtrasSelector({
               extra.includedQuantity <= 0
                 ? formatPrice(
                     extra.unitPriceMinor,
-                    selectedOption.quote.currency,
+                    state.quote!.currency,
                     locale,
                   )
                 : t("includedPricing", {
                     included: extra.includedQuantity,
                     price: formatPrice(
                       extra.unitPriceMinor,
-                      selectedOption.quote.currency,
+                      state.quote!.currency,
                       locale,
                     ),
                   })}

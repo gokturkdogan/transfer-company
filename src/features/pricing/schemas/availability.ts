@@ -1,15 +1,14 @@
 import { z } from "zod";
 
 import { TRIP_TYPES } from "@/db/schema/enums";
-import { quoteExtraSelectionSchema } from "@/features/pricing/schemas/quote";
+import { quoteExtraSelectionSchema, quoteVehicleSelectionSchema } from "@/features/pricing/schemas/quote";
 import { wallClockDateTimeSchema } from "@/lib/schemas/datetime";
 
 const positiveInt = z.number().int().positive();
 const nonNegativeInt = z.number().int().min(0);
 
 export const quoteSelectionInputSchema = z.object({
-  vehicleCategoryId: z.string().uuid(),
-  quantity: positiveInt,
+  vehicles: z.array(quoteVehicleSelectionSchema).min(1),
   extras: z.array(quoteExtraSelectionSchema).default([]),
 });
 

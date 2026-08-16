@@ -5,16 +5,13 @@ import { useTranslations } from "next-intl";
 
 import { CounterField } from "@/features/booking/components/CounterField";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { sumSelectedLargeLuggageCapacity } from "@/features/booking/lib/vehicle-selection-context";
 
 export function LuggageCountField() {
   const t = useTranslations("booking.transfer");
   const { state, updateLuggageCount } = useBookingFlow();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [luggageCount, setLuggageCount] = useState(state.search.largeLuggageCount);
-
-  const selectedOption = state.quote?.options.find(
-    (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
-  );
 
   useEffect(() => {
     setLuggageCount(state.search.largeLuggageCount);
@@ -28,12 +25,14 @@ export function LuggageCountField() {
     };
   }, []);
 
-  if (!selectedOption) {
+  if (!state.quote || state.selectedVehicles.length === 0) {
     return null;
   }
 
-  const capacity =
-    selectedOption.largeLuggageCapacity * (state.selectedQuantity || selectedOption.quantity);
+  const capacity = sumSelectedLargeLuggageCapacity(
+    state.selectedVehicles,
+    state.quote.options,
+  );
 
   return (
     <div className="space-y-2 lg:max-w-sm">
@@ -49,7 +48,6 @@ export function LuggageCountField() {
             clearTimeout(debounceRef.current);
           }
 
-          // Debounce only when a requote may be needed (capacity overflow path).
           const previouslyOver = state.search.largeLuggageCount > capacity;
           const nextOver = value > capacity;
           const delay = previouslyOver || nextOver ? 400 : 0;
@@ -60,9 +58,7 @@ export function LuggageCountField() {
         }}
       />
       <p className="text-xs text-muted-foreground">
-        {t("luggageCapacityHint", {
-          capacity: selectedOption.largeLuggageCapacity,
-        })}
+        {t("luggageCapacityHint", { capacity })}
       </p>
       {state.isLoadingQuote ? (
         <p className="text-sm text-muted-foreground">{t("updatingLuggage")}</p>

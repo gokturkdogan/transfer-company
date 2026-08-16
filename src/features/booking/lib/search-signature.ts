@@ -28,8 +28,7 @@ export function buildQuoteRequest(
   search: BookingSearchState,
   locale: string,
   selection?: {
-    vehicleCategoryId: string;
-    quantity: number;
+    vehicles: Array<{ vehicleCategoryId: string; quantity: number }>;
     extras: Array<{ extraServiceId: string; quantity: number }>;
   },
 ) {

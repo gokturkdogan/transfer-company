@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NextIntlClientProvider } from "next-intl";
+import type { ComponentProps } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import { PriceSummary } from "@/features/booking/components/PriceSummary";
@@ -101,14 +102,32 @@ function createOption(
   };
 }
 
+function createCardProps(
+  overrides: Partial<ComponentProps<typeof VehicleRecommendationCard>> &
+    Pick<
+      ComponentProps<typeof VehicleRecommendationCard>,
+      "selected" | "disabled" | "onSelect"
+    >,
+) {
+  return {
+    multiSelectMode: false,
+    selectedQuantity: 0,
+    onToggle: () => undefined,
+    onAdjustQuantity: () => undefined,
+    ...overrides,
+  };
+}
+
 describe("VehicleRecommendationCard", () => {
   it("renders server option name and price", () => {
     renderWithIntl(
       <VehicleRecommendationCard
         option={createOption()}
-        selected={false}
-        disabled={false}
-        onSelect={() => undefined}
+        {...createCardProps({
+          selected: false,
+          disabled: false,
+          onSelect: () => undefined,
+        })}
       />,
     );
 
@@ -126,9 +145,11 @@ describe("VehicleRecommendationCard", () => {
             "https://cdn.example/rear.jpg",
           ],
         })}
-        selected={false}
-        disabled={false}
-        onSelect={() => undefined}
+        {...createCardProps({
+          selected: false,
+          disabled: false,
+          onSelect: () => undefined,
+        })}
       />,
     );
 
@@ -150,9 +171,11 @@ describe("VehicleRecommendationCard", () => {
             "https://cdn.example/rear.jpg",
           ],
         })}
-        selected={false}
-        disabled={false}
-        onSelect={() => undefined}
+        {...createCardProps({
+          selected: false,
+          disabled: false,
+          onSelect: () => undefined,
+        })}
       />,
     );
 
@@ -175,9 +198,11 @@ describe("VehicleRecommendationCard", () => {
           eligibility: "INELIGIBLE",
           warnings: [{ code: "PASSENGER_OVERFLOW", message: "Too many passengers" }],
         })}
-        selected={false}
-        disabled
-        onSelect={() => undefined}
+        {...createCardProps({
+          selected: false,
+          disabled: true,
+          onSelect: () => undefined,
+        })}
       />,
     );
 
@@ -192,9 +217,11 @@ describe("VehicleRecommendationCard", () => {
     const { container } = renderWithIntl(
       <VehicleRecommendationCard
         option={createOption({ eligibility: "INELIGIBLE" })}
-        selected={false}
-        disabled
-        onSelect={onSelect}
+        {...createCardProps({
+          selected: false,
+          disabled: true,
+          onSelect: onSelect,
+        })}
       />,
     );
 

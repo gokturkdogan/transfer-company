@@ -11,13 +11,6 @@ export type RecommendVehiclesInput = {
   vehicleCategories: VehicleCategoryCapacity[];
 };
 
-function minimumVehicleQuantity(
-  passengerCount: number,
-  passengerCapacity: number,
-): number {
-  return Math.ceil(passengerCount / passengerCapacity);
-}
-
 export type RecommendVehiclesOptions = {
   includeIneligible?: boolean;
 };
@@ -34,18 +27,11 @@ export function recommendVehicles(
       continue;
     }
 
-    if (category.passengerCapacity < input.passengerCount) {
-      continue;
-    }
-
-    const quantity = minimumVehicleQuantity(
-      input.passengerCount,
-      category.passengerCapacity,
-    );
+    const quantity = 1;
 
     const assessment = assessVehicleCapacity({
       vehicleQuantity: quantity,
-      passengerCount: input.passengerCount,
+      passengerCount: Math.min(input.passengerCount, category.passengerCapacity),
       largeLuggageCount: input.largeLuggageCount,
       cabinLuggageCount: input.cabinLuggageCount,
       passengerCapacity: category.passengerCapacity,

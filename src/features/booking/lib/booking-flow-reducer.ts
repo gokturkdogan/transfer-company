@@ -6,7 +6,9 @@ import type {
   DestinationState,
   FlightState,
   SelectedExtra,
+  SelectedVehicle,
 } from "@/features/booking/lib/types";
+import { adjustVehicleSelectionQuantity } from "@/features/booking/lib/vehicle-selection";
 import type { PassengerDetails } from "@/features/booking/lib/passenger-details";
 import type { TransferAvailabilityResponseDto } from "@/features/pricing/types/dto";
 import type { ReservationResponseDto } from "@/features/pricing/types/dto";
@@ -45,6 +47,12 @@ export type BookingFlowAction =
     }
   | { type: "QUOTE_ERROR"; errorKey: string }
   | { type: "SELECT_VEHICLE"; vehicleCategoryId: string; quantity: number }
+  | {
+      type: "ADJUST_VEHICLE_SELECTION";
+      vehicleCategoryId: string;
+      delta: number;
+    }
+  | { type: "CONFIRM_VEHICLE_SELECTION" }
   | { type: "SET_EXTRAS"; extras: SelectedExtra[] }
   | {
       type: "UPDATE_LUGGAGE";
@@ -73,8 +81,7 @@ export type BookingFlowAction =
         destination: DestinationState;
         quote: TransferAvailabilityResponseDto | null;
         searchSignature: string | null;
-        selectedVehicleCategoryId: string | null;
-        selectedQuantity: number;
+        selectedVehicles: SelectedVehicle[];
         selectedExtras: SelectedExtra[];
         passengers: PassengerDetails[];
         step?: BookingStep;
@@ -90,8 +97,7 @@ function clearQuoteState(state: BookingFlowState): BookingFlowState {
     ...state,
     quote: null,
     searchSignature: null,
-    selectedVehicleCategoryId: null,
-    selectedQuantity: 1,
+    selectedVehicles: [],
     selectedExtras: [],
     idempotencyKey: null,
   };
@@ -127,8 +133,7 @@ export function createInitialBookingFlowState(
     destination: getDefaultDestinationState(),
     quote: null,
     searchSignature: null,
-    selectedVehicleCategoryId: null,
-    selectedQuantity: 1,
+    selectedVehicles: [],
     selectedExtras: [],
     customer: {
       firstName: "",
@@ -311,8 +316,32 @@ export function bookingFlowReducer(
     case "SELECT_VEHICLE":
       return {
         ...state,
-        selectedVehicleCategoryId: action.vehicleCategoryId,
-        selectedQuantity: action.quantity,
+        selectedVehicles: [
+          {
+            vehicleCategoryId: action.vehicleCategoryId,
+            quantity: action.quantity,
+          },
+        ],
+        selectedExtras: [],
+        step: "customer",
+        errorKey: null,
+      };
+
+    case "ADJUST_VEHICLE_SELECTION":
+      return {
+        ...state,
+        selectedVehicles: adjustVehicleSelectionQuantity(
+          state.selectedVehicles,
+          action.vehicleCategoryId,
+          action.delta,
+        ),
+        selectedExtras: [],
+        errorKey: null,
+      };
+
+    case "CONFIRM_VEHICLE_SELECTION":
+      return {
+        ...state,
         selectedExtras: [],
         step: "customer",
         errorKey: null,
@@ -406,8 +435,7 @@ export function bookingFlowReducer(
         destination: action.snapshot.destination,
         quote: action.snapshot.quote,
         searchSignature: action.snapshot.searchSignature,
-        selectedVehicleCategoryId: action.snapshot.selectedVehicleCategoryId,
-        selectedQuantity: action.snapshot.selectedQuantity,
+        selectedVehicles: action.snapshot.selectedVehicles,
         selectedExtras: action.snapshot.selectedExtras,
         passengers: action.snapshot.passengers,
         customer: action.snapshot.customer ?? state.customer,

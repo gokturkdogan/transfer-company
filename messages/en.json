@@ -339,6 +339,7 @@
       "noVehicles": "No suitable vehicles are available for this search.",
       "noRoute": "No transfer is currently available for this route.",
       "vehicleUnavailable": "This vehicle is no longer available. Please select another option.",
+      "insufficientPassengerCapacity": "Passenger capacity is not covered yet. Please select more vehicles.",
       "network": "Network error. Please check your connection and try again.",
       "generic": "Something went wrong. Please try again."
     },
@@ -435,6 +436,11 @@
       "luggageVehicleRequired": "Your luggage exceeds this vehicle's capacity. An additional luggage vehicle is required.",
       "select": "Select",
       "selected": "Selected",
+      "multiSelectHint": "Select multiple vehicles until passenger capacity is covered.",
+      "capacityProgress": "{covered} / {required} passengers covered",
+      "continueSelection": "Continue",
+      "increaseQuantity": "Increase vehicle count",
+      "decreaseQuantity": "Decrease vehicle count",
       "eligibility": {
         "ELIGIBLE": "Suitable",
         "ELIGIBLE_WITH_EXTRAS": "Suitable with extra luggage",

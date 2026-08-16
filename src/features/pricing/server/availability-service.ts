@@ -346,38 +346,58 @@ export class AvailabilityService {
           infantCount: input.infantCount,
           largeLuggageCount: input.largeLuggageCount,
           cabinLuggageCount: input.cabinLuggageCount,
-          vehicles: [
-            {
-              vehicleCategoryId: input.selection.vehicleCategoryId,
-              quantity: input.selection.quantity,
-            },
-          ],
+          vehicles: input.selection.vehicles,
           extras: input.selection.extras,
           locale: input.locale,
         });
 
-        const matchedOption = options.find(
-          (option) =>
-            option.vehicleCategoryId === input.selection!.vehicleCategoryId,
-        );
+        const requiredExtrasById = new Map<string, TransferOptionExtraDto>();
+
+        for (const vehicle of input.selection.vehicles) {
+          const matchedOption = options.find(
+            (option) => option.vehicleCategoryId === vehicle.vehicleCategoryId,
+          );
+
+          if (!matchedOption) {
+            continue;
+          }
+
+          for (const extra of matchedOption.requiredExtras) {
+            const existing = requiredExtrasById.get(extra.extraServiceId);
+
+            if (!existing) {
+              requiredExtrasById.set(extra.extraServiceId, { ...extra });
+              continue;
+            }
+
+            requiredExtrasById.set(extra.extraServiceId, {
+              ...existing,
+              quantity: Math.max(existing.quantity, extra.quantity),
+              totalPriceMinor: Math.max(
+                existing.totalPriceMinor,
+                extra.totalPriceMinor,
+              ),
+            });
+          }
+        }
 
         selection = {
-          vehicleCategoryId: input.selection.vehicleCategoryId,
-          quantity: input.selection.quantity,
+          vehicles: input.selection.vehicles,
           eligibility: quoteResult.eligibility,
           requiredExtras:
-            matchedOption?.requiredExtras ??
-            quoteResult.requiredExtras.map((extra) => ({
-              extraServiceId: extra.extraServiceId,
-              name: "",
-              pricingMode: "PER_UNIT" as const,
-              quantity: extra.quantity,
-              maxQuantity: null,
-              includedQuantity: 0,
-              unitPriceMinor: 0,
-              totalPriceMinor: 0,
-              required: true,
-            })),
+            requiredExtrasById.size > 0
+              ? Array.from(requiredExtrasById.values())
+              : quoteResult.requiredExtras.map((extra) => ({
+                  extraServiceId: extra.extraServiceId,
+                  name: "",
+                  pricingMode: "PER_UNIT" as const,
+                  quantity: extra.quantity,
+                  maxQuantity: null,
+                  includedQuantity: 0,
+                  unitPriceMinor: 0,
+                  totalPriceMinor: 0,
+                  required: true,
+                })),
           quote: quoteResult.quote,
           allItems: quoteResult.allItems,
         };

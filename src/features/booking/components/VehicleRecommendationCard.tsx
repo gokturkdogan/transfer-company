@@ -2,8 +2,11 @@
 
 import {
   BadgeCheck,
+  Check,
   Droplets,
   Luggage,
+  Minus,
+  Plus,
   Sparkles,
   Tv,
   Users,
@@ -27,9 +30,13 @@ import { cn } from "@/lib/utils";
 
 type VehicleRecommendationCardProps = {
   option: TransferVehicleOptionDto;
+  multiSelectMode: boolean;
+  selectedQuantity: number;
   selected: boolean;
   disabled: boolean;
   onSelect: () => void;
+  onToggle: () => void;
+  onAdjustQuantity: (delta: number) => void;
 };
 
 const INCLUDED_SERVICES = [
@@ -55,9 +62,13 @@ function eligibilityVariant(
 
 export function VehicleRecommendationCard({
   option,
+  multiSelectMode,
+  selectedQuantity,
   selected,
   disabled,
   onSelect,
+  onToggle,
+  onAdjustQuantity,
 }: VehicleRecommendationCardProps) {
   const t = useTranslations("booking.vehicle");
   const locale = useLocale();
@@ -71,8 +82,8 @@ export function VehicleRecommendationCard({
     [option.galleryImageKeys],
   );
   const displayName =
-    option.quantity > 1
-      ? t("multiVehicle", { quantity: option.quantity, name: option.name })
+    selectedQuantity > 1
+      ? t("multiVehicle", { quantity: selectedQuantity, name: option.name })
       : option.name;
   const vehicleFeatures = option.features.slice(0, MAX_VEHICLE_FEATURES);
 
@@ -188,26 +199,81 @@ export function VehicleRecommendationCard({
               {t("totalLabel")}
             </p>
             <p className="mt-1 text-2xl font-bold tracking-tight text-foreground sm:text-[1.65rem]">
-              {formatPrice(option.quote.totalMinor, option.quote.currency, locale)}
+              {formatPrice(
+                option.quote.totalMinor * (multiSelectMode ? selectedQuantity || 1 : 1),
+                option.quote.currency,
+                locale,
+              )}
             </p>
           </div>
 
-          <Button
-            type="button"
-            variant={selected ? "outline" : "gold"}
-            size="lg"
-            disabled={disabled}
-            className="w-full gap-2"
-            onClick={() => {
-              track({
-                name: "vehicle_selected",
-                payload: { vehicleCategoryId: option.vehicleCategoryId },
-              });
-              onSelect();
-            }}
-          >
-            {selected ? t("selected") : t("select")}
-          </Button>
+          {multiSelectMode ? (
+            <div className="flex flex-col items-center gap-3">
+              <button
+                type="button"
+                aria-pressed={selected}
+                disabled={disabled}
+                className={cn(
+                  "flex h-11 w-11 items-center justify-center rounded-full border-2 transition-colors",
+                  selected
+                    ? "border-gold bg-gold text-white"
+                    : "border-border bg-card text-muted-foreground hover:border-gold/40",
+                  disabled && "opacity-50",
+                )}
+                onClick={() => {
+                  track({
+                    name: "vehicle_selected",
+                    payload: { vehicleCategoryId: option.vehicleCategoryId },
+                  });
+                  onToggle();
+                }}
+              >
+                <Check className="h-5 w-5" aria-hidden />
+                <span className="sr-only">{selected ? t("selected") : t("select")}</span>
+              </button>
+
+              {selectedQuantity > 0 ? (
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card"
+                    aria-label={t("decreaseQuantity")}
+                    onClick={() => onAdjustQuantity(-1)}
+                  >
+                    <Minus className="h-3.5 w-3.5" />
+                  </button>
+                  <span className="min-w-8 text-center text-sm font-semibold">
+                    {selectedQuantity}
+                  </span>
+                  <button
+                    type="button"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card"
+                    aria-label={t("increaseQuantity")}
+                    onClick={() => onAdjustQuantity(1)}
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <Button
+              type="button"
+              variant={selected ? "outline" : "gold"}
+              size="lg"
+              disabled={disabled}
+              className="w-full gap-2"
+              onClick={() => {
+                track({
+                  name: "vehicle_selected",
+                  payload: { vehicleCategoryId: option.vehicleCategoryId },
+                });
+                onSelect();
+              }}
+            >
+              {selected ? t("selected") : t("select")}
+            </Button>
+          )}
         </div>
       </div>
     </article>

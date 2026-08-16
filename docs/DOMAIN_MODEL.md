@@ -86,7 +86,7 @@ Online payment is **not** part of the system. A reservation is initially only a 
 
 Reservations use `reservation_items` rows with quantity. A booking may include multiple vehicle category line items (e.g. primary transfer + luggage fleet vehicle).
 
-**Availability listing:** `recommendVehicles()` only returns categories whose **single-vehicle** `passengerCapacity` is at least the capacity passenger count (`passengerCount + infantCount`, where `passengerCount` already includes adults and children). Categories that would need multiple identical units for passengers are omitted from the quote options list.
+**Availability listing:** All priced active vehicle categories are returned. When total passengers exceed the largest single-vehicle capacity, the booking UI switches to **multi-select mode**: customers tick vehicles (with per-type quantity steppers) until combined passenger capacity meets the party size, then continue to details. Final pricing uses `QuoteService` with the selected vehicle set.
 
 Infants count toward vehicle capacity. Required child seats for infants are auto-added per infant (capped by extra `maxQuantity`) and billed at **zero** when tied to infant count, regardless of catalogue `includedQuantity`.
 

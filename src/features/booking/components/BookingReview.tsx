@@ -18,8 +18,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { AcceptedPaymentCurrenciesNotice } from "@/features/booking/components/AcceptedPaymentCurrenciesNotice";
 import { SummaryCard } from "@/features/booking/components/summary/SummaryCard";
 import { SummaryFactRow } from "@/features/booking/components/summary/SummaryFactRow";
-import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { buildOrderPricing } from "@/features/booking/lib/build-order-pricing";
+import { getSelectedVehicleOptions } from "@/features/booking/lib/vehicle-selection";
+import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { formatPrice } from "@/features/booking/lib/format-price";
 import { formatDateTimeLabel } from "@/features/booking/lib/search-datetime";
 import { resolveTransferEndpointLabels } from "@/features/booking/lib/route-direction";
@@ -34,19 +35,38 @@ export function BookingReview() {
   const locale = useLocale();
   const { state, airports, districts } = useBookingFlow();
 
-  const selectedOption = state.quote?.options.find(
-    (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
+  const selectedOptions = getSelectedVehicleOptions(
+    state.selectedVehicles,
+    state.quote?.options ?? [],
   );
+  const selectedOption = selectedOptions[0];
 
-  if (!state.quote || !selectedOption) {
+  if (!state.quote || !selectedOption || state.selectedVehicles.length === 0) {
     return null;
   }
 
   const pricing = buildOrderPricing(
-    selectedOption,
     state.quote,
+    state.selectedVehicles,
     state.selectedExtras,
   );
+
+  const vehicleSummaryLabel = state.selectedVehicles
+    .map((selection) => {
+      const option = state.quote!.options.find(
+        (item) => item.vehicleCategoryId === selection.vehicleCategoryId,
+      );
+
+      if (!option) {
+        return null;
+      }
+
+      return selection.quantity > 1
+        ? `${selection.quantity} × ${option.name}`
+        : option.name;
+    })
+    .filter(Boolean)
+    .join(" · ");
 
   const airportName =
     airports.find((airport) => airport.id === state.search.originAirportId)
@@ -218,11 +238,7 @@ export function BookingReview() {
             })}
             <SummaryFactRow
               label={t("vehicle")}
-              value={
-                selectedOption.quantity > 1
-                  ? `${selectedOption.quantity} × ${selectedOption.name}`
-                  : selectedOption.name
-              }
+              value={vehicleSummaryLabel}
               icon={Car}
               variant={cardVariant}
             />

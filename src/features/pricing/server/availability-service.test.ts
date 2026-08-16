@@ -155,7 +155,7 @@ describe("AvailabilityService", () => {
     });
 
     expect(withoutInfants.options.length).toBe(1);
-    expect(withInfants.options.length).toBe(0);
+    expect(withInfants.options.length).toBe(1);
   });
 
   it("returns the same quote for repeated airport to district searches", async () => {

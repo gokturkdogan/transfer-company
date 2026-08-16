@@ -36,8 +36,7 @@ export type TransferVehicleOptionDto = {
 };
 
 export type PricedSelectionDto = {
-  vehicleCategoryId: string;
-  quantity: number;
+  vehicles: Array<{ vehicleCategoryId: string; quantity: number }>;
   eligibility: EligibilityStatus;
   requiredExtras: TransferOptionExtraDto[];
   quote: TransferQuote;

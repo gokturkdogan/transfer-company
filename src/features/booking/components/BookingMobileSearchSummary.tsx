@@ -32,8 +32,7 @@ function createSearchEditSnapshot(
     destination: { ...state.destination },
     quote: state.quote,
     searchSignature: state.searchSignature,
-    selectedVehicleCategoryId: state.selectedVehicleCategoryId,
-    selectedQuantity: state.selectedQuantity,
+    selectedVehicles: state.selectedVehicles.map((vehicle) => ({ ...vehicle })),
     selectedExtras: state.selectedExtras.map((extra) => ({ ...extra })),
     passengers: state.passengers.map((passenger) => ({ ...passenger })),
   };

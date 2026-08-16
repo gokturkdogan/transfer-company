@@ -3,6 +3,7 @@ import "server-only";
 import { assessVehicleCapacity } from "@/features/capacity/domain/assess-capacity";
 import { resolveCapacityPassengerCount } from "@/features/capacity/domain/capacity-passenger-count";
 import { selectCheapestLuggageFleetVehicle } from "@/features/capacity/domain/select-cheapest-luggage-fleet-vehicle";
+import { sumFleetCapacityTotals } from "@/features/capacity/domain/sum-fleet-capacity";
 import type { TransferQuoteInputDto } from "@/features/pricing/schemas/quote";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
@@ -75,18 +76,13 @@ export class QuoteService {
       );
 
       const vehicleSelections: QuoteVehicleSelection[] = [];
-      let combinedEligibility:
-        | "ELIGIBLE"
-        | "ELIGIBLE_WITH_EXTRAS"
-        | "INELIGIBLE" = "ELIGIBLE";
-      const allWarnings: ReturnType<
-        typeof assessVehicleCapacity
-      >["warnings"] = [];
-      const requiredExtras: Array<{ extraServiceId: string; quantity: number }> =
-        [];
+      const fleetCapacitySlices: Array<{
+        quantity: number;
+        passengerCapacity: number;
+        largeLuggageCapacity: number;
+        cabinLuggageCapacity: number;
+      }> = [];
       let quoteCurrency: string | null = null;
-      let primaryAssessment: ReturnType<typeof assessVehicleCapacity> | null =
-        null;
 
       for (const selection of input.vehicles) {
         const category = await this.repository.findVehicleCategoryById(
@@ -117,27 +113,12 @@ export class QuoteService {
             input.locale,
           );
 
-        const assessment = assessVehicleCapacity({
-          vehicleQuantity: selection.quantity,
-          passengerCount: capacityPassengerCount,
-          largeLuggageCount: input.largeLuggageCount,
-          cabinLuggageCount: input.cabinLuggageCount,
+        fleetCapacitySlices.push({
+          quantity: selection.quantity,
           passengerCapacity: category.passengerCapacity,
           largeLuggageCapacity: category.largeLuggageCapacity,
           cabinLuggageCapacity: category.cabinLuggageCapacity,
         });
-
-        primaryAssessment = assessment;
-        allWarnings.push(...assessment.warnings);
-
-        if (assessment.eligibility === "INELIGIBLE") {
-          combinedEligibility = "INELIGIBLE";
-        } else if (
-          assessment.eligibility === "ELIGIBLE_WITH_EXTRAS" &&
-          combinedEligibility !== "INELIGIBLE"
-        ) {
-          combinedEligibility = "ELIGIBLE_WITH_EXTRAS";
-        }
 
         vehicleSelections.push({
           vehicleCategoryId: selection.vehicleCategoryId,
@@ -149,8 +130,23 @@ export class QuoteService {
         });
       }
 
+      const fleetTotals = sumFleetCapacityTotals(fleetCapacitySlices);
+      const primaryAssessment = assessVehicleCapacity({
+        vehicleQuantity: 1,
+        passengerCount: capacityPassengerCount,
+        largeLuggageCount: input.largeLuggageCount,
+        cabinLuggageCount: input.cabinLuggageCount,
+        passengerCapacity: fleetTotals.passengerCapacity,
+        largeLuggageCapacity: fleetTotals.largeLuggageCapacity,
+        cabinLuggageCapacity: fleetTotals.cabinLuggageCapacity,
+      });
+
+      let combinedEligibility = primaryAssessment.eligibility;
+      const allWarnings = [...primaryAssessment.warnings];
+      const requiredExtras: Array<{ extraServiceId: string; quantity: number }> =
+        [];
+
       if (
-        primaryAssessment &&
         primaryAssessment.largeLuggageOverflow > 0 &&
         combinedEligibility !== "INELIGIBLE"
       ) {

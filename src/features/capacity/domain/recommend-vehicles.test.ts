@@ -17,7 +17,7 @@ function category(
 }
 
 describe("recommendVehicles", () => {
-  it("excludes vehicles that cannot fit all passengers in one unit", () => {
+  it("lists all active vehicles for multi-vehicle selection", () => {
     const vehicleCategories = [
       category({ id: "sedan", name: "Sedan", passengerCapacity: 3 }),
       category({ id: "vito", name: "Vito", passengerCapacity: 6 }),
@@ -32,6 +32,7 @@ describe("recommendVehicles", () => {
     });
 
     expect(recommendations.map((item) => item.vehicleCategoryId)).toEqual([
+      "sedan",
       "sprinter",
       "vito",
     ]);

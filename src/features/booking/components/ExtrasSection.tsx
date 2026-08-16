@@ -9,25 +9,24 @@ import { bookingExtrasGridClass } from "@/features/booking/components/booking-fo
 import { OptionalExtrasSelector } from "@/features/booking/components/OptionalExtrasSelector";
 import { RequiredExtrasPanel } from "@/features/booking/components/RequiredExtrasPanel";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { resolveActiveVehicleContext } from "@/features/booking/lib/vehicle-selection-context";
 
 export function ExtrasSection() {
   const t = useTranslations("booking.extras");
   const { state } = useBookingFlow();
 
-  const selectedOption = state.quote?.options.find(
-    (option) => option.vehicleCategoryId === state.selectedVehicleCategoryId,
-  );
+  const { selectedOptions, requiredExtras, optionalExtras } =
+    resolveActiveVehicleContext(state.quote, state.selectedVehicles);
 
-  if (!selectedOption || !state.quote) {
+  if (!state.quote || selectedOptions.length === 0) {
     return null;
   }
 
-  const requiredExtras = selectedOption.requiredExtras;
-  const optionalExtras = selectedOption.optionalExtras;
+  const primaryOption = selectedOptions[0]!;
   const hasExtras = requiredExtras.length > 0 || optionalExtras.length > 0;
-  const showLuggageVehicleNotice = Boolean(selectedOption.requiredLuggageVehicle);
-  const luggageFleetVehicle = selectedOption.requiredLuggageVehicle;
-  const showChildSeatNotice = selectedOption.requiredChildSeats > 0;
+  const showLuggageVehicleNotice = Boolean(primaryOption.requiredLuggageVehicle);
+  const luggageFleetVehicle = primaryOption.requiredLuggageVehicle;
+  const showChildSeatNotice = primaryOption.requiredChildSeats > 0;
   const childSeatExtra = requiredExtras.find((extra) => extra.includedQuantity > 0);
   const childSeatIncludedQuantity = childSeatExtra?.includedQuantity ?? 1;
 
@@ -49,7 +48,7 @@ export function ExtrasSection() {
             {t("luggageVehicleAutoAdded", {
               vehicle: luggageFleetVehicle?.vehicleCategoryName ?? "",
               count: luggageFleetVehicle?.quantity ?? 0,
-              capacity: selectedOption.largeLuggageCapacity,
+              capacity: primaryOption.largeLuggageCapacity,
             })}
           </AlertDescription>
         </Alert>
@@ -60,7 +59,7 @@ export function ExtrasSection() {
           <Info className="h-3.5 w-3.5 shrink-0 text-gold-deep" aria-hidden />
           <AlertDescription className="min-w-0 truncate text-xs leading-snug text-foreground">
             {t("childSeatAutoAdded", {
-              count: selectedOption.requiredChildSeats,
+              count: primaryOption.requiredChildSeats,
               included: childSeatIncludedQuantity,
             })}
           </AlertDescription>

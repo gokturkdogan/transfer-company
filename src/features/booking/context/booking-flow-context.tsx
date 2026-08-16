@@ -24,6 +24,11 @@ import { toReservationPassengerSnapshots } from "@/features/booking/lib/passenge
 import { formatInternationalPhone } from "@/lib/phone/format";
 import { getTotalPassengerCount } from "@/features/booking/lib/passenger-count";
 import {
+  getRequiredCapacityPassengerCount,
+  hasSufficientPassengerCapacity,
+} from "@/features/booking/lib/vehicle-selection";
+import { sumSelectedLargeLuggageCapacity } from "@/features/booking/lib/vehicle-selection-context";
+import {
   buildQuoteRequest,
   buildSearchSignature,
 } from "@/features/booking/lib/search-signature";
@@ -60,6 +65,7 @@ type BookingFlowContextValue = {
     outboundTime: string,
   ) => Promise<void>;
   updateLuggageCount: (largeLuggageCount: number) => Promise<void>;
+  confirmVehicleSelection: () => Promise<void>;
   submitReservation: () => Promise<void>;
 };
 
@@ -142,7 +148,7 @@ export function BookingFlowProvider({
     async (outboundDate: string, outboundTime: string) => {
       const search = { ...state.search, outboundDate, outboundTime };
 
-      if (!state.selectedVehicleCategoryId) {
+      if (state.selectedVehicles.length === 0) {
         dispatch({ type: "UPDATE_SEARCH", search });
         return;
       }
@@ -157,8 +163,7 @@ export function BookingFlowProvider({
       dispatch({ type: "QUOTE_LOADING" });
 
       const body = buildQuoteRequest(search, locale, {
-        vehicleCategoryId: state.selectedVehicleCategoryId,
-        quantity: state.selectedQuantity,
+        vehicles: state.selectedVehicles,
         extras: state.selectedExtras,
       });
 
@@ -187,10 +192,70 @@ export function BookingFlowProvider({
       locale,
       state.search,
       state.selectedExtras,
-      state.selectedQuantity,
-      state.selectedVehicleCategoryId,
+      state.selectedVehicles,
     ],
   );
+
+  const confirmVehicleSelection = useCallback(async () => {
+    if (!state.quote || state.selectedVehicles.length === 0) {
+      return;
+    }
+
+    const requiredPassengers = getRequiredCapacityPassengerCount(state.search);
+
+    if (
+      !hasSufficientPassengerCapacity(
+        state.selectedVehicles,
+        state.quote.options,
+        requiredPassengers,
+      )
+    ) {
+      dispatch({
+        type: "QUOTE_ERROR",
+        errorKey: "errors.insufficientPassengerCapacity",
+      });
+      return;
+    }
+
+    const requestId = ++quoteRequestIdRef.current;
+
+    dispatch({ type: "QUOTE_LOADING" });
+
+    const body = buildQuoteRequest(state.search, locale, {
+      vehicles: state.selectedVehicles,
+      extras: [],
+    });
+
+    const result = await fetchTransferQuote(body);
+
+    if (requestId !== quoteRequestIdRef.current) {
+      return;
+    }
+
+    if (!result.success) {
+      dispatch({
+        type: "QUOTE_ERROR",
+        errorKey: mapApiErrorToKey(result.error, result.status),
+      });
+      return;
+    }
+
+    if (result.data.selection?.eligibility === "INELIGIBLE") {
+      dispatch({
+        type: "QUOTE_ERROR",
+        errorKey: "errors.vehicleUnavailable",
+      });
+      return;
+    }
+
+    dispatch({
+      type: "QUOTE_SUCCESS",
+      quote: result.data,
+      searchSignature: buildSearchSignature(state.search),
+      preserveStep: true,
+    });
+    dispatch({ type: "CONFIRM_VEHICLE_SELECTION" });
+  }, [locale, state.quote, state.search, state.selectedVehicles]);
 
   const updateLuggageCount = useCallback(
     async (largeLuggageCount: number) => {
@@ -200,23 +265,20 @@ export function BookingFlowProvider({
         cabinLuggageCount: 0,
       };
 
-      const selectedOption = state.quote?.options.find(
-        (option) =>
-          option.vehicleCategoryId === state.selectedVehicleCategoryId,
-      );
-
       dispatch({
         type: "UPDATE_LUGGAGE",
         largeLuggageCount,
         cabinLuggageCount: 0,
       });
 
-      if (!state.selectedVehicleCategoryId || !selectedOption) {
+      if (state.selectedVehicles.length === 0 || !state.quote) {
         return;
       }
 
-      const capacity =
-        selectedOption.largeLuggageCapacity * state.selectedQuantity;
+      const capacity = sumSelectedLargeLuggageCapacity(
+        state.selectedVehicles,
+        state.quote.options,
+      );
       const previousCount = state.search.largeLuggageCount;
       const previouslyOverCapacity = previousCount > capacity;
       const nextOverCapacity = largeLuggageCount > capacity;
@@ -231,8 +293,7 @@ export function BookingFlowProvider({
       dispatch({ type: "QUOTE_LOADING" });
 
       const body = buildQuoteRequest(search, locale, {
-        vehicleCategoryId: state.selectedVehicleCategoryId,
-        quantity: state.selectedQuantity,
+        vehicles: state.selectedVehicles,
         extras: state.selectedExtras,
       });
 
@@ -262,13 +323,12 @@ export function BookingFlowProvider({
       state.quote,
       state.search,
       state.selectedExtras,
-      state.selectedQuantity,
-      state.selectedVehicleCategoryId,
+      state.selectedVehicles,
     ],
   );
 
   const submitReservation = useCallback(async () => {
-    if (!state.quote || !state.selectedVehicleCategoryId) {
+    if (!state.quote || state.selectedVehicles.length === 0) {
       return;
     }
 
@@ -285,17 +345,11 @@ export function BookingFlowProvider({
         ? `${state.search.returnDate}T${state.search.returnTime}`
         : undefined;
 
-    const selectedOption = state.quote.options.find(
-      (option) =>
-        option.vehicleCategoryId === state.selectedVehicleCategoryId,
-    );
-    const clientQuotedTotalMinor = selectedOption
-      ? buildOrderPricing(
-          selectedOption,
-          state.quote,
-          state.selectedExtras,
-        ).totalMinor
-      : 0;
+    const clientQuotedTotalMinor = buildOrderPricing(
+      state.quote,
+      state.selectedVehicles,
+      state.selectedExtras,
+    ).totalMinor;
 
     const body = {
       routeId: state.quote.routeId,
@@ -325,12 +379,7 @@ export function BookingFlowProvider({
       infantCount: state.search.infantCount,
       largeLuggageCount: state.search.largeLuggageCount,
       cabinLuggageCount: state.search.cabinLuggageCount,
-      vehicles: [
-        {
-          vehicleCategoryId: state.selectedVehicleCategoryId,
-          quantity: state.selectedQuantity,
-        },
-      ],
+      vehicles: state.selectedVehicles,
       extras: state.selectedExtras,
       customer: {
         firstName: state.customer.firstName,
@@ -381,6 +430,7 @@ export function BookingFlowProvider({
       setSelectedExtras,
       updateOutboundSchedule,
       updateLuggageCount,
+      confirmVehicleSelection,
       submitReservation,
     }),
     [
@@ -393,6 +443,7 @@ export function BookingFlowProvider({
       setSelectedExtras,
       updateOutboundSchedule,
       updateLuggageCount,
+      confirmVehicleSelection,
       submitReservation,
     ],
   );
