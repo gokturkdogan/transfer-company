@@ -156,12 +156,16 @@ describe("VehicleRecommendationCard", () => {
       />,
     );
 
-    await user.click(screen.getByLabelText(/Mercedes Vito, 1/));
+    const thumb = screen.getByLabelText(/Mercedes Vito, 1/);
+    await user.click(thumb);
 
     expect(screen.getByAltText("Mercedes Vito")).toHaveAttribute(
       "src",
       expect.stringContaining("interior.jpg"),
     );
+
+    const thumbImage = thumb.querySelector("img");
+    expect(thumbImage).toHaveAttribute("src", expect.stringContaining("cover.jpg"));
   });
 
   it("disables ineligible vehicles", () => {
