@@ -792,43 +792,6 @@
     "email": "E-posta",
     "reserve": "Rezervasyon"
   },
-  "trust": {
-    "fixedPrice": {
-      "title": "Sabit Fiyat",
-      "description": "Rezervasyon öncesi fiyatınızı bilin."
-    },
-    "support": {
-      "title": "7/24 Destek",
-      "description": "İhtiyacınız olduğunda yanınızdayız."
-    },
-    "professional": {
-      "title": "Profesyonel Şoför",
-      "description": "Premium yolculuk için deneyimli şoförler."
-    },
-    "noPayment": {
-      "title": "Online Ödeme Yok",
-      "description": "Online ödeme yapmadan güvenli rezervasyon talebi gönderin."
-    }
-  },
-  "transfers": {
-    "eyebrow": "Havalimanı transferleri",
-    "title": "{district} transferi",
-    "description": "{district} için sabit fiyatlı VIP havalimanı transferinizi rezerve edin. Karşılama, uçuş takibi ve profesyonel şoförler, iki dakikadan kısa sürede rezervasyon.",
-    "cta": "Bu transferi rezerve et",
-    "browseAll": "Tüm rezervasyon seçenekleri",
-    "meta": {
-      "title": "{district} Havalimanı Transferi",
-      "description": "Antalya Havalimanı ile {district} arasında sabit fiyatlı VIP transfer. Karşılama dahil. 60 saniyede online rezervasyon.",
-      "fallbackTitle": "Havalimanı Transferi"
-    },
-    "district": {
-      "title": "{destination} havaalanı transferi",
-      "description": "Antalya Havalimanı'ndan {destination} bölgesine sabit fiyatlı VIP transfer. Karşılama ve uçuş takibi dahil.",
-      "heading": "{destination} VIP transfer",
-      "body": "Antalya Havalimanı'ndan {destination} bölgesine sabit fiyat, karşılama ve ücretsiz uçuş takibi ile konforlu seyahat.",
-      "cta": "Bu transferi rezerve et"
-    }
-  },
   "blog": {
     "footerTitle": "Transfer Rehberi",
     "allGuides": "Tüm rehberler",
@@ -842,7 +805,7 @@
     "sidebarCtaTitle": "Transferinizi planlayın",
     "sidebarCtaBody": "Birkaç dakikada rezervasyon talebi gönderin. Sabit fiyat, karşılama ve uçuş takibi dahil.",
     "bookCta": "Rezervasyon yap",
-    "transferCta": "Bölge transfer sayfası",
+    "transferCta": "Bu bölgeye transfer rezervasyonu",
     "moreGuidesTitle": "Diğer rehberler",
     "moreGuidesSubtitle": "Antalya transferine dair kısa ve uygulanabilir yazılar.",
     "hub": {

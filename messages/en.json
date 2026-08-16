@@ -792,43 +792,6 @@
     "email": "Email",
     "reserve": "Book"
   },
-  "trust": {
-    "fixedPrice": {
-      "title": "Fixed Price",
-      "description": "Know your transfer price before you book."
-    },
-    "support": {
-      "title": "24/7 Support",
-      "description": "We are here whenever you need help."
-    },
-    "professional": {
-      "title": "Professional Driver",
-      "description": "Experienced drivers for a premium journey."
-    },
-    "noPayment": {
-      "title": "No Online Payment",
-      "description": "Submit a secure reservation request without paying online."
-    }
-  },
-  "transfers": {
-    "eyebrow": "Airport transfers",
-    "title": "Transfer to {district}",
-    "description": "Book a fixed-price VIP airport transfer to {district}. Meet & greet, flight tracking, and professional drivers, reserve in under two minutes.",
-    "cta": "Book this transfer",
-    "browseAll": "All booking options",
-    "meta": {
-      "title": "{district} Airport Transfer",
-      "description": "Fixed-price VIP transfer between Antalya Airport and {district}. Meet & greet included. Book online in 60 seconds.",
-      "fallbackTitle": "Airport Transfer"
-    },
-    "district": {
-      "title": "Airport transfer to {destination}",
-      "description": "Book a fixed-price VIP transfer from Antalya Airport to {destination}. Meet & greet and flight tracking included.",
-      "heading": "VIP transfer to {destination}",
-      "body": "Travel in comfort from Antalya Airport to {destination} with fixed pricing, complimentary meet & greet, and free flight tracking.",
-      "cta": "Book this transfer"
-    }
-  },
   "blog": {
     "footerTitle": "Transfer Guides",
     "allGuides": "All guides",
@@ -842,7 +805,7 @@
     "sidebarCtaTitle": "Plan your transfer",
     "sidebarCtaBody": "Send a booking request in minutes. Fixed price, meet & greet and flight tracking included.",
     "bookCta": "Book a transfer",
-    "transferCta": "Destination transfer page",
+    "transferCta": "Book transfer to this destination",
     "moreGuidesTitle": "More guides",
     "moreGuidesSubtitle": "Short, practical notes on Antalya airport transfers.",
     "hub": {

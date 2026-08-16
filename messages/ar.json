@@ -786,43 +786,6 @@
     "email": "البريد الإلكتروني",
     "reserve": "احجز"
   },
-  "trust": {
-    "fixedPrice": {
-      "title": "سعر ثابت",
-      "description": "اعرف سعر النقل قبل الحجز."
-    },
-    "support": {
-      "title": "دعم 24/7",
-      "description": "نحن هنا متى احتجت المساعدة."
-    },
-    "professional": {
-      "title": "سائق محترف",
-      "description": "سائقون ذوو خبرة لرحلة مميزة."
-    },
-    "noPayment": {
-      "title": "بدون دفع إلكتروني",
-      "description": "أرسل طلب حجز آمن دون الدفع عبر الإنترنت."
-    }
-  },
-  "transfers": {
-    "eyebrow": "نقل المطار",
-    "title": "نقل إلى {district}",
-    "description": "احجز نقل VIP بأسعار ثابتة من المطار إلى {district}. استقبال في المطار وتتبع الرحلة وسائقون محترفون, احجز في أقل من دقيقتين.",
-    "cta": "احجز هذا النقل",
-    "browseAll": "كل خيارات الحجز",
-    "meta": {
-      "title": "نقل المطار إلى {district}",
-      "description": "نقل VIP بسعر ثابت بين مطار أنطاليا و{district}. يشمل الاستقبال. احجز عبر الإنترنت خلال 60 ثانية.",
-      "fallbackTitle": "نقل المطار"
-    },
-    "district": {
-      "title": "نقل المطار إلى {destination}",
-      "description": "احجز نقل VIP بسعر ثابت من مطار أنطاليا إلى {destination}. يشمل الاستقبال وتتبع الرحلة.",
-      "heading": "نقل VIP إلى {destination}",
-      "body": "سافر براحة من مطار أنطاليا إلى {destination} بأسعار ثابتة واستقبال وتتبع رحلة مجاني.",
-      "cta": "احجز هذا النقل"
-    }
-  },
   "blog": {
     "footerTitle": "أدلة النقل",
     "allGuides": "كل الأدلة",
@@ -836,7 +799,7 @@
     "sidebarCtaTitle": "خطط لنقلتك",
     "sidebarCtaBody": "أرسل طلب حجز في دقائق. سعر ثابت واستقبال وتتبع للرحلة.",
     "bookCta": "احجز النقل",
-    "transferCta": "صفحة الوجهة",
+    "transferCta": "احجز النقل إلى هذه الوجهة",
     "moreGuidesTitle": "أدلة أخرى",
     "moreGuidesSubtitle": "ملاحظات قصيرة وعملية حول النقل من مطار أنطاليا.",
     "hub": {

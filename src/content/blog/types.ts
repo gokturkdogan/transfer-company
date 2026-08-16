@@ -18,7 +18,7 @@ export type BlogPostDefinition = {
   publishedAt: string;
   coverImage: string;
   coverImageAlt: Record<string, string>;
-  /** Optional transfer landing deep-link target */
+  /** Optional booking deep-link district code (resolved to /booking?district=) */
   transferDistrictCode?: string;
   content: Record<string, BlogLocaleContent>;
 };
