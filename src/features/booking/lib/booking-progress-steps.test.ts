@@ -1,23 +1,50 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  getBookingProgressIndex,
-  resolveBookingProgressStep,
+  canNavigateToBookingProgressStep,
+  isBookingProgressStepReachable,
 } from "@/features/booking/lib/booking-progress-steps";
+import type { BookingFlowState } from "@/features/booking/lib/types";
 
-describe("booking progress steps", () => {
-  it("maps legacy extras step to customer", () => {
-    expect(resolveBookingProgressStep("extras")).toBe("customer");
+function baseState(
+  overrides: Partial<BookingFlowState> = {},
+): Pick<BookingFlowState, "step" | "quote" | "selectedVehicles"> {
+  return {
+    step: "vehicle",
+    quote: {
+      routeId: "route-1",
+      currency: "EUR",
+      timeZone: "Europe/Istanbul",
+      options: [],
+    },
+    selectedVehicles: [],
+    ...overrides,
+  };
+}
+
+describe("booking progress navigation", () => {
+  it("allows navigating back to vehicle when quote exists", () => {
+    const state = baseState({
+      step: "customer",
+      selectedVehicles: [{ vehicleCategoryId: "vito", quantity: 1 }],
+    });
+
+    expect(canNavigateToBookingProgressStep(state, "vehicle")).toBe(true);
   });
 
-  it("hides the progress bar on the success screen", () => {
-    expect(resolveBookingProgressStep("success")).toBeNull();
+  it("blocks customer step until a vehicle is selected", () => {
+    const state = baseState({ step: "vehicle" });
+
+    expect(isBookingProgressStepReachable(state, "customer")).toBe(false);
+    expect(canNavigateToBookingProgressStep(state, "customer")).toBe(false);
   });
 
-  it("returns stable indices with search leading the flow", () => {
-    expect(getBookingProgressIndex("search")).toBe(0);
-    expect(getBookingProgressIndex("vehicle")).toBe(1);
-    expect(getBookingProgressIndex("customer")).toBe(2);
-    expect(getBookingProgressIndex("review")).toBe(3);
+  it("allows review when vehicles are selected", () => {
+    const state = baseState({
+      step: "customer",
+      selectedVehicles: [{ vehicleCategoryId: "vito", quantity: 1 }],
+    });
+
+    expect(canNavigateToBookingProgressStep(state, "review")).toBe(true);
   });
 });

@@ -90,7 +90,7 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
                 showMobileStickySummary
                   ? "pb-[calc(5.75rem+env(safe-area-inset-bottom))] md:pb-16"
                   : showVehicleMultiSelectFooter
-                    ? "pb-28 lg:pb-[7.5rem]"
+                    ? "pb-[calc(5.75rem+env(safe-area-inset-bottom))] lg:pb-[7.5rem]"
                     : "pb-28 md:pb-16",
               ),
         )}

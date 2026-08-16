@@ -67,14 +67,16 @@ export function VehicleMultiSelectFooter() {
   return createPortal(
     <div
       className={cn(
-        "fixed inset-x-0 bottom-0 z-[55] hidden border-t border-white/10 lg:block",
+        "fixed inset-x-0 bottom-0 z-[60] border-t border-white/10",
         state.isLoadingQuote && "opacity-80",
       )}
     >
       <div
         className={cn(
           "relative bg-gradient-to-br from-ink-elevated via-ink-soft to-ink",
-          "px-6 py-4 shadow-[0_-16px_48px_rgb(0_0_0/0.42)] backdrop-blur-xl",
+          "px-4 pt-3 shadow-[0_-16px_48px_rgb(0_0_0/0.42)] backdrop-blur-xl",
+          "pb-[max(0.75rem,env(safe-area-inset-bottom))]",
+          "sm:px-6 sm:py-4",
         )}
       >
         <span
@@ -86,16 +88,21 @@ export function VehicleMultiSelectFooter() {
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_120%_at_100%_100%,rgb(200_164_93/0.12),transparent_55%)]"
         />
 
-        <div className="relative z-[1] mx-auto flex max-w-7xl items-center justify-between gap-6">
-          <div className="flex min-w-0 items-center gap-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/8 text-gold">
+        <div
+          className={cn(
+            "relative z-[1] mx-auto flex max-w-7xl items-center gap-3",
+            "sm:justify-between sm:gap-6",
+          )}
+        >
+          <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/8 text-gold sm:h-11 sm:w-11">
               <Users className="h-5 w-5" aria-hidden />
             </span>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-white">
+              <p className="text-xs font-medium text-white sm:text-sm">
                 {t("multiSelectHint")}
               </p>
-              <p className="mt-0.5 text-sm text-white/60">
+              <p className="mt-0.5 text-xs text-white/60 sm:text-sm">
                 {t("capacityProgress", {
                   covered: coveredPassengers,
                   required: requiredPassengers,
@@ -121,7 +128,7 @@ export function VehicleMultiSelectFooter() {
             variant="gold"
             size="lg"
             disabled={!canContinue || state.isLoadingQuote}
-            className="shrink-0 cursor-pointer gap-2 px-8 text-sm font-bold uppercase tracking-[0.1em] disabled:cursor-not-allowed"
+            className="h-11 shrink-0 cursor-pointer gap-2 px-4 text-xs font-bold uppercase tracking-[0.1em] disabled:cursor-not-allowed sm:px-8 sm:text-sm"
             onClick={() => void confirmVehicleSelection()}
           >
             {t("continueSelection")}
