@@ -34,6 +34,7 @@ type VehicleRecommendationCardProps = {
   selectedQuantity: number;
   selected: boolean;
   disabled: boolean;
+  capacityFilled: boolean;
   onSelect: () => void;
   onToggle: () => void;
   onAdjustQuantity: (delta: number) => void;
@@ -66,6 +67,7 @@ export function VehicleRecommendationCard({
   selectedQuantity,
   selected,
   disabled,
+  capacityFilled,
   onSelect,
   onToggle,
   onAdjustQuantity,
@@ -86,6 +88,8 @@ export function VehicleRecommendationCard({
       ? t("multiVehicle", { quantity: selectedQuantity, name: option.name })
       : option.name;
   const vehicleFeatures = option.features.slice(0, MAX_VEHICLE_FEATURES);
+  const checkboxDisabled = disabled || (!selected && capacityFilled);
+  const canIncreaseQuantity = selectedQuantity > 0 && !capacityFilled;
 
   return (
     <article
@@ -212,15 +216,21 @@ export function VehicleRecommendationCard({
               <button
                 type="button"
                 aria-pressed={selected}
-                disabled={disabled}
+                disabled={checkboxDisabled}
                 className={cn(
                   "flex h-11 w-11 items-center justify-center rounded-full border-2 transition-colors",
                   selected
                     ? "border-gold bg-gold text-white"
                     : "border-border bg-card text-muted-foreground hover:border-gold/40",
-                  disabled && "opacity-50",
+                  checkboxDisabled
+                    ? "cursor-not-allowed opacity-50"
+                    : "cursor-pointer",
                 )}
                 onClick={() => {
+                  if (checkboxDisabled) {
+                    return;
+                  }
+
                   track({
                     name: "vehicle_selected",
                     payload: { vehicleCategoryId: option.vehicleCategoryId },
@@ -236,7 +246,7 @@ export function VehicleRecommendationCard({
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card"
+                    className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-border bg-card transition-colors hover:border-gold/40 hover:bg-muted/60"
                     aria-label={t("decreaseQuantity")}
                     onClick={() => onAdjustQuantity(-1)}
                   >
@@ -247,9 +257,21 @@ export function VehicleRecommendationCard({
                   </span>
                   <button
                     type="button"
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card"
+                    disabled={!canIncreaseQuantity}
+                    className={cn(
+                      "flex h-8 w-8 items-center justify-center rounded-full border border-border bg-card transition-colors",
+                      canIncreaseQuantity
+                        ? "cursor-pointer hover:border-gold/40 hover:bg-muted/60"
+                        : "cursor-not-allowed opacity-45",
+                    )}
                     aria-label={t("increaseQuantity")}
-                    onClick={() => onAdjustQuantity(1)}
+                    onClick={() => {
+                      if (!canIncreaseQuantity) {
+                        return;
+                      }
+
+                      onAdjustQuantity(1);
+                    }}
                   >
                     <Plus className="h-3.5 w-3.5" />
                   </button>
@@ -262,7 +284,7 @@ export function VehicleRecommendationCard({
               variant={selected ? "outline" : "gold"}
               size="lg"
               disabled={disabled}
-              className="w-full gap-2"
+              className="w-full cursor-pointer gap-2 disabled:cursor-not-allowed"
               onClick={() => {
                 track({
                   name: "vehicle_selected",

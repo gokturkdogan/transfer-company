@@ -76,4 +76,16 @@ describe("vehicle-selection", () => {
     expect(sumSelectedPassengerCapacity(withSecond, options)).toBe(6);
     expect(hasSufficientPassengerCapacity(withSecond, options, 5)).toBe(true);
   });
+
+  it("blocks increases once passenger capacity is filled", () => {
+    const filled = adjustVehicleSelectionQuantity([], "sprinter", 1, options, 5);
+
+    expect(sumSelectedPassengerCapacity(filled, options)).toBe(14);
+    expect(
+      adjustVehicleSelectionQuantity(filled, "sedan", 1, options, 5),
+    ).toEqual(filled);
+    expect(
+      adjustVehicleSelectionQuantity(filled, "sprinter", 1, options, 5),
+    ).toEqual(filled);
+  });
 });

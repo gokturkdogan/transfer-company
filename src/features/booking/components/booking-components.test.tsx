@@ -112,6 +112,7 @@ function createCardProps(
   return {
     multiSelectMode: false,
     selectedQuantity: 0,
+    capacityFilled: false,
     onToggle: () => undefined,
     onAdjustQuantity: () => undefined,
     ...overrides,

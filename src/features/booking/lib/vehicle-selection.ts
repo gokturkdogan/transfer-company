@@ -58,6 +58,18 @@ export function hasSufficientPassengerCapacity(
   );
 }
 
+export function isPassengerCapacityFilled(
+  selectedVehicles: SelectedVehicle[],
+  options: TransferVehicleOptionDto[],
+  requiredPassengers: number,
+): boolean {
+  return hasSufficientPassengerCapacity(
+    selectedVehicles,
+    options,
+    requiredPassengers,
+  );
+}
+
 export function getSelectedVehicleQuantity(
   selectedVehicles: SelectedVehicle[],
   vehicleCategoryId: string,
@@ -73,8 +85,19 @@ export function adjustVehicleSelectionQuantity(
   selectedVehicles: SelectedVehicle[],
   vehicleCategoryId: string,
   delta: number,
+  options?: TransferVehicleOptionDto[],
+  requiredPassengers?: number,
 ): SelectedVehicle[] {
   if (delta === 0) {
+    return selectedVehicles;
+  }
+
+  if (
+    delta > 0 &&
+    options &&
+    requiredPassengers !== undefined &&
+    isPassengerCapacityFilled(selectedVehicles, options, requiredPassengers)
+  ) {
     return selectedVehicles;
   }
 

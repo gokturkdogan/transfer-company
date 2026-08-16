@@ -8,7 +8,10 @@ import type {
   SelectedExtra,
   SelectedVehicle,
 } from "@/features/booking/lib/types";
-import { adjustVehicleSelectionQuantity } from "@/features/booking/lib/vehicle-selection";
+import {
+  adjustVehicleSelectionQuantity,
+  getRequiredCapacityPassengerCount,
+} from "@/features/booking/lib/vehicle-selection";
 import type { PassengerDetails } from "@/features/booking/lib/passenger-details";
 import type { TransferAvailabilityResponseDto } from "@/features/pricing/types/dto";
 import type { ReservationResponseDto } from "@/features/pricing/types/dto";
@@ -334,6 +337,10 @@ export function bookingFlowReducer(
           state.selectedVehicles,
           action.vehicleCategoryId,
           action.delta,
+          state.quote?.options,
+          state.quote
+            ? getRequiredCapacityPassengerCount(state.search)
+            : undefined,
         ),
         selectedExtras: [],
         errorKey: null,

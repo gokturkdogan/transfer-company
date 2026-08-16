@@ -11,6 +11,7 @@ import {
   getRequiredCapacityPassengerCount,
   getSelectedVehicleQuantity,
   hasSufficientPassengerCapacity,
+  isPassengerCapacityFilled,
   requiresMultiVehicleSelection,
   sumSelectedPassengerCapacity,
 } from "@/features/booking/lib/vehicle-selection";
@@ -49,6 +50,11 @@ export function VehicleRecommendationList() {
     state.selectedVehicles,
     state.quote.options,
   );
+  const capacityFilled = isPassengerCapacityFilled(
+    state.selectedVehicles,
+    state.quote.options,
+    requiredPassengers,
+  );
   const canContinue =
     state.selectedVehicles.length > 0 &&
     hasSufficientPassengerCapacity(
@@ -60,7 +66,7 @@ export function VehicleRecommendationList() {
   return (
     <div className="space-y-5">
       {multiSelectMode ? (
-        <div className="rounded-2xl border border-gold/25 bg-gold/5 px-4 py-3">
+        <div className="rounded-2xl border border-gold/25 bg-gold/5 px-4 py-3 lg:hidden">
           <p className="text-sm font-medium text-foreground">
             {t("multiSelectHint")}
           </p>
@@ -88,6 +94,7 @@ export function VehicleRecommendationList() {
                 selectedQuantity={selectedQuantity}
                 selected={selectedQuantity > 0}
                 disabled={option.eligibility === "INELIGIBLE"}
+                capacityFilled={capacityFilled}
                 onSelect={() =>
                   dispatch({
                     type: "SELECT_VEHICLE",
@@ -116,11 +123,12 @@ export function VehicleRecommendationList() {
       </ul>
 
       {multiSelectMode ? (
-        <div className="flex justify-end">
+        <div className="flex justify-end lg:hidden">
           <Button
             type="button"
             variant="gold"
             size="lg"
+            className="cursor-pointer gap-2 disabled:cursor-not-allowed"
             disabled={!canContinue || state.isLoadingQuote}
             onClick={() => void confirmVehicleSelection()}
           >

@@ -5,11 +5,16 @@ import { useEffect, useRef } from "react";
 
 import { BOOKING_IMAGES } from "@/config/booking-images";
 import { BookingMobileFooter } from "@/features/booking/components/BookingMobileFooter";
+import { VehicleMultiSelectFooter } from "@/features/booking/components/VehicleMultiSelectFooter";
 import { BookingInlineSearchBar } from "@/features/booking/components/BookingInlineSearchBar";
 import { BookingSidebar } from "@/features/booking/components/BookingSidebar";
 import { BookingPageHero } from "@/features/booking/components/BookingPageHero";
 import { BookingStepper } from "@/features/booking/components/BookingStepper";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import {
+  getRequiredCapacityPassengerCount,
+  requiresMultiVehicleSelection,
+} from "@/features/booking/lib/vehicle-selection";
 import { cn } from "@/lib/utils";
 
 type BookingFlowShellProps = {
@@ -24,6 +29,13 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
   const showOrderSummary =
     state.step === "customer" || state.step === "review";
   const showMobileStickySummary = state.step === "customer";
+  const showVehicleMultiSelectFooter =
+    state.step === "vehicle" &&
+    state.quote &&
+    requiresMultiVehicleSelection(
+      getRequiredCapacityPassengerCount(state.search),
+      state.quote.options,
+    );
   const showStepper =
     state.step !== "search" &&
     !(state.step === "vehicle" && !state.quote) &&
@@ -77,7 +89,9 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
                 "-mt-14 md:-mt-20",
                 showMobileStickySummary
                   ? "pb-[calc(5.75rem+env(safe-area-inset-bottom))] md:pb-16"
-                  : "pb-28 md:pb-16",
+                  : showVehicleMultiSelectFooter
+                    ? "pb-28 lg:pb-[7.5rem]"
+                    : "pb-28 md:pb-16",
               ),
         )}
       >
@@ -112,6 +126,7 @@ export function BookingFlowShell({ children }: BookingFlowShellProps) {
         </div>
       </div>
 
+      <VehicleMultiSelectFooter />
       <BookingMobileFooter />
     </div>
   );
