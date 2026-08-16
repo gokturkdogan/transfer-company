@@ -9,14 +9,14 @@ import { Link } from "@/i18n/navigation";
 type BlogArticleViewProps = {
   post: BlogPostDefinition;
   content: BlogLocaleContent;
-  contentLocale: "tr" | "en";
+  coverImageAlt: string;
   transferHref: string | null;
 };
 
 export async function BlogArticleView({
   post,
   content,
-  contentLocale,
+  coverImageAlt,
   transferHref,
 }: BlogArticleViewProps) {
   const t = await getTranslations("blog");
@@ -28,7 +28,7 @@ export async function BlogArticleView({
         <div className="absolute inset-0">
           <Image
             src={post.coverImage}
-            alt={post.coverImageAlt[contentLocale]}
+            alt={coverImageAlt}
             fill
             priority
             sizes="100vw"

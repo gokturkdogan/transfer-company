@@ -23,4 +23,9 @@ export { updateEnabledCurrenciesAction } from "@/features/admin/server/actions/c
 export { updateContactChannelsAction } from "@/features/admin/server/actions/contact";
 export { updateSocialMediaLinksAction } from "@/features/admin/server/actions/social-media";
 export { updateHomeTestimonialsAction } from "@/features/admin/server/actions/testimonials";
+export {
+  createGuideAction,
+  deleteGuideAction,
+  updateGuideAction,
+} from "@/features/admin/server/actions/guides";
 export { updateEnabledLocalesAction } from "@/features/admin/server/actions/locales";

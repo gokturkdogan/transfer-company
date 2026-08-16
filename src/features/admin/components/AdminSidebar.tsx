@@ -2,6 +2,7 @@
 
 import {
   Banknote,
+  BookOpen,
   CalendarCheck,
   Car,
   Coins,
@@ -76,6 +77,11 @@ const NAV_ITEMS = [
     href: "/admin/testimonials",
     label: adminCopy.sidebar.testimonials,
     icon: MessageSquareQuote,
+  },
+  {
+    href: "/admin/guides",
+    label: adminCopy.sidebar.guides,
+    icon: BookOpen,
   },
   {
     href: "/admin/locales",

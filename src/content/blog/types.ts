@@ -17,13 +17,10 @@ export type BlogPostDefinition = {
   slug: string;
   publishedAt: string;
   coverImage: string;
-  coverImageAlt: Record<"tr" | "en", string>;
+  coverImageAlt: Record<string, string>;
   /** Optional transfer landing deep-link target */
   transferDistrictCode?: string;
-  content: {
-    tr: BlogLocaleContent;
-    en: BlogLocaleContent;
-  };
+  content: Record<string, BlogLocaleContent>;
 };
 
 export type BlogPostSummary = {

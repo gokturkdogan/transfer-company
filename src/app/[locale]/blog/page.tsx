@@ -7,9 +7,9 @@ import { Container } from "@/components/layout/Container";
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
-import { listBlogSummaries } from "@/content/blog/registry";
-import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
 import { buildBlogHubMetadata } from "@/features/blog/lib/blog-metadata";
+import { getCachedBlogSummaries } from "@/server/cache/blog-posts";
+import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
 
 export const revalidate = 120;
 
@@ -33,7 +33,7 @@ export default async function BlogHubPage({
   setRequestLocale(locale);
 
   const [articles, enabledLocales] = await Promise.all([
-    listBlogSummaries(locale),
+    getCachedBlogSummaries(locale),
     getCachedEnabledLocales(),
   ]);
 
@@ -44,15 +44,21 @@ export default async function BlogHubPage({
         <BlogHubHero />
         <section className="py-12 md:py-16">
           <Container>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {articles.map((article, index) => (
-                <BlogArticleCard
-                  key={article.slug}
-                  article={article}
-                  priority={index < 2}
-                />
-              ))}
-            </div>
+            {articles.length === 0 ? (
+              <p className="text-center text-muted-foreground">
+                Henüz yayınlanan rehber yok.
+              </p>
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {articles.map((article, index) => (
+                  <BlogArticleCard
+                    key={article.slug}
+                    article={article}
+                    priority={index < 2}
+                  />
+                ))}
+              </div>
+            )}
           </Container>
         </section>
       </main>

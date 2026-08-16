@@ -8,7 +8,7 @@ import {
   getCachedEnabledLocales,
   getCachedPopularDestinations,
 } from "@/server/cache/public-catalog";
-import { getAllBlogSlugs } from "@/content/blog/registry";
+import { getCachedBlogSlugs } from "@/server/cache/blog-posts";
 
 const STATIC_ROUTES = [
   { path: "", changeFrequency: "daily" as const, priority: 1 },
@@ -48,7 +48,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  const blogRoutes = getAllBlogSlugs().map((slug) => ({
+  const blogSlugs = await getCachedBlogSlugs();
+
+  const blogRoutes = blogSlugs.map((slug) => ({
     path: `/blog/${slug}`,
     changeFrequency: "weekly" as const,
     priority: 0.7,

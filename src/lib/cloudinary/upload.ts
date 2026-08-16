@@ -4,6 +4,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 import { serverEnv } from "@/config/env";
 import { buildDestinationImageFolderPath } from "@/lib/cloudinary/destination-folder";
+import { buildBlogCoverFolderPath } from "@/lib/cloudinary/blog-folder";
 import { buildVehicleImageFolderPath } from "@/lib/cloudinary/vehicle-folder";
 import { DomainRuleError } from "@/server/errors";
 
@@ -130,4 +131,17 @@ export async function uploadDestinationImageToCloudinary(
     folder,
     input.assetName ?? "cover",
   );
+}
+
+export type UploadBlogCoverImageInput = {
+  imageDataUrl: string;
+  slug: string;
+};
+
+export async function uploadBlogCoverImageToCloudinary(
+  input: UploadBlogCoverImageInput,
+): Promise<UploadVehicleImageResult> {
+  const folder = buildBlogCoverFolderPath(input.slug);
+
+  return uploadImageToCloudinary(input.imageDataUrl, folder, "cover");
 }

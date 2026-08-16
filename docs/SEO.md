@@ -24,7 +24,7 @@ Public brand name: **Royal Rhein Transfers** (`common.appName` in `messages/*.js
 ## Blog / transfer guides
 
 - Hub: `/[locale]/blog` — header nav **Rehberlerimiz** (`home.nav.guides`) + footer **Transfer Rehberi** column
-- Articles: `/[locale]/blog/[slug]` — content in `src/content/blog/posts/*` (tr + en; other locales fall back to en)
+- Articles: `/[locale]/blog/[slug]` — content in `blog_posts` / `blog_post_translations` (admin **Rehberler**); enabled locales with fallback `tr` → `en`
 - Footer column **Transfer Rehberi** links hub + featured articles
 - ISR `revalidate = 120` on hub and article pages
 

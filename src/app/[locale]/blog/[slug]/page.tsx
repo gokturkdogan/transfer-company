@@ -7,15 +7,17 @@ import { BlogMoreGuides } from "@/components/blog/BlogMoreGuides";
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
+import { getTransferPathForPost } from "@/content/blog/registry";
 import {
-  getAllBlogSlugs,
-  getBlogLocaleContent,
-  getBlogPostBySlug,
-  getTransferPathForPost,
-  listBlogSummaries,
-  resolveBlogContentLocale,
-} from "@/content/blog/registry";
+  resolveBlogCoverImageAlt,
+  resolveBlogLocaleContent,
+} from "@/features/blog/domain/resolve-locale-content";
 import { buildBlogArticleMetadata } from "@/features/blog/lib/blog-metadata";
+import {
+  getCachedBlogPostBySlug,
+  getCachedBlogSlugs,
+  getCachedBlogSummaries,
+} from "@/server/cache/blog-posts";
 import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
 
 export const revalidate = 120;
@@ -25,12 +27,14 @@ type PageParams = {
 };
 
 export async function generateStaticParams() {
-  return getAllBlogSlugs().map((slug) => ({ slug }));
+  const slugs = await getCachedBlogSlugs();
+
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { locale, slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = await getCachedBlogPostBySlug(slug);
 
   if (!post) {
     return {};
@@ -49,19 +53,19 @@ export default async function BlogArticlePage({ params }: PageParams) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const post = getBlogPostBySlug(slug);
+  const post = await getCachedBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  const contentLocale = resolveBlogContentLocale(locale);
-  const content = getBlogLocaleContent(post, locale);
+  const { content } = resolveBlogLocaleContent(post.content, locale);
+  const coverImageAlt = resolveBlogCoverImageAlt(post.coverImageAlt, locale);
   const transferHref = getTransferPathForPost(post);
 
   const [enabledLocales, allSummaries] = await Promise.all([
     getCachedEnabledLocales(),
-    listBlogSummaries(locale),
+    getCachedBlogSummaries(locale),
   ]);
 
   return (
@@ -71,7 +75,7 @@ export default async function BlogArticlePage({ params }: PageParams) {
         <BlogArticleView
           post={post}
           content={content}
-          contentLocale={contentLocale}
+          coverImageAlt={coverImageAlt}
           transferHref={transferHref}
         />
         <BlogMoreGuides articles={allSummaries} currentSlug={slug} />

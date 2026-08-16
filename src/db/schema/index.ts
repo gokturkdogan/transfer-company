@@ -9,6 +9,7 @@ export * from "./currencies";
 export * from "./contact-channels";
 export * from "./social-media";
 export * from "./home-testimonials";
+export * from "./blog-posts";
 export * from "./locales";
 export * from "./customers";
 export * from "./reservations";

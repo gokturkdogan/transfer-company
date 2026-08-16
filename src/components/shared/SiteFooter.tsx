@@ -8,11 +8,7 @@ import { SocialMediaIconLinks } from "@/components/shared/SocialMediaIconLinks";
 import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
-import {
-  FEATURED_BLOG_SLUGS,
-  getBlogLocaleContent,
-  getBlogPostBySlug,
-} from "@/content/blog/registry";
+import { getCachedFeaturedGuideLinks } from "@/server/cache/blog-posts";
 import {
   toMailtoHref,
   toTelHref,
@@ -36,20 +32,7 @@ export async function SiteFooter({
   const contactChannels = await getPublicContactChannels();
   const socialMediaLinks = await getCachedSocialMediaLinks();
 
-  const guideLinks = FEATURED_BLOG_SLUGS.map((slug) => {
-    const post = getBlogPostBySlug(slug);
-
-    if (!post) {
-      return null;
-    }
-
-    const content = getBlogLocaleContent(post, locale);
-
-    return {
-      slug,
-      title: content.title,
-    };
-  }).filter((item): item is { slug: string; title: string } => item !== null);
+  const guideLinks = await getCachedFeaturedGuideLinks(locale);
 
   return (
     <footer className="relative overflow-hidden border-t border-white/10 surface-ink text-white">

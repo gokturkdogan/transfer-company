@@ -63,6 +63,7 @@ export async function SeoContent() {
                   src={HOMEPAGE_IMAGES.howItWorks.meetGreet}
                   alt={t("imageAlt")}
                   fill
+                  loading="lazy"
                   sizes="(max-width: 1024px) 100vw, 45vw"
                   className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
                 />
