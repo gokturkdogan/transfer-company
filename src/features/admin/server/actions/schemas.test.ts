@@ -80,6 +80,7 @@ describe("admin action helpers", () => {
           { imageKey: "b.jpg", showInBookingPreview: true },
           { imageKey: "c.jpg", showInBookingPreview: true },
           { imageKey: "d.jpg", showInBookingPreview: true },
+          { imageKey: "e.jpg", showInBookingPreview: true },
         ],
       }),
     ).toThrow(DomainRuleError);

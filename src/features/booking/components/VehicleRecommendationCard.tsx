@@ -62,16 +62,14 @@ export function VehicleRecommendationCard({
   const t = useTranslations("booking.vehicle");
   const locale = useLocale();
   const coverImage = resolveVehicleCoverImage(option.imageKey, option.code);
-  const previewImages = useMemo(() => {
-    const additional = option.galleryImageKeys
-      .map((image) => image.trim())
-      .filter((image) => image.length > 0 && image !== coverImage);
-
-    return [coverImage, ...additional].slice(
-      0,
-      MAX_VEHICLE_BOOKING_PREVIEW_IMAGES + 1,
-    );
-  }, [coverImage, option.galleryImageKeys]);
+  const previewImages = useMemo(
+    () =>
+      option.galleryImageKeys
+        .map((image) => image.trim())
+        .filter((image) => image.length > 0)
+        .slice(0, MAX_VEHICLE_BOOKING_PREVIEW_IMAGES),
+    [option.galleryImageKeys],
+  );
   const displayName =
     option.quantity > 1
       ? t("multiVehicle", { quantity: option.quantity, name: option.name })
@@ -90,8 +88,9 @@ export function VehicleRecommendationCard({
       <div className="grid gap-0 lg:grid-cols-[minmax(0,34%)_minmax(0,1fr)_11.5rem]">
         <div className="border-b border-border/60 p-4 lg:border-b-0 lg:border-e">
           <VehicleImageGallery
-            key={`${option.vehicleCategoryId}-${previewImages.join("|")}`}
-            images={previewImages}
+            key={`${option.vehicleCategoryId}-${coverImage}-${previewImages.join("|")}`}
+            coverImage={coverImage}
+            previewImages={previewImages}
             alt={displayName}
           />
         </div>

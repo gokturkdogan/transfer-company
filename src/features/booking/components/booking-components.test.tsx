@@ -134,9 +134,34 @@ describe("VehicleRecommendationCard", () => {
 
     expect(screen.getAllByLabelText(/Mercedes Vito, 1/).length).toBeGreaterThan(0);
     expect(screen.getAllByLabelText(/Mercedes Vito, 2/).length).toBeGreaterThan(0);
-    expect(screen.getAllByLabelText(/Mercedes Vito, 3/).length).toBeGreaterThan(0);
     expect(screen.getByLabelText(/Mercedes Vito, previous/)).toBeInTheDocument();
     expect(screen.getByLabelText(/Mercedes Vito, next/)).toBeInTheDocument();
+  });
+
+  it("swaps the main image with a thumbnail when clicked", async () => {
+    const user = userEvent.setup();
+
+    renderWithIntl(
+      <VehicleRecommendationCard
+        option={createOption({
+          imageKey: "https://cdn.example/cover.jpg",
+          galleryImageKeys: [
+            "https://cdn.example/interior.jpg",
+            "https://cdn.example/rear.jpg",
+          ],
+        })}
+        selected={false}
+        disabled={false}
+        onSelect={() => undefined}
+      />,
+    );
+
+    await user.click(screen.getByLabelText(/Mercedes Vito, 1/));
+
+    expect(screen.getByAltText("Mercedes Vito")).toHaveAttribute(
+      "src",
+      expect.stringContaining("interior.jpg"),
+    );
   });
 
   it("disables ineligible vehicles", () => {

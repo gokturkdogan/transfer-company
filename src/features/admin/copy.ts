@@ -320,7 +320,7 @@ export const adminCopy = {
       coverImageHint: "16:9 oranında kırpılarak Cloudinary'ye yüklenir.",
       galleryImages: "Ek fotoğraflar (en fazla 10)",
       galleryImagesHint:
-        "Kapak görseli rezervasyonda her zaman görünür. Ek fotoğraflardan en fazla 3 tanesini carousel önizlemesine ekleyebilirsiniz. Seçim yapmazsanız ilk 3 ek fotoğraf otomatik kullanılır.",
+        "Kapak görseli rezervasyonda büyük alanda görünür. Ek fotoğraflardan en fazla 4 tanesini araç seçimi carousel'ine ekleyebilirsiniz. Seçim yapmazsanız ilk 4 ek fotoğraf otomatik kullanılır.",
       galleryImageLabel: (index: number) => `Fotoğraf ${index}`,
       bulkUploadGallery: "Toplu görsel yükle",
       bulkUploadGalleryHint: (remaining: number) =>
@@ -554,7 +554,7 @@ const ADMIN_ERROR_MESSAGES: Record<string, string> = {
   EMPTY_IMAGE: "Boş görsel yüklenemez",
   VEHICLE_IDENTITY_REQUIRED: "Kod, marka ve model zorunludur",
   VEHICLE_BOOKING_PREVIEW_LIMIT:
-    "Rezervasyon carousel'ine en fazla 3 ek fotoğraf seçebilirsiniz",
+    "Rezervasyon carousel'ine en fazla 4 ek fotoğraf seçebilirsiniz",
   FEATURED_IMAGE_REQUIRED:
     "Anasayfada gösterilecek bölgeler için görsel zorunludur",
   FEATURED_PRICE_REQUIRED:

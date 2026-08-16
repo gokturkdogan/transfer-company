@@ -9,51 +9,105 @@ import { MAX_VEHICLE_BOOKING_PREVIEW_IMAGES } from "@/features/vehicles/domain/c
 import { cn } from "@/lib/utils";
 
 type VehicleImageGalleryProps = {
-  images: string[];
+  coverImage: string;
+  previewImages: string[];
   alt: string;
   className?: string;
 };
 
+type GalleryState = {
+  mainImage: string;
+  thumbImages: string[];
+};
+
+function uniqueImages(images: string[]): string[] {
+  return images
+    .map((image) => image.trim())
+    .filter((image, index, all) => image.length > 0 && all.indexOf(image) === index);
+}
+
+function buildGalleryState(coverImage: string, previewImages: string[]): GalleryState {
+  const mainImage = coverImage.trim();
+  const thumbImages = uniqueImages(previewImages).slice(
+    0,
+    MAX_VEHICLE_BOOKING_PREVIEW_IMAGES,
+  );
+
+  return { mainImage, thumbImages };
+}
+
 export function VehicleImageGallery({
-  images,
+  coverImage,
+  previewImages,
   alt,
   className,
 }: VehicleImageGalleryProps) {
   const t = useTranslations("home.carousel");
 
-  const gallery = useMemo(
-    () =>
-      images
-        .map((image) => image.trim())
-        .filter((image, index, all) => image.length > 0 && all.indexOf(image) === index)
-        .slice(0, MAX_VEHICLE_BOOKING_PREVIEW_IMAGES + 1),
-    [images],
+  const initialState = useMemo(
+    () => buildGalleryState(coverImage, previewImages),
+    [coverImage, previewImages],
   );
+  const gallerySignature = `${coverImage}|${previewImages.join("|")}`;
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const imageSignature = gallery.join("|");
-  const safeIndex =
-    gallery.length === 0 ? 0 : Math.min(activeIndex, gallery.length - 1);
-  const activeImage = gallery[safeIndex] ?? gallery[0] ?? "";
-  const hasMultiple = gallery.length > 1;
+  const [gallery, setGallery] = useState<GalleryState>(initialState);
 
   useEffect(() => {
-    setActiveIndex(0);
-  }, [imageSignature]);
+    setGallery(buildGalleryState(coverImage, previewImages));
+  }, [gallerySignature, coverImage, previewImages]);
+
+  const { mainImage, thumbImages } = gallery;
+  const hasThumbs = thumbImages.length > 0;
+  const hasMultiple = Boolean(mainImage) && thumbImages.length > 0;
+
+  const swapWithThumb = (index: number) => {
+    const selected = thumbImages[index];
+
+    if (!selected || selected === mainImage) {
+      return;
+    }
+
+    setGallery((current) => ({
+      mainImage: selected,
+      thumbImages: current.thumbImages.map((image, thumbIndex) =>
+        thumbIndex === index ? current.mainImage : image,
+      ),
+    }));
+  };
 
   const showPrevious = () => {
-    setActiveIndex((current) =>
-      current === 0 ? gallery.length - 1 : current - 1,
-    );
+    if (!hasMultiple) {
+      return;
+    }
+
+    const currentThumbIndex = thumbImages.indexOf(mainImage);
+    const targetIndex =
+      currentThumbIndex === -1
+        ? thumbImages.length - 1
+        : currentThumbIndex === 0
+          ? thumbImages.length - 1
+          : currentThumbIndex - 1;
+
+    swapWithThumb(targetIndex);
   };
 
   const showNext = () => {
-    setActiveIndex((current) =>
-      current === gallery.length - 1 ? 0 : current + 1,
-    );
+    if (!hasMultiple) {
+      return;
+    }
+
+    const currentThumbIndex = thumbImages.indexOf(mainImage);
+    const targetIndex =
+      currentThumbIndex === -1
+        ? 0
+        : currentThumbIndex === thumbImages.length - 1
+          ? 0
+          : currentThumbIndex + 1;
+
+    swapWithThumb(targetIndex);
   };
 
-  if (gallery.length === 0 || !activeImage) {
+  if (!mainImage) {
     return null;
   }
 
@@ -61,8 +115,8 @@ export function VehicleImageGallery({
     <div className={cn("flex w-full flex-col gap-2", className)}>
       <div className="group relative aspect-video w-full overflow-hidden rounded-xl bg-muted">
         <Image
-          key={activeImage}
-          src={activeImage}
+          key={mainImage}
+          src={mainImage}
           alt={alt}
           fill
           sizes="(max-width: 1024px) 100vw, 320px"
@@ -91,51 +145,24 @@ export function VehicleImageGallery({
             >
               <ChevronRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
             </button>
-
-            <div className="absolute inset-x-0 bottom-2 z-10 flex items-center justify-center gap-1.5">
-              {gallery.map((image, index) => (
-                <button
-                  key={image}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  className={cn(
-                    "h-1.5 cursor-pointer rounded-full transition-all",
-                    index === safeIndex
-                      ? "w-6 bg-gold"
-                      : "w-1.5 bg-white/55 hover:bg-white/80",
-                  )}
-                  aria-label={t("imageDot", { alt, index: index + 1 })}
-                  aria-current={index === safeIndex}
-                />
-              ))}
-            </div>
           </>
         ) : null}
       </div>
 
-      {hasMultiple ? (
-        <div
-          className={cn(
-            "grid gap-2",
-            gallery.length >= 4 ? "grid-cols-4" : `grid-cols-${gallery.length}`,
-          )}
-          style={{
-            gridTemplateColumns: `repeat(${gallery.length}, minmax(0, 1fr))`,
-          }}
-        >
-          {gallery.map((image, index) => (
+      {hasThumbs ? (
+        <div className="grid grid-cols-4 gap-2">
+          {thumbImages.map((image, index) => (
             <button
-              key={image}
+              key={`${index}-${image}`}
               type="button"
-              onClick={() => setActiveIndex(index)}
+              onClick={() => swapWithThumb(index)}
               className={cn(
                 "relative aspect-video cursor-pointer overflow-hidden rounded-lg border-2 transition-all",
-                index === safeIndex
+                image === mainImage
                   ? "border-gold opacity-100 ring-1 ring-gold/30"
                   : "border-transparent opacity-80 hover:border-gold/35 hover:opacity-100",
               )}
               aria-label={t("thumbnail", { alt, index: index + 1 })}
-              aria-current={index === safeIndex}
             >
               <Image src={image} alt="" fill sizes="96px" className="object-cover" />
             </button>
