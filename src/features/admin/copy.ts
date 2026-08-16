@@ -26,6 +26,7 @@ export const adminCopy = {
     reservations: "Rezervasyonlar",
     contact: "İletişim bilgileri",
     socialMedia: "Sosyal medya",
+    testimonials: "Misafir yorumları",
     locales: "Dil seçenekleri",
     signOut: "Çıkış yap",
   },
@@ -282,6 +283,29 @@ export const adminCopy = {
       x: "https://x.com/...",
       youtube: "https://youtube.com/...",
       tiktok: "https://tiktok.com/@...",
+    },
+  },
+  testimonials: {
+    title: "Misafir yorumları",
+    subtitle:
+      "Anasayfadaki yorum bölümünü her dil için ayrı ayrı yönetin. Her dilde 3 farklı yorum ekleyebilirsiniz.",
+    formTitle: "Dil bazlı yorumlar",
+    hint:
+      "Her dilin kendi 3 yorumu vardır; Türkçe ve İngilizce için farklı kişiler ve metinler kullanabilirsiniz. Önyüzde yalnızca isim baş harfleri gösterilir.",
+    localeHint: "Bu dilde anasayfada gösterilecek 3 yorum",
+    slotLabel: (number: number) => `Yorum ${number}`,
+    summary: (active: number) => `${active} aktif yorum`,
+    save: "Kaydet",
+    saving: "Kaydediliyor...",
+    saved: "Misafir yorumları güncellendi.",
+    saveHint: "Kaydettiğinizde anasayfa yorumları güncellenir.",
+    ratingAria: (rating: number) => `${rating} yıldız`,
+    fields: {
+      firstName: "İsim",
+      lastName: "Soyisim",
+      quote: "Yorum metni",
+      rating: "Puan",
+      active: "Aktif",
     },
   },
   locales: {

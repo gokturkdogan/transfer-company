@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   LogOut,
   MapPin,
+  MessageSquareQuote,
   PackagePlus,
   Phone,
   Share2,
@@ -70,6 +71,11 @@ const NAV_ITEMS = [
     href: "/admin/social-media",
     label: adminCopy.sidebar.socialMedia,
     icon: Share2,
+  },
+  {
+    href: "/admin/testimonials",
+    label: adminCopy.sidebar.testimonials,
+    icon: MessageSquareQuote,
   },
   {
     href: "/admin/locales",

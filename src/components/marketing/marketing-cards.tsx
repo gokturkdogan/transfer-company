@@ -229,11 +229,17 @@ export function FeatureCard({
 
 type ReviewCardProps = {
   quote: string;
-  author: string;
+  authorInitials: string;
+  authorName: string;
   rating: number;
 };
 
-export function ReviewCard({ quote, author, rating }: ReviewCardProps) {
+export function ReviewCard({
+  quote,
+  authorInitials,
+  authorName,
+  rating,
+}: ReviewCardProps) {
   return (
     <blockquote className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card p-7 shadow-float transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/45 hover:shadow-premium">
       <Quote
@@ -255,9 +261,9 @@ export function ReviewCard({ quote, author, rating }: ReviewCardProps) {
           aria-hidden
           className="flex h-9 w-9 items-center justify-center rounded-full bg-gold/12 text-sm font-bold text-gold-deep"
         >
-          {author.charAt(0)}
+          {authorInitials}
         </span>
-        <span className="text-sm font-semibold text-foreground">{author}</span>
+        <span className="sr-only">{authorName}</span>
       </footer>
     </blockquote>
   );
