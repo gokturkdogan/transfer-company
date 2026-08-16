@@ -92,12 +92,70 @@ describe("AvailabilityService", () => {
 
     const option = result.options[0]!;
     expect(option.requiredChildSeats).toBe(2);
+    const childSeatExtra = option.requiredExtras.find(
+      (extra) => extra.extraServiceId === "child-seat-1",
+    );
+    expect(childSeatExtra?.quantity).toBe(2);
+    expect(childSeatExtra?.includedQuantity).toBe(2);
+    expect(childSeatExtra?.totalPriceMinor).toBe(0);
     expect(option.requiredExtras.some((extra) => extra.quantity === 2)).toBe(
       true,
     );
     expect(
       option.optionalExtras.every((extra) => extra.extraServiceId !== "child-seat-1"),
     ).toBe(true);
+  });
+
+  it("counts infants toward vehicle passenger capacity", async () => {
+    const service = new AvailabilityService(
+      createPricingReaderFake({
+        findVehicleOptionsForRoute: async () => [
+          {
+            id: "vehicle-1",
+            code: "SEDAN",
+            isActive: true,
+            defaultName: "Sedan",
+            imageKey: null,
+            passengerCapacity: 4,
+            largeLuggageCapacity: 4,
+            cabinLuggageCapacity: 2,
+            sortOrder: 0,
+            translatedName: "Sedan",
+            oneWayPriceMinor: 10_000,
+            roundTripPriceMinor: 18_000,
+            currency: "EUR",
+            priceIsActive: true,
+          },
+        ],
+      }),
+    );
+
+    const withoutInfants = await service.getTransferOptions({
+      originAirportId: "pickup-1",
+      destinationDistrictId: "dropoff-1",
+      tripType: "ONE_WAY",
+      outboundAt: addMinutes(new Date(), 120),
+      passengerCount: 4,
+      infantCount: 0,
+      largeLuggageCount: 0,
+      cabinLuggageCount: 0,
+      locale: "en",
+    });
+
+    const withInfants = await service.getTransferOptions({
+      originAirportId: "pickup-1",
+      destinationDistrictId: "dropoff-1",
+      tripType: "ONE_WAY",
+      outboundAt: addMinutes(new Date(), 120),
+      passengerCount: 4,
+      infantCount: 1,
+      largeLuggageCount: 0,
+      cabinLuggageCount: 0,
+      locale: "en",
+    });
+
+    expect(withoutInfants.options.length).toBe(1);
+    expect(withInfants.options.length).toBe(0);
   });
 
   it("returns the same quote for repeated airport to district searches", async () => {

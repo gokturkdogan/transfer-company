@@ -1,12 +1,16 @@
 import "server-only";
 
 import { assessVehicleCapacity } from "@/features/capacity/domain/assess-capacity";
+import { resolveCapacityPassengerCount } from "@/features/capacity/domain/capacity-passenger-count";
 import { selectCheapestLuggageFleetVehicle } from "@/features/capacity/domain/select-cheapest-luggage-fleet-vehicle";
 import type { TransferQuoteInputDto } from "@/features/pricing/schemas/quote";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
 import { mapVehicleOptionsToLuggageFleetCandidates } from "@/features/pricing/domain/luggage-fleet-vehicle";
-import { resolveRequiredChildSeatQuantity } from "@/features/pricing/domain/required-child-seats";
+import {
+  resolveIncludedQuantityForRequiredChildSeats,
+  resolveRequiredChildSeatQuantity,
+} from "@/features/pricing/domain/required-child-seats";
 import {
   assertCurrencyConsistency,
   assertExtraBookable,
@@ -65,6 +69,10 @@ export class QuoteService {
         input.infantCount,
         childSeatExtra,
       );
+      const capacityPassengerCount = resolveCapacityPassengerCount(
+        input.passengerCount,
+        input.infantCount,
+      );
 
       const vehicleSelections: QuoteVehicleSelection[] = [];
       let combinedEligibility:
@@ -111,7 +119,7 @@ export class QuoteService {
 
         const assessment = assessVehicleCapacity({
           vehicleQuantity: selection.quantity,
-          passengerCount: input.passengerCount,
+          passengerCount: capacityPassengerCount,
           largeLuggageCount: input.largeLuggageCount,
           cabinLuggageCount: input.cabinLuggageCount,
           passengerCapacity: category.passengerCapacity,
@@ -270,7 +278,13 @@ export class QuoteService {
           extraServiceName: translation?.name ?? extra.code,
           pricingMode: extra.pricingMode,
           quantity,
-          includedQuantity: extra.includedQuantity,
+          includedQuantity:
+            childSeatExtra && extraServiceId === childSeatExtra.id
+              ? resolveIncludedQuantityForRequiredChildSeats(
+                  requiredChildSeats,
+                  extra.includedQuantity,
+                )
+              : extra.includedQuantity,
           unitPriceMinor: extra.priceMinor,
           currency: extra.currency,
         });

@@ -84,7 +84,11 @@ Online payment is **not** part of the system. A reservation is initially only a 
 
 ## Multi-vehicle support
 
-Reservations use `reservation_items` rows with quantity. A booking may include multiple vehicle category line items (e.g. 2 × Vito). Recommendation logic computes minimum vehicle quantity per category.
+Reservations use `reservation_items` rows with quantity. A booking may include multiple vehicle category line items (e.g. primary transfer + luggage fleet vehicle).
+
+**Availability listing:** `recommendVehicles()` only returns categories whose **single-vehicle** `passengerCapacity` is at least the capacity passenger count (`passengerCount + infantCount`, where `passengerCount` already includes adults and children). Categories that would need multiple identical units for passengers are omitted from the quote options list.
+
+Infants count toward vehicle capacity. Required child seats for infants are auto-added per infant (capped by extra `maxQuantity`) and billed at **zero** when tied to infant count, regardless of catalogue `includedQuantity`.
 
 ## Historical integrity
 

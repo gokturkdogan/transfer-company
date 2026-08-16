@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { resolveRequiredChildSeatQuantity } from "@/features/pricing/domain/required-child-seats";
+import {
+  resolveIncludedQuantityForRequiredChildSeats,
+  resolveRequiredChildSeatQuantity,
+} from "@/features/pricing/domain/required-child-seats";
 
 describe("resolveRequiredChildSeatQuantity", () => {
   const childSeatExtra = {
@@ -22,5 +25,15 @@ describe("resolveRequiredChildSeatQuantity", () => {
     expect(
       resolveRequiredChildSeatQuantity(2, { ...childSeatExtra, isActive: false }),
     ).toBe(0);
+  });
+});
+
+describe("resolveIncludedQuantityForRequiredChildSeats", () => {
+  it("covers all required infant seats even when catalogue included is lower", () => {
+    expect(resolveIncludedQuantityForRequiredChildSeats(2, 1)).toBe(2);
+  });
+
+  it("keeps higher catalogue included quantity for optional add-ons", () => {
+    expect(resolveIncludedQuantityForRequiredChildSeats(1, 3)).toBe(3);
   });
 });

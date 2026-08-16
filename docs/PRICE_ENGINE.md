@@ -30,7 +30,7 @@ Each extra has `pricingMode`:
 
 Luggage overflow is billed as an additional **fleet vehicle line** at route matrix price (cheapest suitable category), not as a separate extra catalogue item.
 
-`includedQuantity` on `extra_services` defines how many units are free per booking for `PER_UNIT` extras (e.g. child seat: 1 free, additional units charged). Fixed extras ignore this field.
+`includedQuantity` on `extra_services` defines how many units are free per booking for `PER_UNIT` extras. Required infant child seats use `resolveIncludedQuantityForRequiredChildSeats()` so every auto-added seat for infants is free; optional add-ons still respect catalogue included units.
 
 Persisted `reservation_items` keep the requested `quantity` and catalogue `unit_price_minor`, while `total_price_minor` reflects only billable units. The DB check allows `total ≤ unit × quantity` with totals that are multiples of the unit price (included free units).
 
@@ -55,7 +55,7 @@ All arithmetic via `src/lib/money.ts` using integer minor units.
 
 1. Resolve active route from pickup/dropoff locations
 2. Batch-load vehicle options with prices and translations
-3. Run `recommendVehicles({ includeIneligible: true })`
+3. Run `recommendVehicles({ includeIneligible: true })` — skips categories below passenger count; still includes cabin-luggage `INELIGIBLE` options as disabled cards
 4. Price each option via `calculateQuote()` with auto-injected required extras
 5. Attach customer-selectable optional extras
 6. Return public DTO (no internal DB fields)

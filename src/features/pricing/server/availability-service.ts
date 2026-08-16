@@ -1,12 +1,16 @@
 import "server-only";
 
 import { recommendVehicles } from "@/features/capacity/domain/recommend-vehicles";
+import { resolveCapacityPassengerCount } from "@/features/capacity/domain/capacity-passenger-count";
 import { selectCheapestLuggageFleetVehicle } from "@/features/capacity/domain/select-cheapest-luggage-fleet-vehicle";
 import { calculateExtraTotalMinor } from "@/features/pricing/domain/extra-pricing";
+import {
+  resolveIncludedQuantityForRequiredChildSeats,
+  resolveRequiredChildSeatQuantity,
+} from "@/features/pricing/domain/required-child-seats";
 import { mapVehicleOptionsToLuggageFleetCandidates } from "@/features/pricing/domain/luggage-fleet-vehicle";
 import { calculateQuote } from "@/features/pricing/domain/calculate-quote";
 import { PricingDomainError } from "@/features/pricing/domain/errors";
-import { resolveRequiredChildSeatQuantity } from "@/features/pricing/domain/required-child-seats";
 import { assertRouteActive } from "@/features/pricing/domain/guards";
 import type { TransferAvailabilityInputDto } from "@/features/pricing/schemas/availability";
 import type { PricingReader } from "@/features/pricing/server/reader";
@@ -52,6 +56,10 @@ function buildRequiredExtras(
 
   if (requiredChildSeats > 0 && childSeatExtra) {
     const extra = extrasById.get(childSeatExtra.id) ?? childSeatExtra;
+    const includedQuantity = resolveIncludedQuantityForRequiredChildSeats(
+      requiredChildSeats,
+      extra.includedQuantity,
+    );
 
     requiredExtras.push({
       extraServiceId: extra.id,
@@ -59,13 +67,13 @@ function buildRequiredExtras(
       pricingMode: extra.pricingMode,
       quantity: requiredChildSeats,
       maxQuantity: extra.maxQuantity,
-      includedQuantity: extra.includedQuantity,
+      includedQuantity,
       unitPriceMinor: extra.priceMinor,
       totalPriceMinor: calculateExtraTotalMinor({
         pricingMode: extra.pricingMode,
         quantity: requiredChildSeats,
         unitPriceMinor: extra.priceMinor,
-        includedQuantity: extra.includedQuantity,
+        includedQuantity,
       }),
       required: true,
     });
@@ -163,9 +171,14 @@ export class AvailabilityService {
           : Promise.resolve(new Map<string, string[]>()),
       ]);
 
+      const capacityPassengerCount = resolveCapacityPassengerCount(
+        input.passengerCount,
+        input.infantCount,
+      );
+
       const recommendations = recommendVehicles(
         {
-          passengerCount: input.passengerCount,
+          passengerCount: capacityPassengerCount,
           largeLuggageCount: input.largeLuggageCount,
           cabinLuggageCount: input.cabinLuggageCount,
           vehicleCategories: vehicleOptions.map((option) => ({

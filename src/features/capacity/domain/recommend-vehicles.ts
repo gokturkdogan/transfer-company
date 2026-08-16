@@ -34,6 +34,10 @@ export function recommendVehicles(
       continue;
     }
 
+    if (category.passengerCapacity < input.passengerCount) {
+      continue;
+    }
+
     const quantity = minimumVehicleQuantity(
       input.passengerCount,
       category.passengerCapacity,
