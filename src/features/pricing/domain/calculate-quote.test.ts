@@ -203,6 +203,7 @@ describe("calculateQuote", () => {
 
     expect(result.quote.baseItems[0]?.totalPriceMinor).toBe(4500);
     expect(result.quote.baseItems[1]?.totalPriceMinor).toBe(6000);
+    expect(result.quote.baseItems[1]?.isLuggageOverflowVehicle).toBe(true);
     expect(result.quote.extraItems[0]?.totalPriceMinor).toBe(5000);
     expect(result.quote.totalMinor).toBe(15500);
   });

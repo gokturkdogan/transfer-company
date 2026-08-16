@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   check,
   index,
   integer,
@@ -117,6 +118,9 @@ export const reservationItems = pgTable(
     unitPriceMinor: integer("unit_price_minor").notNull(),
     totalPriceMinor: integer("total_price_minor").notNull(),
     currency: currency(),
+    isLuggageOverflowVehicle: boolean("is_luggage_overflow_vehicle")
+      .notNull()
+      .default(false),
     sortOrder: sortOrder(),
     ...timestamps,
   },

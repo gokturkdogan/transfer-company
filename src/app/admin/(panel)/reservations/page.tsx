@@ -2,11 +2,15 @@ import Link from "next/link";
 import { CalendarCheck } from "lucide-react";
 
 import { db } from "@/db/client";
+import { ReservationDateRangeFilter } from "@/features/admin/components/ReservationDateRangeFilter";
 import { ReservationStatusFilters } from "@/features/admin/components/ReservationStatusFilters";
 import { ReservationStatusBadge } from "@/features/admin/components/ReservationStatusBadge";
 import { AdminContentCard } from "@/features/admin/components/shell/AdminContentCard";
 import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
 import { formatReservationOutboundDate } from "@/features/admin/lib/format-admin-datetime";
+import {
+  parseReservationDateRangeFilter,
+} from "@/features/admin/lib/reservation-date-filter";
 import {
   parseReservationStatusFilter,
   ReservationAdminRepository,
@@ -28,6 +32,8 @@ const reservationAdminRepository = new ReservationAdminRepository(db);
 type AdminReservationsPageProps = {
   searchParams: Promise<{
     status?: string;
+    from?: string;
+    to?: string;
   }>;
 };
 
@@ -36,8 +42,11 @@ export default async function AdminReservationsPage({
 }: AdminReservationsPageProps) {
   const params = await searchParams;
   const activeStatus = parseReservationStatusFilter(params.status);
+  const dateFilter = parseReservationDateRangeFilter(params.from, params.to);
   const reservations = await reservationAdminRepository.listReservations({
     status: activeStatus === "all" ? undefined : activeStatus,
+    outboundFrom: dateFilter?.outboundFrom,
+    outboundToExclusive: dateFilter?.outboundToExclusive,
   });
 
   return (
@@ -48,7 +57,26 @@ export default async function AdminReservationsPage({
         icon={CalendarCheck}
       />
 
-      <ReservationStatusFilters activeStatus={activeStatus} />
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <ReservationStatusFilters
+          activeStatus={activeStatus}
+          activeFrom={dateFilter?.fromIso}
+          activeTo={
+            dateFilter && dateFilter.fromIso !== dateFilter.toIso
+              ? dateFilter.toIso
+              : undefined
+          }
+        />
+        <ReservationDateRangeFilter
+          activeFrom={dateFilter?.fromIso}
+          activeTo={
+            dateFilter && dateFilter.fromIso !== dateFilter.toIso
+              ? dateFilter.toIso
+              : undefined
+          }
+          activeStatus={activeStatus}
+        />
+      </div>
 
       <AdminContentCard title={adminCopy.reservations.recent} flush>
         <Table className="admin-table">

@@ -2,11 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
-  CalendarDays,
   Car,
-  MapPin,
   MessageSquareText,
-  Package,
   Receipt,
   Route,
   User,
@@ -15,17 +12,13 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { ReservationStatusBadge } from "@/features/admin/components/ReservationStatusBadge";
 import { ReservationStatusControl } from "@/features/admin/components/reservations/ReservationStatusControl";
 import { formatReservationOutboundDate } from "@/features/admin/lib/format-admin-datetime";
+import {
+  partitionReservationLineItems,
+  resolveReservationLuggageCount,
+} from "@/features/admin/lib/partition-reservation-items";
 import type { AdminReservationDetail } from "@/features/admin/server/reservation-admin-repository";
 import { ADMIN_LOCALE, adminCopy, formatTripType } from "@/features/admin/copy";
 import {
@@ -39,102 +32,49 @@ type ReservationDetailViewProps = {
   reservation: AdminReservationDetail;
 };
 
-type DetailSectionProps = {
-  title: string;
-  description?: string;
-  icon: LucideIcon;
-  children: React.ReactNode;
-  className?: string;
-};
-
-type DetailFactProps = {
-  label: string;
-  value: React.ReactNode;
-  className?: string;
-};
-
-function DetailSection({
+function InfoCard({
   title,
-  description,
   icon: Icon,
   children,
   className,
-}: DetailSectionProps) {
+}: {
+  title: string;
+  icon: LucideIcon;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <section
       className={cn(
-        "admin-content-card overflow-hidden rounded-xl border bg-white",
+        "rounded-xl border border-slate-200 bg-white shadow-sm",
         className,
       )}
     >
-      <div className="flex items-start gap-3 border-b border-slate-100 bg-slate-50/80 px-5 py-4">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm shadow-blue-600/20">
-          <Icon className="h-5 w-5" aria-hidden />
-        </div>
-        <div className="min-w-0">
-          <h2 className="text-base font-semibold text-slate-900">{title}</h2>
-          {description ? (
-            <p className="mt-0.5 text-xs leading-relaxed text-slate-500">
-              {description}
-            </p>
-          ) : null}
-        </div>
+      <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-3.5">
+        <Icon className="h-4 w-4 text-slate-500" aria-hidden />
+        <h2 className="text-sm font-semibold text-slate-900">{title}</h2>
       </div>
-      <div className="p-5">{children}</div>
+      <div className="px-5 py-4">{children}</div>
     </section>
   );
 }
 
-function DetailFact({ label, value, className }: DetailFactProps) {
-  return (
-    <div
-      className={cn(
-        "flex flex-col gap-1 border-b border-slate-100 py-3 last:border-b-0 sm:flex-row sm:items-start sm:justify-between sm:gap-4",
-        className,
-      )}
-    >
-      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        {label}
-      </dt>
-      <dd className="text-sm font-medium text-slate-900 sm:max-w-[65%] sm:text-right">
-        {value}
-      </dd>
-    </div>
-  );
-}
-
-function SummaryStatCard({
-  label,
-  value,
-  icon: Icon,
-  accentClassName,
+function FactGrid({
+  items,
 }: {
-  label: string;
-  value: React.ReactNode;
-  icon: LucideIcon;
-  accentClassName: string;
+  items: Array<{ label: string; value: React.ReactNode }>;
 }) {
   return (
-    <div className="admin-content-card rounded-xl border bg-white p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            {label}
-          </p>
-          <p className="mt-2 text-lg font-semibold leading-tight text-slate-900">
-            {value}
-          </p>
+    <dl className="grid gap-3 sm:grid-cols-2">
+      {items.map((item) => (
+        <div key={item.label} className="min-w-0">
+          <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+            {item.label}
+          </dt>
+          <dd className="mt-1 text-sm font-medium text-slate-900">{item.value}</dd>
         </div>
-        <div
-          className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-            accentClassName,
-          )}
-        >
-          <Icon className="h-5 w-5" aria-hidden />
-        </div>
-      </div>
-    </div>
+      ))}
+    </dl>
   );
 }
 
@@ -152,34 +92,148 @@ function formatPrice(amountMinor: number, currency: string): string {
   return formatMoney({ amountMinor, currency }, ADMIN_LOCALE);
 }
 
+function PriceRow({
+  label,
+  detail,
+  amountMinor,
+  currency,
+  included = false,
+}: {
+  label: string;
+  detail?: string;
+  amountMinor: number;
+  currency: string;
+  included?: boolean;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-3 py-2.5">
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-slate-900">{label}</p>
+        {detail ? (
+          <p className="mt-0.5 text-xs text-slate-500">{detail}</p>
+        ) : null}
+      </div>
+      {included ? (
+        <Badge variant="success" className="shrink-0">
+          {adminCopy.reservations.detail.included}
+        </Badge>
+      ) : (
+        <span className="shrink-0 text-sm font-semibold text-slate-900">
+          {formatPrice(amountMinor, currency)}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export function ReservationDetailView({ reservation }: ReservationDetailViewProps) {
-  const vehicles = reservation.items.filter(
-    (item) => item.itemType === "TRANSFER_VEHICLE",
+  const { transferVehicles, extraLines } = partitionReservationLineItems(
+    reservation.items,
   );
-  const extras = reservation.items.filter(
-    (item) => item.itemType === "EXTRA_SERVICE",
+  const luggageCount = resolveReservationLuggageCount(
+    reservation.largeLuggageCount,
+    reservation.cabinLuggageCount,
   );
+
+  const transferFacts: Array<{ label: string; value: React.ReactNode }> = [
+    {
+      label: adminCopy.reservations.fields.tripType,
+      value: formatTripType(reservation.tripType),
+    },
+    {
+      label: adminCopy.reservations.fields.outbound,
+      value: formatReservationOutboundDate(reservation.outboundAt),
+    },
+    {
+      label: adminCopy.reservations.fields.passengers,
+      value: reservation.passengerCount,
+    },
+    {
+      label: adminCopy.reservations.detail.luggage,
+      value: luggageCount,
+    },
+    {
+      label: adminCopy.reservations.detail.createdAt,
+      value: formatCreatedAt(reservation.createdAt),
+    },
+  ];
+
+  if (reservation.returnAt) {
+    transferFacts.splice(2, 0, {
+      label: adminCopy.reservations.fields.return,
+      value: formatReservationOutboundDate(reservation.returnAt),
+    });
+  }
+
+  if (reservation.outboundFlightNumber) {
+    transferFacts.push({
+      label: adminCopy.reservations.fields.outboundFlight,
+      value: reservation.outboundFlightNumber,
+    });
+  }
+
+  if (reservation.returnFlightNumber) {
+    transferFacts.push({
+      label: adminCopy.reservations.fields.returnFlight,
+      value: reservation.returnFlightNumber,
+    });
+  }
+
+  const routeFacts: Array<{ label: string; value: React.ReactNode }> = [
+    {
+      label: adminCopy.reservations.table.origin,
+      value: reservation.originName,
+    },
+    {
+      label: adminCopy.reservations.table.pricingDestination,
+      value: reservation.pricingDestinationName,
+    },
+    {
+      label: adminCopy.reservations.table.actualDropoff,
+      value: reservation.actualDropoffLabel,
+    },
+  ];
+
+  if (reservation.hotelName) {
+    routeFacts.push({
+      label: adminCopy.reservations.fields.hotel,
+      value: reservation.hotelName,
+    });
+  }
+
+  if (reservation.customDestinationName) {
+    routeFacts.push({
+      label: adminCopy.reservations.fields.customDestination,
+      value: reservation.customDestinationName,
+    });
+  }
+
+  if (reservation.customDestinationAddress) {
+    routeFacts.push({
+      label: adminCopy.reservations.fields.customAddress,
+      value: reservation.customDestinationAddress,
+    });
+  }
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div className="space-y-3">
-          <Link
-            href="/admin/reservations"
-            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden />
-            {adminCopy.reservations.backToList}
-          </Link>
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900">
-              {reservation.reference}
-            </h1>
-            <ReservationStatusBadge status={reservation.status} />
-          </div>
-          <p className="max-w-2xl text-sm text-slate-500">
-            {adminCopy.reservations.detailSubtitle}
-          </p>
+      <div className="space-y-4">
+        <Link
+          href="/admin/reservations"
+          className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden />
+          {adminCopy.reservations.backToList}
+        </Link>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+            {reservation.reference}
+          </h1>
+          <ReservationStatusBadge status={reservation.status} />
+          <span className="text-sm font-semibold text-emerald-700">
+            {formatPrice(reservation.totalMinor, reservation.currency)}
+          </span>
         </div>
       </div>
 
@@ -188,381 +242,231 @@ export function ReservationDetailView({ reservation }: ReservationDetailViewProp
         currentStatus={reservation.status}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <SummaryStatCard
-          label={adminCopy.reservations.table.outboundDate}
-          value={formatReservationOutboundDate(reservation.outboundAt)}
-          icon={CalendarDays}
-          accentClassName="bg-blue-50 text-blue-600"
-        />
-        <SummaryStatCard
-          label={adminCopy.reservations.fields.total}
-          value={formatPrice(reservation.totalMinor, reservation.currency)}
-          icon={Receipt}
-          accentClassName="bg-emerald-50 text-emerald-600"
-        />
-        <SummaryStatCard
-          label={adminCopy.reservations.fields.passengers}
-          value={reservation.passengerCount}
-          icon={Users}
-          accentClassName="bg-violet-50 text-violet-600"
-        />
-        <SummaryStatCard
-          label={adminCopy.reservations.fields.tripType}
-          value={formatTripType(reservation.tripType)}
-          icon={Route}
-          accentClassName="bg-amber-50 text-amber-600"
-        />
-      </div>
-
-      <div className="grid gap-6 xl:grid-cols-2">
-        <DetailSection
-          title={adminCopy.reservations.detail.journey}
-          description={adminCopy.reservations.detail.journeyHint}
-          icon={CalendarDays}
-        >
-          <dl>
-            <DetailFact
-              label={adminCopy.reservations.fields.tripType}
-              value={formatTripType(reservation.tripType)}
-            />
-            <DetailFact
-              label={adminCopy.reservations.fields.outbound}
-              value={formatReservationOutboundDate(reservation.outboundAt)}
-            />
-            {reservation.returnAt ? (
-              <DetailFact
-                label={adminCopy.reservations.fields.return}
-                value={formatReservationOutboundDate(reservation.returnAt)}
-              />
-            ) : null}
-            <DetailFact
-              label={adminCopy.reservations.fields.passengers}
-              value={reservation.passengerCount}
-            />
-            <DetailFact
-              label={adminCopy.reservations.detail.largeLuggage}
-              value={reservation.largeLuggageCount}
-            />
-            <DetailFact
-              label={adminCopy.reservations.detail.cabinLuggage}
-              value={reservation.cabinLuggageCount}
-            />
-            {reservation.outboundFlightNumber ? (
-              <DetailFact
-                label={adminCopy.reservations.fields.outboundFlight}
-                value={reservation.outboundFlightNumber}
-              />
-            ) : null}
-            {reservation.returnFlightNumber ? (
-              <DetailFact
-                label={adminCopy.reservations.fields.returnFlight}
-                value={reservation.returnFlightNumber}
-              />
-            ) : null}
-            <DetailFact
-              label={adminCopy.reservations.detail.createdAt}
-              value={formatCreatedAt(reservation.createdAt)}
-            />
-          </dl>
-        </DetailSection>
-
-        <DetailSection
-          title={adminCopy.reservations.detail.customer}
-          description={adminCopy.reservations.detail.customerHint}
-          icon={User}
-        >
-          <dl>
-            <DetailFact
-              label={adminCopy.reservations.fields.name}
-              value={reservation.customerName}
-            />
-            <DetailFact
-              label={adminCopy.reservations.fields.email}
-              value={
-                <a
-                  href={`mailto:${reservation.customerEmail}`}
-                  className="text-blue-600 hover:underline"
-                >
-                  {reservation.customerEmail}
-                </a>
-              }
-            />
-            <DetailFact
-              label={adminCopy.reservations.fields.phone}
-              value={
-                <a
-                  href={`tel:${reservation.customerPhone.replace(/\s/g, "")}`}
-                  className="text-blue-600 hover:underline"
-                >
-                  {reservation.customerPhone}
-                </a>
-              }
-            />
-            {reservation.customerWhatsappPhone ? (
-              <DetailFact
-                label={adminCopy.reservations.detail.whatsapp}
-                value={
-                  <a
-                    href={`https://wa.me/${reservation.customerWhatsappPhone.replace(/\D/g, "")}`}
-                    className="text-blue-600 hover:underline"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {reservation.customerWhatsappPhone}
-                  </a>
-                }
-              />
-            ) : null}
-          </dl>
-        </DetailSection>
-
-        <DetailSection
-          title={adminCopy.reservations.detail.route}
-          description={adminCopy.reservations.detail.routeHint}
-          icon={MapPin}
-          className="xl:col-span-2"
-        >
-          <div className="mb-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <div className="flex items-center gap-3 text-sm font-medium text-slate-900">
-              <Route className="h-4 w-4 shrink-0 text-blue-600" aria-hidden />
-              {reservation.snapshotRouteLabel}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+        <div className="space-y-6">
+          <InfoCard
+            title={adminCopy.reservations.detail.transferSummary}
+            icon={Route}
+          >
+            <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+              <p className="text-sm font-semibold text-slate-900">
+                {reservation.snapshotRouteLabel}
+              </p>
             </div>
-          </div>
-          <dl className="grid gap-0 md:grid-cols-2 md:gap-x-8">
-            <DetailFact
-              label={adminCopy.reservations.table.origin}
-              value={reservation.originName}
-            />
-            <DetailFact
-              label={adminCopy.reservations.table.pricingDestination}
-              value={reservation.pricingDestinationName}
-            />
-            <DetailFact
-              label={adminCopy.reservations.table.actualDropoff}
-              value={reservation.actualDropoffLabel}
-            />
-            {reservation.hotelName ? (
-              <DetailFact
-                label={adminCopy.reservations.fields.hotel}
-                value={reservation.hotelName}
-              />
-            ) : null}
-            {reservation.customDestinationName ? (
-              <DetailFact
-                label={adminCopy.reservations.fields.customDestination}
-                value={reservation.customDestinationName}
-              />
-            ) : null}
-            {reservation.customDestinationAddress ? (
-              <DetailFact
-                label={adminCopy.reservations.fields.customAddress}
-                value={reservation.customDestinationAddress}
-                className="md:col-span-2"
-              />
-            ) : null}
-            {reservation.snapshotDropoffLabel ? (
-              <DetailFact
-                label={adminCopy.reservations.fields.dropoffSnapshot}
-                value={reservation.snapshotDropoffLabel}
-              />
-            ) : null}
-          </dl>
-        </DetailSection>
-      </div>
 
-      <div className="grid gap-6 xl:grid-cols-2">
-        <DetailSection
-          title={adminCopy.reservations.detail.vehicles}
-          description={adminCopy.reservations.detail.vehiclesHint}
-          icon={Car}
-        >
-          {vehicles.length === 0 ? (
-            <p className="text-sm text-slate-500">
-              {adminCopy.reservations.detail.noVehicles}
-            </p>
-          ) : (
-            <div className="space-y-4">
-              {vehicles.map((vehicle, index) => (
-                <div
-                  key={`${vehicle.snapshotName}-${index}`}
-                  className="overflow-hidden rounded-xl border border-slate-200"
-                >
-                  {vehicle.imageUrl ? (
-                    <div className="relative aspect-[16/7] bg-slate-100">
-                      <Image
-                        src={vehicle.imageUrl}
-                        alt={vehicle.snapshotName}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  ) : null}
-                  <div className="flex items-start justify-between gap-3 p-4">
-                    <div>
-                      <p className="font-semibold text-slate-900">
-                        {vehicle.snapshotName}
-                      </p>
-                      <p className="mt-1 text-sm text-slate-500">
-                        {adminCopy.reservations.table.qty}: {vehicle.quantity}
-                      </p>
-                    </div>
-                    <p className="text-sm font-semibold text-slate-900">
-                      {formatPrice(
-                        vehicle.totalPriceMinor,
-                        reservation.currency,
-                      )}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-4">
+              <FactGrid items={transferFacts} />
             </div>
-          )}
-        </DetailSection>
 
-        <DetailSection
-          title={adminCopy.reservations.detail.extras}
-          description={adminCopy.reservations.detail.extrasHint}
-          icon={Package}
-        >
-          {extras.length === 0 ? (
-            <p className="text-sm text-slate-500">
-              {adminCopy.reservations.detail.noExtras}
-            </p>
-          ) : (
-            <div className="space-y-3">
-              {extras.map((extra, index) => (
-                <div
-                  key={`${extra.snapshotName}-${index}`}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-3"
-                >
-                  <div className="min-w-0">
-                    <p className="font-medium text-slate-900">
-                      {extra.snapshotName}
-                    </p>
-                    <p className="mt-0.5 text-xs text-slate-500">
-                      {adminCopy.reservations.table.qty}: {extra.quantity}
-                    </p>
-                  </div>
-                  {extra.totalPriceMinor === 0 ? (
-                    <Badge variant="success">
-                      {adminCopy.reservations.detail.included}
-                    </Badge>
-                  ) : (
-                    <span className="text-sm font-semibold text-slate-900">
-                      {formatPrice(
-                        extra.totalPriceMinor,
-                        reservation.currency,
-                      )}
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </DetailSection>
-      </div>
+            {routeFacts.length > 0 ? (
+              <div className="mt-5 border-t border-slate-100 pt-4">
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  {adminCopy.reservations.detail.route}
+                </p>
+                <FactGrid items={routeFacts} />
+              </div>
+            ) : null}
+          </InfoCard>
 
-      <DetailSection
-        title={adminCopy.reservations.detail.pricing}
-        description={adminCopy.reservations.detail.pricingHint}
-        icon={Receipt}
-      >
-        <Table className="admin-table">
-          <TableHeader>
-            <TableRow>
-              <TableHead>{adminCopy.reservations.table.item}</TableHead>
-              <TableHead>{adminCopy.reservations.table.qty}</TableHead>
-              <TableHead>{adminCopy.reservations.table.unit}</TableHead>
-              <TableHead className="text-right">
-                {adminCopy.reservations.table.total}
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {reservation.items.map((item, index) => (
-              <TableRow key={`${item.snapshotName}-${index}`}>
-                <TableCell className="font-medium">{item.snapshotName}</TableCell>
-                <TableCell>{item.quantity}</TableCell>
-                <TableCell>
-                  {item.totalPriceMinor === 0
-                    ? adminCopy.reservations.detail.included
-                    : formatPrice(item.unitPriceMinor, reservation.currency)}
-                </TableCell>
-                <TableCell className="text-right font-medium">
-                  {item.totalPriceMinor === 0
-                    ? adminCopy.reservations.detail.included
-                    : formatPrice(item.totalPriceMinor, reservation.currency)}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+          <InfoCard title={adminCopy.reservations.detail.customer} icon={User}>
+            <FactGrid
+              items={[
+                {
+                  label: adminCopy.reservations.fields.name,
+                  value: reservation.customerName,
+                },
+                {
+                  label: adminCopy.reservations.fields.email,
+                  value: (
+                    <a
+                      href={`mailto:${reservation.customerEmail}`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {reservation.customerEmail}
+                    </a>
+                  ),
+                },
+                {
+                  label: adminCopy.reservations.fields.phone,
+                  value: (
+                    <a
+                      href={`tel:${reservation.customerPhone.replace(/\s/g, "")}`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {reservation.customerPhone}
+                    </a>
+                  ),
+                },
+                ...(reservation.customerWhatsappPhone
+                  ? [
+                      {
+                        label: adminCopy.reservations.detail.whatsapp,
+                        value: (
+                          <a
+                            href={`https://wa.me/${reservation.customerWhatsappPhone.replace(/\D/g, "")}`}
+                            className="text-blue-600 hover:underline"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {reservation.customerWhatsappPhone}
+                          </a>
+                        ),
+                      },
+                    ]
+                  : []),
+              ]}
+            />
+          </InfoCard>
 
-        <div className="mt-5 flex flex-col gap-2 border-t border-slate-100 pt-4 sm:ml-auto sm:max-w-sm">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-500">
-              {adminCopy.reservations.fields.subtotal}
-            </span>
-            <span className="font-medium text-slate-900">
-              {formatPrice(reservation.subtotalMinor, reservation.currency)}
-            </span>
-          </div>
-          <div className="flex items-center justify-between border-t border-slate-100 pt-3">
-            <span className="text-sm font-semibold text-slate-900">
-              {adminCopy.reservations.fields.total}
-            </span>
-            <span className="text-xl font-semibold text-slate-900">
-              {formatPrice(reservation.totalMinor, reservation.currency)}
-            </span>
-          </div>
+          <InfoCard
+            title={adminCopy.reservations.detail.passengerDetails}
+            icon={Users}
+          >
+            {reservation.passengerDetails &&
+            reservation.passengerDetails.length > 0 ? (
+              <ul className="space-y-2 text-sm text-slate-800">
+                {reservation.passengerDetails.map((passenger) => {
+                  const kindLabel = resolvePassengerKindLabel(passenger, {
+                    adult: adminCopy.reservations.detail.passengerAdult,
+                    child: adminCopy.reservations.detail.passengerChild,
+                    infant: adminCopy.reservations.detail.passengerInfant,
+                  });
+
+                  return (
+                    <li
+                      key={`${passenger.kind}-${passenger.index}`}
+                      className="rounded-lg border border-slate-100 bg-slate-50/80 px-3 py-2"
+                    >
+                      {formatPassengerDisplayLine(passenger, kindLabel)}
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <p className="text-sm text-slate-500">
+                {adminCopy.reservations.detail.passengerDetailsEmpty}
+              </p>
+            )}
+          </InfoCard>
+
+          {reservation.notes ? (
+            <InfoCard
+              title={adminCopy.reservations.detail.notes}
+              icon={MessageSquareText}
+            >
+              <div className="whitespace-pre-wrap rounded-lg border border-amber-200 bg-amber-50/70 px-4 py-3 text-sm leading-relaxed text-slate-800">
+                {reservation.notes}
+              </div>
+            </InfoCard>
+          ) : null}
         </div>
-      </DetailSection>
 
-      <DetailSection
-        title={adminCopy.reservations.detail.passengerDetails}
-        description={adminCopy.reservations.detail.passengerDetailsHint}
-        icon={Users}
-      >
-        {reservation.passengerDetails && reservation.passengerDetails.length > 0 ? (
-          <ul className="space-y-2 rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-4 text-sm text-slate-800">
-            {reservation.passengerDetails.map((passenger) => {
-              const kindLabel = resolvePassengerKindLabel(passenger, {
-                adult: adminCopy.reservations.detail.passengerAdult,
-                child: adminCopy.reservations.detail.passengerChild,
-                infant: adminCopy.reservations.detail.passengerInfant,
-              });
+        <div className="space-y-6">
+          <InfoCard
+            title={adminCopy.reservations.detail.pricingSummary}
+            icon={Receipt}
+            className="lg:sticky lg:top-6"
+          >
+            <div className="space-y-4">
+              <div>
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  {adminCopy.reservations.detail.pricingVehicles}
+                </p>
+                {transferVehicles.length === 0 ? (
+                  <p className="text-sm text-slate-500">
+                    {adminCopy.reservations.detail.noVehicles}
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {transferVehicles.map((vehicle, index) => (
+                      <div
+                        key={`${vehicle.snapshotName}-${index}`}
+                        className="flex gap-3 rounded-lg border border-slate-200 p-3"
+                      >
+                        {vehicle.imageUrl ? (
+                          <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-md bg-slate-100">
+                            <Image
+                              src={vehicle.imageUrl}
+                              alt={vehicle.snapshotName}
+                              fill
+                              className="object-cover"
+                              sizes="80px"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex h-14 w-20 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-400">
+                            <Car className="h-5 w-5" aria-hidden />
+                          </div>
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <PriceRow
+                            label={vehicle.snapshotName}
+                            detail={`${adminCopy.reservations.table.qty}: ${vehicle.quantity}`}
+                            amountMinor={vehicle.totalPriceMinor}
+                            currency={reservation.currency}
+                            included={vehicle.totalPriceMinor === 0}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-              return (
-                <li key={`${passenger.kind}-${passenger.index}`}>
-                  {formatPassengerDisplayLine(passenger, kindLabel)}
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="text-sm text-slate-500">
-            {adminCopy.reservations.detail.passengerDetailsEmpty}
-          </p>
-        )}
-      </DetailSection>
+              {extraLines.length > 0 ? (
+                <div className="border-t border-slate-100 pt-4">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    {adminCopy.reservations.detail.pricingExtras}
+                  </p>
+                  <div className="divide-y divide-slate-100">
+                    {extraLines.map((extra, index) => (
+                      <PriceRow
+                        key={`${extra.snapshotName}-${index}`}
+                        label={
+                          extra.isLuggageOverflowVehicle
+                            ? adminCopy.reservations.detail.luggageVehicle
+                            : extra.snapshotName
+                        }
+                        detail={
+                          extra.isLuggageOverflowVehicle
+                            ? `${extra.snapshotName} · ${adminCopy.reservations.table.qty}: ${extra.quantity}`
+                            : `${adminCopy.reservations.table.qty}: ${extra.quantity}`
+                        }
+                        amountMinor={extra.totalPriceMinor}
+                        currency={reservation.currency}
+                        included={extra.totalPriceMinor === 0}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="border-t border-slate-100 pt-4 text-sm text-slate-500">
+                  {adminCopy.reservations.detail.noExtras}
+                </p>
+              )}
 
-      <DetailSection
-        title={adminCopy.reservations.detail.notes}
-        description={adminCopy.reservations.detail.notesHint}
-        icon={MessageSquareText}
-      >
-        {reservation.notes ? (
-          <div className="whitespace-pre-wrap rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-4 text-sm leading-relaxed text-slate-800">
-            {reservation.notes}
-          </div>
-        ) : (
-          <p className="text-sm text-slate-500">
-            {adminCopy.reservations.detail.notesEmpty}
-          </p>
-        )}
-      </DetailSection>
+              <div className="space-y-2 border-t border-slate-100 pt-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-500">
+                    {adminCopy.reservations.fields.subtotal}
+                  </span>
+                  <span className="font-medium text-slate-900">
+                    {formatPrice(reservation.subtotalMinor, reservation.currency)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between border-t border-slate-100 pt-3">
+                  <span className="text-sm font-semibold text-slate-900">
+                    {adminCopy.reservations.fields.total}
+                  </span>
+                  <span className="text-lg font-semibold text-slate-900">
+                    {formatPrice(reservation.totalMinor, reservation.currency)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </InfoCard>
+        </div>
+      </div>
     </div>
   );
 }

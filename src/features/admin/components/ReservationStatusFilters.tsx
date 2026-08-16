@@ -4,15 +4,20 @@ import {
   RESERVATION_STATUSES,
   type ReservationStatus,
 } from "@/features/admin/lib/public-enums";
+import { buildAdminReservationsHref } from "@/features/admin/lib/reservation-date-filter";
 import { adminCopy, formatReservationStatus } from "@/features/admin/copy";
 import { cn } from "@/lib/utils";
 
 type ReservationStatusFiltersProps = {
   activeStatus: ReservationStatus | "all";
+  activeFrom?: string;
+  activeTo?: string;
 };
 
 export function ReservationStatusFilters({
   activeStatus,
+  activeFrom,
+  activeTo,
 }: ReservationStatusFiltersProps) {
   const filters: Array<{ value: ReservationStatus | "all"; label: string }> = [
     { value: "all", label: adminCopy.reservations.filters.all },
@@ -26,10 +31,11 @@ export function ReservationStatusFilters({
     <div className="flex flex-wrap gap-2">
       {filters.map((filter) => {
         const isActive = activeStatus === filter.value;
-        const href =
-          filter.value === "all"
-            ? "/admin/reservations"
-            : `/admin/reservations?status=${filter.value}`;
+        const href = buildAdminReservationsHref({
+          status: filter.value,
+          from: activeFrom,
+          to: activeTo,
+        });
 
         return (
           <Link

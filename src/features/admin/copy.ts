@@ -572,6 +572,13 @@ export const adminCopy = {
     backToList: "Rezervasyonlara dön",
     detail: {
       overview: "Özet",
+      transferSummary: "Transfer özeti",
+      transferSummaryHint: "Tarih, yolcu, bagaj ve rota bilgileri.",
+      pricingSummary: "Fiyat özeti",
+      pricingVehicles: "Transfer araçları",
+      pricingExtras: "Ekstralar",
+      luggageVehicle: "Bagaj aracı",
+      luggage: "Bagaj",
       journey: "Yolculuk bilgileri",
       journeyHint: "Transfer tarihi, yolcu ve bagaj detayları.",
       customer: "Müşteri bilgileri",
@@ -617,6 +624,11 @@ export const adminCopy = {
     emptyFiltered: "Seçilen duruma uygun rezervasyon bulunamadı.",
     filters: {
       all: "Tümü",
+      datePlaceholder: "Tarih aralığı seçin",
+    dateHint:
+      "Tek gün veya aralık seçin; bitiş için ikinci tarihe tıklayın.",
+      apply: "Uygula",
+      clear: "Temizle",
     },
     trip: "Yolculuk",
     customer: "Müşteri",

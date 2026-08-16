@@ -55,6 +55,7 @@ function buildVehicleLineItem(
     quantity: vehicle.quantity,
     unitPriceMinor,
     totalPriceMinor: unitPriceMinor * vehicle.quantity,
+    isLuggageOverflowVehicle: vehicle.isLuggageOverflowVehicle ?? false,
   };
 }
 

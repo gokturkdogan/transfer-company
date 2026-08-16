@@ -10,6 +10,7 @@ export type ReservationItemInsert = {
   totalPriceMinor: number;
   currency: string;
   sortOrder: number;
+  isLuggageOverflowVehicle?: boolean;
 };
 
 export function buildReservationItems(
@@ -27,5 +28,6 @@ export function buildReservationItems(
     totalPriceMinor: item.totalPriceMinor,
     currency,
     sortOrder: index,
+    isLuggageOverflowVehicle: item.isLuggageOverflowVehicle ?? false,
   }));
 }

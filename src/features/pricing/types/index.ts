@@ -28,6 +28,7 @@ export type QuoteLineItem = {
   quantity: number;
   unitPriceMinor: number;
   totalPriceMinor: number;
+  isLuggageOverflowVehicle?: boolean;
 };
 
 export type TransferQuoteInput = {

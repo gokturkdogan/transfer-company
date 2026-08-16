@@ -1,6 +1,6 @@
 import "server-only";
 
-import { desc, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, lt } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 
 import type { Database } from "@/db/client";
@@ -57,6 +57,7 @@ export type AdminReservationDetail = AdminReservationListItem & {
     unitPriceMinor: number;
     totalPriceMinor: number;
     vehicleCategoryId: string | null;
+    isLuggageOverflowVehicle: boolean;
     imageUrl?: string;
   }>;
 };
@@ -80,11 +81,23 @@ export class ReservationAdminRepository {
 
   async listReservations(options?: {
     status?: ReservationStatus;
+    outboundFrom?: Date;
+    outboundToExclusive?: Date;
     limit?: number;
   }): Promise<AdminReservationListItem[]> {
     const limit = options?.limit ?? 100;
     const pickupLocation = alias(locations, "pickup_location");
     const dropoffLocation = alias(locations, "dropoff_location");
+
+    const conditions = [
+      options?.status ? eq(reservations.status, options.status) : undefined,
+      options?.outboundFrom
+        ? gte(reservations.outboundAt, options.outboundFrom)
+        : undefined,
+      options?.outboundToExclusive
+        ? lt(reservations.outboundAt, options.outboundToExclusive)
+        : undefined,
+    ].filter((condition) => condition !== undefined);
 
     const rows = await this.database
       .select({
@@ -112,9 +125,7 @@ export class ReservationAdminRepository {
         dropoffLocation,
         eq(reservations.dropoffLocationId, dropoffLocation.id),
       )
-      .where(
-        options?.status ? eq(reservations.status, options.status) : undefined,
-      )
+      .where(conditions.length > 0 ? and(...conditions) : undefined)
       .orderBy(desc(reservations.outboundAt))
       .limit(limit);
 
@@ -202,6 +213,7 @@ export class ReservationAdminRepository {
         unitPriceMinor: reservationItems.unitPriceMinor,
         totalPriceMinor: reservationItems.totalPriceMinor,
         vehicleCategoryId: reservationItems.vehicleCategoryId,
+        isLuggageOverflowVehicle: reservationItems.isLuggageOverflowVehicle,
       })
       .from(reservationItems)
       .where(eq(reservationItems.reservationId, id));

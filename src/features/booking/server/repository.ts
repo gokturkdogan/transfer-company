@@ -287,6 +287,7 @@ export class BookingRepository implements BookingWriter {
                 totalPriceMinor: item.totalPriceMinor,
                 currency: item.currency,
                 sortOrder: item.sortOrder,
+                isLuggageOverflowVehicle: item.isLuggageOverflowVehicle ?? false,
               })),
             )
             .returning({

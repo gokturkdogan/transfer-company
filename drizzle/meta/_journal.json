@@ -169,6 +169,13 @@
       "when": 1786526400000,
       "tag": "0023_footer_backlinks",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1786530000000,
+      "tag": "0024_reservation_items_luggage_flag",
+      "breakpoints": true
     }
   ]
 }

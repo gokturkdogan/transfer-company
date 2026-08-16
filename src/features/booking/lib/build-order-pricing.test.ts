@@ -102,4 +102,67 @@ describe("buildOrderPricing", () => {
     expect(pricing.optionalExtras[0]?.totalPriceMinor).toBe(2000);
     expect(pricing.totalMinor).toBe(12000);
   });
+
+  it("shows auto-added luggage vehicle in extras, not base transfer", () => {
+    const quoteWithLuggage: TransferAvailabilityResponseDto = {
+      ...quoteFixture,
+      options: [
+        {
+          ...quoteFixture.options[0]!,
+          requiredLuggageVehicles: 1,
+          requiredLuggageVehicle: {
+            vehicleCategoryId: "sprinter-id",
+            vehicleCategoryName: "Sprinter",
+            quantity: 1,
+            largeLuggageCapacity: 12,
+            unitPriceMinor: 3000,
+            totalPriceMinor: 3000,
+          },
+          quote: {
+            ...quoteFixture.options[0]!.quote,
+            baseItems: [
+              {
+                type: "TRANSFER_VEHICLE",
+                referenceId: "vehicle-1",
+                name: "Vito",
+                quantity: 1,
+                unitPriceMinor: 10000,
+                totalPriceMinor: 10000,
+                isLuggageOverflowVehicle: false,
+              },
+              {
+                type: "TRANSFER_VEHICLE",
+                referenceId: "sprinter-id",
+                name: "Sprinter",
+                quantity: 1,
+                unitPriceMinor: 3000,
+                totalPriceMinor: 3000,
+                isLuggageOverflowVehicle: true,
+              },
+            ],
+            subtotalMinor: 13000,
+            totalMinor: 13000,
+          },
+        },
+      ],
+    };
+
+    const pricing = buildOrderPricing(
+      quoteWithLuggage,
+      selectedVehicles,
+      [],
+    );
+
+    expect(pricing.baseTransferMinor).toBe(10000);
+    expect(
+      pricing.requiredExtras.some(
+        (extra) => extra.id === "luggage-vehicle:sprinter-id",
+      ),
+    ).toBe(true);
+    expect(pricing.allExtras.find((e) => e.name === "Sprinter")?.totalPriceMinor).toBe(
+      3000,
+    );
+    expect(pricing.totalMinor).toBe(13000);
+    expect(pricing.hasExtras).toBe(true);
+  });
 });
