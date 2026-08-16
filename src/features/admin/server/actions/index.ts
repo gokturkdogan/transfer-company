@@ -22,6 +22,7 @@ export { updateRoutePricesAction } from "@/features/admin/server/actions/pricing
 export { updateEnabledCurrenciesAction } from "@/features/admin/server/actions/currencies";
 export { updateContactChannelsAction } from "@/features/admin/server/actions/contact";
 export { updateSocialMediaLinksAction } from "@/features/admin/server/actions/social-media";
+export { updateFooterBacklinksAction } from "@/features/admin/server/actions/footer-backlinks";
 export { updateHomeTestimonialsAction } from "@/features/admin/server/actions/testimonials";
 export {
   createGuideAction,

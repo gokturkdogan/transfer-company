@@ -8,6 +8,7 @@ import {
   Coins,
   Languages,
   LayoutDashboard,
+  Link2,
   LogOut,
   MapPin,
   MessageSquareQuote,
@@ -72,6 +73,11 @@ const NAV_ITEMS = [
     href: "/admin/social-media",
     label: adminCopy.sidebar.socialMedia,
     icon: Share2,
+  },
+  {
+    href: "/admin/footer-backlinks",
+    label: adminCopy.sidebar.footerBacklinks,
+    icon: Link2,
   },
   {
     href: "/admin/testimonials",

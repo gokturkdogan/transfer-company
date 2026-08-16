@@ -162,6 +162,13 @@
       "when": 1786522800000,
       "tag": "0022_blog_posts",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1786526400000,
+      "tag": "0023_footer_backlinks",
+      "breakpoints": true
     }
   ]
 }

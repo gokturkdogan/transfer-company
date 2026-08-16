@@ -8,6 +8,7 @@ export * from "./extras";
 export * from "./currencies";
 export * from "./contact-channels";
 export * from "./social-media";
+export * from "./footer-backlinks";
 export * from "./home-testimonials";
 export * from "./blog-posts";
 export * from "./locales";

@@ -1,5 +1,5 @@
 import { Clock, Phone } from "lucide-react";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 
 import { Container } from "@/components/layout/Container";
 import { EmailIcon } from "@/components/shared/EmailIcon";
@@ -8,7 +8,6 @@ import { SocialMediaIconLinks } from "@/components/shared/SocialMediaIconLinks";
 import { WhatsAppIcon } from "@/components/shared/WhatsAppIcon";
 import { getLocaleEmoji } from "@/config/locales";
 import { siteConfig } from "@/config/site";
-import { getCachedFeaturedGuideLinks } from "@/server/cache/blog-posts";
 import {
   toMailtoHref,
   toTelHref,
@@ -17,6 +16,7 @@ import {
 import { getPublicContactChannels } from "@/features/contact/server/public-contact";
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link } from "@/i18n/navigation";
+import { getCachedFooterBacklinks } from "@/server/cache/footer-backlinks";
 import { getCachedSocialMediaLinks } from "@/server/cache/social-media";
 
 export async function SiteFooter({
@@ -25,14 +25,11 @@ export async function SiteFooter({
   enabledLocales: SiteLocaleOption[];
 }) {
   const t = await getTranslations("home.footer");
-  const blogT = await getTranslations("blog");
   const nav = await getTranslations("home.nav");
   const common = await getTranslations("common");
-  const locale = await getLocale();
   const contactChannels = await getPublicContactChannels();
   const socialMediaLinks = await getCachedSocialMediaLinks();
-
-  const guideLinks = await getCachedFeaturedGuideLinks(locale);
+  const footerBacklinks = await getCachedFooterBacklinks();
 
   return (
     <footer className="relative overflow-hidden border-t border-white/10 surface-ink text-white">
@@ -46,7 +43,7 @@ export async function SiteFooter({
       />
 
       <Container className="relative py-16 md:py-20">
-        <div className="grid gap-12 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-12 md:grid-cols-2 xl:grid-cols-3">
           <div className="space-y-5">
             <div className="flex items-center">
               <SiteLogo alt={common("appName")} size="header" />
@@ -67,25 +64,29 @@ export async function SiteFooter({
                 </Link>
               ))}
             </div>
-          </div>
 
-          <FooterColumn title={blogT("footerTitle")}>
-            <li>
-              <Link href="/blog" className="transition-colors hover:text-gold-light">
-                {blogT("allGuides")}
-              </Link>
-            </li>
-            {guideLinks.map((guide) => (
-              <li key={guide.slug}>
-                <Link
-                  href={`/blog/${guide.slug}`}
-                  className="transition-colors hover:text-gold-light"
-                >
-                  {truncateGuideTitle(guide.title)}
-                </Link>
-              </li>
-            ))}
-          </FooterColumn>
+            {footerBacklinks.length > 0 ? (
+              <div className="space-y-3 pt-1">
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
+                  {t("linkedSitesTitle")}
+                </p>
+                <ul className="space-y-2 text-sm text-white/60">
+                  {footerBacklinks.map((backlink) => (
+                    <li key={backlink.slotIndex}>
+                      <a
+                        href={backlink.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="transition-colors hover:text-gold-light"
+                      >
+                        {backlink.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
 
           <FooterColumn title={t("linksTitle")}>
             <li>
@@ -109,6 +110,11 @@ export async function SiteFooter({
                 className="transition-colors hover:text-gold-light"
               >
                 {t("bookTransfer")}
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog" className="transition-colors hover:text-gold-light">
+                {nav("guides")}
               </Link>
             </li>
           </FooterColumn>
@@ -177,14 +183,6 @@ export async function SiteFooter({
       </Container>
     </footer>
   );
-}
-
-function truncateGuideTitle(title: string, maxLength = 42): string {
-  if (title.length <= maxLength) {
-    return title;
-  }
-
-  return `${title.slice(0, maxLength - 1).trimEnd()}…`;
 }
 
 function FooterColumn({

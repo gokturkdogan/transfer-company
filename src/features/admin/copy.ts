@@ -26,6 +26,7 @@ export const adminCopy = {
     reservations: "Rezervasyonlar",
     contact: "İletişim bilgileri",
     socialMedia: "Sosyal medya",
+    footerBacklinks: "Footer backlink",
     testimonials: "Misafir yorumları",
     guides: "Rehberler",
     locales: "Dil seçenekleri",
@@ -284,6 +285,30 @@ export const adminCopy = {
       x: "https://x.com/...",
       youtube: "https://youtube.com/...",
       tiktok: "https://tiktok.com/@...",
+    },
+  },
+  footerBacklinks: {
+    title: "Footer backlink",
+    subtitle:
+      "Footer'daki Bağlantılı Siteler bölümünde gösterilecek harici site linklerini yönetin (en fazla 3).",
+    formTitle: "Bağlantılı siteler",
+    hint:
+      "Site adı ve URL girin. https:// yoksa otomatik eklenir. Pasif veya eksik alan olan kayıtlar sitede gösterilmez.",
+    saveHint: "Kaydettiğinizde footer güncellenir.",
+    summary: (active: number, total: number) =>
+      `${active}/${total} bağlantı aktif`,
+    slotTitle: (number: number) => `Bağlantı ${number}`,
+    save: "Kaydet",
+    saving: "Kaydediliyor...",
+    saved: "Footer backlink'ler güncellendi.",
+    fields: {
+      label: "Site adı",
+      url: "Site URL",
+      active: "Aktif",
+    },
+    placeholders: {
+      label: "Örn. Antalya VIP Transfer",
+      url: "https://example.com",
     },
   },
   testimonials: {
