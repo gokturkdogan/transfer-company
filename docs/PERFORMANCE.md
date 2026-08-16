@@ -19,11 +19,14 @@ Cached loaders (revalidate **120s**) in `src/server/cache/public-catalog.ts`:
 - `getCachedDistricts(locale)` — single query for all active districts (`LocationService.getAllDistricts`)
 - `getCachedPopularDestinations(locale)`
 - `getCachedFleet(locale)`
+- `getCachedFleetVehicleDetail(code, locale)` — fleet detail pages; request-scoped dedup via `getFleetVehicleDetailForPage`
 - `getCachedEnabledLocales()`
 - `getCachedEnabledPaymentCurrencies()`
 - `getCachedActiveVehicleCodes()` — for sitemap / fleet URL expansion
 
-Each wrapper instantiates repositories with `db` inside the cached callback. Do not put business rules in the cache module — delegate to existing services.
+Each wrapper uses tag `public-catalog` (revalidated from admin location/vehicle/pricing/extras/currency/locale mutations via `revalidatePublicCatalogCache()`).
+
+Contact channels: `getCachedPublicContactChannels()` in `src/server/cache/contact-channels.ts` (tag `contact-channels`, 120s). Request-scoped dedup via `getPublicContactChannels()` in `public-contact.ts`.
 
 Page facades wrap these for route composition:
 
@@ -37,7 +40,9 @@ Page facades wrap these for route composition:
 - `TransferSearchLauncher` hero variant imports only `HeroSearchBar`; `TransferSearchForm` is `next/dynamic` for non-hero variants
 - `DateTimePickerPanel` is dynamically imported (`ssr: false`) from `DateTimeSegment`
 - Booking flow dynamically imports `BookingReview`, `SuccessStep`, and `VehicleRecommendationList`
-- Quote requests use a sequence id so stale responses are ignored
+- Admin dashboard charts load via `next/dynamic` on `/admin` (Recharts split)
+- Admin vehicle image crop dialog is dynamically imported on vehicle edit surfaces
+- Quote requests use a sequence id; `QUOTE_SUCCESS` is ignored when `searchSignature` no longer matches current search
 - `flag-icons` CSS is loaded once on mount from `FlagIcon` (not in locale layout)
 
 ## Message namespaces
@@ -62,12 +67,14 @@ Full `getMessages()` remains in the locale layout for now. Aggressive next-intl 
 ## Images
 
 - Use `next/image` for optimized image delivery
+- Homepage hero uses compressed JPEG source (`hero-airport-transfer.jpg`); keep static marketing assets reasonably sized before deploy
 - Cloudinary hosts admin-uploaded vehicle images (`Home/Cars/{code-brand-model}/`); public pages should prefer DB `imageKey` over static fallbacks when available
 
 ## Build
 
 - TypeScript strict mode catches errors at compile time
 - Tree-shaking via ES modules and named exports
+- Optional bundle report: `pnpm analyze` (`ANALYZE=true next build`)
 
 ## Monitoring (future)
 

@@ -476,6 +476,8 @@
       "searchHotel": "Search hotels...",
       "empty": "No hotels found for this district.",
       "loading": "Loading hotels...",
+      "loadError": "Hotels could not be loaded. Please try again.",
+      "retry": "Retry",
       "notListed": "Hotel not listed",
       "customName": "Property name",
       "customAddress": "Address (optional)"

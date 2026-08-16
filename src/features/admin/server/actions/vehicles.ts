@@ -9,6 +9,7 @@ import {
 } from "@/features/admin/server/vehicle-admin-repository";
 import { LocaleRepository } from "@/features/locales/server/repository";
 import { createAction } from "@/server/action";
+import { revalidatePublicCatalogCache } from "@/server/cache/revalidate-tags";
 import {
   mapVehicleInput,
   updateVehicleSchema,
@@ -26,6 +27,7 @@ export async function createVehicleAction(rawInput: unknown) {
     );
     revalidatePath("/admin/vehicles");
     revalidatePath("/admin/pricing");
+    revalidatePublicCatalogCache();
     return vehicle;
   }, rawInput);
 }
@@ -41,6 +43,7 @@ export async function updateVehicleAction(rawInput: unknown) {
     revalidatePath("/admin/vehicles");
     revalidatePath(`/admin/vehicles/${id}/edit`);
     revalidatePath("/admin/pricing");
+    revalidatePublicCatalogCache();
     return vehicle;
   }, rawInput);
 }
@@ -53,6 +56,7 @@ export async function deleteVehicleAction(rawInput: unknown) {
       revalidatePath("/admin/vehicles");
       revalidatePath("/admin/pricing");
       revalidatePath("/", "layout");
+      revalidatePublicCatalogCache();
       return { result };
     },
     rawInput,
@@ -66,6 +70,7 @@ export async function deactivateVehicleAction(rawInput: unknown) {
       await vehicleAdminRepository.deactivate(input.id);
       revalidatePath("/admin/vehicles");
       revalidatePath("/admin/pricing");
+      revalidatePublicCatalogCache();
       return { success: true };
     },
     rawInput,

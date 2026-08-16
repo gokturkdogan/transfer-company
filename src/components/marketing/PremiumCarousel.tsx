@@ -181,6 +181,14 @@ export function PremiumCarousel({
   }, [jumpToIndex, loopEnabled, slideCount]);
 
   useEffect(() => {
+    if (!loopEnabled) {
+      return;
+    }
+
+    reconcileLoopPosition();
+  }, [itemsPerView, loopEnabled, reconcileLoopPosition]);
+
+  useEffect(() => {
     const track = trackRef.current;
     if (!track) {
       return;
@@ -267,7 +275,7 @@ export function PremiumCarousel({
         >
           {displaySlides.map((slide, index) => (
             <div
-              key={index}
+              key={`carousel-slide-${index}`}
               role="group"
               aria-roledescription={t("slideRole")}
               aria-label={t("slideOf", {

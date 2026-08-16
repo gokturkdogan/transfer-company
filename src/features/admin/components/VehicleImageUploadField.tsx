@@ -2,14 +2,22 @@
 
 import { ImagePlus, Loader2, Trash2 } from "lucide-react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useId, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { VehicleImageCropDialog } from "@/features/admin/components/VehicleImageCropDialog";
 import { adminCopy, translateAdminError } from "@/features/admin/copy";
 import { readImageFileAsDataUrl } from "@/features/admin/lib/crop-image";
 import { uploadVehicleImageAction } from "@/features/admin/server/vehicle-image-actions";
 import { cn } from "@/lib/utils";
+
+const VehicleImageCropDialog = dynamic(
+  () =>
+    import("@/features/admin/components/VehicleImageCropDialog").then(
+      (module) => module.VehicleImageCropDialog,
+    ),
+  { ssr: false },
+);
 
 const ACCEPTED_IMAGE_TYPES = "image/jpeg,image/png,image/webp";
 

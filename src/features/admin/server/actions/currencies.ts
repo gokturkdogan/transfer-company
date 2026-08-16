@@ -10,6 +10,7 @@ import {
 import { db } from "@/db/client";
 import { CurrencyRepository } from "@/features/currencies/server/repository";
 import { createAction } from "@/server/action";
+import { revalidatePublicCatalogCache } from "@/server/cache/revalidate-tags";
 
 const currencyRepository = new CurrencyRepository(db);
 
@@ -30,6 +31,7 @@ export async function updateEnabledCurrenciesAction(rawInput: unknown) {
     await currencyRepository.setEnabled(currencies);
     revalidatePath("/admin/currencies");
     revalidatePath("/", "layout");
+    revalidatePublicCatalogCache();
     return { success: true };
   }, rawInput);
 }

@@ -16,6 +16,7 @@ import type { PassengerDetails } from "@/features/booking/lib/passenger-details"
 import type { TransferAvailabilityResponseDto } from "@/features/pricing/types/dto";
 import type { ReservationResponseDto } from "@/features/pricing/types/dto";
 import { buildSearchSignature } from "@/features/booking/lib/search-signature";
+import { isTransferPricingUnavailable } from "@/features/pricing/lib/pricing-unavailable";
 import { isLauncherSearchComplete } from "@/features/booking/lib/launcher-search";
 import {
   buildPassengerSlots,
@@ -299,7 +300,15 @@ export function bookingFlowReducer(
     case "QUOTE_LOADING":
       return { ...state, isLoadingQuote: true, errorKey: null };
 
-    case "QUOTE_SUCCESS":
+    case "QUOTE_SUCCESS": {
+      const currentSignature = buildSearchSignature(state.search);
+
+      if (currentSignature !== action.searchSignature) {
+        return { ...state, isLoadingQuote: false };
+      }
+
+      const pricingUnavailable = isTransferPricingUnavailable(action.quote);
+
       return {
         ...state,
         quote: action.quote,
@@ -307,13 +316,10 @@ export function bookingFlowReducer(
         isLoadingQuote: false,
         step: action.preserveStep ? state.step : "vehicle",
         errorKey: null,
-        selectedVehicles: action.quote.pricingUnavailable
-          ? []
-          : state.selectedVehicles,
-        selectedExtras: action.quote.pricingUnavailable
-          ? []
-          : state.selectedExtras,
+        selectedVehicles: pricingUnavailable ? [] : state.selectedVehicles,
+        selectedExtras: pricingUnavailable ? [] : state.selectedExtras,
       };
+    }
 
     case "QUOTE_ERROR":
       return {

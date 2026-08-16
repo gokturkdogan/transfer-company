@@ -6,6 +6,7 @@ import { z } from "zod";
 import { requireAdminSession } from "@/features/admin/server/auth";
 import { uploadVehicleImageToCloudinary } from "@/lib/cloudinary/upload";
 import { createAction } from "@/server/action";
+import { revalidatePublicCatalogCache } from "@/server/cache/revalidate-tags";
 
 const uploadVehicleImageSchema = z.object({
   imageDataUrl: z.string().min(1),
@@ -30,6 +31,7 @@ export async function uploadVehicleImageAction(rawInput: unknown) {
     });
 
     revalidatePath("/admin/vehicles");
+    revalidatePublicCatalogCache();
 
     return {
       imageUrl: result.secureUrl,

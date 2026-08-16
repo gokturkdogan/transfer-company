@@ -54,6 +54,7 @@ describe("AvailabilityService", () => {
     expect(result.options.some((option) => option.eligibility === "INELIGIBLE")).toBe(
       true,
     );
+    expect(result.pricingUnavailable).toBe(true);
   });
 
   it("quotes airport to district routes", async () => {

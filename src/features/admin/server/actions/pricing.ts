@@ -10,6 +10,7 @@ import {
   type UpsertRoutePriceInput,
 } from "@/features/admin/server/pricing-admin-repository";
 import { createAction } from "@/server/action";
+import { revalidatePublicCatalogCache } from "@/server/cache/revalidate-tags";
 
 const pricingAdminRepository = new PricingAdminRepository(db);
 
@@ -44,6 +45,7 @@ export async function updateRoutePricesAction(rawInput: unknown) {
 
     await pricingAdminRepository.upsertRoutePrices(input.airportId, prices);
     revalidatePath("/admin/pricing");
+    revalidatePublicCatalogCache();
     return { success: true };
   }, rawInput);
 }

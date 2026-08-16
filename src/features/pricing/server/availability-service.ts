@@ -373,6 +373,20 @@ export class AvailabilityService {
         };
       }
 
+      const hasEligibleOption = options.some(
+        (option) => option.eligibility !== "INELIGIBLE",
+      );
+
+      if (!hasEligibleOption) {
+        return {
+          routeId: route.id,
+          currency: currency ?? quoteCurrency,
+          timeZone: PROJECT_TIME_ZONE,
+          options,
+          pricingUnavailable: true,
+        };
+      }
+
       if (!currency) {
         throw new DomainRuleError("No vehicle options available for this route");
       }

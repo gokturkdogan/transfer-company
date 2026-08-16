@@ -19,6 +19,7 @@ export function buildSearchSignature(search: BookingSearchState): string {
     String(search.infantCount),
     String(search.largeLuggageCount),
     String(search.cabinLuggageCount),
+    search.isReverseDirection ? "1" : "0",
   ];
 
   return parts.join("|");
@@ -45,6 +46,7 @@ export function buildQuoteRequest(
   return {
     originAirportId: search.originAirportId,
     destinationDistrictId: search.destinationDistrictId,
+    isReverseDirection: search.isReverseDirection,
     tripType: search.tripType,
     outboundAt,
     returnAt,

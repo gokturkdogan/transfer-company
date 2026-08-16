@@ -6,6 +6,7 @@ import { z } from "zod";
 import { requireAdminSession } from "@/features/admin/server/auth";
 import { uploadDestinationImageToCloudinary } from "@/lib/cloudinary/upload";
 import { createAction } from "@/server/action";
+import { revalidatePublicCatalogCache } from "@/server/cache/revalidate-tags";
 
 const uploadDestinationImageSchema = z.object({
   imageDataUrl: z.string().min(1),
@@ -22,6 +23,7 @@ export async function uploadDestinationImageAction(rawInput: unknown) {
     });
 
     revalidatePath("/admin/locations");
+    revalidatePublicCatalogCache();
 
     return {
       imageUrl: result.secureUrl,

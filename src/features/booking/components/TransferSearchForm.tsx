@@ -20,7 +20,7 @@ export function TransferSearchForm({
   onSubmit,
 }: TransferSearchFormProps) {
   const t = useTranslations("booking.search");
-  const { state, airports, cities, districts, dispatch, requestQuote } =
+  const { state, airports, cities, districts, dispatch, requestQuote, swapRouteDirection } =
     useBookingFlow();
   const { search } = state;
 
@@ -99,7 +99,7 @@ export function TransferSearchForm({
       </div>
       <RouteSwapButton
         className="mb-0.5"
-        onClick={() => dispatch({ type: "SWAP_ROUTE_DIRECTION" })}
+        onClick={() => void swapRouteDirection()}
       />
     </div>
   );

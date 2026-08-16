@@ -10,13 +10,9 @@ import { VehicleDetailSpecsBand } from "@/components/fleet/VehicleDetailSpecsBan
 import { MobileContactBar } from "@/components/shared/MobileContactBar";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
-import { db } from "@/db/client";
 import { normalizeFleetVehicleCode } from "@/features/marketing/lib/fleet-vehicle-slug";
-import { MarketingRepository } from "@/features/marketing/server/repository";
-import { MarketingService } from "@/features/marketing/server/service";
+import { getFleetVehicleDetailForPage } from "@/features/marketing/server/get-fleet-vehicle-detail";
 import { resolveVehicleCoverImage } from "@/features/vehicles/lib/resolve-vehicle-cover-image";
-import { VehicleFeatureRepository } from "@/features/vehicles/server/feature-repository";
-import { VehicleGalleryRepository } from "@/features/vehicles/server/gallery-repository";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import {
   getCachedAirports,
@@ -25,26 +21,15 @@ import {
 
 export const revalidate = 120;
 
-function createMarketingService() {
-  return new MarketingService(
-    new MarketingRepository(db),
-    new VehicleFeatureRepository(db),
-    new VehicleGalleryRepository(db),
-  );
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string; code: string }>;
 }): Promise<Metadata> {
   const { locale, code } = await params;
-  const marketingService = createMarketingService();
+  const normalizedCode = normalizeFleetVehicleCode(code);
   const [vehicle, enabledLocales] = await Promise.all([
-    marketingService.getFleetVehicleDetail(
-      normalizeFleetVehicleCode(code),
-      locale,
-    ),
+    getFleetVehicleDetailForPage(normalizedCode, locale),
     getCachedEnabledLocales(),
   ]);
 
@@ -79,13 +64,10 @@ export default async function FleetVehicleDetailPage({
   const { locale, code } = await params;
   setRequestLocale(locale);
 
-  const marketingService = createMarketingService();
+  const normalizedCode = normalizeFleetVehicleCode(code);
 
   const [vehicle, airports, enabledLocales] = await Promise.all([
-    marketingService.getFleetVehicleDetail(
-      normalizeFleetVehicleCode(code),
-      locale,
-    ),
+    getFleetVehicleDetailForPage(normalizedCode, locale),
     getCachedAirports(locale),
     getCachedEnabledLocales(),
   ]);

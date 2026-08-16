@@ -470,6 +470,8 @@
       "searchHotel": "Hotels suchen...",
       "empty": "Keine Hotels in diesem Bezirk gefunden.",
       "loading": "Hotels werden geladen...",
+      "loadError": "Hotels konnten nicht geladen werden. Bitte erneut versuchen.",
+      "retry": "Erneut versuchen",
       "notListed": "Hotel nicht in der Liste",
       "customName": "Unterkunftsname",
       "customAddress": "Adresse (optional)"

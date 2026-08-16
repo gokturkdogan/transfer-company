@@ -105,7 +105,7 @@ Capacity logic lives in `src/features/capacity/domain/` — not inside pricing c
 - Quote orchestrator: `src/features/pricing/server/quote-service.ts`
 - Repository: `src/features/pricing/server/repository.ts`
 - Reader interface: `src/features/pricing/server/reader.ts`
-- Input schemas: `src/features/pricing/schemas/quote.ts`, `availability.ts`
+- Input schemas: `src/features/pricing/schemas/quote.ts`, `availability.ts` — quote requests enforce the same `MIN_BOOKING_LEAD_MINUTES` minimum as reservations
 - DTOs: `src/features/pricing/types/dto.ts`
 
 ## Testing

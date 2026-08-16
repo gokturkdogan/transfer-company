@@ -66,6 +66,7 @@ type BookingFlowContextValue = {
   ) => Promise<void>;
   updateLuggageCount: (largeLuggageCount: number) => Promise<void>;
   confirmVehicleSelection: () => Promise<void>;
+  swapRouteDirection: () => Promise<void>;
   submitReservation: () => Promise<void>;
 };
 
@@ -327,7 +328,22 @@ export function BookingFlowProvider({
     ],
   );
 
+  const swapRouteDirection = useCallback(async () => {
+    const nextReverse = !state.search.isReverseDirection;
+
+    if (!state.quote) {
+      dispatch({ type: "SWAP_ROUTE_DIRECTION" });
+      return;
+    }
+
+    await requestQuote({ isReverseDirection: nextReverse }, { preserveStep: true });
+  }, [requestQuote, state.quote, state.search.isReverseDirection]);
+
   const submitReservation = useCallback(async () => {
+    if (state.isSubmitting) {
+      return;
+    }
+
     if (!state.quote || state.selectedVehicles.length === 0) {
       return;
     }
@@ -349,6 +365,7 @@ export function BookingFlowProvider({
       state.quote,
       state.selectedVehicles,
       state.selectedExtras,
+      locale,
     ).totalMinor;
 
     const body = {
@@ -431,6 +448,7 @@ export function BookingFlowProvider({
       updateOutboundSchedule,
       updateLuggageCount,
       confirmVehicleSelection,
+      swapRouteDirection,
       submitReservation,
     }),
     [
@@ -444,6 +462,7 @@ export function BookingFlowProvider({
       updateOutboundSchedule,
       updateLuggageCount,
       confirmVehicleSelection,
+      swapRouteDirection,
       submitReservation,
     ],
   );

@@ -1,4 +1,8 @@
 import { calculateExtraTotalMinor } from "@/features/pricing/domain/extra-pricing";
+import {
+  applyPriceMultiplier,
+  resolveArabicPricingAdjustments,
+} from "@/features/pricing/domain/arabic-locale-pricing";
 import type { LuggageFleetVehicleSelection } from "@/features/capacity/domain/select-cheapest-luggage-fleet-vehicle";
 import type { SelectedExtra, SelectedVehicle } from "@/features/booking/lib/types";
 import { mergeOptionalExtras } from "@/features/booking/lib/vehicle-selection-context";
@@ -28,6 +32,7 @@ function sumPrimaryBaseMinor(baseItems: QuoteLineItem[]): number {
 function buildLuggageVehicleLine(
   baseItems: QuoteLineItem[],
   requiredLuggageVehicle: LuggageFleetVehicleSelection | null,
+  locale: string,
 ): OrderExtraLine | null {
   const luggageItem = baseItems.find((item) => item.isLuggageOverflowVehicle);
 
@@ -45,11 +50,18 @@ function buildLuggageVehicleLine(
     return null;
   }
 
+  const pricingAdjustments = resolveArabicPricingAdjustments(locale);
+  const luggageMultiplier =
+    pricingAdjustments?.luggageVehiclePriceMultiplier ?? 1;
+
   return {
     id: `${LUGGAGE_VEHICLE_LINE_ID_PREFIX}${requiredLuggageVehicle.vehicleCategoryId}`,
     name: requiredLuggageVehicle.vehicleCategoryName,
     quantity: requiredLuggageVehicle.quantity,
-    totalPriceMinor: requiredLuggageVehicle.totalPriceMinor,
+    totalPriceMinor: applyPriceMultiplier(
+      requiredLuggageVehicle.totalPriceMinor,
+      luggageMultiplier,
+    ),
     required: true,
   };
 }
@@ -70,6 +82,7 @@ export function buildOrderPricing(
   quote: TransferAvailabilityResponseDto,
   selectedVehicles: SelectedVehicle[],
   selectedExtras: SelectedExtra[],
+  locale = "en",
 ) {
   const currency = quote.currency;
   const selectedOptions = getSelectedVehicleOptions(
@@ -88,6 +101,7 @@ export function buildOrderPricing(
       quote.selection.quote.baseItems,
       selectedOptions.find((option) => option.requiredLuggageVehicle)?.requiredLuggageVehicle ??
         null,
+      locale,
     );
 
     if (luggageLine) {
@@ -101,6 +115,7 @@ export function buildOrderPricing(
     const luggageLine = buildLuggageVehicleLine(
       selectedOption.quote.baseItems,
       selectedOption.requiredLuggageVehicle,
+      locale,
     );
 
     if (luggageLine) {
@@ -122,6 +137,7 @@ export function buildOrderPricing(
       const luggageLine = buildLuggageVehicleLine(
         option.quote.baseItems,
         option.requiredLuggageVehicle,
+        locale,
       );
 
       if (luggageLine) {

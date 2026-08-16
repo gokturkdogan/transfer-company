@@ -2,10 +2,10 @@
 
 import { ImagePlus, Loader2, Trash2 } from "lucide-react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useId, useRef, useState, type Dispatch, type SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
-import { VehicleImageCropDialog } from "@/features/admin/components/VehicleImageCropDialog";
 import type { VehicleImageAssetName } from "@/features/admin/components/VehicleImageUploadField";
 import { AdminFormGrid } from "@/features/admin/components/shell/AdminFormLayout";
 import { adminCopy, translateAdminError } from "@/features/admin/copy";
@@ -15,6 +15,14 @@ import {
   MAX_VEHICLE_BOOKING_PREVIEW_IMAGES,
   MAX_VEHICLE_GALLERY_IMAGES,
 } from "@/features/vehicles/domain/constants";
+
+const VehicleImageCropDialog = dynamic(
+  () =>
+    import("@/features/admin/components/VehicleImageCropDialog").then(
+      (module) => module.VehicleImageCropDialog,
+    ),
+  { ssr: false },
+);
 
 const ACCEPTED_IMAGE_TYPES = "image/jpeg,image/png,image/webp";
 

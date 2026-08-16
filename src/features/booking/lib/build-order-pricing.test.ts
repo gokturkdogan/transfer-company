@@ -165,4 +165,52 @@ describe("buildOrderPricing", () => {
     expect(pricing.totalMinor).toBe(13000);
     expect(pricing.hasExtras).toBe(true);
   });
+
+  it("applies Arabic luggage vehicle multiplier in fallback pricing", () => {
+    const quoteWithLuggage: TransferAvailabilityResponseDto = {
+      ...quoteFixture,
+      options: [
+        {
+          ...quoteFixture.options[0]!,
+          requiredLuggageVehicles: 1,
+          requiredLuggageVehicle: {
+            vehicleCategoryId: "sprinter-id",
+            vehicleCategoryName: "Sprinter",
+            quantity: 1,
+            largeLuggageCapacity: 12,
+            unitPriceMinor: 3000,
+            totalPriceMinor: 3000,
+          },
+          quote: {
+            ...quoteFixture.options[0]!.quote,
+            baseItems: [
+              {
+                type: "TRANSFER_VEHICLE",
+                referenceId: "vehicle-1",
+                name: "Vito",
+                quantity: 1,
+                unitPriceMinor: 10000,
+                totalPriceMinor: 10000,
+                isLuggageOverflowVehicle: false,
+              },
+            ],
+            subtotalMinor: 10000,
+            totalMinor: 10000,
+          },
+        },
+      ],
+    };
+
+    const pricing = buildOrderPricing(
+      quoteWithLuggage,
+      selectedVehicles,
+      [],
+      "ar",
+    );
+
+    expect(pricing.allExtras.find((e) => e.name === "Sprinter")?.totalPriceMinor).toBe(
+      6000,
+    );
+    expect(pricing.totalMinor).toBe(16000);
+  });
 });

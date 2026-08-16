@@ -24,6 +24,7 @@ The booking engine orchestrates the creation of transfer reservation requests. A
 | Optional extras quantity | **None** — `SET_EXTRAS` + client `buildOrderPricing` (`PER_UNIT` uses `max(0, qty − includedQuantity)`) |
 | Luggage ≤ vehicle capacity | **None** — search state only |
 | Luggage crosses above capacity, changes while over, or returns under | **POST /api/quote** — server applies/updates luggage-vehicle required extras |
+| Route direction swap (booking) | **POST /api/quote** with `preserveStep` when a quote already exists |
 | Infant / passenger / other search draft edits | **None until Search** — quote stays; `requestQuote` on submit refreshes |
 ## Public API
 
@@ -67,6 +68,7 @@ See [API_CONTRACTS.md](./API_CONTRACTS.md) for request/response shapes.
 - If `hotelLocationId` is provided: hotel must be active and `parentId` must equal `destinationDistrictId`
 - `hotelLocationId` and `customDestination` are mutually exclusive
 - Vehicle configuration must be `ELIGIBLE` or `ELIGIBLE_WITH_EXTRAS`
+- Quote API returns `pricingUnavailable: true` when no route prices exist or every vehicle option is `INELIGIBLE` (UI shows contact prompt)
 - Non-customer-selectable extras cannot be manually requested (auto-injected extras bypass this)
 - Prices are always calculated server-side — **never trust client-supplied prices**
 - Zod input schemas contain **no authoritative price fields** (`clientQuotedTotalMinor` is logged-only)

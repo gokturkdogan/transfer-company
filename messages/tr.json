@@ -476,6 +476,8 @@
       "searchHotel": "Otel ara...",
       "empty": "Bu bölge için otel bulunamadı.",
       "loading": "Oteller yükleniyor...",
+      "loadError": "Oteller yüklenemedi. Lütfen tekrar deneyin.",
+      "retry": "Tekrar dene",
       "notListed": "Otel listede yok",
       "customName": "Konaklama adı",
       "customAddress": "Adres (isteğe bağlı)"

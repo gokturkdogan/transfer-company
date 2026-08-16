@@ -66,8 +66,9 @@ export function BookingOrderSummary({
       state.quote,
       state.selectedVehicles,
       state.selectedExtras,
+      locale,
     );
-  }, [state.quote, state.selectedExtras, state.selectedVehicles]);
+  }, [locale, state.quote, state.selectedExtras, state.selectedVehicles]);
 
   if (!selectedOption || !state.quote || !pricing) {
     return null;

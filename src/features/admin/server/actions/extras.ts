@@ -7,6 +7,7 @@ import { db } from "@/db/client";
 import { ExtraAdminRepository } from "@/features/admin/server/extra-admin-repository";
 import { LocaleRepository } from "@/features/locales/server/repository";
 import { createAction } from "@/server/action";
+import { revalidatePublicCatalogCache } from "@/server/cache/revalidate-tags";
 import { extraSchema, mapExtraInput, updateExtraSchema } from "./shared";
 
 const extraAdminRepository = new ExtraAdminRepository(db);
@@ -19,6 +20,7 @@ export async function createExtraAction(rawInput: unknown) {
       mapExtraInput(input, enabledLocaleCodes),
     );
     revalidatePath("/admin/extras");
+    revalidatePublicCatalogCache();
     return extra;
   }, rawInput);
 }
@@ -33,6 +35,7 @@ export async function updateExtraAction(rawInput: unknown) {
     );
     revalidatePath("/admin/extras");
     revalidatePath(`/admin/extras/${id}/edit`);
+    revalidatePublicCatalogCache();
     return extra;
   }, rawInput);
 }
@@ -43,6 +46,7 @@ export async function deleteExtraAction(rawInput: unknown) {
     async (input) => {
       const result = await extraAdminRepository.delete(input.id);
       revalidatePath("/admin/extras");
+      revalidatePublicCatalogCache();
       return { result };
     },
     rawInput,

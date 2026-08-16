@@ -49,6 +49,7 @@ export function BookingReview() {
     state.quote,
     state.selectedVehicles,
     state.selectedExtras,
+    locale,
   );
 
   const vehicleSummaryLabel = state.selectedVehicles

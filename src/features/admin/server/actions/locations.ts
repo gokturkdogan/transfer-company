@@ -7,6 +7,7 @@ import { db } from "@/db/client";
 import { LocationAdminRepository } from "@/features/admin/server/location-admin-repository";
 import { LocaleRepository } from "@/features/locales/server/repository";
 import { createAction } from "@/server/action";
+import { revalidatePublicCatalogCache } from "@/server/cache/revalidate-tags";
 import { DomainRuleError } from "@/server/errors";
 import { minorToMajor } from "@/lib/money";
 import {
@@ -44,6 +45,7 @@ export async function createLocationAction(rawInput: unknown) {
 
     revalidatePath("/admin/locations");
     revalidatePath("/");
+    revalidatePublicCatalogCache();
     return location;
   }, rawInput);
 }
@@ -110,6 +112,7 @@ export async function updateLocationAction(rawInput: unknown) {
     revalidatePath("/admin/locations");
     revalidatePath("/");
     revalidatePath(`/admin/locations/${location.type.toLowerCase()}/${id}/edit`);
+    revalidatePublicCatalogCache();
     return location;
   }, rawInput);
 }
@@ -120,6 +123,7 @@ export async function deactivateLocationAction(rawInput: unknown) {
     async (input) => {
       await locationAdminRepository.deactivate(input.id);
       revalidatePath("/admin/locations");
+      revalidatePublicCatalogCache();
       return { success: true };
     },
     rawInput,

@@ -11,6 +11,7 @@ import {
   type UpsertEnabledLocaleInput,
 } from "@/features/locales/server/repository";
 import { createAction } from "@/server/action";
+import { revalidatePublicCatalogCache } from "@/server/cache/revalidate-tags";
 import { DomainRuleError } from "@/server/errors";
 
 const localeRepository = new LocaleRepository(db);
@@ -79,6 +80,7 @@ export async function updateEnabledLocalesAction(rawInput: unknown) {
     const locales = await localeRepository.sync(mapEnabledLocales(input));
     revalidatePath("/admin/locales");
     revalidatePath("/[locale]", "layout");
+    revalidatePublicCatalogCache();
     return locales;
   }, rawInput);
 }

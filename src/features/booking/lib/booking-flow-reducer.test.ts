@@ -253,4 +253,64 @@ describe("bookingFlowReducer", () => {
     expect(reversed.search.destinationDistrictId).toBe("b");
     expect(reversed.quote).toBe(withQuote.quote);
   });
+
+  it("ignores stale QUOTE_SUCCESS when search signature no longer matches", () => {
+    const initial = createInitialBookingFlowState({
+      originAirportId: "a",
+      destinationDistrictId: "b",
+      outboundDate: "2026-08-10",
+      outboundTime: "10:00",
+      largeLuggageCount: 2,
+    });
+
+    const withQuote = bookingFlowReducer(initial, {
+      type: "QUOTE_SUCCESS",
+      quote: {
+        routeId: "route-1",
+        currency: "EUR",
+        timeZone: "Europe/Istanbul",
+        options: [],
+      },
+      searchSignature: buildSearchSignature(initial.search),
+    });
+
+    const luggageUpdated = bookingFlowReducer(withQuote, {
+      type: "UPDATE_LUGGAGE",
+      largeLuggageCount: 4,
+      cabinLuggageCount: 0,
+    });
+
+    const staleSuccess = bookingFlowReducer(luggageUpdated, {
+      type: "QUOTE_SUCCESS",
+      quote: {
+        routeId: "route-1",
+        currency: "EUR",
+        timeZone: "Europe/Istanbul",
+        options: [],
+        pricingUnavailable: true,
+      },
+      searchSignature: buildSearchSignature(initial.search),
+    });
+
+    expect(staleSuccess.quote).toBe(withQuote.quote);
+    expect(staleSuccess.searchSignature).toBe(
+      buildSearchSignature(luggageUpdated.search),
+    );
+    expect(staleSuccess.isLoadingQuote).toBe(false);
+  });
+
+  it("includes route direction in search signature", () => {
+    const forward = createInitialBookingFlowState({
+      originAirportId: "a",
+      destinationDistrictId: "b",
+      isReverseDirection: false,
+    });
+    const reversed = bookingFlowReducer(forward, {
+      type: "SWAP_ROUTE_DIRECTION",
+    });
+
+    expect(buildSearchSignature(forward.search)).not.toBe(
+      buildSearchSignature(reversed.search),
+    );
+  });
 });

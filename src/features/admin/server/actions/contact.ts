@@ -10,6 +10,7 @@ import {
   type UpsertContactChannelInput,
 } from "@/features/contact/server/repository";
 import { createAction } from "@/server/action";
+import { revalidateContactChannelsCache } from "@/server/cache/revalidate-tags";
 
 const contactChannelRepository = new ContactChannelRepository(db);
 
@@ -66,6 +67,7 @@ export async function updateContactChannelsAction(rawInput: unknown) {
       assignContactSortOrders(input.channels),
     );
     revalidatePath("/admin/contact");
+    revalidateContactChannelsCache();
     return channels;
   }, rawInput);
 }

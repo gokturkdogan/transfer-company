@@ -63,7 +63,10 @@ export class BookingService {
 
     try {
       assertAntiSpamChecks(input);
-    } catch {
+    } catch (error) {
+      logger.warn("Reservation request rejected by anti-spam", {
+        reason: error instanceof Error ? error.message : "unknown",
+      });
       throw new ValidationError("Request rejected");
     }
 

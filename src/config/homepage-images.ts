@@ -1,5 +1,5 @@
 export const HOMEPAGE_IMAGES = {
-  hero: "/images/homepage/hero-airport-transfer.png",
+  hero: "/images/homepage/hero-airport-transfer.jpg",
   destinations: {
     BELEK: "/images/homepage/dest-belek.jpg",
     KEMER: "/images/homepage/dest-kemer.jpg",
