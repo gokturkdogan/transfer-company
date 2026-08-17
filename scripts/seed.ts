@@ -4,6 +4,7 @@ import { and, eq } from "drizzle-orm";
 
 import * as schema from "../src/db/schema";
 import { ANTALYA_OFFICIAL_DISTRICTS } from "./data/antalya-districts";
+import { seedPrivacyPageTranslations } from "./seed-privacy-page";
 
 const pool = new Pool({
   connectionString:
@@ -503,6 +504,8 @@ async function seed() {
       })
       .onConflictDoNothing();
   }
+
+  await seedPrivacyPageTranslations(db);
 
   console.log("Seed completed successfully");
   await pool.end();

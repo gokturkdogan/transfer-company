@@ -27,6 +27,7 @@ export const adminCopy = {
     contact: "İletişim bilgileri",
     socialMedia: "Sosyal medya",
     footerBacklinks: "Footer backlink",
+    privacyPage: "KVKK / Gizlilik",
     testimonials: "Misafir yorumları",
     guides: "Rehberler",
     locales: "Dil seçenekleri",
@@ -310,6 +311,22 @@ export const adminCopy = {
       label: "Örn. Antalya VIP Transfer",
       url: "https://example.com",
     },
+  },
+  privacyPage: {
+    title: "KVKK / Gizlilik sayfası",
+    subtitle:
+      "Footer'daki gizlilik ve KVKK aydınlatma metnini zengin metin editörü ile düzenleyin. Kaydettiğinizde /privacy sayfası güncellenir.",
+    formTitle: "Aydınlatma metni",
+    hint:
+      "Başlık, kalın, liste ve bağlantı ekleyebilirsiniz. Türkçe metin zorunludur; diğer diller isteğe bağlıdır.",
+    localeHint: (label: string) => `${label} dilindeki KVKK aydınlatma metni`,
+    editorPlaceholder: "Aydınlatma metnini buraya yazın…",
+    summary: (filled: number, total: number) =>
+      `${filled}/${total} dilde içerik`,
+    save: "Kaydet",
+    saving: "Kaydediliyor...",
+    saved: "Gizlilik sayfası güncellendi.",
+    saveHint: "Kaydettiğinizde footer'daki gizlilik linki bu içeriği gösterir.",
   },
   testimonials: {
     title: "Misafir yorumları",

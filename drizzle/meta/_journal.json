@@ -176,6 +176,20 @@
       "when": 1786530000000,
       "tag": "0024_reservation_items_luggage_flag",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1786533600000,
+      "tag": "0025_privacy_page_translations",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1786537200000,
+      "tag": "0026_privacy_page_content",
+      "breakpoints": true
     }
   ]
 }

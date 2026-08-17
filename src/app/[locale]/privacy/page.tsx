@@ -6,8 +6,11 @@ import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 import { PrivacyContent } from "@/components/privacy/PrivacyContent";
 import { PrivacyHero } from "@/components/privacy/PrivacyHero";
+import { getDefaultKvkkHtmlTr } from "@/features/privacy/lib/get-default-kvkk-html";
+import { sanitizePrivacyHtml } from "@/features/privacy/lib/sanitize-privacy-html";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { getCachedEnabledLocales } from "@/server/cache/public-catalog";
+import { getCachedPrivacyPageContent } from "@/server/cache/privacy-page";
 
 export const revalidate = 120;
 
@@ -39,14 +42,22 @@ export default async function PrivacyPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const enabledLocales = await getCachedEnabledLocales();
+  const [enabledLocales, dbContent] = await Promise.all([
+    getCachedEnabledLocales(),
+    getCachedPrivacyPageContent(locale),
+  ]);
+
+  const html = sanitizePrivacyHtml(
+    dbContent?.content ??
+      (locale === "tr" ? getDefaultKvkkHtmlTr() : ""),
+  );
 
   return (
     <>
       <SiteHeader enabledLocales={enabledLocales} />
       <main className="flex flex-1 flex-col pb-20 md:pb-0">
         <PrivacyHero />
-        <PrivacyContent />
+        <PrivacyContent html={html} />
       </main>
       <SiteFooter enabledLocales={enabledLocales} />
       <MobileContactBar />

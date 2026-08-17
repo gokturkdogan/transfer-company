@@ -1,0 +1,442 @@
+ROYAL RHEIN TRANSFERS
+
+Kişisel Verilerin Korunması Kanunu Kapsamında Aydınlatma Metni
+
+1. Amaç ve Kapsam
+
+Royal Rhein Transfers olarak müşterilerimizin, internet sitesi ziyaretçilerimizin ve hizmetlerimizden yararlanan diğer kişilerin kişisel verilerinin gizliliğine ve güvenliğine önem vermekteyiz.
+
+İşbu Kişisel Verilerin Korunması ve İşlenmesine İlişkin Aydınlatma Metni (“Aydınlatma Metni”); 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”), ilgili ikincil mevzuat ve Kişisel Verileri Koruma Kurulu tarafından yayımlanan düzenlemeler çerçevesinde, Royal Rhein Transfers tarafından gerçekleştirilen kişisel veri işleme faaliyetleri hakkında ilgili kişileri bilgilendirmek amacıyla hazırlanmıştır.
+
+Bu Aydınlatma Metni özellikle  ⁠royalrheintransfers.com internet sitesini ziyaret eden, transfer fiyatı sorgulayan, rezervasyon veya transfer talebi oluşturan, transfer hizmetinden yararlanan veya Royal Rhein Transfers ile iletişime geçen kişileri kapsamaktadır.
+
+⸻
+
+2. Veri Sorumlusu
+
+6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında kişisel verileriniz;
+
+Veri Sorumlusu / Marka: Royal Rhein Transfers
+Web Sitesi:  ⁠royalrheintransfers.com
+E-posta ve KVKK İletişim Adresi: royalrheintransfers@gmail.com
+
+tarafından veri sorumlusu sıfatıyla işlenmektedir.
+
+Royal Rhein Transfers’ın resmî ticari unvanının marka adından farklı olması halinde, veri sorumlusu bilgileri ilgili resmî ticari unvan doğrultusunda güncellenecektir.
+
+⸻
+
+3. İşlenen Kişisel Veriler
+
+Royal Rhein Transfers tarafından işlenen kişisel veriler, ilgili kişinin kullandığı hizmete ve gerçekleştirdiği işlemlere göre değişebilmektedir.
+
+3.1. Kimlik Bilgileri
+
+Rezervasyon sahibinin ve gerektiğinde transfer hizmetinden yararlanacak kişinin belirlenmesi amacıyla;
+
+* ad,
+* soyad
+
+bilgileri işlenebilir.
+
+3.2. İletişim Bilgileri
+
+Rezervasyonun oluşturulması, doğrulanması ve transfer operasyonunun yürütülmesi amacıyla;
+
+* telefon numarası,
+* e-posta adresi
+
+işlenebilir.
+
+3.3. Rezervasyon ve Transfer Bilgileri
+
+Transfer hizmetinin oluşturulması ve gerçekleştirilmesi kapsamında;
+
+* kalkış noktası,
+* varış noktası,
+* havalimanı,
+* şehir,
+* ilçe,
+* otel veya konaklama noktası,
+* transfer tarihi ve saati,
+* tek yön veya gidiş-dönüş bilgisi,
+* dönüş tarihi ve saati,
+* yolcu sayısı,
+* bagaj sayısı,
+* seçilen araç/araç sınıfı,
+* rezervasyon referans numarası,
+* rezervasyon durumu,
+* seçilen ek hizmetler,
+* rezervasyona ilişkin müşteri tarafından iletilen açıklama ve talepler
+
+işlenebilir.
+
+3.4. Uçuş Bilgileri
+
+Havalimanı transferlerinde müşterinin doğru zamanda ve doğru noktada karşılanabilmesi ve transfer operasyonunun planlanabilmesi amacıyla;
+
+* uçuş numarası,
+* havayolu şirketi,
+* uçuş tarihi,
+* planlanan geliş veya kalkış saati,
+* geliş/kalkış bilgileri
+
+işlenebilir.
+
+3.5. Yolcu ve Bagaj Bilgileri
+
+Transfer için uygun aracın ve gerektiğinde ek aracın belirlenebilmesi amacıyla;
+
+* yolcu sayısı,
+* bagaj sayısı,
+* rezervasyona ilişkin kapasite bilgileri
+
+işlenebilir.
+
+3.6. Müşteri İşlem Bilgileri
+
+Rezervasyon ve müşteri ilişkilerinin yürütülmesi amacıyla;
+
+* rezervasyon oluşturma tarihi,
+* rezervasyon referansı,
+* rezervasyon değişiklikleri,
+* iptal bilgileri,
+* müşteri talepleri,
+* şikâyetler,
+* müşteri hizmetleri ve rezervasyonla ilgili yazışmalar
+
+işlenebilir.
+
+3.7. İşlem Güvenliği ve Teknik Veriler
+
+İnternet sitesinin güvenli şekilde işletilmesi, sistem güvenliğinin sağlanması ve hukuka aykırı kullanımların önlenmesi amacıyla, kullanılan teknik altyapının niteliğine göre;
+
+* IP adresi,
+* bağlantı ve erişim zamanı,
+* sunucu kayıtları,
+* hata kayıtları,
+* güvenlik kayıtları,
+* tarayıcı ve cihazla ilgili sınırlı teknik bilgiler
+
+işlenebilir.
+
+⸻
+
+4. Kişisel Verilerin İşlenme Amaçları
+
+Royal Rhein Transfers tarafından elde edilen kişisel veriler, KVKK’da öngörülen temel ilkelere uygun olarak, belirli, açık ve meşru amaçlarla ve işlendikleri amaçla bağlantılı, sınırlı ve ölçülü biçimde işlenmektedir.
+
+Kişisel verileriniz özellikle aşağıdaki amaçlarla işlenebilir:
+
+* transfer ve rezervasyon taleplerinin alınması,
+* rezervasyon kayıtlarının oluşturulması,
+* müşteriye transfer fiyatının sunulması,
+* kalkış ve varış noktalarının belirlenmesi,
+* transfer güzergâhının oluşturulması,
+* müşterinin tercih ettiği araç sınıfının belirlenmesi,
+* yolcu ve bagaj kapasitesine uygun araç planlamasının yapılması,
+* gerektiğinde ilave araç ihtiyacının belirlenmesi,
+* tek yön ve gidiş-dönüş transferlerinin planlanması,
+* havalimanı karşılama hizmetlerinin organize edilmesi,
+* uçuş bilgilerinin transfer rezervasyonuyla ilişkilendirilmesi,
+* transfer saatinin ve operasyonunun planlanması,
+* müşterinin havalimanında karşılanmasının sağlanması,
+* rezervasyon onayının müşteriye iletilmesi,
+* rezervasyonla ilgili müşteriyle iletişim kurulması,
+* rezervasyon değişikliklerinin ve iptallerinin yönetilmesi,
+* müşterinin talep ettiği ek hizmetlerin sunulması,
+* sürücü ve operasyon süreçlerinin organize edilmesi,
+* müşterinin transfer sırasında ihtiyaç duyabileceği iletişimin sağlanması,
+* müşteri taleplerinin ve şikâyetlerinin değerlendirilmesi,
+* hizmet kalitesinin sağlanması ve geliştirilmesi,
+* bilgi sistemlerinin ve internet sitesinin güvenliğinin sağlanması,
+* kötüye kullanım ve yetkisiz işlemlerin tespit edilmesi ve önlenmesi,
+* hukuki uyuşmazlıkların yürütülmesi,
+* Royal Rhein Transfers’ın hukuki haklarının tesisi, kullanılması ve korunması,
+* yetkili kamu kurum ve kuruluşlarından gelen hukuka uygun taleplerin karşılanması,
+* yürürlükteki mevzuattan kaynaklanan yükümlülüklerin yerine getirilmesi.
+
+⸻
+
+5. Kişisel Verilerin İşlenmesinin Hukuki Sebepleri
+
+Kişisel verileriniz, gerçekleştirilen veri işleme faaliyetine göre KVKK’nın 5. maddesinde düzenlenen kişisel veri işleme şartlarına dayanılarak işlenmektedir.
+
+Royal Rhein Transfers tarafından gerçekleştirilen temel veri işleme faaliyetleri özellikle;
+
+bir sözleşmenin kurulması veya ifasıyla doğrudan doğruya ilgili olması kaydıyla sözleşmenin taraflarına ait kişisel verilerin işlenmesinin gerekli olması,
+
+veri sorumlusunun hukuki yükümlülüğünü yerine getirebilmesi için zorunlu olması,
+
+bir hakkın tesisi, kullanılması veya korunması için veri işlemenin zorunlu olması,
+
+ve ilgili kişinin temel hak ve özgürlüklerine zarar vermemek kaydıyla;
+
+veri sorumlusunun meşru menfaatleri için veri işlenmesinin zorunlu olması
+
+hukuki sebeplerine dayanabilir.
+
+Örneğin müşterinin adı, soyadı, iletişim bilgileri, transfer güzergâhı, transfer tarihi, yolcu sayısı, bagaj sayısı ve gerekli durumlarda uçuş bilgilerinin işlenmesi, talep edilen transfer hizmetinin oluşturulması ve yerine getirilmesiyle doğrudan bağlantılıdır.
+
+Açık rızanın gerekli olduğu istisnai veri işleme faaliyetlerinde ise ilgili kişinin açık rızası ayrıca alınacaktır.
+
+⸻
+
+6. Kişisel Verilerin Toplanma Yöntemi
+
+Kişisel verileriniz elektronik ortamda ve gerektiğinde otomatik olmayan yöntemlerle toplanabilir.
+
+Kişisel veriler başta;
+
+* royalrheintransfers.com üzerindeki rezervasyon formları,
+* fiyat ve güzergâh sorgulama ekranları,
+* iletişim formları,
+* e-posta,
+* telefon,
+* Royal Rhein Transfers tarafından kullanılması halinde WhatsApp ve benzeri iletişim kanalları,
+* müşteri ile rezervasyon ve transfer sürecinde gerçekleştirilen iletişim,
+* internet sitesinin çalışması sırasında oluşturulan teknik kayıtlar
+
+aracılığıyla elde edilebilir.
+
+Kişisel verilerin önemli bir bölümü ilgili kişinin bilgileri doğrudan Royal Rhein Transfers’a sağlaması yoluyla elde edilmektedir.
+
+⸻
+
+7. Kişisel Verilerin Üçüncü Kişilere Aktarılması
+
+Royal Rhein Transfers, kişisel verilerinizi yalnızca transfer hizmetinin yerine getirilmesi, rezervasyonun yönetilmesi, teknik altyapının işletilmesi veya hukuki yükümlülüklerin yerine getirilmesi için gerekli olduğu ölçüde üçüncü kişilere aktarabilir.
+
+Bu kapsamda gerekli kişisel veriler;
+
+Sürücüler ve operasyon personeliyle:
+Transferin gerçekleştirilebilmesi, müşterinin karşılanması, güzergâhın belirlenmesi ve müşteriyle transfer sırasında iletişim kurulabilmesi amacıyla,
+
+Transfer hizmetinin gerçekleştirilmesinde kullanılan hizmet sağlayıcılarıyla:
+Rezervasyonun ve transfer operasyonunun yerine getirilmesi amacıyla,
+
+Bilgi teknolojileri ve altyapı sağlayıcılarıyla:
+İnternet sitesi, veri tabanı, sunucu, e-posta ve diğer teknik sistemlerin çalıştırılması, bakımı ve güvenliğinin sağlanması amacıyla,
+
+Profesyonel danışmanlarla:
+Hukuki, mali ve diğer mevzuat yükümlülüklerinin yerine getirilmesi ve Royal Rhein Transfers’ın haklarının korunması amacıyla,
+
+Yetkili kamu kurum ve kuruluşları ile adli mercilerle:
+Kanunen talep edilmesi veya hukuki yükümlülüklerin yerine getirilmesinin gerekli olması halinde
+
+paylaşılabilir.
+
+Aktarım işlemlerinde yalnızca ilgili aktarım amacı bakımından gerekli olan kişisel verilerin paylaşılması esastır.
+
+⸻
+
+8. Kişisel Verilerin Yurt Dışına Aktarılması
+
+Royal Rhein Transfers tarafından kullanılan internet sitesi, sunucu, veri tabanı, e-posta, bulut altyapısı veya diğer bilgi teknolojileri hizmetlerinin Türkiye dışında bulunan sistemlerden sağlanması veya kişisel verilere yurt dışından erişilebilmesi halinde kişisel verilerin yurt dışına aktarılması söz konusu olabilir.
+
+Böyle bir aktarımın gerçekleşmesi halinde kişisel verilerin yurt dışına aktarılması, 6698 sayılı KVKK’nın yurt dışına veri aktarımına ilişkin hükümleri ve yürürlükte bulunan ilgili mevzuat kapsamında gerçekleştirilir.
+
+Royal Rhein Transfers, yurt dışına veri aktarımının söz konusu olduğu durumlarda yürürlükteki mevzuatta öngörülen şartlara ve uygun aktarım mekanizmalarına göre hareket eder.
+
+⸻
+
+9. Çerezler ve Dil Tercihi
+
+Royal Rhein Transfers internet sitesinde kullanıcı deneyiminin sürdürülebilmesi ve kullanıcının tercih ettiği internet sitesi dilinin hatırlanabilmesi amacıyla sınırlı bir çerez veya benzeri depolama teknolojisi kullanılmaktadır.
+
+Mevcut uygulama kapsamında kullanılan çerezin amacı kullanıcının dil tercihini hatırlamaktır.
+
+Dil tercihi çerezi;
+
+* kullanıcının seçtiği dili hatırlamak,
+* sayfalar arasında dil tercihini korumak,
+* kullanıcının internet sitesini tekrar ziyaret etmesi halinde tercih ettiği dilin sunulmasını sağlamak
+
+amaçlarıyla kullanılmaktadır.
+
+Royal Rhein Transfers tarafından mevcut durumda söz konusu dil tercihi çerezi;
+
+* davranışsal reklamcılık,
+* kullanıcı profilleme,
+* reklam hedefleme,
+* üçüncü taraf siteler arasında kullanıcı takibi
+
+amacıyla kullanılmamaktadır.
+
+İnternet sitesinde gelecekte analitik, pazarlama, reklam veya üçüncü taraf takip teknolojilerinin kullanılması halinde ilgili çerez uygulamaları ve bilgilendirmeler ayrıca güncellenecektir.
+
+⸻
+
+10. Özel Nitelikli Kişisel Veriler
+
+Royal Rhein Transfers’ın standart rezervasyon sürecinde kural olarak özel nitelikli kişisel veri talep edilmemektedir.
+
+Bu nedenle müşterilerimizin rezervasyon açıklaması, iletişim formu, e-posta veya diğer serbest metin alanlarında transfer hizmetinin sunulması için gerekli olmayan özel nitelikli kişisel verilerini paylaşmamaları tavsiye edilmektedir.
+
+Özel nitelikli kişisel verilerin işlenmesinin hizmet açısından zorunlu hale geldiği istisnai durumlarda söz konusu veriler yalnızca yürürlükteki mevzuatın izin verdiği kapsamda ve gerekli güvenlik tedbirleri uygulanarak işlenecektir.
+
+⸻
+
+11. Başka Yolcular Adına Yapılan Rezervasyonlar
+
+Bir kişinin kendisiyle birlikte seyahat edecek veya kendisinden farklı bir kişi adına rezervasyon oluşturması mümkündür.
+
+Rezervasyon oluşturan kişinin üçüncü kişilere ait kişisel verileri Royal Rhein Transfers’a iletmesi halinde, söz konusu bilgilerin hukuka uygun şekilde elde edilmiş ve Royal Rhein Transfers ile paylaşılabilir olması rezervasyonu gerçekleştiren kişinin sorumluluğundadır.
+
+Rezervasyon yapan kişinin, mümkün olduğu ölçüde diğer yolcuları kişisel verilerinin Royal Rhein Transfers’a aktarılacağı konusunda bilgilendirmesi gerekmektedir.
+
+Hizmetin sunulması bakımından gerekli olmayan üçüncü kişilere ait kişisel verilerin Royal Rhein Transfers ile paylaşılmaması gerekmektedir.
+
+⸻
+
+12. Kişisel Verilerin Saklanma Süresi
+
+Kişisel verileriniz süresiz olarak saklanmaz.
+
+Royal Rhein Transfers tarafından elde edilen kişisel veriler;
+
+* ilgili veri işleme amacının devam ettiği süre,
+* müşteri ve rezervasyon ilişkisinin gerektirdiği süre,
+* ilgili mevzuatta öngörülen zorunlu saklama süreleri,
+* olası hukuki uyuşmazlıklara ilişkin zamanaşımı süreleri,
+* Royal Rhein Transfers’ın hukuki haklarının tesisi, kullanılması veya korunması için gerekli süreler
+
+dikkate alınarak saklanır.
+
+Kişisel verilerin işlenmesini gerektiren sebeplerin ortadan kalkması ve mevzuat kapsamında saklanmasını gerektiren başka bir hukuki sebebin bulunmaması halinde kişisel veriler ilgili mevzuata uygun olarak silinir, yok edilir veya anonim hale getirilir.
+
+⸻
+
+13. Kişisel Verilerin Güvenliği
+
+Royal Rhein Transfers, kişisel verilerin güvenliğinin sağlanmasına önem vermektedir.
+
+Bu kapsamda kişisel verilerin;
+
+* hukuka aykırı olarak işlenmesinin önlenmesi,
+* hukuka aykırı olarak erişilmesinin önlenmesi,
+* güvenli şekilde muhafaza edilmesi,
+* yetkisiz kişiler tarafından görüntülenmesinin veya değiştirilmesinin engellenmesi
+
+amacıyla işin ve kullanılan sistemlerin niteliğine uygun idari ve teknik tedbirler alınır.
+
+Bu tedbirler kullanılan altyapıya göre erişim yetkilendirmesi, güvenli bağlantı yöntemleri, sistem ve sunucu güvenliği, veri tabanı erişimlerinin sınırlandırılması, güvenlik kayıtlarının tutulması ve kişisel verilere erişimin yalnızca gerekli kişilerle sınırlandırılması gibi önlemleri içerebilir.
+
+⸻
+
+14. Rezervasyon Güvenliği ve Veri Minimizasyonu
+
+Royal Rhein Transfers, transfer hizmetinin sunulması için gerekli olmayan kişisel verileri toplamamayı ve işlenen verileri ilgili amaçla sınırlı tutmayı amaçlamaktadır.
+
+Müşterilerimizin de rezervasyon sırasında yalnızca talep edilen ve transfer hizmetinin yerine getirilmesi için gerekli bilgileri sağlamaları önerilmektedir.
+
+Rezervasyon formundaki serbest açıklama alanlarına hizmet açısından gerekli olmayan kişisel veya hassas bilgilerin yazılmaması gerekmektedir.
+
+⸻
+
+15. Ticari Elektronik İletiler
+
+Rezervasyonun oluşturulması, transfer saatinin bildirilmesi, rezervasyon değişikliği, operasyonel bilgilendirme, müşteriye ulaşılması veya hizmetin yerine getirilmesi için gönderilen zorunlu nitelikteki iletişimler rezervasyon hizmetinin yürütülmesinin bir parçasıdır.
+
+Royal Rhein Transfers tarafından kampanya, promosyon, reklam veya doğrudan pazarlama amaçlı ticari elektronik ileti gönderilmesi halinde, bu faaliyetler ilgili elektronik ticaret ve kişisel verilerin korunması mevzuatı çerçevesinde ayrıca değerlendirilir ve gerektiğinde ilgili kişiden gerekli izinler alınır.
+
+⸻
+
+16. İlgili Kişinin KVKK Kapsamındaki Hakları
+
+6698 sayılı KVKK’nın 11. maddesi kapsamında kişisel verisi işlenen ilgili kişiler, Kanunda belirtilen şartlar çerçevesinde veri sorumlusuna başvurarak;
+
+* kişisel verilerinin işlenip işlenmediğini öğrenme,
+* kişisel verileri işlenmişse buna ilişkin bilgi talep etme,
+* kişisel verilerin işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme,
+* kişisel verilerin yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme,
+* kişisel verilerin eksik veya yanlış işlenmiş olması halinde bunların düzeltilmesini isteme,
+* KVKK’da öngörülen şartlar çerçevesinde kişisel verilerin silinmesini veya yok edilmesini isteme,
+* gerçekleştirilen düzeltme, silme veya yok etme işlemlerinin kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,
+* işlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi sonucunda kişinin kendisi aleyhine bir sonucun ortaya çıkmasına itiraz etme,
+* kişisel verilerin Kanuna aykırı olarak işlenmesi sebebiyle zarara uğranması halinde zararın giderilmesini talep etme
+
+haklarına sahiptir.
+
+⸻
+
+17. KVKK Kapsamındaki Taleplerinizi Nasıl İletebilirsiniz?
+
+Kişisel verilerinize ilişkin KVKK kapsamındaki taleplerinizi Royal Rhein Transfers’a iletebilirsiniz.
+
+Elektronik ortamda gerçekleştirilecek başvurular için:
+
+Royal Rhein Transfers
+E-posta: royalrheintransfers@gmail.com
+Web Sitesi:  ⁠royalrheintransfers.com
+
+Başvurunuzda talebinizin açık ve anlaşılır şekilde belirtilmesi ve başvuruyu yapan kişinin kimliğinin doğrulanmasına imkân sağlayacak bilgilerin sunulması gerekebilir.
+
+Royal Rhein Transfers, başvuruyu yapan kişinin ilgili kişi olup olmadığını belirlemek ve kişisel verilerin yetkisiz kişilere açıklanmasını önlemek amacıyla gerekli olduğu ölçüde ek doğrulama bilgisi talep edebilir.
+
+Başvurular, talebin niteliğine göre yürürlükteki mevzuatta öngörülen süreler içerisinde değerlendirilerek sonuçlandırılır.
+
+⸻
+
+18. Aydınlatma Metni ve Açık Rıza Ayrımı
+
+İşbu Aydınlatma Metni, Royal Rhein Transfers tarafından gerçekleştirilen kişisel veri işleme faaliyetleri hakkında ilgili kişilerin bilgilendirilmesi amacıyla hazırlanmıştır ve tek başına bir açık rıza metni değildir.
+
+KVKK kapsamında açık rızanın gerekli olmadığı ve Kanunda başka bir kişisel veri işleme şartının bulunduğu işlemler için yalnızca genel bir açık rızaya dayanılması amaçlanmamaktadır.
+
+Açık rızanın gerekli olduğu ayrı bir veri işleme faaliyetinin gerçekleştirilmesi halinde, ilgili kişiye gerekli bilgilendirme yapılarak açık rıza ayrıca talep edilebilir.
+
+⸻
+
+19. Rezervasyon Formunda Aydınlatma
+
+Royal Rhein Transfers internet sitesi üzerinden rezervasyon veya transfer talebi oluşturulurken ilgili kişinin işbu Aydınlatma Metni’ne kolaylıkla erişebilmesi sağlanabilir.
+
+Rezervasyon formunda aşağıdaki veya benzer bir ifade kullanılabilir:
+
+“Kişisel verilerimin işlenmesine ilişkin KVKK Aydınlatma Metni’ni okudum ve bilgi edindim.”
+
+“Kişisel verilerimin işlenmesine izin veriyorum” şeklindeki genel bir açık rıza ifadesiyle aydınlatma işleminin birbirine karıştırılmaması gerekir.
+
+⸻
+
+20. İnternet Sitesindeki Üçüncü Taraf Hizmetler
+
+Royal Rhein Transfers internet sitesinin çalışması için üçüncü taraf teknoloji ve altyapı sağlayıcılarından hizmet alınabilir.
+
+Bu hizmetlerin kullanılması sırasında kişisel verilerin üçüncü taraf bir hizmet sağlayıcı tarafından işlenmesinin gerekli olması halinde Royal Rhein Transfers, ilgili veri işleme faaliyetini KVKK ve ilgili mevzuat kapsamında değerlendirir.
+
+İnternet sitesine gelecekte harita, analiz, reklam, sosyal medya, canlı destek, ödeme veya benzeri üçüncü taraf servislerin eklenmesi durumunda kişisel veri ve çerez uygulamaları gerektiği ölçüde güncellenecektir.
+
+⸻
+
+21. Çocuklara Ait Kişisel Veriler
+
+Transfer rezervasyonlarında çocuk yolcuların bulunması mümkündür.
+
+Royal Rhein Transfers, transferin gerçekleştirilmesi için gerekli olmadığı sürece çocuklara ilişkin ilave kişisel veri talep etmemektedir.
+
+Çocuk yolculara ilişkin rezervasyon kapsamında gerekli bilgilerin ebeveyn, veli veya rezervasyonu gerçekleştirmeye yetkili kişi tarafından sağlanması esastır.
+
+⸻
+
+22. Aydınlatma Metninin Güncellenmesi
+
+Royal Rhein Transfers tarafından sunulan hizmetlerin, internet sitesi altyapısının, rezervasyon sisteminin, kullanılan teknoloji sağlayıcılarının, kişisel veri işleme faaliyetlerinin veya ilgili mevzuatın değişmesi halinde işbu Aydınlatma Metni güncellenebilir.
+
+Güncel Aydınlatma Metni Royal Rhein Transfers internet sitesi üzerinden yayımlanır.
+
+Kişisel verilerin işlenme amacında mevcut Aydınlatma Metninin kapsamını aşan önemli bir değişiklik meydana gelmesi halinde ilgili kişiler, yeni veri işleme faaliyeti bakımından mevzuata uygun şekilde bilgilendirilir.
+
+⸻
+
+23. İletişim
+
+Kişisel verileriniz, gizlilik uygulamalarımız veya işbu Aydınlatma Metni hakkında bizimle iletişime geçebilirsiniz.
+
+Royal Rhein Transfers
+
+Web:  ⁠royalrheintransfers.com
+E-posta: royalrheintransfers@gmail.com
+
+Son Güncelleme: 17 Ağustos 2026

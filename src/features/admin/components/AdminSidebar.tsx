@@ -80,6 +80,11 @@ const NAV_ITEMS = [
     icon: Link2,
   },
   {
+    href: "/admin/privacy",
+    label: adminCopy.sidebar.privacyPage,
+    icon: Shield,
+  },
+  {
     href: "/admin/testimonials",
     label: adminCopy.sidebar.testimonials,
     icon: MessageSquareQuote,

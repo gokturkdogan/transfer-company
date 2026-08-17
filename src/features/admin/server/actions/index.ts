@@ -23,6 +23,7 @@ export { updateEnabledCurrenciesAction } from "@/features/admin/server/actions/c
 export { updateContactChannelsAction } from "@/features/admin/server/actions/contact";
 export { updateSocialMediaLinksAction } from "@/features/admin/server/actions/social-media";
 export { updateFooterBacklinksAction } from "@/features/admin/server/actions/footer-backlinks";
+export { updatePrivacyPageAction } from "@/features/admin/server/actions/privacy-page";
 export { updateHomeTestimonialsAction } from "@/features/admin/server/actions/testimonials";
 export {
   createGuideAction,

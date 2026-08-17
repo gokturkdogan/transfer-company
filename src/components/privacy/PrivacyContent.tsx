@@ -1,139 +1,29 @@
-import type { ReactNode } from "react";
-import { Mail } from "lucide-react";
-import { getTranslations } from "next-intl/server";
-
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
-import { Reveal } from "@/components/motion/Reveal";
-import { siteConfig } from "@/config/site";
-import { toMailtoHref } from "@/features/contact/domain/contact-links";
 
-const OVERVIEW_KEYS = ["0", "1"] as const;
-const COOKIE_KEYS = ["locale"] as const;
-
-function LegalBlock({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-        {title}
-      </h2>
-      <div className="space-y-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-        {children}
-      </div>
-    </div>
-  );
+function isEffectivelyEmpty(html: string): boolean {
+  return html.replace(/<[^>]+>/g, "").replace(/\s+/g, "").length === 0;
 }
 
-export async function PrivacyContent() {
-  const t = await getTranslations("privacy.sections");
+export function PrivacyContent({ html }: { html: string }) {
+  const hasContent = !isEffectivelyEmpty(html);
 
   return (
-    <>
-      <Section>
-        <Container>
-          <Reveal className="mx-auto max-w-3xl space-y-12">
-            <LegalBlock title={t("overview.title")}>
-              {OVERVIEW_KEYS.map((key) => (
-                <p key={key}>{t(`overview.paragraphs.${key}`)}</p>
-              ))}
-            </LegalBlock>
-
-            <LegalBlock title={t("cookies.title")}>
-              <p>{t("cookies.intro")}</p>
-              <div className="overflow-x-auto rounded-2xl border border-border/70 shadow-premium">
-                <table className="w-full min-w-[28rem] text-start text-sm">
-                  <thead>
-                    <tr className="border-b border-border/70 bg-muted/50">
-                      <th className="px-4 py-3 text-start text-[11px] font-bold uppercase tracking-[0.14em] text-gold">
-                        {t("cookies.table.name")}
-                      </th>
-                      <th className="px-4 py-3 text-start text-[11px] font-bold uppercase tracking-[0.14em] text-gold">
-                        {t("cookies.table.purpose")}
-                      </th>
-                      <th className="px-4 py-3 text-start text-[11px] font-bold uppercase tracking-[0.14em] text-gold">
-                        {t("cookies.table.duration")}
-                      </th>
-                      <th className="px-4 py-3 text-start text-[11px] font-bold uppercase tracking-[0.14em] text-gold">
-                        {t("cookies.table.type")}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/60 bg-background">
-                    {COOKIE_KEYS.map((key) => (
-                      <tr key={key}>
-                        <td className="px-4 py-3 font-mono text-xs text-foreground">
-                          {t(`cookies.items.${key}.name`)}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {t(`cookies.items.${key}.purpose`)}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {t(`cookies.items.${key}.duration`)}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {t(`cookies.items.${key}.type`)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </LegalBlock>
-          </Reveal>
-        </Container>
-      </Section>
-
-      <Section variant="muted">
-        <Container>
-          <Reveal className="mx-auto max-w-3xl space-y-12">
-            <LegalBlock title={t("noMarketing.title")}>
-              <p>{t("noMarketing.body")}</p>
-            </LegalBlock>
-
-            <LegalBlock title={t("thirdParty.title")}>
-              <p>{t("thirdParty.body")}</p>
-            </LegalBlock>
-          </Reveal>
-        </Container>
-      </Section>
-
-      <Section variant="ink">
-        <Container>
-          <Reveal className="mx-auto max-w-3xl space-y-8">
-            <div className="space-y-4">
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-gold">
-                {t("rights.eyebrow")}
-              </p>
-              <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                {t("rights.title")}
-              </h2>
-              <p className="text-sm leading-relaxed text-white/65 sm:text-base">
-                {t("rights.body")}
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-              <h3 className="text-lg font-semibold text-white">{t("contact.title")}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-white/65 sm:text-base">
-                {t("contact.body")}
-              </p>
-              <a
-                href={toMailtoHref(siteConfig.email)}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-gold-light transition-colors hover:text-gold"
-              >
-                <Mail className="h-4 w-4" aria-hidden />
-                {siteConfig.email}
-              </a>
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
-    </>
+    <Section>
+      <Container>
+        <div className="mx-auto max-w-3xl">
+          {hasContent ? (
+            <article
+              className="privacy-legal-content text-muted-foreground [&_a]:font-medium [&_a]:text-gold [&_a]:underline-offset-2 hover:[&_a]:text-gold-light [&_h1]:mb-4 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:tracking-tight [&_h1]:text-foreground [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-foreground [&_h3]:mb-2 [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_h4]:mb-2 [&_h4]:mt-4 [&_h4]:text-base [&_h4]:font-semibold [&_h4]:text-foreground [&_hr]:my-8 [&_hr]:border-border/70 [&_li]:text-muted-foreground [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:ps-5 [&_p]:mb-4 [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-muted-foreground [&_p]:sm:text-base [&_ul]:my-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:ps-5"
+              dangerouslySetInnerHTML={{ __html: html }}
+            />
+          ) : (
+            <p className="text-sm text-muted-foreground sm:text-base">
+              Bu dil için aydınlatma metni henüz eklenmedi.
+            </p>
+          )}
+        </div>
+      </Container>
+    </Section>
   );
 }
