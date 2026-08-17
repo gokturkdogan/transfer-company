@@ -5,11 +5,16 @@ import { FooterBacklinksSettingsForm } from "@/features/admin/components/FooterB
 import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
 import { adminCopy } from "@/features/admin/copy";
 import { FooterBacklinksRepository } from "@/features/footer-backlinks/server/repository";
+import { FooterSettingsRepository } from "@/features/footer-settings/server/repository";
 
 const footerBacklinksRepository = new FooterBacklinksRepository(db);
+const footerSettingsRepository = new FooterSettingsRepository(db);
 
 export default async function AdminFooterBacklinksPage() {
-  const links = await footerBacklinksRepository.listAll();
+  const [links, footerSettings] = await Promise.all([
+    footerBacklinksRepository.listAll(),
+    footerSettingsRepository.get(),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -19,7 +24,10 @@ export default async function AdminFooterBacklinksPage() {
         icon={Link2}
       />
 
-      <FooterBacklinksSettingsForm links={links} />
+      <FooterBacklinksSettingsForm
+        links={links}
+        tursabLicenseNumber={footerSettings.tursabLicenseNumber}
+      />
     </div>
   );
 }

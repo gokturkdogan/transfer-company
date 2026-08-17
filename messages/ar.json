@@ -187,7 +187,8 @@
       "exploreTitle": "استكشف",
       "tagline": "أنطاليا · Royal Rhein Transfers",
       "privacyPolicy": "الخصوصية وملفات تعريف الارتباط",
-      "linkedSitesTitle": "مواقع مرتبطة"
+      "linkedSitesTitle": "مواقع مرتبطة",
+      "tursabLicense": "رقم ترخيص TÜRSAB: {number}"
     },
     "meta": {
       "title": "نقل VIP من مطار أنطاليا | أسعار ثابتة وخدمة 24/7",
@@ -199,7 +200,7 @@
       "title": "خدمة النقل المفضلة في الريفييرا التركية",
       "items": {
         "transfers": {
-          "value": "+180,000",
+          "value": "+40,000",
           "label": "رحلة نقل مكتملة"
         },
         "rating": {
@@ -207,7 +208,7 @@
           "label": "رضا الضيوف"
         },
         "fleet": {
-          "value": "+45",
+          "value": "+18",
           "label": "سيارة فاخرة"
         },
         "support": {

@@ -35,7 +35,9 @@ function isSubSectionHeading(line: string): boolean {
 }
 
 function isUpdateFooter(line: string): boolean {
-  return /^Son Güncelleme:/i.test(line);
+  return /^(Son Güncelleme:|Last updated:|Letzte Aktualisierung:|Последнее обновление:|آخر تحديث:)/i.test(
+    line,
+  );
 }
 
 /**

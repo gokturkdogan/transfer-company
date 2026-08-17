@@ -187,7 +187,8 @@
       "exploreTitle": "Keşfet",
       "tagline": "Antalya · Royal Rhein Transfers",
       "privacyPolicy": "Gizlilik ve Çerezler",
-      "linkedSitesTitle": "Bağlantılı Siteler"
+      "linkedSitesTitle": "Bağlantılı Siteler",
+      "tursabLicense": "TÜRSAB İşletme Belge No: {number}"
     },
     "meta": {
       "title": "Antalya Havalimanı VIP Transfer | Sabit Fiyat, 7/24 Premium Hizmet",
@@ -199,7 +200,7 @@
       "title": "Türk Rivierası'nın tercih edilen transfer servisi",
       "items": {
         "transfers": {
-          "value": "180.000+",
+          "value": "40.000+",
           "label": "Tamamlanan transfer"
         },
         "rating": {
@@ -207,7 +208,7 @@
           "label": "Misafir memnuniyeti"
         },
         "fleet": {
-          "value": "45+",
+          "value": "+18",
           "label": "Premium araç"
         },
         "support": {

@@ -9,6 +9,7 @@ export * from "./currencies";
 export * from "./contact-channels";
 export * from "./social-media";
 export * from "./footer-backlinks";
+export * from "./footer-settings";
 export * from "./privacy-page";
 export * from "./home-testimonials";
 export * from "./blog-posts";

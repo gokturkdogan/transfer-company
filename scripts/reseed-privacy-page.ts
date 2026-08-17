@@ -1,6 +1,6 @@
 /**
- * Forces Turkish privacy page content from default-kvkk-tr.txt (sectioned HTML).
- * Run: node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/reseed-privacy-page.ts
+ * Forces all locale privacy pages from default-kvkk-{locale}.txt templates.
+ * Run: pnpm db:reseed:privacy
  */
 import { Pool } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-serverless";

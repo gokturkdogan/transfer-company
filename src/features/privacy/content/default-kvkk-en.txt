@@ -1,0 +1,438 @@
+ROYAL RHEIN TRANSFERS
+
+Privacy Notice under the Law on the Protection of Personal Data
+
+1. Purpose and Scope
+
+As Royal Rhein Transfers, we attach importance to the privacy and security of the personal data of our customers, visitors to our website, and other persons who benefit from our services.
+
+This Privacy Notice on the Protection and Processing of Personal Data ("Privacy Notice") has been prepared to inform data subjects about the personal data processing activities carried out by Royal Rhein Transfers within the framework of Law No. 6698 on the Protection of Personal Data ("KVKK"), the relevant secondary legislation, and the regulations published by the Personal Data Protection Authority of Türkiye.
+
+This Privacy Notice particularly covers persons who visit the  ⁠royalrheintransfers.com website, inquire about transfer prices, create reservations or transfer requests, benefit from transfer services, or contact Royal Rhein Transfers.
+
+⸻
+
+2. Data Controller
+
+Within the scope of Law No. 6698 on the Protection of Personal Data, your personal data are processed by;
+
+Data Controller / Brand: Royal Rhein Transfers
+Website:  ⁠royalrheintransfers.com
+E-mail and KVKK Contact Address: royalrheintransfers@gmail.com
+
+in its capacity as data controller.
+
+If the official trade name of Royal Rhein Transfers differs from the brand name, the data controller information will be updated in line with the relevant official trade name.
+
+⸻
+
+3. Personal Data Processed
+
+The personal data processed by Royal Rhein Transfers may vary depending on the service used by the data subject and the transactions carried out.
+
+3.1. Identity Information
+
+For the purpose of identifying the reservation holder and, where necessary, the person who will benefit from the transfer service;
+
+* first name,
+* last name
+
+may be processed.
+
+3.2. Contact Information
+
+For the purpose of creating and verifying the reservation and carrying out the transfer operation;
+
+* telephone number,
+* e-mail address
+
+may be processed.
+
+3.3. Reservation and Transfer Information
+
+Within the scope of creating and performing the transfer service;
+
+* departure point,
+* destination point,
+* airport,
+* city,
+* district,
+* hotel or accommodation point,
+* transfer date and time,
+* one-way or round-trip information,
+* return date and time,
+* number of passengers,
+* number of pieces of luggage,
+* selected vehicle/vehicle class,
+* reservation reference number,
+* reservation status,
+* selected additional services,
+* explanations and requests communicated by the customer regarding the reservation
+
+may be processed.
+
+3.4. Flight Information
+
+For airport transfers, for the purpose of enabling the customer to be met at the correct time and at the correct location and planning the transfer operation;
+
+* flight number,
+* airline,
+* flight date,
+* scheduled arrival or departure time,
+* arrival/departure information
+
+may be processed.
+
+3.5. Passenger and Luggage Information
+
+For the purpose of determining the appropriate vehicle for the transfer and, where necessary, an additional vehicle;
+
+* number of passengers,
+* number of pieces of luggage,
+* capacity information related to the reservation
+
+may be processed.
+
+3.6. Customer Transaction Information
+
+For the purpose of carrying out reservations and customer relations;
+
+* reservation creation date,
+* reservation reference,
+* reservation changes,
+* cancellation information,
+* customer requests,
+* complaints,
+* customer service and reservation-related correspondence
+
+may be processed.
+
+3.7. Transaction Security and Technical Data
+
+For the purpose of operating the website securely, ensuring system security, and preventing unlawful use, depending on the nature of the technical infrastructure used;
+
+* IP address,
+* connection and access time,
+* server logs,
+* error logs,
+* security logs,
+* limited technical information relating to the browser and device
+
+may be processed.
+
+⸻
+
+4. Purposes of Processing Personal Data
+
+The personal data obtained by Royal Rhein Transfers are processed in accordance with the fundamental principles set forth in the KVKK, for specific, explicit, and legitimate purposes, and in a manner that is connected with, limited to, and proportionate to the purposes for which they are processed.
+
+Your personal data may be processed particularly for the following purposes:
+
+* receiving transfer and reservation requests,
+* creating reservation records,
+* presenting the transfer price to the customer,
+* determining departure and destination points,
+* creating the transfer route,
+* determining the vehicle class preferred by the customer,
+* planning a vehicle suitable for passenger and luggage capacity,
+* determining the need for an additional vehicle where necessary,
+* planning one-way and round-trip transfers,
+* organizing airport meet-and-greet services,
+* associating flight information with the transfer reservation,
+* planning the transfer time and operation,
+* ensuring that the customer is met at the airport,
+* communicating reservation confirmation to the customer,
+* communicating with the customer regarding the reservation,
+* managing reservation changes and cancellations,
+* providing additional services requested by the customer,
+* organizing driver and operational processes,
+* ensuring communication that the customer may need during the transfer,
+* evaluating customer requests and complaints,
+* ensuring and improving service quality,
+* ensuring the security of information systems and the website,
+* detecting and preventing misuse and unauthorized transactions,
+* conducting legal disputes,
+* establishing, exercising, and protecting the legal rights of Royal Rhein Transfers,
+* fulfilling lawful requests from authorized public institutions and organizations,
+* fulfilling obligations arising from applicable legislation.
+
+⸻
+
+5. Legal Grounds for Processing Personal Data
+
+Your personal data are processed on the basis of the personal data processing conditions regulated in Article 5 of the KVKK, depending on the data processing activity carried out.
+
+The fundamental data processing activities carried out by Royal Rhein Transfers may be based particularly on;
+
+the processing of personal data belonging to the parties to a contract being necessary, provided that it is directly related to the establishment or performance of a contract,
+
+it being mandatory for the data controller to fulfill its legal obligation,
+
+data processing being necessary for the establishment, exercise, or protection of a right,
+
+and provided that it does not harm the fundamental rights and freedoms of the data subject;
+
+data processing being necessary for the legitimate interests of the data controller
+
+may be based on such legal grounds.
+
+For example, the processing of the customer's first name, last name, contact information, transfer route, transfer date, number of passengers, number of pieces of luggage, and, where necessary, flight information is directly connected with the creation and performance of the requested transfer service.
+
+In exceptional data processing activities where explicit consent is required, the explicit consent of the data subject will additionally be obtained.
+
+⸻
+
+6. Method of Collecting Personal Data
+
+Your personal data may be collected electronically and, where necessary, by non-automated methods.
+
+Personal data may be obtained primarily through;
+
+* reservation forms on  ⁠royalrheintransfers.com,
+* price and route inquiry screens,
+* contact forms,
+* e-mail,
+* telephone,
+* WhatsApp and similar communication channels, if used by Royal Rhein Transfers,
+* communication carried out with the customer during the reservation and transfer process,
+* technical records created during the operation of the website
+
+may be obtained.
+
+A significant portion of personal data is obtained through the data subject directly providing information to Royal Rhein Transfers.
+
+⸻
+
+7. Transfer of Personal Data to Third Parties
+
+Royal Rhein Transfers may transfer your personal data to third parties only to the extent necessary for the performance of the transfer service, management of the reservation, operation of the technical infrastructure, or fulfillment of legal obligations.
+
+Within this scope, the necessary personal data may be shared with;
+
+Drivers and operational personnel:
+For the purpose of carrying out the transfer, meeting the customer, determining the route, and enabling communication with the customer during the transfer,
+
+Service providers used in the performance of the transfer service:
+For the purpose of fulfilling the reservation and transfer operation,
+
+Information technology and infrastructure providers:
+For the purpose of operating, maintaining, and ensuring the security of the website, database, server, e-mail, and other technical systems,
+
+Professional advisors:
+For the purpose of fulfilling legal, financial, and other regulatory obligations and protecting the rights of Royal Rhein Transfers,
+
+Authorized public institutions and organizations and judicial authorities:
+Where legally requested or where fulfillment of legal obligations is necessary
+
+may be shared.
+
+Only the personal data necessary for the relevant transfer purpose will be shared in transfer operations as a rule.
+
+⸻
+
+8. Transfer of Personal Data Abroad
+
+If the website, server, database, e-mail, cloud infrastructure, or other information technology services used by Royal Rhein Transfers are provided from systems located outside Türkiye, or if personal data can be accessed from abroad, the transfer of personal data abroad may be involved.
+
+If such a transfer takes place, the transfer of personal data abroad is carried out within the scope of the provisions of Law No. 6698 KVKK relating to the transfer of data abroad and the relevant applicable legislation.
+
+Royal Rhein Transfers acts in accordance with the conditions and appropriate transfer mechanisms provided for in applicable legislation in cases where transfer of data abroad is involved.
+
+⸻
+
+9. Cookies and Language Preference
+
+A limited cookie or similar storage technology is used on the Royal Rhein Transfers website for the purpose of maintaining user experience and remembering the user's preferred website language.
+
+Within the current practice, the purpose of the cookie used is to remember the user's language preference.
+
+The language preference cookie is used for the purposes of;
+
+* remembering the language selected by the user,
+* preserving the language preference between pages,
+* ensuring that the user's preferred language is presented if the user visits the website again
+
+is used for these purposes.
+
+Royal Rhein Transfers does not currently use the said language preference cookie for the purposes of;
+
+* behavioral advertising,
+* user profiling,
+* ad targeting,
+* tracking users across third-party sites
+
+is not used for these purposes.
+
+If analytical, marketing, advertising, or third-party tracking technologies are used on the website in the future, the relevant cookie practices and notices will be updated separately.
+
+⸻
+
+10. Special Categories of Personal Data
+
+As a rule, special categories of personal data are not requested in the standard reservation process of Royal Rhein Transfers.
+
+For this reason, our customers are advised not to share special categories of personal data that are not necessary for the provision of the transfer service in reservation explanations, contact forms, e-mails, or other free-text fields.
+
+In exceptional cases where the processing of special categories of personal data becomes necessary for the service, such data will be processed only to the extent permitted by applicable legislation and with the necessary security measures applied.
+
+⸻
+
+11. Reservations Made on Behalf of Other Passengers
+
+It is possible for a person to create a reservation for themselves together with other travelers or on behalf of a person other than themselves.
+
+If the person creating the reservation transmits personal data belonging to third parties to Royal Rhein Transfers, it is the responsibility of the person making the reservation to ensure that such information has been obtained lawfully and may be shared with Royal Rhein Transfers.
+
+The person making the reservation should, to the extent possible, inform other passengers that their personal data will be transferred to Royal Rhein Transfers.
+
+Personal data belonging to third parties that are not necessary for the provision of the service should not be shared with Royal Rhein Transfers.
+
+⸻
+
+12. Retention Period of Personal Data
+
+Your personal data are not stored indefinitely.
+
+The personal data obtained by Royal Rhein Transfers are stored taking into account;
+
+* the period during which the relevant data processing purpose continues,
+* the period required by the customer and reservation relationship,
+* mandatory retention periods provided for in the relevant legislation,
+* limitation periods relating to possible legal disputes,
+* periods necessary for the establishment, exercise, or protection of the legal rights of Royal Rhein Transfers
+
+are stored.
+
+If the reasons requiring the processing of personal data cease to exist and there is no other legal ground requiring retention under the legislation, personal data are deleted, destroyed, or anonymized in accordance with the relevant legislation.
+
+⸻
+
+13. Security of Personal Data
+
+Royal Rhein Transfers attaches importance to ensuring the security of personal data.
+
+Within this scope, administrative and technical measures appropriate to the nature of the work and the systems used are taken for the purpose of;
+
+* preventing unlawful processing of personal data,
+* preventing unlawful access to personal data,
+* ensuring secure storage of personal data,
+* preventing personal data from being viewed or altered by unauthorized persons
+
+These measures may include, depending on the infrastructure used, access authorization, secure connection methods, system and server security, restriction of database access, maintenance of security logs, and limiting access to personal data only to necessary persons.
+
+⸻
+
+14. Reservation Security and Data Minimization
+
+Royal Rhein Transfers aims not to collect personal data that are not necessary for the provision of the transfer service and to keep processed data limited to the relevant purpose.
+
+Our customers are also advised to provide only the information requested and necessary for the performance of the transfer service during reservation.
+
+Personal or sensitive information that is not necessary for the service should not be entered in the free explanation fields of the reservation form.
+
+⸻
+
+15. Commercial Electronic Messages
+
+Mandatory communications sent for the creation of the reservation, notification of transfer time, reservation changes, operational information, reaching the customer, or performance of the service are part of the execution of the reservation service.
+
+If commercial electronic messages for campaign, promotion, advertising, or direct marketing purposes are sent by Royal Rhein Transfers, these activities are additionally evaluated within the framework of the relevant e-commerce and personal data protection legislation, and the necessary permissions are obtained from the data subject where required.
+
+⸻
+
+16. Rights of the Data Subject under the KVKK
+
+Within the scope of Article 11 of Law No. 6698 KVKK, data subjects whose personal data are processed have the right, within the conditions specified in the Law, to apply to the data controller to;
+
+* learn whether their personal data are being processed,
+* request information if their personal data have been processed,
+* learn the purpose of processing their personal data and whether they are used in accordance with that purpose,
+* know the third parties to whom their personal data are transferred domestically or abroad,
+* request correction if their personal data have been processed incompletely or inaccurately,
+* request deletion or destruction of their personal data within the conditions provided for in the KVKK,
+* request that correction, deletion, or destruction operations be notified to third parties to whom their personal data have been transferred,
+* object to a result arising to the detriment of the person as a result of analysis of processed data exclusively through automated systems,
+* request compensation for damage suffered due to unlawful processing of personal data
+
+⸻
+
+17. How Can You Submit Your Requests under the KVKK?
+
+You may submit your requests under the KVKK regarding your personal data to Royal Rhein Transfers.
+
+For applications to be made electronically:
+
+Royal Rhein Transfers
+E-mail: royalrheintransfers@gmail.com
+Website:  ⁠royalrheintransfers.com
+
+Your application may need to clearly and understandably state your request and provide information enabling verification of the identity of the applicant.
+
+Royal Rhein Transfers may request additional verification information to the extent necessary to determine whether the applicant is the relevant data subject and to prevent personal data from being disclosed to unauthorized persons.
+
+Applications are evaluated and concluded within the periods provided for in applicable legislation, depending on the nature of the request.
+
+⸻
+
+18. Distinction between Privacy Notice and Explicit Consent
+
+This Privacy Notice has been prepared to inform data subjects about the personal data processing activities carried out by Royal Rhein Transfers and is not an explicit consent text on its own.
+
+For processing for which explicit consent is not required under the KVKK and where another personal data processing condition exists in the Law, it is not intended to rely solely on a general explicit consent.
+
+If a separate data processing activity for which explicit consent is required is carried out, explicit consent may additionally be requested after providing the necessary information to the data subject.
+
+⸻
+
+19. Notice on the Reservation Form
+
+When creating a reservation or transfer request through the Royal Rhein Transfers website, the data subject may be provided with easy access to this Privacy Notice.
+
+The following or a similar statement may be used on the reservation form:
+
+"I have read and been informed of the KVKK Privacy Notice regarding the processing of my personal data."
+
+A general explicit consent statement such as "I consent to the processing of my personal data" should not be confused with the notice process.
+
+⸻
+
+20. Third-Party Services on the Website
+
+Third-party technology and infrastructure providers may be used for the operation of the Royal Rhein Transfers website.
+
+If it becomes necessary for personal data to be processed by a third-party service provider during the use of these services, Royal Rhein Transfers evaluates the relevant data processing activity within the scope of the KVKK and the relevant legislation.
+
+If third-party services such as maps, analytics, advertising, social media, live support, payment, or similar services are added to the website in the future, personal data and cookie practices will be updated to the extent necessary.
+
+⸻
+
+21. Personal Data Relating to Children
+
+Child passengers may be included in transfer reservations.
+
+Royal Rhein Transfers does not request additional personal data relating to children unless necessary for the performance of the transfer.
+
+Information relating to child passengers within the scope of the reservation should principally be provided by a parent, guardian, or person authorized to make the reservation.
+
+⸻
+
+22. Updating the Privacy Notice
+
+This Privacy Notice may be updated if the services offered by Royal Rhein Transfers, the website infrastructure, the reservation system, the technology providers used, the personal data processing activities, or the relevant legislation change.
+
+The current Privacy Notice is published on the Royal Rhein Transfers website.
+
+If a significant change occurs in the purpose of processing personal data that goes beyond the scope of the current Privacy Notice, data subjects are informed in accordance with the legislation with respect to the new data processing activity.
+
+⸻
+
+23. Contact
+
+You may contact us regarding your personal data, our privacy practices, or this Privacy Notice.
+
+Royal Rhein Transfers
+
+Web:  ⁠royalrheintransfers.com
+E-mail: royalrheintransfers@gmail.com
+
+Last updated: August 17, 2026

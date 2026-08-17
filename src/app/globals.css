@@ -867,3 +867,13 @@ body {
   font-size: 0.8125rem;
   color: color-mix(in srgb, var(--muted-foreground) 85%, transparent);
 }
+
+.privacy-legal-content[dir="rtl"] ul,
+.privacy-legal-content[dir="rtl"] ol {
+  padding-right: 1.25rem;
+  padding-left: 0;
+}
+
+.privacy-legal-content[dir="rtl"] li {
+  margin-right: 0;
+}

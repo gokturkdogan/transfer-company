@@ -187,7 +187,8 @@
       "exploreTitle": "Разделы",
       "tagline": "Анталья · Royal Rhein Transfers",
       "privacyPolicy": "Конфиденциальность и cookie",
-      "linkedSitesTitle": "Связанные сайты"
+      "linkedSitesTitle": "Связанные сайты",
+      "tursabLicense": "Номер лицензии TÜRSAB: {number}"
     },
     "meta": {
       "title": "VIP-трансфер аэропорт Анталья | Фиксированные цены, сервис 24/7",
@@ -199,7 +200,7 @@
       "title": "Предпочитаемый трансфер Турецкой Ривьеры",
       "items": {
         "transfers": {
-          "value": "180 000+",
+          "value": "40 000+",
           "label": "Выполненных трансферов"
         },
         "rating": {
@@ -207,7 +208,7 @@
           "label": "Довольных гостей"
         },
         "fleet": {
-          "value": "45+",
+          "value": "+18",
           "label": "Премиальных автомобилей"
         },
         "support": {

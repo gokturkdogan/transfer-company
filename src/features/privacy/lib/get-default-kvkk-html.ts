@@ -1,28 +1,27 @@
 import "server-only";
 
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-
 import { plainTextToPrivacyHtml } from "@/features/privacy/lib/plain-text-to-privacy-html";
+import { loadDefaultKvkkText } from "@/features/privacy/lib/load-default-kvkk-text";
 
-let cachedHtml: string | null = null;
-let cachedText: string | null = null;
+const htmlCache = new Map<string, string>();
 
-function getDefaultKvkkTextTr(): string {
-  if (!cachedText) {
-    cachedText = readFileSync(
-      join(process.cwd(), "src/features/privacy/content/default-kvkk-tr.txt"),
-      "utf8",
-    );
+export function getDefaultKvkkHtml(locale: string): string | null {
+  const cached = htmlCache.get(locale);
+  if (cached) {
+    return cached;
   }
 
-  return cachedText;
+  const text = loadDefaultKvkkText(locale);
+  if (!text) {
+    return null;
+  }
+
+  const html = plainTextToPrivacyHtml(text);
+  htmlCache.set(locale, html);
+  return html;
 }
 
+/** @deprecated Use getDefaultKvkkHtml("tr") */
 export function getDefaultKvkkHtmlTr(): string {
-  if (!cachedHtml) {
-    cachedHtml = plainTextToPrivacyHtml(getDefaultKvkkTextTr());
-  }
-
-  return cachedHtml;
+  return getDefaultKvkkHtml("tr") ?? "";
 }

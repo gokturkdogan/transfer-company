@@ -187,7 +187,8 @@
       "exploreTitle": "Entdecken",
       "tagline": "Antalya · Royal Rhein Transfers",
       "privacyPolicy": "Datenschutz & Cookies",
-      "linkedSitesTitle": "Verlinkte Websites"
+      "linkedSitesTitle": "Verlinkte Websites",
+      "tursabLicense": "TÜRSAB Geschäftslizenz-Nr.: {number}"
     },
     "meta": {
       "title": "Flughafentransfer Antalya VIP | Festpreise, Premium-Service 24/7",
@@ -199,7 +200,7 @@
       "title": "Der beliebteste Transferservice der Türkischen Riviera",
       "items": {
         "transfers": {
-          "value": "180.000+",
+          "value": "40.000+",
           "label": "Durchgeführte Transfers"
         },
         "rating": {
@@ -207,7 +208,7 @@
           "label": "Gästezufriedenheit"
         },
         "fleet": {
-          "value": "45+",
+          "value": "+18",
           "label": "Premium-Fahrzeuge"
         },
         "support": {

@@ -17,6 +17,7 @@ import { getPublicContactChannels } from "@/features/contact/server/public-conta
 import type { SiteLocaleOption } from "@/features/locales/types";
 import { Link } from "@/i18n/navigation";
 import { getCachedFooterBacklinks } from "@/server/cache/footer-backlinks";
+import { getCachedFooterSettings } from "@/server/cache/footer-settings";
 import { getCachedSocialMediaLinks } from "@/server/cache/social-media";
 
 export async function SiteFooter({
@@ -31,6 +32,12 @@ export async function SiteFooter({
   const contactChannels = await getPublicContactChannels();
   const socialMediaLinks = await getCachedSocialMediaLinks();
   const footerBacklinks = await getCachedFooterBacklinks();
+  const footerSettings = await getCachedFooterSettings();
+  const showBacklinks = footerBacklinks.length > 0;
+  const showSocial = socialMediaLinks.length > 0;
+  const tursabLicenseNumber = footerSettings.tursabLicenseNumber.trim();
+  const showTursab = tursabLicenseNumber.length > 0;
+  const hasSecondaryRow = showBacklinks || showSocial || showTursab;
 
   return (
     <footer className="relative overflow-hidden border-t border-white/10 surface-ink text-white">
@@ -44,43 +51,30 @@ export async function SiteFooter({
       />
 
       <Container className="relative py-16 md:py-20">
-        <div className="grid gap-12 md:grid-cols-2 xl:grid-cols-3">
-          <div className="space-y-5">
-            <div className="flex items-center">
-              <SiteLogo alt={common("appName")} size="header" />
-            </div>
-            <p className="max-w-sm text-sm leading-relaxed text-white/55">
-              {t("description")}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {enabledLocales.map((locale) => (
-                <Link
-                  key={locale.code}
-                  href="/"
-                  locale={locale.code}
-                  className="flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:border-gold/40 hover:text-gold-light"
-                >
-                  <span aria-hidden>{getLocaleEmoji(locale.code)}</span>
-                  {locale.shortLabel}
-                </Link>
-              ))}
-            </div>
-
-            {socialMediaLinks.length > 0 ? (
-              <div className="space-y-3 pt-1">
-                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
-                  {social("title")}
-                </p>
-                <SocialMediaIconLinks
-                  links={socialMediaLinks}
-                  size="sm"
-                  listClassName="justify-start"
-                />
+        <div className="space-y-10 xl:space-y-12">
+          <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-3 xl:items-start">
+            <div className="space-y-5">
+              <div className="flex items-center">
+                <SiteLogo alt={common("appName")} size="header" />
               </div>
-            ) : null}
-          </div>
+              <p className="max-w-sm text-sm leading-relaxed text-white/55">
+                {t("description")}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {enabledLocales.map((locale) => (
+                  <Link
+                    key={locale.code}
+                    href="/"
+                    locale={locale.code}
+                    className="flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:border-gold/40 hover:text-gold-light"
+                  >
+                    <span aria-hidden>{getLocaleEmoji(locale.code)}</span>
+                    {locale.shortLabel}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-          <div className="space-y-8">
             <FooterColumn title={t("linksTitle")}>
               <li>
                 <Link href="/fleet" className="transition-colors hover:text-gold-light">
@@ -112,70 +106,101 @@ export async function SiteFooter({
               </li>
             </FooterColumn>
 
-            {footerBacklinks.length > 0 ? (
-              <div className="space-y-3">
-                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
-                  {t("linkedSitesTitle")}
-                </p>
-                <ul className="space-y-2 text-sm text-white/60">
-                  {footerBacklinks.map((backlink) => (
-                    <li key={backlink.slotIndex}>
-                      <a
-                        href={backlink.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="transition-colors hover:text-gold-light"
-                      >
-                        {backlink.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+            <FooterColumn title={t("contactTitle")}>
+              {contactChannels.phones.map((phone) => (
+                <li key={`phone-${phone}`}>
+                  <a
+                    href={toTelHref(phone)}
+                    className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
+                  >
+                    <Phone className="h-4 w-4 text-gold" aria-hidden />
+                    {phone}
+                  </a>
+                </li>
+              ))}
+              {contactChannels.whatsapps.map((whatsapp) => (
+                <li key={`whatsapp-${whatsapp}`}>
+                  <a
+                    href={toWhatsappHref(whatsapp)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
+                  >
+                    <WhatsAppIcon className="h-4 w-4 text-gold" aria-hidden />
+                    {whatsapp}
+                  </a>
+                </li>
+              ))}
+              {contactChannels.emails.map((email) => (
+                <li key={`email-${email}`}>
+                  <a
+                    href={toMailtoHref(email)}
+                    className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
+                  >
+                    <EmailIcon className="h-4 w-4 text-gold" aria-hidden />
+                    {email}
+                  </a>
+                </li>
+              ))}
+              <li className="flex items-center gap-2.5">
+                <Clock className="h-4 w-4 text-gold" aria-hidden />
+                {siteConfig.supportHours}
+              </li>
+            </FooterColumn>
           </div>
 
-          <FooterColumn title={t("contactTitle")}>
-            {contactChannels.phones.map((phone) => (
-              <li key={`phone-${phone}`}>
-                <a
-                  href={toTelHref(phone)}
-                  className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
-                >
-                  <Phone className="h-4 w-4 text-gold" aria-hidden />
-                  {phone}
-                </a>
-              </li>
-            ))}
-            {contactChannels.whatsapps.map((whatsapp) => (
-              <li key={`whatsapp-${whatsapp}`}>
-                <a
-                  href={toWhatsappHref(whatsapp)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
-                >
-                  <WhatsAppIcon className="h-4 w-4 text-gold" aria-hidden />
-                  {whatsapp}
-                </a>
-              </li>
-            ))}
-            {contactChannels.emails.map((email) => (
-              <li key={`email-${email}`}>
-                <a
-                  href={toMailtoHref(email)}
-                  className="flex items-center gap-2.5 transition-colors hover:text-gold-light"
-                >
-                  <EmailIcon className="h-4 w-4 text-gold" aria-hidden />
-                  {email}
-                </a>
-              </li>
-            ))}
-            <li className="flex items-center gap-2.5">
-              <Clock className="h-4 w-4 text-gold" aria-hidden />
-              {siteConfig.supportHours}
-            </li>
-          </FooterColumn>
+          {hasSecondaryRow ? (
+            <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-3 xl:items-start">
+              <div className="space-y-3">
+                {showBacklinks ? (
+                  <>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
+                      {t("linkedSitesTitle")}
+                    </p>
+                    <ul className="space-y-2 text-sm text-white/60">
+                      {footerBacklinks.map((backlink) => (
+                        <li key={backlink.slotIndex}>
+                          <a
+                            href={backlink.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="transition-colors hover:text-gold-light"
+                          >
+                            {backlink.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+              </div>
+
+              <div className="space-y-3">
+                {showSocial ? (
+                  <>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
+                      {social("title")}
+                    </p>
+                    <SocialMediaIconLinks
+                      links={socialMediaLinks}
+                      size="sm"
+                      listClassName="justify-start"
+                    />
+                  </>
+                ) : null}
+              </div>
+
+              {showTursab ? (
+                <div className="space-y-3 text-start">
+                  <p className="text-sm font-medium leading-relaxed text-gold">
+                    {t("tursabLicense", {
+                      number: tursabLicenseNumber,
+                    })}
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-14 border-t border-white/8 pt-8">

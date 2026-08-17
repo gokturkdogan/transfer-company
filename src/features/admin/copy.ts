@@ -291,7 +291,7 @@ export const adminCopy = {
   footerBacklinks: {
     title: "Footer backlink",
     subtitle:
-      "Footer'daki Bağlantılı Siteler bölümünde gösterilecek harici site linklerini yönetin (en fazla 3).",
+      "Footer'daki bağlantılı siteler ve TÜRSAB belge numarasını yönetin.",
     formTitle: "Bağlantılı siteler",
     hint:
       "Site adı ve URL girin. https:// yoksa otomatik eklenir. Pasif veya eksik alan olan kayıtlar sitede gösterilmez.",
@@ -301,16 +301,21 @@ export const adminCopy = {
     slotTitle: (number: number) => `Bağlantı ${number}`,
     save: "Kaydet",
     saving: "Kaydediliyor...",
-    saved: "Footer backlink'ler güncellendi.",
+    saved: "Footer ayarları güncellendi.",
     fields: {
       label: "Site adı",
       url: "Site URL",
       active: "Aktif",
+      tursabLicenseNumber: "İşletme belge no",
     },
     placeholders: {
       label: "Örn. Antalya VIP Transfer",
       url: "https://example.com",
+      tursabLicenseNumber: "Örn. 12345",
     },
+    tursabSectionTitle: "TÜRSAB belge numarası",
+    tursabHint:
+      "Footer'da TÜRSAB İşletme Belge No olarak gösterilir. Boş bırakırsanız sitede görünmez.",
   },
   privacyPage: {
     title: "KVKK / Gizlilik sayfası",

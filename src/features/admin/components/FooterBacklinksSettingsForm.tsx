@@ -1,6 +1,6 @@
 "use client";
 
-import { Link2 } from "lucide-react";
+import { BadgeCheck, Link2 } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 
 type FooterBacklinksSettingsFormProps = {
   links: FooterBacklinkRecord[];
+  tursabLicenseNumber: string;
 };
 
 type LinkRowState = {
@@ -41,6 +42,7 @@ function toRowState(link: FooterBacklinkRecord): LinkRowState {
 
 export function FooterBacklinksSettingsForm({
   links,
+  tursabLicenseNumber: initialTursabLicenseNumber,
 }: FooterBacklinksSettingsFormProps) {
   const router = useRouter();
   const [rows, setRows] = useState<LinkRowState[]>(
@@ -50,6 +52,9 @@ export function FooterBacklinksSettingsForm({
         ? toRowState(existing)
         : { slotIndex, label: "", url: "", isActive: false };
     }),
+  );
+  const [tursabLicenseNumber, setTursabLicenseNumber] = useState(
+    initialTursabLicenseNumber,
   );
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -92,6 +97,7 @@ export function FooterBacklinksSettingsForm({
                 url: row.url,
                 isActive: row.isActive,
               })),
+              tursabLicenseNumber,
             });
 
             if (!result.success) {
@@ -101,7 +107,7 @@ export function FooterBacklinksSettingsForm({
 
             setRows(
               FOOTER_BACKLINK_SLOT_INDICES.map((slotIndex) => {
-                const saved = result.data.find(
+                const saved = result.data.links.find(
                   (link) => link.slotIndex === slotIndex,
                 );
                 return saved
@@ -109,6 +115,7 @@ export function FooterBacklinksSettingsForm({
                   : { slotIndex, label: "", url: "", isActive: false };
               }),
             );
+            setTursabLicenseNumber(result.data.footerSettings.tursabLicenseNumber);
             setSuccess(adminCopy.footerBacklinks.saved);
             router.refresh();
           });
@@ -193,6 +200,29 @@ export function FooterBacklinksSettingsForm({
           <p className="text-xs leading-relaxed text-muted-foreground">
             {adminCopy.footerBacklinks.hint}
           </p>
+
+          <AdminFormSection
+            title={adminCopy.footerBacklinks.tursabSectionTitle}
+            icon={BadgeCheck}
+            compact
+          >
+            <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-3">
+              <Input
+                value={tursabLicenseNumber}
+                onChange={(event) => setTursabLicenseNumber(event.target.value)}
+                placeholder={
+                  adminCopy.footerBacklinks.placeholders.tursabLicenseNumber
+                }
+                aria-label={
+                  adminCopy.footerBacklinks.fields.tursabLicenseNumber
+                }
+                maxLength={64}
+              />
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                {adminCopy.footerBacklinks.tursabHint}
+              </p>
+            </div>
+          </AdminFormSection>
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50/80 px-4 py-3 sm:px-5">

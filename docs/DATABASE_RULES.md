@@ -60,6 +60,7 @@ Parent entities also carry `default_name` as admin fallback when translation is 
 | `extra_services` | Configurable extras incl. luggage vehicle |
 | `extra_service_prices` | Per-currency extra prices (admin-managed) |
 | `contact_channels` | Site contact emails, phones, WhatsApp numbers |
+| `footer_settings` | Singleton footer legal text (TÜRSAB license number) |
 | `enabled_locales` | Admin-enabled site languages for locale switcher |
 | `reservations` | Booking header; district pricing + hotel/custom drop-off; `passenger_details` jsonb for named passengers; `notes` free-text only |
 | `reservation_items` | Snapshot line items (vehicles + extras) |

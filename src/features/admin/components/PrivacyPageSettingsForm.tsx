@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 type PrivacyPageSettingsFormProps = {
   enabledLocales: EnabledLocaleRecord[];
   translations: PrivacyPageTranslationRecord[];
-  defaultHtmlTr: string;
+  defaultHtmlByLocale: Record<string, string>;
 };
 
 function hasHtmlContent(html: string): boolean {
@@ -31,7 +31,7 @@ function hasHtmlContent(html: string): boolean {
 function toFormState(
   locale: string,
   translations: PrivacyPageTranslationRecord[],
-  defaultHtmlTr: string,
+  defaultHtmlByLocale: Record<string, string>,
 ): PrivacyLocaleContentInput {
   const existing = translations.find((item) => item.locale === locale);
   if (existing?.content.trim()) {
@@ -41,10 +41,11 @@ function toFormState(
     };
   }
 
-  if (locale === DEFAULT_LOCALE) {
+  const defaultHtml = defaultHtmlByLocale[locale];
+  if (defaultHtml?.trim()) {
     return {
       locale,
-      content: defaultHtmlTr,
+      content: defaultHtml,
     };
   }
 
@@ -57,7 +58,7 @@ function toFormState(
 export function PrivacyPageSettingsForm({
   enabledLocales,
   translations,
-  defaultHtmlTr,
+  defaultHtmlByLocale,
 }: PrivacyPageSettingsFormProps) {
   const router = useRouter();
   const copy = adminCopy.privacyPage;
@@ -73,7 +74,7 @@ export function PrivacyPageSettingsForm({
         initial[locale.code] = toFormState(
           locale.code,
           translations,
-          defaultHtmlTr,
+          defaultHtmlByLocale,
         );
       }
       return initial;

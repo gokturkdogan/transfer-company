@@ -8,10 +8,12 @@ import { FOOTER_BACKLINK_SLOT_INDICES } from "@/config/footer-backlinks";
 import {
   FooterBacklinksRepository,
 } from "@/features/footer-backlinks/server/repository";
+import { FooterSettingsRepository } from "@/features/footer-settings/server/repository";
 import { normalizeSocialMediaUrl } from "@/features/social-media/server/repository";
 import { createAction } from "@/server/action";
 
 const footerBacklinksRepository = new FooterBacklinksRepository(db);
+const footerSettingsRepository = new FooterSettingsRepository(db);
 
 const footerBacklinkItemSchema = z.object({
   slotIndex: z.union([
@@ -28,6 +30,7 @@ const updateFooterBacklinksSchema = z.object({
   links: z
     .array(footerBacklinkItemSchema)
     .length(FOOTER_BACKLINK_SLOT_INDICES.length),
+  tursabLicenseNumber: z.string().trim().max(64),
 });
 
 export async function updateFooterBacklinksAction(rawInput: unknown) {
@@ -41,10 +44,14 @@ export async function updateFooterBacklinksAction(rawInput: unknown) {
         sortOrder,
       })),
     );
+    const footerSettings = await footerSettingsRepository.updateTursabLicenseNumber(
+      input.tursabLicenseNumber,
+    );
 
     revalidatePath("/admin/footer-backlinks");
     revalidateTag("footer-backlinks", "max");
+    revalidateTag("footer-settings", "max");
 
-    return links;
+    return { links, footerSettings };
   }, rawInput);
 }
