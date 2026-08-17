@@ -8,6 +8,7 @@ import {
   customers,
   reservationItems,
   reservations,
+  vehicleCategories,
 } from "@/db/schema";
 
 export type DashboardRevenueStats = {
@@ -223,22 +224,55 @@ export class DashboardAdminRepository {
     };
   }
 
+  private primaryTransferVehicleCondition() {
+    return sql`(
+      ${reservationItems.isLuggageOverflowVehicle} = false
+      AND (
+        EXISTS (
+          SELECT 1
+          FROM reservation_items flagged_luggage
+          WHERE flagged_luggage.reservation_id = ${reservationItems.reservationId}
+            AND flagged_luggage.item_type = 'TRANSFER_VEHICLE'
+            AND flagged_luggage.is_luggage_overflow_vehicle = true
+        )
+        OR (
+          SELECT count(*)::int
+          FROM reservation_items vehicle_count
+          WHERE vehicle_count.reservation_id = ${reservationItems.reservationId}
+            AND vehicle_count.item_type = 'TRANSFER_VEHICLE'
+        ) <= 1
+        OR ${reservationItems.id} <> (
+          SELECT last_vehicle.id
+          FROM reservation_items last_vehicle
+          WHERE last_vehicle.reservation_id = ${reservationItems.reservationId}
+            AND last_vehicle.item_type = 'TRANSFER_VEHICLE'
+          ORDER BY last_vehicle.sort_order DESC, last_vehicle.id DESC
+          LIMIT 1
+        )
+      )
+    )`;
+  }
+
   private async loadVehicleBreakdown() {
     return this.database
       .select({
-        name: reservationItems.snapshotName,
+        name: vehicleCategories.defaultName,
         count: sql<number>`coalesce(sum(${reservationItems.quantity}), 0)`,
       })
       .from(reservationItems)
       .innerJoin(reservations, eq(reservationItems.reservationId, reservations.id))
+      .innerJoin(
+        vehicleCategories,
+        eq(reservationItems.vehicleCategoryId, vehicleCategories.id),
+      )
       .where(
         and(
           eq(reservationItems.itemType, "TRANSFER_VEHICLE"),
-          eq(reservationItems.isLuggageOverflowVehicle, false),
           ne(reservations.status, "CANCELLED"),
+          this.primaryTransferVehicleCondition(),
         ),
       )
-      .groupBy(reservationItems.snapshotName)
+      .groupBy(vehicleCategories.id, vehicleCategories.defaultName)
       .orderBy(desc(sql`coalesce(sum(${reservationItems.quantity}), 0)`))
       .limit(8);
   }

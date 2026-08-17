@@ -572,7 +572,7 @@ export const adminCopy = {
       trendMonthly: "Aylık",
       trendCount: "Rezervasyon",
       vehiclesTitle: "Araç dağılımı",
-      vehiclesHint: "En çok tercih edilen araç kategorileri",
+      vehiclesHint: "Ana transfer araç kategorileri (dil bağımsız; bagaj araçları dahil değil)",
       routesTitle: "Popüler rotalar",
       routesHint: "En çok rezervasyon alan güzergâhlar",
       statusTitle: "Durum dağılımı",

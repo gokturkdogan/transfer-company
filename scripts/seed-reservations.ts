@@ -6,7 +6,92 @@ import { DEFAULT_CURRENCY } from "../src/config/constants";
 import * as schema from "../src/db/schema";
 import type { ReservationStatus } from "../src/db/schema/enums";
 
-const DEMO_REFERENCE_PREFIX = "TR-ANL";
+/**
+ * Demo rezervasyon seed — yalnızca INSERT.
+ * Mevcut kayıtları silmez, güncellemez veya başka tablolara dokunmaz.
+ * Aynı gün tekrar çalıştırıldığında aynı referanslar atlanır (idempotent).
+ */
+const DEMO_REFERENCE_PREFIX_BASE = "TR-SEED";
+
+/** Önümüzdeki 2 hafta + geçmiş hafta (tamamlanan trend için). */
+const PAST_OUTBOUND_DAYS = 7;
+const FORWARD_OUTBOUND_DAYS = 14;
+const MIN_RESERVATIONS_PER_DAY = 2;
+const MAX_RESERVATIONS_PER_DAY = 10;
+const TARGET_MIN_TOTAL = 90;
+
+const DISTRICT_CODES = ["BELEK", "KEMER", "SIDE", "ALANYA"] as const;
+const VEHICLE_CODES = ["VITO", "SPRINTER", "SEDAN"] as const;
+const SNAPSHOT_LOCALES = ["tr", "en", "de", "ru", "ar"] as const;
+const EXTRA_CODES = ["CHILD_SEAT", "MEET_GREET"] as const;
+
+const FIRST_NAMES = [
+  "Ayşe",
+  "Mehmet",
+  "Zeynep",
+  "John",
+  "Emma",
+  "Oliver",
+  "Sophie",
+  "Hans",
+  "Anna",
+  "Ivan",
+  "Elena",
+  "Mohammed",
+  "Fatima",
+  "James",
+  "Maria",
+  "Lars",
+  "Yuki",
+  "Chen",
+  "Piotr",
+  "Sofia",
+  "Nikolai",
+  "Amira",
+  "David",
+  "Laura",
+  "Thomas",
+  "Olga",
+  "Giuseppe",
+  "Nina",
+  "Andreas",
+  "Klara",
+] as const;
+
+const LAST_NAMES = [
+  "Yılmaz",
+  "Demir",
+  "Kaya",
+  "Smith",
+  "Wilson",
+  "Müller",
+  "Schmidt",
+  "Petrov",
+  "Volkov",
+  "Al-Rashid",
+  "García",
+  "Rossi",
+  "Jensen",
+  "Nowak",
+  "Brown",
+  "Martin",
+  "Andersson",
+  "Dubois",
+  "Kowalski",
+  "Nagy",
+  "Popescu",
+  "Silva",
+  "O'Brien",
+  "Tanaka",
+  "Wang",
+  "Hassan",
+  "Bergström",
+  "Fischer",
+  "Novak",
+  "Horvat",
+] as const;
+
+const FLIGHT_PREFIXES = ["PC", "TK", "XQ", "BA", "FR", "EZY", "AF", "LH", "SK", "W6"] as const;
 
 const pool = new Pool({
   connectionString:
@@ -21,6 +106,7 @@ type RouteContext = {
   districtId: string;
   districtName: string;
   districtCode: string;
+  vehicleCode: string;
   oneWayMinor: number;
   roundTripMinor: number;
 };
@@ -28,17 +114,18 @@ type RouteContext = {
 type VehicleContext = {
   id: string;
   code: string;
-  name: string;
+  defaultName: string;
+  namesByLocale: Map<string, string>;
 };
 
 type ExtraContext = {
   id: string;
   code: string;
-  name: string;
+  namesByLocale: Map<string, string>;
   priceMinor: number;
 };
 
-type ReservationSeed = {
+type GeneratedReservation = {
   referenceSuffix: string;
   firstName: string;
   lastName: string;
@@ -48,271 +135,257 @@ type ReservationSeed = {
   tripType: "ONE_WAY" | "ROUND_TRIP";
   districtCode: string;
   vehicleCode: string;
-  daysFromNowOutbound: number;
-  daysFromNowReturn?: number;
-  daysAgoCreated: number;
+  outboundAt: Date;
+  returnAt: Date | null;
+  createdAt: Date;
   passengerCount: number;
   largeLuggageCount: number;
-  cabinLuggageCount?: number;
+  cabinLuggageCount: number;
   outboundFlightNumber?: string;
   returnFlightNumber?: string;
   notes?: string;
-  extras?: Array<{ code: string; quantity: number }>;
+  extras: Array<{ code: string; quantity: number }>;
+  snapshotLocale: string;
+  includeLuggageOverflowVehicle: boolean;
+  luggageVehicleCode: string;
 };
 
-const RESERVATION_SEEDS: ReservationSeed[] = [
-  {
-    referenceSuffix: "ANL001",
-    firstName: "Ayşe",
-    lastName: "Yılmaz",
-    email: "ayse.yilmaz@example.com",
-    phone: "+905551110001",
-    status: "COMPLETED",
-    tripType: "ONE_WAY",
-    districtCode: "BELEK",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: -12,
-    daysAgoCreated: 20,
-    passengerCount: 2,
-    largeLuggageCount: 2,
-    outboundFlightNumber: "PC1582",
-    extras: [{ code: "CHAMPAGNE", quantity: 1 }],
-  },
-  {
-    referenceSuffix: "ANL002",
-    firstName: "John",
-    lastName: "Smith",
-    email: "john.smith@example.com",
-    phone: "+447911123456",
-    status: "COMPLETED",
-    tripType: "ROUND_TRIP",
-    districtCode: "KEMER",
-    vehicleCode: "SPRINTER",
-    daysFromNowOutbound: -8,
-    daysFromNowReturn: -3,
-    daysAgoCreated: 25,
-    passengerCount: 8,
-    largeLuggageCount: 10,
-    outboundFlightNumber: "BA680",
-    returnFlightNumber: "BA681",
-  },
-  {
-    referenceSuffix: "ANL003",
-    firstName: "Hans",
-    lastName: "Müller",
-    email: "hans.mueller@example.com",
-    phone: "+4915123456789",
-    status: "CONFIRMED",
-    tripType: "ONE_WAY",
-    districtCode: "SIDE",
-    vehicleCode: "SEDAN",
-    daysFromNowOutbound: 5,
-    daysAgoCreated: 3,
-    passengerCount: 2,
-    largeLuggageCount: 1,
-    outboundFlightNumber: "XQ1842",
-  },
-  {
-    referenceSuffix: "ANL004",
-    firstName: "Ivan",
-    lastName: "Petrov",
-    email: "ivan.petrov@example.com",
-    phone: "+79031234567",
-    status: "PENDING",
-    tripType: "ONE_WAY",
-    districtCode: "ALANYA",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: 9,
-    daysAgoCreated: 1,
-    passengerCount: 4,
-    largeLuggageCount: 4,
-  },
-  {
-    referenceSuffix: "ANL005",
-    firstName: "Mohammed",
-    lastName: "Al-Ali",
-    email: "m.alali@example.com",
-    phone: "+971501234567",
-    status: "CANCELLED",
-    tripType: "ONE_WAY",
-    districtCode: "BELEK",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: 7,
-    daysAgoCreated: 6,
-    passengerCount: 3,
-    largeLuggageCount: 3,
-    notes: "Müşteri uçuşunu iptal etti.",
-  },
-  {
-    referenceSuffix: "ANL006",
-    firstName: "Elena",
-    lastName: "Rossi",
-    email: "elena.rossi@example.com",
-    phone: "+393331112222",
-    status: "COMPLETED",
-    tripType: "ONE_WAY",
-    districtCode: "KEMER",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: -18,
-    daysAgoCreated: 30,
-    passengerCount: 3,
-    largeLuggageCount: 2,
-    extras: [{ code: "CHILD_SEAT", quantity: 2 }],
-  },
-  {
-    referenceSuffix: "ANL007",
-    firstName: "Sophie",
-    lastName: "Martin",
-    email: "sophie.martin@example.com",
-    phone: "+33612345678",
-    status: "CONFIRMED",
-    tripType: "ROUND_TRIP",
-    districtCode: "SIDE",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: 11,
-    daysFromNowReturn: 18,
-    daysAgoCreated: 4,
-    passengerCount: 5,
-    largeLuggageCount: 5,
-    outboundFlightNumber: "AF1390",
-    returnFlightNumber: "AF1391",
-  },
-  {
-    referenceSuffix: "ANL008",
-    firstName: "James",
-    lastName: "Wilson",
-    email: "james.wilson@example.com",
-    phone: "+12025550111",
-    status: "PENDING",
-    tripType: "ONE_WAY",
-    districtCode: "ALANYA",
-    vehicleCode: "SEDAN",
-    daysFromNowOutbound: 14,
-    daysAgoCreated: 0,
-    passengerCount: 1,
-    largeLuggageCount: 1,
-  },
-  {
-    referenceSuffix: "ANL009",
-    firstName: "Fatma",
-    lastName: "Kaya",
-    email: "fatma.kaya@example.com",
-    phone: "+905559876543",
-    status: "COMPLETED",
-    tripType: "ROUND_TRIP",
-    districtCode: "BELEK",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: -25,
-    daysFromNowReturn: -20,
-    daysAgoCreated: 35,
-    passengerCount: 4,
-    largeLuggageCount: 4,
-    outboundFlightNumber: "TK2410",
-    returnFlightNumber: "TK2411",
-  },
-  {
-    referenceSuffix: "ANL010",
-    firstName: "Mehmet",
-    lastName: "Demir",
-    email: "mehmet.demir@example.com",
-    phone: "+905337654321",
-    status: "CANCELLED",
-    tripType: "ONE_WAY",
-    districtCode: "SIDE",
-    vehicleCode: "SPRINTER",
-    daysFromNowOutbound: -4,
-    daysAgoCreated: 10,
-    passengerCount: 10,
-    largeLuggageCount: 12,
-    notes: "Ödeme onayı alınamadı.",
-  },
-  {
-    referenceSuffix: "ANL011",
-    firstName: "Anna",
-    lastName: "Nowak",
-    email: "anna.nowak@example.com",
-    phone: "+48500111222",
-    status: "CONFIRMED",
-    tripType: "ONE_WAY",
-    districtCode: "KEMER",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: 3,
-    daysAgoCreated: 2,
-    passengerCount: 2,
-    largeLuggageCount: 2,
-    extras: [{ code: "CHAMPAGNE", quantity: 1 }],
-  },
-  {
-    referenceSuffix: "ANL012",
-    firstName: "David",
-    lastName: "Brown",
-    email: "david.brown@example.com",
-    phone: "+447700900123",
-    status: "COMPLETED",
-    tripType: "ONE_WAY",
-    districtCode: "ALANYA",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: -2,
-    daysAgoCreated: 7,
-    passengerCount: 3,
-    largeLuggageCount: 3,
-    outboundFlightNumber: "EZY2145",
-  },
-  {
-    referenceSuffix: "ANL013",
-    firstName: "Zeynep",
-    lastName: "Arslan",
-    email: "zeynep.arslan@example.com",
-    phone: "+905321234567",
-    status: "PENDING",
-    tripType: "ROUND_TRIP",
-    districtCode: "BELEK",
-    vehicleCode: "SEDAN",
-    daysFromNowOutbound: 6,
-    daysFromNowReturn: 13,
-    daysAgoCreated: 1,
-    passengerCount: 2,
-    largeLuggageCount: 2,
-  },
-  {
-    referenceSuffix: "ANL014",
-    firstName: "Lars",
-    lastName: "Jensen",
-    email: "lars.jensen@example.com",
-    phone: "+4520123456",
-    status: "COMPLETED",
-    tripType: "ONE_WAY",
-    districtCode: "SIDE",
-    vehicleCode: "SPRINTER",
-    daysFromNowOutbound: -45,
-    daysAgoCreated: 55,
-    passengerCount: 12,
-    largeLuggageCount: 14,
-    outboundFlightNumber: "SK2876",
-  },
-  {
-    referenceSuffix: "ANL015",
-    firstName: "Maria",
-    lastName: "García",
-    email: "maria.garcia@example.com",
-    phone: "+34600111222",
-    status: "CONFIRMED",
-    tripType: "ONE_WAY",
-    districtCode: "ALANYA",
-    vehicleCode: "VITO",
-    daysFromNowOutbound: 21,
-    daysAgoCreated: 12,
-    passengerCount: 4,
-    largeLuggageCount: 4,
-    extras: [{ code: "CHILD_SEAT", quantity: 1 }],
-  },
-];
+function createRng(seed: number) {
+  let state = seed;
+
+  return () => {
+    state = (state * 1664525 + 1013904223) % 4294967296;
+    return state / 4294967296;
+  };
+}
+
+function pick<T>(rng: () => number, items: readonly T[]): T {
+  return items[Math.floor(rng() * items.length)];
+}
+
+function pickInt(rng: () => number, min: number, max: number): number {
+  return min + Math.floor(rng() * (max - min + 1));
+}
 
 function addDays(base: Date, days: number): Date {
   const result = new Date(base);
   result.setDate(result.getDate() + days);
-  result.setHours(10, 30, 0, 0);
   return result;
+}
+
+function withTime(base: Date, hour: number, minute: number): Date {
+  const result = new Date(base);
+  result.setHours(hour, minute, 0, 0);
+  return result;
+}
+
+function buildDayCounts(
+  rng: () => number,
+  days: number,
+  minPerDay: number,
+  maxPerDay: number,
+  targetMinTotal: number,
+): number[] {
+  const counts = Array.from({ length: days }, () =>
+    pickInt(rng, minPerDay, maxPerDay),
+  );
+
+  let total = counts.reduce((sum, count) => sum + count, 0);
+
+  while (total < targetMinTotal) {
+    const index = Math.floor(rng() * days);
+    if (counts[index] < maxPerDay) {
+      counts[index] += 1;
+      total += 1;
+    }
+  }
+
+  return counts;
+}
+
+function formatBatchId(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}${month}${day}`;
+}
+
+function buildDemoReferencePrefix(batchId: string): string {
+  return `${DEMO_REFERENCE_PREFIX_BASE}-${batchId}-`;
+}
+
+function buildEmail(batchId: string, index: number): string {
+  return `seed.${batchId}.${String(index).padStart(4, "0")}@demo.transfer.local`;
+}
+
+function buildPhone(rng: () => number, index: number): string {
+  const prefixes = ["+90555", "+90532", "+4479", "+4915", "+336", "+3903", "+346"];
+  const prefix = prefixes[Math.floor(rng() * prefixes.length)];
+  const suffix = String(1000000 + index * 137 + Math.floor(rng() * 9999)).slice(-7);
+  return `${prefix}${suffix}`;
+}
+
+function buildFlightNumber(rng: () => number): string {
+  return `${pick(rng, FLIGHT_PREFIXES)}${pickInt(rng, 100, 9999)}`;
+}
+
+function statusForOutbound(
+  rng: () => number,
+  outboundAt: Date,
+  now: Date,
+): ReservationStatus {
+  if (outboundAt.getTime() < now.getTime() - 2 * 60 * 60 * 1000) {
+    return rng() < 0.12 ? "CANCELLED" : "COMPLETED";
+  }
+
+  const roll = rng();
+  if (roll < 0.22) return "PENDING";
+  if (roll < 0.78) return "CONFIRMED";
+  return "CANCELLED";
+}
+
+type RouteCombo = {
+  districtCode: string;
+  vehicleCode: string;
+};
+
+function buildGeneratedReservations(
+  now: Date,
+  routeCombos: RouteCombo[],
+  batchId: string,
+): GeneratedReservation[] {
+  if (routeCombos.length === 0) {
+    throw new Error("No route prices found. Run pnpm db:seed first.");
+  }
+
+  const rng = createRng(20260817);
+  const totalDays = PAST_OUTBOUND_DAYS + FORWARD_OUTBOUND_DAYS;
+  const forwardCounts = buildDayCounts(
+    rng,
+    FORWARD_OUTBOUND_DAYS,
+    MIN_RESERVATIONS_PER_DAY,
+    MAX_RESERVATIONS_PER_DAY,
+    TARGET_MIN_TOTAL,
+  );
+  const pastCounts = Array.from({ length: PAST_OUTBOUND_DAYS }, () =>
+    pickInt(rng, 3, 6),
+  );
+
+  const reservations: GeneratedReservation[] = [];
+  let counter = 1;
+
+  const sprinterDistricts = new Set(
+    routeCombos
+      .filter((combo) => combo.vehicleCode === "SPRINTER")
+      .map((combo) => combo.districtCode),
+  );
+
+  for (let dayIndex = 0; dayIndex < totalDays; dayIndex += 1) {
+    const dayOffset =
+      dayIndex < PAST_OUTBOUND_DAYS
+        ? -(PAST_OUTBOUND_DAYS - dayIndex)
+        : dayIndex - PAST_OUTBOUND_DAYS + 1;
+
+    const countForDay =
+      dayIndex < PAST_OUTBOUND_DAYS
+        ? pastCounts[dayIndex]
+        : forwardCounts[dayIndex - PAST_OUTBOUND_DAYS];
+
+    for (let slot = 0; slot < countForDay; slot += 1) {
+      const firstName = pick(rng, FIRST_NAMES);
+      const lastName = pick(rng, LAST_NAMES);
+      const routeCombo = pick(rng, routeCombos);
+      const districtCode = routeCombo.districtCode;
+      const vehicleCode = routeCombo.vehicleCode;
+      const tripType = rng() < 0.32 ? "ROUND_TRIP" : "ONE_WAY";
+      const hour = pickInt(rng, 6, 22);
+      const minute = pick(rng, [0, 5, 10, 15, 20, 30, 35, 45, 50]);
+      const outboundAt = withTime(addDays(now, dayOffset), hour, minute);
+      const returnGap = pickInt(rng, 4, 10);
+      const returnAt =
+        tripType === "ROUND_TRIP"
+          ? withTime(addDays(outboundAt, returnGap), pickInt(rng, 8, 20), minute)
+          : null;
+
+      const daysBeforeOutbound = pickInt(
+        rng,
+        1,
+        Math.max(2, Math.min(21, dayOffset > 0 ? dayOffset + 3 : 14)),
+      );
+      const createdAt = withTime(
+        addDays(outboundAt, -daysBeforeOutbound),
+        pickInt(rng, 9, 21),
+        pickInt(rng, 0, 59),
+      );
+
+      const passengerCount = pickInt(rng, 1, 12);
+      const largeLuggageCount = pickInt(rng, 0, Math.min(14, passengerCount + 4));
+      const cabinLuggageCount = pickInt(rng, 0, Math.min(4, passengerCount));
+      const includeLuggageOverflowVehicle =
+        largeLuggageCount >= 7 &&
+        rng() < 0.28 &&
+        vehicleCode !== "SPRINTER" &&
+        sprinterDistricts.has(districtCode);
+
+      const extras: Array<{ code: string; quantity: number }> = [];
+      if (rng() < 0.35) {
+        extras.push({
+          code: "CHILD_SEAT",
+          quantity: pickInt(rng, 1, Math.min(3, passengerCount)),
+        });
+      }
+      if (rng() < 0.18) {
+        extras.push({ code: "MEET_GREET", quantity: 1 });
+      }
+
+      const hasFlight = rng() < 0.72;
+      const outboundFlightNumber = hasFlight ? buildFlightNumber(rng) : undefined;
+      const returnFlightNumber =
+        tripType === "ROUND_TRIP" && hasFlight ? buildFlightNumber(rng) : undefined;
+
+      const notes =
+        rng() < 0.14
+          ? pick(rng, [
+              "Uçuş gecikmesi olabilir, lütfen takip edin.",
+              "Otel lobisinde bekleyecekler.",
+              "Bebek koltuğu ön koltuk tarafı tercih.",
+              "WhatsApp ile iletişim tercih edilir.",
+              "Müşteri uçuşunu iptal etti.",
+              "Ödeme onayı beklemede.",
+              "VIP karşılama istendi.",
+            ])
+          : undefined;
+
+      reservations.push({
+        referenceSuffix: String(counter).padStart(4, "0"),
+        firstName,
+        lastName,
+        email: buildEmail(batchId, counter),
+        phone: buildPhone(rng, counter),
+        status: statusForOutbound(rng, outboundAt, now),
+        tripType,
+        districtCode,
+        vehicleCode,
+        outboundAt,
+        returnAt,
+        createdAt,
+        passengerCount,
+        largeLuggageCount,
+        cabinLuggageCount,
+        outboundFlightNumber,
+        returnFlightNumber,
+        notes,
+        extras,
+        snapshotLocale: pick(rng, SNAPSHOT_LOCALES),
+        includeLuggageOverflowVehicle,
+        luggageVehicleCode: "SPRINTER",
+      });
+
+      counter += 1;
+    }
+  }
+
+  return reservations;
 }
 
 async function loadAirportId(): Promise<string> {
@@ -323,15 +396,13 @@ async function loadAirportId(): Promise<string> {
     .limit(1);
 
   if (!airport) {
-    throw new Error("Antalya Airport (AYT) not found. Run npm run db:seed first.");
+    throw new Error("Antalya Airport (AYT) not found. Run pnpm db:seed first.");
   }
 
   return airport.id;
 }
 
 async function loadRoutes(airportId: string): Promise<Map<string, RouteContext>> {
-  const districtCodes = [...new Set(RESERVATION_SEEDS.map((seed) => seed.districtCode))];
-
   const rows = await db
     .select({
       routeId: schema.routes.id,
@@ -339,7 +410,6 @@ async function loadRoutes(airportId: string): Promise<Map<string, RouteContext>>
       districtCode: schema.locations.code,
       districtName: schema.locations.defaultName,
       vehicleCode: schema.vehicleCategories.code,
-      vehicleCategoryId: schema.vehicleCategories.id,
       oneWayMinor: schema.routePrices.oneWayPriceMinor,
       roundTripMinor: schema.routePrices.roundTripPriceMinor,
     })
@@ -359,7 +429,8 @@ async function loadRoutes(airportId: string): Promise<Map<string, RouteContext>>
     .where(
       and(
         eq(schema.routes.originLocationId, airportId),
-        inArray(schema.locations.code, districtCodes),
+        inArray(schema.locations.code, [...DISTRICT_CODES]),
+        inArray(schema.vehicleCategories.code, [...VEHICLE_CODES]),
         eq(schema.routePrices.currency, DEFAULT_CURRENCY),
       ),
     );
@@ -367,13 +438,13 @@ async function loadRoutes(airportId: string): Promise<Map<string, RouteContext>>
   const routeMap = new Map<string, RouteContext>();
 
   for (const row of rows) {
-    const key = `${row.districtCode}:${row.vehicleCode}`;
-    routeMap.set(key, {
+    routeMap.set(`${row.districtCode}:${row.vehicleCode}`, {
       routeId: row.routeId,
       airportId,
       districtId: row.districtId,
       districtName: row.districtName,
       districtCode: row.districtCode,
+      vehicleCode: row.vehicleCode,
       oneWayMinor: row.oneWayMinor,
       roundTripMinor: row.roundTripMinor ?? row.oneWayMinor * 2,
     });
@@ -383,138 +454,267 @@ async function loadRoutes(airportId: string): Promise<Map<string, RouteContext>>
 }
 
 async function loadVehicles(): Promise<Map<string, VehicleContext>> {
-  const vehicleCodes = [...new Set(RESERVATION_SEEDS.map((seed) => seed.vehicleCode))];
   const rows = await db
     .select({
       id: schema.vehicleCategories.id,
       code: schema.vehicleCategories.code,
-      name: schema.vehicleCategories.defaultName,
+      defaultName: schema.vehicleCategories.defaultName,
+      locale: schema.vehicleCategoryTranslations.locale,
+      translatedName: schema.vehicleCategoryTranslations.name,
     })
     .from(schema.vehicleCategories)
-    .where(inArray(schema.vehicleCategories.code, vehicleCodes));
+    .leftJoin(
+      schema.vehicleCategoryTranslations,
+      eq(
+        schema.vehicleCategoryTranslations.vehicleCategoryId,
+        schema.vehicleCategories.id,
+      ),
+    )
+    .where(inArray(schema.vehicleCategories.code, [...VEHICLE_CODES]));
 
-  return new Map(rows.map((row) => [row.code, row]));
+  const vehicleMap = new Map<string, VehicleContext>();
+
+  for (const row of rows) {
+    const existing = vehicleMap.get(row.code) ?? {
+      id: row.id,
+      code: row.code,
+      defaultName: row.defaultName,
+      namesByLocale: new Map<string, string>(),
+    };
+
+    if (row.locale && row.translatedName) {
+      existing.namesByLocale.set(row.locale, row.translatedName);
+    }
+
+    vehicleMap.set(row.code, existing);
+  }
+
+  return vehicleMap;
 }
 
 async function loadExtras(): Promise<Map<string, ExtraContext>> {
-  const extraCodes = [
-    ...new Set(
-      RESERVATION_SEEDS.flatMap((seed) => seed.extras?.map((extra) => extra.code) ?? []),
-    ),
-  ];
-
-  if (extraCodes.length === 0) {
-    return new Map();
-  }
-
   const rows = await db
     .select({
       id: schema.extraServices.id,
       code: schema.extraServices.code,
+      locale: schema.extraServiceTranslations.locale,
       name: schema.extraServiceTranslations.name,
       priceMinor: schema.extraServicePrices.priceMinor,
     })
     .from(schema.extraServices)
-    .innerJoin(
+    .leftJoin(
       schema.extraServiceTranslations,
-      and(
-        eq(schema.extraServiceTranslations.extraServiceId, schema.extraServices.id),
-        eq(schema.extraServiceTranslations.locale, "tr"),
-      ),
+      eq(schema.extraServiceTranslations.extraServiceId, schema.extraServices.id),
     )
-    .innerJoin(
+    .leftJoin(
       schema.extraServicePrices,
       and(
         eq(schema.extraServicePrices.extraServiceId, schema.extraServices.id),
         eq(schema.extraServicePrices.currency, DEFAULT_CURRENCY),
       ),
     )
-    .where(inArray(schema.extraServices.code, extraCodes));
+    .where(inArray(schema.extraServices.code, [...EXTRA_CODES]));
 
-  return new Map(rows.map((row) => [row.code, row]));
-}
+  const extraMap = new Map<string, ExtraContext>();
 
-async function clearDemoReservations(): Promise<number> {
-  const demoReservations = await db
-    .select({ id: schema.reservations.id })
-    .from(schema.reservations)
-    .where(like(schema.reservations.reference, `${DEMO_REFERENCE_PREFIX}%`));
+  for (const row of rows) {
+    const existing = extraMap.get(row.code) ?? {
+      id: row.id,
+      code: row.code,
+      namesByLocale: new Map<string, string>(),
+      priceMinor: row.priceMinor ?? 0,
+    };
 
-  if (demoReservations.length === 0) {
-    return 0;
+    if (row.priceMinor !== null && row.priceMinor !== undefined) {
+      existing.priceMinor = row.priceMinor;
+    }
+
+    if (row.locale && row.name) {
+      existing.namesByLocale.set(row.locale, row.name);
+    }
+
+    extraMap.set(row.code, existing);
   }
 
-  const reservationIds = demoReservations.map((row) => row.id);
-  await db
-    .delete(schema.reservations)
-    .where(inArray(schema.reservations.id, reservationIds));
+  return extraMap;
+}
 
-  return reservationIds.length;
+function resolveLocalizedName(
+  namesByLocale: Map<string, string>,
+  defaultName: string,
+  locale: string,
+): string {
+  return (
+    namesByLocale.get(locale) ??
+    namesByLocale.get("en") ??
+    namesByLocale.get("tr") ??
+    defaultName
+  );
+}
+
+async function loadExistingDemoReferences(
+  referencePrefix: string,
+): Promise<Set<string>> {
+  const rows = await db
+    .select({ reference: schema.reservations.reference })
+    .from(schema.reservations)
+    .where(like(schema.reservations.reference, `${referencePrefix}%`));
+
+  return new Set(rows.map((row) => row.reference));
 }
 
 async function seedReservations() {
+  const batchId = process.env.RESERVATION_SEED_BATCH?.trim() || formatBatchId(new Date());
+  const referencePrefix = buildDemoReferencePrefix(batchId);
+
+  console.log("Demo reservation seed (insert-only — no deletes or updates).");
+  console.log(`Batch: ${batchId} · reference prefix: ${referencePrefix}*`);
+
   const airportId = await loadAirportId();
   const routeMap = await loadRoutes(airportId);
   const vehicleMap = await loadVehicles();
   const extraMap = await loadExtras();
+  const routeCombos = [...routeMap.values()].map((route) => ({
+    districtCode: route.districtCode,
+    vehicleCode: route.vehicleCode,
+  }));
+  const generated = buildGeneratedReservations(
+    new Date(),
+    routeCombos,
+    batchId,
+  );
+  const existingReferences = await loadExistingDemoReferences(referencePrefix);
 
-  const removed = await clearDemoReservations();
-  if (removed > 0) {
-    console.log(`Removed ${removed} existing demo reservation(s).`);
+  if (existingReferences.size >= generated.length) {
+    console.log(
+      `Batch already complete (${existingReferences.size} reservations). Skipping — no data changed.`,
+    );
+    await pool.end();
+    return;
   }
 
-  const now = new Date();
-  let created = 0;
+  if (existingReferences.size > 0) {
+    console.log(
+      `Resuming batch: ${existingReferences.size} reference(s) already exist, will skip duplicates.`,
+    );
+  }
 
-  for (const seed of RESERVATION_SEEDS) {
+  let created = 0;
+  let skipped = 0;
+  for (const seed of generated) {
+    const reference = `${referencePrefix}${seed.referenceSuffix}`;
+
+    if (existingReferences.has(reference)) {
+      skipped += 1;
+      continue;
+    }
+
     const routeKey = `${seed.districtCode}:${seed.vehicleCode}`;
     const route = routeMap.get(routeKey);
     const vehicle = vehicleMap.get(seed.vehicleCode);
 
     if (!route || !vehicle) {
       throw new Error(
-        `Missing route or vehicle for ${seed.districtCode} / ${seed.vehicleCode}. Run npm run db:seed first.`,
+        `Missing route or vehicle for ${seed.districtCode} / ${seed.vehicleCode}. Run pnpm db:seed first.`,
       );
     }
 
     const transferMinor =
       seed.tripType === "ROUND_TRIP" ? route.roundTripMinor : route.oneWayMinor;
 
-    const extraItems = (seed.extras ?? []).map((extraSeed, index) => {
+    const extraItems = seed.extras.flatMap((extraSeed, index) => {
       const extra = extraMap.get(extraSeed.code);
       if (!extra) {
-        throw new Error(`Missing extra ${extraSeed.code}. Run npm run db:seed first.`);
+        return [];
       }
 
-      return {
-        itemType: "EXTRA_SERVICE" as const,
-        extraServiceId: extra.id,
-        snapshotName: extra.name,
-        quantity: extraSeed.quantity,
-        unitPriceMinor: extra.priceMinor,
-        totalPriceMinor: extra.priceMinor * extraSeed.quantity,
-        currency: DEFAULT_CURRENCY,
-        sortOrder: index + 1,
-      };
+      const snapshotName = resolveLocalizedName(
+        extra.namesByLocale,
+        extraSeed.code,
+        seed.snapshotLocale,
+      );
+
+      return [
+        {
+          itemType: "EXTRA_SERVICE" as const,
+          extraServiceId: extra.id,
+          snapshotName,
+          quantity: extraSeed.quantity,
+          unitPriceMinor: extra.priceMinor,
+          totalPriceMinor: extra.priceMinor * extraSeed.quantity,
+          currency: DEFAULT_CURRENCY,
+          sortOrder: index + 1,
+        },
+      ];
     });
 
     const extrasTotalMinor = extraItems.reduce(
       (sum, item) => sum + item.totalPriceMinor,
       0,
     );
-    const subtotalMinor = transferMinor + extrasTotalMinor;
+
+    let luggageOverflowMinor = 0;
+    let luggageOverflowItem:
+      | {
+          reservationId: string;
+          itemType: "TRANSFER_VEHICLE";
+          vehicleCategoryId: string;
+          snapshotName: string;
+          quantity: number;
+          unitPriceMinor: number;
+          totalPriceMinor: number;
+          currency: string;
+          sortOrder: number;
+          isLuggageOverflowVehicle: boolean;
+          createdAt: Date;
+          updatedAt: Date;
+        }
+      | undefined;
+
+    if (seed.includeLuggageOverflowVehicle) {
+      const luggageRouteKey = `${seed.districtCode}:${seed.luggageVehicleCode}`;
+      const luggageRoute = routeMap.get(luggageRouteKey);
+      const luggageVehicle = vehicleMap.get(seed.luggageVehicleCode);
+
+      if (luggageRoute && luggageVehicle) {
+        luggageOverflowMinor =
+          seed.tripType === "ROUND_TRIP"
+            ? luggageRoute.roundTripMinor
+            : luggageRoute.oneWayMinor;
+        const luggageSnapshotName = resolveLocalizedName(
+          luggageVehicle.namesByLocale,
+          luggageVehicle.defaultName,
+          pick(createRng(created + 99), SNAPSHOT_LOCALES),
+        );
+
+        luggageOverflowItem = {
+          reservationId: "",
+          itemType: "TRANSFER_VEHICLE",
+          vehicleCategoryId: luggageVehicle.id,
+          snapshotName: luggageSnapshotName,
+          quantity: 1,
+          unitPriceMinor: luggageOverflowMinor,
+          totalPriceMinor: luggageOverflowMinor,
+          currency: DEFAULT_CURRENCY,
+          sortOrder: 1,
+          isLuggageOverflowVehicle: true,
+          createdAt: seed.createdAt,
+          updatedAt: seed.createdAt,
+        };
+      }
+    }
+
+    const subtotalMinor =
+      transferMinor + extrasTotalMinor + luggageOverflowMinor;
     const totalMinor = subtotalMinor;
 
-    const outboundAt = addDays(now, seed.daysFromNowOutbound);
-    const returnAt =
-      seed.tripType === "ROUND_TRIP"
-        ? addDays(now, seed.daysFromNowReturn ?? seed.daysFromNowOutbound + 5)
-        : null;
-    const createdAt = addDays(now, -seed.daysAgoCreated);
-    createdAt.setHours(14, 15, 0, 0);
+    const primarySnapshotName = resolveLocalizedName(
+      vehicle.namesByLocale,
+      vehicle.defaultName,
+      seed.snapshotLocale,
+    );
 
     const routeLabel = `Antalya Airport → ${route.districtName}`;
-    const reference = `${DEMO_REFERENCE_PREFIX}${seed.referenceSuffix.slice(3)}`;
 
     const [customer] = await db
       .insert(schema.customers)
@@ -523,8 +723,8 @@ async function seedReservations() {
         lastName: seed.lastName,
         email: seed.email,
         phone: seed.phone,
-        createdAt,
-        updatedAt: createdAt,
+        createdAt: seed.createdAt,
+        updatedAt: seed.createdAt,
       })
       .returning();
 
@@ -538,53 +738,91 @@ async function seedReservations() {
         pickupLocationId: airportId,
         dropoffLocationId: route.districtId,
         routeId: route.routeId,
-        outboundAt,
-        returnAt: returnAt ?? undefined,
+        outboundAt: seed.outboundAt,
+        returnAt: seed.returnAt ?? undefined,
         outboundFlightNumber: seed.outboundFlightNumber,
         returnFlightNumber: seed.returnFlightNumber,
         passengerCount: seed.passengerCount,
         largeLuggageCount: seed.largeLuggageCount,
-        cabinLuggageCount: seed.cabinLuggageCount ?? 0,
+        cabinLuggageCount: seed.cabinLuggageCount,
         snapshotRouteLabel: routeLabel,
         snapshotDropoffLabel: route.districtName,
         subtotalMinor,
         totalMinor,
         currency: DEFAULT_CURRENCY,
         notes: seed.notes,
-        createdAt,
-        updatedAt: createdAt,
+        createdAt: seed.createdAt,
+        updatedAt: seed.createdAt,
       })
       .returning();
 
-    await db.insert(schema.reservationItems).values([
+    const reservationItems: Array<{
+      reservationId: string;
+      itemType: "TRANSFER_VEHICLE" | "EXTRA_SERVICE";
+      vehicleCategoryId?: string;
+      extraServiceId?: string;
+      snapshotName: string;
+      quantity: number;
+      unitPriceMinor: number;
+      totalPriceMinor: number;
+      currency: string;
+      sortOrder: number;
+      isLuggageOverflowVehicle?: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+    }> = [
       {
         reservationId: reservation.id,
         itemType: "TRANSFER_VEHICLE",
         vehicleCategoryId: vehicle.id,
-        snapshotName: vehicle.name,
+        snapshotName: primarySnapshotName,
         quantity: 1,
         unitPriceMinor: transferMinor,
         totalPriceMinor: transferMinor,
         currency: DEFAULT_CURRENCY,
         sortOrder: 0,
-        createdAt,
-        updatedAt: createdAt,
+        isLuggageOverflowVehicle: false,
+        createdAt: seed.createdAt,
+        updatedAt: seed.createdAt,
       },
-      ...extraItems.map((item) => ({
+    ];
+
+    if (luggageOverflowItem) {
+      reservationItems.push({
+        ...luggageOverflowItem,
+        reservationId: reservation.id,
+        sortOrder: reservationItems.length,
+      });
+    }
+
+    for (const item of extraItems) {
+      reservationItems.push({
         reservationId: reservation.id,
         ...item,
-        createdAt,
-        updatedAt: createdAt,
-      })),
-    ]);
+        createdAt: seed.createdAt,
+        updatedAt: seed.createdAt,
+      });
+    }
+
+    await db.insert(schema.reservationItems).values(reservationItems);
 
     created += 1;
     console.log(
-      `  ${reference}  ${seed.firstName} ${seed.lastName}  ${seed.status}  ${seed.tripType}  €${(totalMinor / 100).toFixed(2)}`,
+      `  ${reference}  ${seed.outboundAt.toISOString().slice(0, 16)}  ${seed.status}  ${seed.tripType}  ${seed.districtCode}/${seed.vehicleCode}`,
     );
   }
 
-  console.log(`\nCreated ${created} demo reservations for admin analytics.`);
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const forwardOnly = generated.filter(
+    (row) => row.outboundAt.getTime() >= todayStart.getTime(),
+  );
+
+  console.log(`\nCreated ${created} new demo reservation(s). Skipped ${skipped} existing.`);
+  console.log(
+    `Forward window (${FORWARD_OUTBOUND_DAYS} days): ${forwardOnly.length} planned in batch.`,
+  );
+  console.log("Existing reservations and all other DB data were left untouched.");
   await pool.end();
 }
 
