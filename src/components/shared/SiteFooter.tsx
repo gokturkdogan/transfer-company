@@ -27,6 +27,7 @@ export async function SiteFooter({
   const t = await getTranslations("home.footer");
   const nav = await getTranslations("home.nav");
   const common = await getTranslations("common");
+  const social = await getTranslations("about.social");
   const contactChannels = await getPublicContactChannels();
   const socialMediaLinks = await getCachedSocialMediaLinks();
   const footerBacklinks = await getCachedFooterBacklinks();
@@ -65,8 +66,54 @@ export async function SiteFooter({
               ))}
             </div>
 
-            {footerBacklinks.length > 0 ? (
+            {socialMediaLinks.length > 0 ? (
               <div className="space-y-3 pt-1">
+                <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
+                  {social("title")}
+                </p>
+                <SocialMediaIconLinks
+                  links={socialMediaLinks}
+                  size="sm"
+                  listClassName="justify-start"
+                />
+              </div>
+            ) : null}
+          </div>
+
+          <div className="space-y-8">
+            <FooterColumn title={t("linksTitle")}>
+              <li>
+                <Link href="/fleet" className="transition-colors hover:text-gold-light">
+                  {nav("fleet")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="transition-colors hover:text-gold-light">
+                  {nav("about")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="transition-colors hover:text-gold-light">
+                  {t("privacyPolicy")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/booking"
+                  className="transition-colors hover:text-gold-light"
+                >
+                  {t("bookTransfer")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="transition-colors hover:text-gold-light">
+                  {nav("guides")}
+                </Link>
+              </li>
+            </FooterColumn>
+
+            {footerBacklinks.length > 0 ? (
+              <div className="space-y-3">
                 <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
                   {t("linkedSitesTitle")}
                 </p>
@@ -87,37 +134,6 @@ export async function SiteFooter({
               </div>
             ) : null}
           </div>
-
-          <FooterColumn title={t("linksTitle")}>
-            <li>
-              <Link href="/fleet" className="transition-colors hover:text-gold-light">
-                {nav("fleet")}
-              </Link>
-            </li>
-            <li>
-              <Link href="/about" className="transition-colors hover:text-gold-light">
-                {nav("about")}
-              </Link>
-            </li>
-            <li>
-              <Link href="/privacy" className="transition-colors hover:text-gold-light">
-                {t("privacyPolicy")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/booking"
-                className="transition-colors hover:text-gold-light"
-              >
-                {t("bookTransfer")}
-              </Link>
-            </li>
-            <li>
-              <Link href="/blog" className="transition-colors hover:text-gold-light">
-                {nav("guides")}
-              </Link>
-            </li>
-          </FooterColumn>
 
           <FooterColumn title={t("contactTitle")}>
             {contactChannels.phones.map((phone) => (
@@ -171,11 +187,6 @@ export async function SiteFooter({
                   appName: common("appName"),
                 })}
               </p>
-              <SocialMediaIconLinks
-                links={socialMediaLinks}
-                size="sm"
-                listClassName="justify-start"
-              />
             </div>
             <p className="text-center text-xs tracking-[0.14em] uppercase text-white/40 sm:text-end">
               {t("tagline")}

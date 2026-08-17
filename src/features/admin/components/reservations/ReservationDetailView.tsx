@@ -13,6 +13,7 @@ import type { LucideIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { ReservationStatusBadge } from "@/features/admin/components/ReservationStatusBadge";
+import { ReservationPdfExportButton } from "@/features/admin/components/reservations/ReservationPdfExportButton";
 import { ReservationStatusControl } from "@/features/admin/components/reservations/ReservationStatusControl";
 import { formatReservationOutboundDate } from "@/features/admin/lib/format-admin-datetime";
 import {
@@ -234,6 +235,7 @@ export function ReservationDetailView({ reservation }: ReservationDetailViewProp
           <span className="text-sm font-semibold text-emerald-700">
             {formatPrice(reservation.totalMinor, reservation.currency)}
           </span>
+          <ReservationPdfExportButton reservationId={reservation.id} />
         </div>
       </div>
 

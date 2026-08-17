@@ -37,7 +37,7 @@ Operational overview for reservations and quoted revenue (no payment gateway —
 |---------|---------|
 | KPI cards | Total reservations, upcoming vs completed, cancellation rate, passengers, trip type split |
 | Currency cards | One card per supported currency (EUR, TRY, USD, GBP, RUB, AED): total / upcoming / completed / cancelled revenue and counts |
-| Trend chart | Weekly (12 weeks) or monthly (12 months) reservation counts by `created_at` |
+| Trend chart | Weekly (12 weeks) or monthly (12 months) reservation counts by transfer date (`outbound_at`) |
 | Vehicle donut | Top primary transfer vehicle line items (`TRANSFER_VEHICLE`, excludes auto-added luggage overflow vehicles) |
 | Routes bar | Top `snapshot_route_label` counts |
 | Status donut | `PENDING`, `CONFIRMED`, `COMPLETED`, `CANCELLED` |
@@ -47,7 +47,11 @@ Operational overview for reservations and quoted revenue (no payment gateway —
 
 Data layer: `DashboardAdminRepository` in `src/features/admin/server/dashboard-admin-repository.ts`. Charts: Recharts in `AdminDashboard` client component.
 
-**PDF export:** Header action **PDF rapor indir** downloads a structured report from `GET /admin/dashboard-report` (admin session cookie path `/admin`). Generated server-side with pdfmake + DejaVu fonts (tables for KPI, revenue, trends, breakdowns, recent reservations). Filename: `dashboard-rapor-YYYY-MM-DD.pdf`.
+**PDF export:** Header action **PDF rapor indir** downloads a branded single-page summary from `GET /admin/dashboard-report` (admin session cookie path `/admin`). Ink/gold layout with logo emblem, KPI strip, revenue block, weekly transfer-date trend, breakdowns, and recent reservations. Builder: `build-dashboard-pdf.ts` (shared layout: `admin-pdf-layout.ts`). Filename: `dashboard-rapor-YYYY-MM-DD.pdf`.
+
+### Reservation detail PDF
+
+On `/admin/reservations/[id]`, **PDF indir** downloads a branded single-page summary from `GET /admin/reservations/[id]/report` (admin session required). Layout: ink/gold header with emblem logo, route strip, transfer/customer/passenger blocks, pricing column with gold total bar. Shared pdfmake setup: `src/features/admin/server/pdfmake-config.ts`, builder: `build-reservation-pdf.ts`. Filename: `rezervasyon-{reference}.pdf`.
 
 **Classification rules:**
 - **Upcoming:** `status IN (PENDING, CONFIRMED)` and `outbound_at > now()`

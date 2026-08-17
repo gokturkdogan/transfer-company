@@ -259,31 +259,27 @@ export class DashboardAdminRepository {
   private async loadWeeklyTrend() {
     return this.database
       .select({
-        period: sql<string>`date_trunc('week', ${reservations.createdAt})::text`,
+        period: sql<string>`date_trunc('week', ${reservations.outboundAt})::text`,
         count: sql<number>`count(*) filter (where ${reservations.status} <> 'CANCELLED')`,
         revenueMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED' and ${reservations.currency} = ${DEFAULT_CURRENCY}), 0)`,
       })
       .from(reservations)
-      .where(
-        sql`${reservations.createdAt} >= now() - interval '12 weeks'`,
-      )
-      .groupBy(sql`date_trunc('week', ${reservations.createdAt})`)
-      .orderBy(sql`date_trunc('week', ${reservations.createdAt})`);
+      .where(sql`${reservations.outboundAt} >= now() - interval '12 weeks'`)
+      .groupBy(sql`date_trunc('week', ${reservations.outboundAt})`)
+      .orderBy(sql`date_trunc('week', ${reservations.outboundAt})`);
   }
 
   private async loadMonthlyTrend() {
     return this.database
       .select({
-        period: sql<string>`date_trunc('month', ${reservations.createdAt})::text`,
+        period: sql<string>`date_trunc('month', ${reservations.outboundAt})::text`,
         count: sql<number>`count(*) filter (where ${reservations.status} <> 'CANCELLED')`,
         revenueMinor: sql<number>`coalesce(sum(${reservations.totalMinor}) filter (where ${reservations.status} <> 'CANCELLED' and ${reservations.currency} = ${DEFAULT_CURRENCY}), 0)`,
       })
       .from(reservations)
-      .where(
-        sql`${reservations.createdAt} >= now() - interval '12 months'`,
-      )
-      .groupBy(sql`date_trunc('month', ${reservations.createdAt})`)
-      .orderBy(sql`date_trunc('month', ${reservations.createdAt})`);
+      .where(sql`${reservations.outboundAt} >= now() - interval '12 months'`)
+      .groupBy(sql`date_trunc('month', ${reservations.outboundAt})`)
+      .orderBy(sql`date_trunc('month', ${reservations.outboundAt})`);
   }
 
   private async loadStatusBreakdown() {

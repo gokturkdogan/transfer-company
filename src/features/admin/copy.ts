@@ -522,6 +522,10 @@ export const adminCopy = {
     exportPdfLoading: "PDF hazırlanıyor…",
     exportPdfFailed: "PDF oluşturulamadı. Lütfen tekrar deneyin.",
     exportFilename: "dashboard-rapor",
+    exportPdfSubtitle: "Dashboard özeti",
+    exportPdfGeneratedAt: (generatedAt: string) => `Oluşturulma: ${generatedAt}`,
+    exportPdfFooter: (generatedAt: string) =>
+      `Royal Rhein Transfers · ${generatedAt} · Yönetim paneli çıktısı`,
     kpi: {
       totalReservations: "Toplam rezervasyon",
       upcoming: "Gelecek seferler",
@@ -612,6 +616,14 @@ export const adminCopy = {
       largeLuggage: "Büyük bagaj",
       cabinLuggage: "El bagajı",
       createdAt: "Oluşturulma",
+      exportPdf: "PDF indir",
+      exportPdfLoading: "PDF hazırlanıyor…",
+      exportPdfFailed: "PDF oluşturulamadı. Lütfen tekrar deneyin.",
+      exportFilename: "rezervasyon",
+      exportPdfSubtitle: "Rezervasyon özeti",
+      exportPassengersMore: (count: number) => `+ ${count} yolcu daha`,
+      exportPdfFooter: (generatedAt: string) =>
+        `Royal Rhein Transfers · ${generatedAt} · Yönetim paneli çıktısı`,
     },
     statusControl: {
       title: "Durum yönetimi",
