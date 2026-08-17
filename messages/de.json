@@ -334,13 +334,21 @@
       "idDocumentPlaceholder": "Personalausweis- oder Passnummer"
     },
     "errors": {
-      "rateLimit": "Zu viele Anfragen. Bitte versuchen Sie es später erneut.",
-      "quoteChanged": "Der Preis wurde aktualisiert. Bitte prüfen Sie den neuen Gesamtbetrag.",
-      "validation": "Bitte überprüfen Sie die markierten Felder.",
+      "toastTitle": "Vorgang nicht abgeschlossen",
+      "rateLimit": "Zu viele Anfragen. Bitte versuchen Sie es in Kürze erneut.",
+      "quoteChanged": "Der Preis wurde aktualisiert. Bitte prüfen Sie den neuen Betrag und versuchen Sie es erneut.",
+      "validation": "Einige Angaben sind unvollständig. Bitte versuchen Sie es erneut.",
+      "customerName": "Bitte prüfen Sie das Namensfeld und versuchen Sie es erneut.",
+      "customerEmail": "Bitte prüfen Sie Ihre E-Mail-Adresse und versuchen Sie es erneut.",
+      "customerPhone": "Bitte prüfen Sie Ihre Telefonnummer und versuchen Sie es erneut.",
+      "customerDetails": "Bitte prüfen Sie Ihre Kontaktdaten und versuchen Sie es erneut.",
+      "passengerDetails": "Bitte geben Sie alle Passagiernamen ein und versuchen Sie es erneut.",
+      "schedule": "Bitte prüfen Sie die Transferdaten und versuchen Sie es erneut.",
       "noVehicles": "Für diese Suche sind keine passenden Fahrzeuge verfügbar.",
       "noRoute": "Für diese Route ist derzeit kein Transfer verfügbar.",
       "vehicleUnavailable": "Dieses Fahrzeug ist nicht mehr verfügbar. Bitte wählen Sie eine andere Option.",
-      "network": "Netzwerkfehler. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "insufficientPassengerCapacity": "Die Passagierkapazität ist noch nicht abgedeckt. Bitte wählen Sie weitere Fahrzeuge.",
+      "network": "Verbindungsproblem. Bitte versuchen Sie es erneut.",
       "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
     },
     "paymentCurrencies": {

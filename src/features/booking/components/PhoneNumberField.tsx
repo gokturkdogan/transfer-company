@@ -22,6 +22,7 @@ import {
 import { BookingFieldLabel } from "@/features/booking/components/BookingFieldLabel";
 import {
   bookingFormCompositeClass,
+  bookingFormControlErrorClass,
   bookingFormFieldGroupClass,
 } from "@/features/booking/components/booking-form-styles";
 import {
@@ -40,6 +41,7 @@ type PhoneNumberFieldProps = {
   onNationalNumberChange: (value: string) => void;
   placeholder?: string;
   required?: boolean;
+  highlight?: boolean;
   className?: string;
 };
 
@@ -52,6 +54,7 @@ export function PhoneNumberField({
   onNationalNumberChange,
   placeholder,
   required = false,
+  highlight = false,
   className,
 }: PhoneNumberFieldProps) {
   const t = useTranslations("booking.customer");
@@ -71,7 +74,12 @@ export function PhoneNumberField({
   return (
     <div className={cn(bookingFormFieldGroupClass, className)}>
       <BookingFieldLabel label={label} htmlFor={id} required={required} />
-      <div className={bookingFormCompositeClass}>
+      <div
+        className={cn(
+          bookingFormCompositeClass,
+          highlight && bookingFormControlErrorClass,
+        )}
+      >
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <button

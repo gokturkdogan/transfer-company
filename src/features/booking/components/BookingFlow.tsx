@@ -1,9 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useTranslations } from "next-intl";
 
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { BookingErrorNotifier } from "@/features/booking/components/BookingErrorNotifier";
 import { BookingFlowShell } from "@/features/booking/components/BookingFlowShell";
 import { BookingSearchPrompt } from "@/features/booking/components/BookingSearchPrompt";
 import { BookingSidebar } from "@/features/booking/components/BookingSidebar";
@@ -39,7 +38,6 @@ const VehicleRecommendationList = dynamic(() =>
 );
 
 export function BookingFlow() {
-  const t = useTranslations("booking");
   const { state } = useBookingFlow();
 
   const { selectedOptions } = resolveActiveVehicleContext(
@@ -56,11 +54,7 @@ export function BookingFlow() {
 
   return (
     <BookingFlowShell>
-      {state.errorKey && (
-        <Alert variant="destructive" className="mb-6">
-          <AlertDescription>{t(state.errorKey)}</AlertDescription>
-        </Alert>
-      )}
+      <BookingErrorNotifier />
 
       {state.step === "search" && <BookingSearchPrompt />}
 

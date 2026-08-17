@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 
 import { db } from "@/db/client";
 import { AdminPageHeader } from "@/features/admin/components/shell/AdminPageHeader";
+import { DashboardPdfExportButton } from "@/features/admin/components/DashboardPdfExportButton";
 import { adminCopy } from "@/features/admin/copy";
 import { DashboardAdminRepository } from "@/features/admin/server/dashboard-admin-repository";
 import { LayoutDashboard } from "lucide-react";
@@ -36,6 +37,7 @@ export default async function AdminDashboardPage() {
         title={adminCopy.dashboard.title}
         subtitle={adminCopy.dashboard.subtitle}
         icon={LayoutDashboard}
+        actions={<DashboardPdfExportButton />}
       />
       <AdminDashboard data={data} />
     </div>

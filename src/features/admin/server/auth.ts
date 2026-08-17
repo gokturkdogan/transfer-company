@@ -123,6 +123,17 @@ export async function requireAdminSession(): Promise<AdminSessionUser> {
   return admin;
 }
 
+/** API route handlers must throw instead of redirecting. */
+export async function requireAdminApiSession(): Promise<AdminSessionUser> {
+  const admin = await getSessionAdmin();
+
+  if (!admin) {
+    throw new UnauthorizedError("Oturum gerekli");
+  }
+
+  return admin;
+}
+
 export async function authenticateAdmin(
   email: string,
   password: string,

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { BookingOrderSummary } from "@/features/booking/components/BookingOrderSummary";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
 import { formatPrice } from "@/features/booking/lib/format-price";
-import { arePassengerDetailsValid } from "@/features/booking/lib/passenger-details";
+import { getCustomerStepValidationIssue } from "@/features/booking/lib/customer-step-validation";
 import { cn } from "@/lib/utils";
 
 export function BookingMobileStickySummary() {
@@ -67,10 +67,20 @@ export function BookingMobileStickySummary() {
 
   const totalMinor =
     state.quote.selection?.quote.totalMinor ?? selectedOption.quote.totalMinor;
-  const canContinue =
-    arePassengerDetailsValid(state.passengers) && !state.isLoadingQuote;
+  const canContinue = !state.isLoadingQuote;
 
   const handleContinue = () => {
+    const issue = getCustomerStepValidationIssue(state);
+
+    if (issue) {
+      dispatch({
+        type: "FLOW_ERROR",
+        errorKey: issue.errorKey,
+        fieldHighlight: issue.fieldHighlight,
+      });
+      return;
+    }
+
     dispatch({
       type: "SET_STEP",
       step: "review",

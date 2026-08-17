@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { BookingOrderSummary } from "@/features/booking/components/BookingOrderSummary";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
-import { arePassengerDetailsValid } from "@/features/booking/lib/passenger-details";
+import { getCustomerStepValidationIssue } from "@/features/booking/lib/customer-step-validation";
 import { track } from "@/lib/analytics";
 
 type BookingSidebarProps = {
@@ -33,13 +33,25 @@ export function BookingSidebar({ className }: BookingSidebarProps) {
     state.step === "customer"
       ? {
           label: tActions("continue"),
-          disabled: !arePassengerDetailsValid(state.passengers),
-          onClick: () =>
+          disabled: state.isLoadingQuote,
+          onClick: () => {
+            const issue = getCustomerStepValidationIssue(state);
+
+            if (issue) {
+              dispatch({
+                type: "FLOW_ERROR",
+                errorKey: issue.errorKey,
+                fieldHighlight: issue.fieldHighlight,
+              });
+              return;
+            }
+
             dispatch({
               type: "SET_STEP",
               step: "review",
               idempotencyKey: crypto.randomUUID(),
-            }),
+            });
+          },
         }
       : {
           label: state.isSubmitting ? tReview("submitting") : tReview("submit"),

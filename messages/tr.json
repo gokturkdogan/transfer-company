@@ -334,14 +334,21 @@
       "idDocumentPlaceholder": "TC veya pasaport numarası"
     },
     "errors": {
-      "rateLimit": "Çok fazla istek. Lütfen daha sonra tekrar deneyin.",
-      "quoteChanged": "Fiyat güncellendi. Lütfen yeni toplamı kontrol edin.",
-      "validation": "Lütfen işaretli alanları kontrol edin.",
+      "toastTitle": "İşlem tamamlanamadı",
+      "rateLimit": "Çok fazla istek. Lütfen biraz sonra tekrar deneyin.",
+      "quoteChanged": "Fiyat güncellendi. Lütfen yeni toplamı kontrol edip tekrar deneyin.",
+      "validation": "Eksik veya hatalı bilgi var. Lütfen tekrar deneyin.",
+      "customerName": "Ad soyad alanını kontrol edin ve tekrar deneyin.",
+      "customerEmail": "E-posta adresinizi kontrol edin ve tekrar deneyin.",
+      "customerPhone": "Telefon numaranızı kontrol edin ve tekrar deneyin.",
+      "customerDetails": "İletişim bilgilerinizi kontrol edin ve tekrar deneyin.",
+      "passengerDetails": "Tüm yolcu adlarını girin ve tekrar deneyin.",
+      "schedule": "Transfer tarihlerini kontrol edin ve tekrar deneyin.",
       "noVehicles": "Bu arama için uygun araç bulunamadı.",
       "noRoute": "Bu rota için transfer şu anda mevcut değil.",
       "vehicleUnavailable": "Bu araç artık müsait değil. Lütfen başka bir seçenek seçin.",
       "insufficientPassengerCapacity": "Yolcu kapasitesi dolmadı. Lütfen daha fazla araç seçin.",
-      "network": "Ağ hatası. Bağlantınızı kontrol edip tekrar deneyin.",
+      "network": "Bağlantı sorunu oluştu. Lütfen tekrar deneyin.",
       "generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
     },
     "paymentCurrencies": {

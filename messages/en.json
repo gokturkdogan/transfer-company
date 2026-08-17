@@ -334,14 +334,21 @@
       "idDocumentPlaceholder": "National ID or passport number"
     },
     "errors": {
-      "rateLimit": "Too many requests. Please try again later.",
-      "quoteChanged": "Pricing has been updated. Please review the new total.",
-      "validation": "Please check the highlighted fields.",
+      "toastTitle": "Could not complete",
+      "rateLimit": "Too many requests. Please try again in a moment.",
+      "quoteChanged": "Pricing was updated. Please review the new total and try again.",
+      "validation": "Some details look incorrect. Please try again.",
+      "customerName": "Please check the full name field and try again.",
+      "customerEmail": "Please check your email address and try again.",
+      "customerPhone": "Please check your phone number and try again.",
+      "customerDetails": "Please check your contact details and try again.",
+      "passengerDetails": "Please enter all passenger names and try again.",
+      "schedule": "Please check your transfer dates and try again.",
       "noVehicles": "No suitable vehicles are available for this search.",
       "noRoute": "No transfer is currently available for this route.",
       "vehicleUnavailable": "This vehicle is no longer available. Please select another option.",
       "insufficientPassengerCapacity": "Passenger capacity is not covered yet. Please select more vehicles.",
-      "network": "Network error. Please check your connection and try again.",
+      "network": "Connection issue. Please try again.",
       "generic": "Something went wrong. Please try again."
     },
     "paymentCurrencies": {

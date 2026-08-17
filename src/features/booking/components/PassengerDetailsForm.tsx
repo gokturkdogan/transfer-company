@@ -7,11 +7,18 @@ import { BookingFormField } from "@/features/booking/components/BookingFormField
 import { BookingFormSection } from "@/features/booking/components/BookingFormSection";
 import { BookingInput } from "@/features/booking/components/BookingInput";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
-import { passengerSlotKey, resolvePassengerKindLabel } from "@/features/booking/lib/passenger-details";
+import { bookingFormControlErrorClass } from "@/features/booking/components/booking-form-styles";
+import {
+  passengerSlotKey,
+  resolvePassengerKindLabel,
+} from "@/features/booking/lib/passenger-details";
+import { cn } from "@/lib/utils";
 
 export function PassengerDetailsForm() {
   const t = useTranslations("booking.passengers");
   const { state, dispatch } = useBookingFlow();
+
+  const highlightPassengers = state.fieldHighlight === "passengers";
 
   if (state.passengers.length === 0) {
     return null;
@@ -30,6 +37,8 @@ export function PassengerDetailsForm() {
             child: (index) => t("childLabel", { index }),
             infant: (index) => t("infantLabel", { index }),
           });
+          const showNameHighlight =
+            highlightPassengers && passenger.fullName.trim().length === 0;
 
           return (
             <div
@@ -50,6 +59,7 @@ export function PassengerDetailsForm() {
                     autoComplete="name"
                     required
                     value={passenger.fullName}
+                    className={cn(showNameHighlight && bookingFormControlErrorClass)}
                     onChange={(event) =>
                       dispatch({
                         type: "UPDATE_PASSENGER",

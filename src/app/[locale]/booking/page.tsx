@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
+import { AppToastProvider } from "@/components/shared/app-toast";
 import { HOMEPAGE_IMAGES } from "@/config/homepage-images";
 import { BookingFlowWithInit } from "@/features/booking/components/BookingFlowWithInit";
 import { BookingFlowProvider } from "@/features/booking/context/booking-flow-context";
@@ -62,15 +63,17 @@ export default async function BookingPage({
     <>
       <SiteHeader enabledLocales={enabledLocales} />
       <main>
-        <BookingFlowProvider
-          airports={airports}
-          cities={cities}
-          districts={districts}
-          acceptedPaymentCurrencies={acceptedPaymentCurrencies}
-          initialSearch={initialSearch}
-        >
-          <BookingFlowWithInit initialSearch={initialSearch} />
-        </BookingFlowProvider>
+        <AppToastProvider>
+          <BookingFlowProvider
+            airports={airports}
+            cities={cities}
+            districts={districts}
+            acceptedPaymentCurrencies={acceptedPaymentCurrencies}
+            initialSearch={initialSearch}
+          >
+            <BookingFlowWithInit initialSearch={initialSearch} />
+          </BookingFlowProvider>
+        </AppToastProvider>
       </main>
       <SiteFooter enabledLocales={enabledLocales} />
     </>

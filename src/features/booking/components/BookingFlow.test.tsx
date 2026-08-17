@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
 
+import { AppToastProvider } from "@/components/shared/app-toast";
 import { PublicContactProvider } from "@/features/contact/components/PublicContactProvider";
 import { testContactChannels } from "@/features/contact/test/contact-test-fixtures";
 import { BookingFlow } from "@/features/booking/components/BookingFlow";
@@ -29,7 +30,8 @@ vi.mock("@/features/booking/components/BookingInlineSearchBar", () => ({
 const messages = {
   booking: {
     errors: {
-      validation: "Please check the highlighted fields.",
+      toastTitle: "Could not complete",
+      validation: "Some details look incorrect. Please try again.",
     },
     actions: { back: "Back", continue: "Continue" },
     vehicle: { title: "Vehicle" },
@@ -70,31 +72,34 @@ function ErrorHarness() {
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
-    dispatch({ type: "QUOTE_ERROR", errorKey: "errors.validation" });
+    dispatch({ type: "FLOW_ERROR", errorKey: "errors.validation" });
   }, [dispatch]);
 
   return <BookingFlow />;
 }
 
 describe("BookingFlow", () => {
-  it("renders mapped validation error message", async () => {
+  it("shows validation error in toast", async () => {
     render(
       <NextIntlClientProvider locale="en" messages={messages}>
-        <PublicContactProvider channels={testContactChannels}>
-          <BookingFlowProvider
-            airports={testAirports}
-            cities={testCities}
-            districts={testDistricts}
-            acceptedPaymentCurrencies={[]}
-          >
-            <ErrorHarness />
-          </BookingFlowProvider>
-        </PublicContactProvider>
+        <AppToastProvider>
+          <PublicContactProvider channels={testContactChannels}>
+            <BookingFlowProvider
+              airports={testAirports}
+              cities={testCities}
+              districts={testDistricts}
+              acceptedPaymentCurrencies={[]}
+            >
+              <ErrorHarness />
+            </BookingFlowProvider>
+          </PublicContactProvider>
+        </AppToastProvider>
       </NextIntlClientProvider>,
     );
 
+    expect(await screen.findByText("Could not complete")).toBeInTheDocument();
     expect(
-      await screen.findByText("Please check the highlighted fields."),
+      screen.getByText("Some details look incorrect. Please try again."),
     ).toBeInTheDocument();
   });
 });

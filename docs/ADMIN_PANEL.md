@@ -47,6 +47,8 @@ Operational overview for reservations and quoted revenue (no payment gateway —
 
 Data layer: `DashboardAdminRepository` in `src/features/admin/server/dashboard-admin-repository.ts`. Charts: Recharts in `AdminDashboard` client component.
 
+**PDF export:** Header action **PDF rapor indir** downloads a structured report from `GET /admin/dashboard-report` (admin session cookie path `/admin`). Generated server-side with pdfmake + DejaVu fonts (tables for KPI, revenue, trends, breakdowns, recent reservations). Filename: `dashboard-rapor-YYYY-MM-DD.pdf`.
+
 **Classification rules:**
 - **Upcoming:** `status IN (PENDING, CONFIRMED)` and `outbound_at > now()`
 - **Completed:** not cancelled and (`status = COMPLETED` or `outbound_at <= now()`)

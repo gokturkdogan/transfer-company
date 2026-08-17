@@ -39,8 +39,7 @@ export type DestinationState = {
 };
 
 export type CustomerState = {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
   phoneCountryCode: string;
   phone: string;
@@ -65,6 +64,12 @@ export type SelectedVehicle = {
   quantity: number;
 };
 
+export type BookingFieldHighlight =
+  | "customer.fullName"
+  | "customer.email"
+  | "customer.phone"
+  | "passengers";
+
 export type BookingFlowState = {
   step: BookingStep;
   search: BookingSearchState;
@@ -82,6 +87,7 @@ export type BookingFlowState = {
   isLoadingQuote: boolean;
   isSubmitting: boolean;
   errorKey: string | null;
+  fieldHighlight: BookingFieldHighlight | null;
   formStartedAt: number;
 };
 

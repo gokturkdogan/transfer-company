@@ -1,8 +1,9 @@
+import type { ApiError } from "@/features/booking/lib/types";
 import type { BookingSearchState } from "@/features/booking/lib/types";
 import { getDefaultDestinationState } from "@/features/booking/lib/types";
 
 export function mapApiErrorToKey(
-  error: { code: string; message: string },
+  error: ApiError,
   status: number,
 ): string {
   if (status === 429) {
@@ -14,6 +15,20 @@ export function mapApiErrorToKey(
   }
 
   if (error.code === "VALIDATION_ERROR") {
+    const fieldErrors = error.fieldErrors ?? {};
+
+    if (fieldErrors.customer?.length) {
+      return "errors.customerDetails";
+    }
+
+    if (fieldErrors.passengers?.length) {
+      return "errors.passengerDetails";
+    }
+
+    if (fieldErrors.outboundAt?.length || fieldErrors.returnAt?.length) {
+      return "errors.schedule";
+    }
+
     return "errors.validation";
   }
 
@@ -34,6 +49,24 @@ export function mapApiErrorToKey(
   }
 
   return "errors.generic";
+}
+
+export function mapErrorKeyToFieldHighlight(
+  errorKey: string,
+): "customer.fullName" | "customer.email" | "customer.phone" | "passengers" | null {
+  switch (errorKey) {
+    case "errors.customerName":
+    case "errors.customerDetails":
+      return "customer.fullName";
+    case "errors.customerEmail":
+      return "customer.email";
+    case "errors.customerPhone":
+      return "customer.phone";
+    case "errors.passengerDetails":
+      return "passengers";
+    default:
+      return null;
+  }
 }
 
 export function getDefaultSearchState(): BookingSearchState {

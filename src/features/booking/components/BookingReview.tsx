@@ -251,7 +251,7 @@ export function BookingReview() {
         <div className="space-y-0.5">
           <SummaryFactRow
             label={t("name")}
-            value={`${state.customer.firstName} ${state.customer.lastName}`.trim()}
+            value={state.customer.fullName.trim()}
             variant={cardVariant}
           />
           <SummaryFactRow

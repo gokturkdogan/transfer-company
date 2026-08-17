@@ -12,6 +12,7 @@ const cloudinaryCloudName =
   process.env.CLOUDINARY_CLOUD_NAME?.trim() || "pdyhhkjq";
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["pdfmake", "dejavu-fonts-ttf"],
   images: {
     remotePatterns: [
       {

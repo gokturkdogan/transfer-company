@@ -518,6 +518,10 @@ export const adminCopy = {
     title: "Genel bakış",
     subtitle:
       "Rezervasyon, gelir ve operasyonel özet — tüm gelirler EUR cinsinden.",
+    exportPdf: "PDF rapor indir",
+    exportPdfLoading: "PDF hazırlanıyor…",
+    exportPdfFailed: "PDF oluşturulamadı. Lütfen tekrar deneyin.",
+    exportFilename: "dashboard-rapor",
     kpi: {
       totalReservations: "Toplam rezervasyon",
       upcoming: "Gelecek seferler",

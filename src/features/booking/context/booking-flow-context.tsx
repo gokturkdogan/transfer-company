@@ -19,8 +19,15 @@ import {
 } from "@/features/booking/lib/booking-flow-reducer";
 import { fetchReservation, fetchTransferQuote } from "@/features/booking/lib/api";
 import { buildOrderPricing } from "@/features/booking/lib/build-order-pricing";
-import { mapApiErrorToKey } from "@/features/booking/lib/error-messages";
-import { toReservationPassengerSnapshots } from "@/features/booking/lib/passenger-details";
+import {
+  getCustomerValidationIssue,
+  normalizeCustomerNameForApi,
+} from "@/features/booking/lib/customer-details";
+import {
+  mapApiErrorToKey,
+  mapErrorKeyToFieldHighlight,
+} from "@/features/booking/lib/error-messages";
+import { toReservationPassengerSnapshots, arePassengerDetailsValid } from "@/features/booking/lib/passenger-details";
 import { formatInternationalPhone } from "@/lib/phone/format";
 import { getTotalPassengerCount } from "@/features/booking/lib/passenger-count";
 import {
@@ -124,9 +131,12 @@ export function BookingFlowProvider({
       }
 
       if (!result.success) {
+        const errorKey = mapApiErrorToKey(result.error, result.status);
+
         dispatch({
           type: "QUOTE_ERROR",
-          errorKey: mapApiErrorToKey(result.error, result.status),
+          errorKey,
+          fieldHighlight: mapErrorKeyToFieldHighlight(errorKey) ?? undefined,
         });
         return;
       }
@@ -175,9 +185,12 @@ export function BookingFlowProvider({
       }
 
       if (!result.success) {
+        const errorKey = mapApiErrorToKey(result.error, result.status);
+
         dispatch({
           type: "QUOTE_ERROR",
-          errorKey: mapApiErrorToKey(result.error, result.status),
+          errorKey,
+          fieldHighlight: mapErrorKeyToFieldHighlight(errorKey) ?? undefined,
         });
         return;
       }
@@ -305,9 +318,12 @@ export function BookingFlowProvider({
       }
 
       if (!result.success) {
+        const errorKey = mapApiErrorToKey(result.error, result.status);
+
         dispatch({
           type: "QUOTE_ERROR",
-          errorKey: mapApiErrorToKey(result.error, result.status),
+          errorKey,
+          fieldHighlight: mapErrorKeyToFieldHighlight(errorKey) ?? undefined,
         });
         return;
       }
@@ -348,10 +364,42 @@ export function BookingFlowProvider({
       return;
     }
 
+    const customerIssue = getCustomerValidationIssue(state.customer);
+
+    if (customerIssue) {
+      if (state.step === "review") {
+        dispatch({ type: "SET_STEP", step: "customer" });
+      }
+
+      dispatch({
+        type: "FLOW_ERROR",
+        errorKey: customerIssue.errorKey,
+        fieldHighlight: `customer.${customerIssue.field}`,
+      });
+      return;
+    }
+
+    if (!arePassengerDetailsValid(state.passengers)) {
+      if (state.step === "review") {
+        dispatch({ type: "SET_STEP", step: "customer" });
+      }
+
+      dispatch({
+        type: "FLOW_ERROR",
+        errorKey: "errors.passengerDetails",
+        fieldHighlight: "passengers",
+      });
+      return;
+    }
+
     const idempotencyKey = state.idempotencyKey ?? crypto.randomUUID();
     dispatch({ type: "ENSURE_IDEMPOTENCY_KEY", key: idempotencyKey });
     dispatch({ type: "SUBMIT_START" });
     track({ name: "booking_submitted" });
+
+    const { firstName, lastName } = normalizeCustomerNameForApi(
+      state.customer.fullName,
+    );
 
     const outboundAt = `${state.search.outboundDate}T${state.search.outboundTime}`;
     const returnAt =
@@ -399,9 +447,9 @@ export function BookingFlowProvider({
       vehicles: state.selectedVehicles,
       extras: state.selectedExtras,
       customer: {
-        firstName: state.customer.firstName,
-        lastName: state.customer.lastName,
-        email: state.customer.email,
+        firstName,
+        lastName,
+        email: state.customer.email.trim(),
         phone: formatInternationalPhone(
           state.customer.phoneCountryCode,
           state.customer.phone,
@@ -424,10 +472,18 @@ export function BookingFlowProvider({
     const result = await fetchReservation(body, idempotencyKey);
 
     if (!result.success) {
+      const errorKey = mapApiErrorToKey(result.error, result.status);
+
       dispatch({
         type: "SUBMIT_ERROR",
-        errorKey: mapApiErrorToKey(result.error, result.status),
+        errorKey,
+        fieldHighlight: mapErrorKeyToFieldHighlight(errorKey) ?? undefined,
       });
+
+      if (errorKey.startsWith("errors.customer") || errorKey === "errors.passengerDetails") {
+        dispatch({ type: "SET_STEP", step: "customer" });
+      }
+
       return;
     }
 

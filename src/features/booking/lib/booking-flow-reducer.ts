@@ -1,4 +1,5 @@
 import type {
+  BookingFieldHighlight,
   BookingFlowState,
   BookingSearchState,
   BookingStep,
@@ -49,7 +50,7 @@ export type BookingFlowAction =
       searchSignature: string;
       preserveStep?: boolean;
     }
-  | { type: "QUOTE_ERROR"; errorKey: string }
+  | { type: "QUOTE_ERROR"; errorKey: string; fieldHighlight?: BookingFieldHighlight }
   | { type: "SELECT_VEHICLE"; vehicleCategoryId: string; quantity: number }
   | {
       type: "ADJUST_VEHICLE_SELECTION";
@@ -75,8 +76,17 @@ export type BookingFlowAction =
   | { type: "ENSURE_IDEMPOTENCY_KEY"; key: string }
   | { type: "SUBMIT_START" }
   | { type: "SUBMIT_SUCCESS"; reservation: ReservationResponseDto }
-  | { type: "SUBMIT_ERROR"; errorKey: string }
+  | {
+      type: "SUBMIT_ERROR";
+      errorKey: string;
+      fieldHighlight?: BookingFieldHighlight;
+    }
   | { type: "CLEAR_ERROR" }
+  | {
+      type: "FLOW_ERROR";
+      errorKey: string;
+      fieldHighlight?: BookingFieldHighlight;
+    }
   | { type: "INVALIDATE_QUOTE" }
   | {
       type: "RESTORE_SEARCH_DRAFT";
@@ -140,8 +150,7 @@ export function createInitialBookingFlowState(
     selectedVehicles: [],
     selectedExtras: [],
     customer: {
-      firstName: "",
-      lastName: "",
+      fullName: "",
       email: "",
       phoneCountryCode: DEFAULT_PHONE_COUNTRY_CODE,
       phone: "",
@@ -163,6 +172,7 @@ export function createInitialBookingFlowState(
     isLoadingQuote: false,
     isSubmitting: false,
     errorKey: null,
+    fieldHighlight: null,
     formStartedAt: Date.now(),
   };
 }
@@ -326,6 +336,7 @@ export function bookingFlowReducer(
         ...state,
         isLoadingQuote: false,
         errorKey: action.errorKey,
+        fieldHighlight: action.fieldHighlight ?? null,
       };
 
     case "SELECT_VEHICLE":
@@ -387,11 +398,20 @@ export function bookingFlowReducer(
       };
     }
 
-    case "UPDATE_CUSTOMER":
+    case "UPDATE_CUSTOMER": {
+      const nextCustomer = { ...state.customer, ...action.customer };
+      const clearsCustomerHighlight =
+        state.fieldHighlight?.startsWith("customer.") &&
+        (action.customer.fullName !== undefined ||
+          action.customer.email !== undefined ||
+          action.customer.phone !== undefined);
+
       return {
         ...state,
-        customer: { ...state.customer, ...action.customer },
+        customer: nextCustomer,
+        fieldHighlight: clearsCustomerHighlight ? null : state.fieldHighlight,
       };
+    }
 
     case "UPDATE_PASSENGER":
       return {
@@ -401,6 +421,8 @@ export function bookingFlowReducer(
             ? { ...passenger, ...action.passenger }
             : passenger,
         ),
+        fieldHighlight:
+          state.fieldHighlight === "passengers" ? null : state.fieldHighlight,
       };
 
     case "UPDATE_FLIGHT":
@@ -419,7 +441,12 @@ export function bookingFlowReducer(
       };
 
     case "SUBMIT_START":
-      return { ...state, isSubmitting: true, errorKey: null };
+      return {
+        ...state,
+        isSubmitting: true,
+        errorKey: null,
+        fieldHighlight: null,
+      };
 
     case "SUBMIT_SUCCESS":
       return {
@@ -428,6 +455,7 @@ export function bookingFlowReducer(
         reservation: action.reservation,
         step: "success",
         errorKey: null,
+        fieldHighlight: null,
       };
 
     case "SUBMIT_ERROR":
@@ -435,10 +463,18 @@ export function bookingFlowReducer(
         ...state,
         isSubmitting: false,
         errorKey: action.errorKey,
+        fieldHighlight: action.fieldHighlight ?? null,
       };
 
     case "CLEAR_ERROR":
-      return { ...state, errorKey: null };
+      return { ...state, errorKey: null, fieldHighlight: null };
+
+    case "FLOW_ERROR":
+      return {
+        ...state,
+        errorKey: action.errorKey,
+        fieldHighlight: action.fieldHighlight ?? null,
+      };
 
     case "INVALIDATE_QUOTE":
       return {
@@ -464,6 +500,7 @@ export function bookingFlowReducer(
         isLoadingQuote: false,
         isSubmitting: false,
         errorKey: null,
+        fieldHighlight: null,
       };
 
     default:

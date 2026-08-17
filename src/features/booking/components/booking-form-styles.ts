@@ -38,6 +38,9 @@ export const bookingFormSectionTitleClass =
 export const bookingFormSectionSubtitleClass =
   "text-xs leading-relaxed text-muted-foreground/80";
 
+export const bookingFormControlErrorClass =
+  "border-red-400/70 ring-2 ring-red-400/15 focus-visible:border-red-400/70 focus-visible:ring-red-400/15";
+
 export const bookingFormSectionHeaderClass =
   "flex items-center gap-2.5";
 
