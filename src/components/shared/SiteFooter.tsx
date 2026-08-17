@@ -163,22 +163,24 @@ export async function SiteFooter({
         </div>
 
         <div className="mt-14 border-t border-white/8 pt-8">
-          <div className="flex flex-col items-center gap-3 text-xs text-white/40 sm:flex-row sm:justify-between">
-            <p>
-              {t("copyright", {
-                year: new Date().getFullYear(),
-                appName: common("appName"),
-              })}
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex flex-col gap-4">
+              <p className="text-xs text-white/40">
+                {t("copyright", {
+                  year: new Date().getFullYear(),
+                  appName: common("appName"),
+                })}
+              </p>
+              <SocialMediaIconLinks
+                links={socialMediaLinks}
+                size="sm"
+                listClassName="justify-start"
+              />
+            </div>
+            <p className="text-center text-xs tracking-[0.14em] uppercase text-white/40 sm:text-end">
+              {t("tagline")}
             </p>
-            <p className="tracking-[0.14em] uppercase">{t("tagline")}</p>
           </div>
-
-          <SocialMediaIconLinks
-            links={socialMediaLinks}
-            size="sm"
-            className="mt-5"
-            listClassName="justify-center"
-          />
         </div>
       </Container>
     </footer>
