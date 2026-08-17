@@ -26,22 +26,37 @@ function formatLine(line: string): string {
   return linkifyEscaped(escapeHtml(line));
 }
 
+function isTopLevelSectionHeading(line: string): boolean {
+  return /^\d+\.\s/.test(line) && !/^\d+\.\d+\.\s/.test(line);
+}
+
+function isSubSectionHeading(line: string): boolean {
+  return /^\d+\.\d+\.\s/.test(line);
+}
+
+function isUpdateFooter(line: string): boolean {
+  return /^Son Güncelleme:/i.test(line);
+}
+
 /**
- * Converts plain KVKK text (headings, bullets, separators) to safe HTML for the editor.
+ * Converts plain KVKK text into sectioned HTML for the privacy page and editor.
  */
 export function plainTextToPrivacyHtml(text: string): string {
   const normalized = text.replace(/\u2060/g, "").trim();
   const lines = normalized.split("\n");
-  const parts: string[] = [];
+  const output: string[] = [];
+  const introLines: string[] = [];
+  const sectionParts: string[] = [];
   const listItems: string[] = [];
-  let headingIndex = 0;
+  let inIntro = true;
+  let footerLine: string | null = null;
 
   const flushList = () => {
     if (listItems.length === 0) {
       return;
     }
 
-    parts.push(
+    sectionParts.push(
       `<ul>${listItems
         .map((item) => `<li>${formatLine(item)}</li>`)
         .join("")}</ul>`,
@@ -49,17 +64,79 @@ export function plainTextToPrivacyHtml(text: string): string {
     listItems.length = 0;
   };
 
+  const closeSection = () => {
+    flushList();
+    if (sectionParts.length === 0) {
+      return;
+    }
+
+    output.push(
+      `<section class="privacy-block">${sectionParts.join("")}</section>`,
+    );
+    sectionParts.length = 0;
+  };
+
+  const pushIntro = () => {
+    if (introLines.length === 0) {
+      return;
+    }
+
+    const [brandLine, subtitleLine, ...rest] = introLines;
+    const introBody = rest
+      .map((line) => `<p>${formatLine(line)}</p>`)
+      .join("");
+
+    output.push(
+      `<header class="privacy-intro">` +
+        `<h1>${formatLine(brandLine)}</h1>` +
+        (subtitleLine
+          ? `<h2 class="privacy-doc-title">${formatLine(subtitleLine)}</h2>`
+          : "") +
+        introBody +
+        `</header>`,
+    );
+    introLines.length = 0;
+  };
+
   for (const rawLine of lines) {
     const line = rawLine.trim();
 
     if (!line) {
+      if (inIntro) {
+        continue;
+      }
+
       flushList();
       continue;
     }
 
     if (line === "⸻" || line === "---") {
       flushList();
-      parts.push("<hr />");
+      continue;
+    }
+
+    if (isUpdateFooter(line)) {
+      flushList();
+      closeSection();
+      footerLine = line;
+      continue;
+    }
+
+    if (inIntro && isTopLevelSectionHeading(line)) {
+      pushIntro();
+      inIntro = false;
+      sectionParts.push(`<h2>${formatLine(line)}</h2>`);
+      continue;
+    }
+
+    if (inIntro) {
+      introLines.push(line);
+      continue;
+    }
+
+    if (isTopLevelSectionHeading(line)) {
+      closeSection();
+      sectionParts.push(`<h2>${formatLine(line)}</h2>`);
       continue;
     }
 
@@ -70,32 +147,23 @@ export function plainTextToPrivacyHtml(text: string): string {
 
     flushList();
 
-    if (/^\d+\.\d+\.\s/.test(line)) {
-      parts.push(`<h4>${formatLine(line)}</h4>`);
+    if (isSubSectionHeading(line)) {
+      sectionParts.push(`<h3>${formatLine(line)}</h3>`);
       continue;
     }
 
-    if (/^\d+\.\s/.test(line)) {
-      parts.push(`<h3>${formatLine(line)}</h3>`);
-      continue;
-    }
-
-    if (headingIndex === 0) {
-      parts.push(`<h1>${formatLine(line)}</h1>`);
-      headingIndex += 1;
-      continue;
-    }
-
-    if (headingIndex === 1) {
-      parts.push(`<h2>${formatLine(line)}</h2>`);
-      headingIndex += 1;
-      continue;
-    }
-
-    parts.push(`<p>${formatLine(line)}</p>`);
+    sectionParts.push(`<p>${formatLine(line)}</p>`);
   }
 
-  flushList();
+  if (inIntro) {
+    pushIntro();
+  } else {
+    closeSection();
+  }
 
-  return parts.join("");
+  if (footerLine) {
+    output.push(`<footer class="privacy-footer"><p>${formatLine(footerLine)}</p></footer>`);
+  }
+
+  return output.join("");
 }

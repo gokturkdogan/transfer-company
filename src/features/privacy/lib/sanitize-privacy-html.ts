@@ -20,6 +20,9 @@ const ALLOWED_TAGS = [
   "blockquote",
   "div",
   "span",
+  "section",
+  "header",
+  "footer",
 ];
 
 const ALLOWED_ATTR = ["href", "target", "rel", "class"];

@@ -19,8 +19,8 @@ export async function PrivacyHero() {
         className="pointer-events-none absolute inset-0 futuristic-grid [mask-image:radial-gradient(58%_54%_at_50%_46%,#000,transparent)]"
       />
 
-      <Container className="relative py-20 md:py-24">
-        <div className="mx-auto max-w-3xl animate-fade-up space-y-5 text-center">
+      <Container className="relative py-16 md:py-20">
+        <div className="mx-auto max-w-4xl animate-fade-up space-y-5 text-center lg:max-w-5xl">
           <p className="ring-gold-hairline mx-auto inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-light backdrop-blur-md sm:text-xs">
             <Cookie className="h-3.5 w-3.5" aria-hidden />
             {t("badge")}

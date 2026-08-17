@@ -17,24 +17,34 @@ function getDefaultKvkkHtmlTr(): string {
 }
 
 /**
- * Inserts default Turkish KVKK text only when no row exists for locale `tr`.
- * Never updates existing rows — panel edits and other locales are preserved.
+ * Inserts default Turkish KVKK HTML when locale `tr` is missing.
+ * Set PRIVACY_SEED_FORCE=1 to overwrite existing TR content (e.g. after template update).
  */
 export async function seedPrivacyPageTranslations(db: Database): Promise<void> {
+  const force = process.env.PRIVACY_SEED_FORCE === "1";
+  const trHtml = getDefaultKvkkHtmlTr();
+
   const [existing] = await db
     .select({ id: schema.privacyPageTranslations.id })
     .from(schema.privacyPageTranslations)
     .where(eq(schema.privacyPageTranslations.locale, "tr"))
     .limit(1);
 
-  if (existing) {
+  if (existing && !force) {
     console.log(
       "Privacy page (tr): skipped — existing content preserved (panel edits not overwritten).",
     );
     return;
   }
 
-  const trHtml = getDefaultKvkkHtmlTr();
+  if (existing) {
+    await db
+      .update(schema.privacyPageTranslations)
+      .set({ content: trHtml })
+      .where(eq(schema.privacyPageTranslations.id, existing.id));
+    console.log("Privacy page (tr): updated from default template (PRIVACY_SEED_FORCE=1).");
+    return;
+  }
 
   await db.insert(schema.privacyPageTranslations).values({
     locale: "tr",

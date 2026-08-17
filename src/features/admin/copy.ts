@@ -318,7 +318,7 @@ export const adminCopy = {
       "Footer'daki gizlilik ve KVKK aydınlatma metnini zengin metin editörü ile düzenleyin. Kaydettiğinizde /privacy sayfası güncellenir.",
     formTitle: "Aydınlatma metni",
     hint:
-      "Başlık, kalın, liste ve bağlantı ekleyebilirsiniz. Türkçe metin zorunludur; diğer diller isteğe bağlıdır.",
+      "Başlık, kalın, liste ve bağlantı ekleyebilirsiniz. Türkçe metin zorunludur. Kayıtlı HTML bölüm kartlarıyla (section) gösterilir.",
     localeHint: (label: string) => `${label} dilindeki KVKK aydınlatma metni`,
     editorPlaceholder: "Aydınlatma metnini buraya yazın…",
     summary: (filled: number, total: number) =>

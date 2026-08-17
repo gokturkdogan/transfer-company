@@ -698,3 +698,172 @@ body {
     transform: none;
   }
 }
+
+/* Privacy / KVKK page — sectioned legal content */
+.privacy-legal-content {
+  color: var(--muted-foreground);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+@media (min-width: 640px) {
+  .privacy-legal-content {
+    font-size: 1rem;
+  }
+}
+
+.privacy-legal-content .privacy-intro {
+  margin-bottom: 1.5rem;
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: color-mix(in srgb, var(--muted) 45%, transparent);
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .privacy-legal-content .privacy-intro {
+    padding: 2rem 2.5rem;
+  }
+}
+
+.privacy-legal-content .privacy-intro h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .privacy-legal-content .privacy-intro h1 {
+    font-size: 1.875rem;
+  }
+}
+
+.privacy-legal-content .privacy-intro .privacy-doc-title,
+.privacy-legal-content .privacy-intro h2 {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--foreground) 82%, transparent);
+}
+
+@media (min-width: 640px) {
+  .privacy-legal-content .privacy-intro .privacy-doc-title,
+  .privacy-legal-content .privacy-intro h2 {
+    font-size: 1.125rem;
+  }
+}
+
+.privacy-legal-content .privacy-block {
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--card);
+  padding: 1.25rem 1.25rem;
+  box-shadow: var(--shadow-premium);
+}
+
+@media (min-width: 768px) {
+  .privacy-legal-content .privacy-block {
+    padding: 1.75rem 2rem;
+  }
+}
+
+.privacy-legal-content .privacy-block + .privacy-block,
+.privacy-legal-content .privacy-intro + .privacy-block {
+  margin-top: 1rem;
+}
+
+.privacy-legal-content .privacy-block > h2,
+.privacy-legal-content > h2 {
+  margin: 0 0 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .privacy-legal-content .privacy-block > h2,
+  .privacy-legal-content > h2 {
+    font-size: 1.25rem;
+  }
+}
+
+.privacy-legal-content .privacy-block > h3,
+.privacy-legal-content > h3 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.privacy-legal-content .privacy-block > h4,
+.privacy-legal-content > h4 {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.privacy-legal-content p {
+  margin: 0 0 1rem;
+  color: var(--muted-foreground);
+}
+
+.privacy-legal-content p:last-child {
+  margin-bottom: 0;
+}
+
+.privacy-legal-content ul,
+.privacy-legal-content ol {
+  margin: 0.75rem 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.privacy-legal-content ul {
+  list-style-type: disc;
+}
+
+.privacy-legal-content ol {
+  list-style-type: decimal;
+}
+
+.privacy-legal-content li {
+  margin-bottom: 0.35rem;
+  color: var(--muted-foreground);
+}
+
+.privacy-legal-content li::marker {
+  color: var(--gold);
+}
+
+.privacy-legal-content a {
+  font-weight: 500;
+  color: var(--gold);
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.privacy-legal-content a:hover {
+  color: var(--gold-light);
+}
+
+.privacy-legal-content hr {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+.privacy-legal-content .privacy-footer {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.privacy-legal-content .privacy-footer p {
+  font-size: 0.8125rem;
+  color: color-mix(in srgb, var(--muted-foreground) 85%, transparent);
+}
