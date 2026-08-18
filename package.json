@@ -22,7 +22,8 @@
     "db:migrate:transfer-zones": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/migrate-transfer-zones.ts",
     "i18n:apply-patches": "node scripts/apply-locale-patches.mjs",
     "db:setup": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/setup-database.ts",
-    "admin:create": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/create-admin.ts"
+    "admin:create": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/create-admin.ts",
+    "admin:reset": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs scripts/reset-admin.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
