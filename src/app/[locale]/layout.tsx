@@ -40,6 +40,8 @@ export async function generateMetadata({
         { url: BRAND_IMAGES.icon192, type: "image/png", sizes: "192x192" },
         { url: BRAND_IMAGES.icon512, type: "image/png", sizes: "512x512" },
       ],
+      apple: [{ url: BRAND_IMAGES.icon192, type: "image/png", sizes: "192x192" }],
+      shortcut: [{ url: BRAND_IMAGES.icon192, type: "image/png", sizes: "192x192" }],
     },
     openGraph: {
       type: "website",
