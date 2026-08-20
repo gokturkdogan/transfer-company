@@ -28,6 +28,7 @@ import {
   mapErrorKeyToFieldHighlight,
 } from "@/features/booking/lib/error-messages";
 import { toReservationPassengerSnapshots, arePassengerDetailsValid } from "@/features/booking/lib/passenger-details";
+import { getTransferValidationIssue } from "@/features/booking/lib/transfer-step-validation";
 import { formatInternationalPhone } from "@/lib/phone/format";
 import { getTotalPassengerCount } from "@/features/booking/lib/passenger-count";
 import {
@@ -71,6 +72,7 @@ type BookingFlowContextValue = {
     outboundDate: string,
     outboundTime: string,
   ) => Promise<void>;
+  updateReturnSchedule: (returnDate: string, returnTime: string) => Promise<void>;
   updateLuggageCount: (largeLuggageCount: number) => Promise<void>;
   confirmVehicleSelection: () => Promise<void>;
   swapRouteDirection: () => Promise<void>;
@@ -271,6 +273,61 @@ export function BookingFlowProvider({
     dispatch({ type: "CONFIRM_VEHICLE_SELECTION" });
   }, [locale, state.quote, state.search, state.selectedVehicles]);
 
+  const updateReturnSchedule = useCallback(
+    async (returnDate: string, returnTime: string) => {
+      const search = { ...state.search, returnDate, returnTime };
+
+      if (state.selectedVehicles.length === 0) {
+        dispatch({ type: "UPDATE_SEARCH", search });
+        return;
+      }
+
+      const requestId = ++quoteRequestIdRef.current;
+
+      dispatch({
+        type: "UPDATE_SEARCH",
+        search: { returnDate, returnTime },
+        preserveFlow: true,
+      });
+      dispatch({ type: "QUOTE_LOADING" });
+
+      const body = buildQuoteRequest(search, locale, {
+        vehicles: state.selectedVehicles,
+        extras: state.selectedExtras,
+      });
+
+      const result = await fetchTransferQuote(body);
+
+      if (requestId !== quoteRequestIdRef.current) {
+        return;
+      }
+
+      if (!result.success) {
+        const errorKey = mapApiErrorToKey(result.error, result.status);
+
+        dispatch({
+          type: "QUOTE_ERROR",
+          errorKey,
+          fieldHighlight: mapErrorKeyToFieldHighlight(errorKey) ?? undefined,
+        });
+        return;
+      }
+
+      dispatch({
+        type: "QUOTE_SUCCESS",
+        quote: result.data,
+        searchSignature: buildSearchSignature(search),
+        preserveStep: true,
+      });
+    },
+    [
+      locale,
+      state.search,
+      state.selectedExtras,
+      state.selectedVehicles,
+    ],
+  );
+
   const updateLuggageCount = useCallback(
     async (largeLuggageCount: number) => {
       const search = {
@@ -392,6 +449,21 @@ export function BookingFlowProvider({
       return;
     }
 
+    const transferIssue = getTransferValidationIssue(state);
+
+    if (transferIssue) {
+      if (state.step === "review") {
+        dispatch({ type: "SET_STEP", step: "customer" });
+      }
+
+      dispatch({
+        type: "FLOW_ERROR",
+        errorKey: transferIssue.errorKey,
+        fieldHighlight: transferIssue.fieldHighlight,
+      });
+      return;
+    }
+
     const idempotencyKey = state.idempotencyKey ?? crypto.randomUUID();
     dispatch({ type: "ENSURE_IDEMPOTENCY_KEY", key: idempotencyKey });
     dispatch({ type: "SUBMIT_START" });
@@ -438,7 +510,7 @@ export function BookingFlowProvider({
       outboundFlightNumber: state.flight.outboundFlightNumber || undefined,
       returnFlightNumber:
         state.search.tripType === "ROUND_TRIP"
-          ? state.flight.returnFlightNumber || undefined
+          ? state.flight.returnFlightNumber.trim()
           : undefined,
       passengerCount: getTotalPassengerCount(state.search),
       infantCount: state.search.infantCount,
@@ -480,7 +552,12 @@ export function BookingFlowProvider({
         fieldHighlight: mapErrorKeyToFieldHighlight(errorKey) ?? undefined,
       });
 
-      if (errorKey.startsWith("errors.customer") || errorKey === "errors.passengerDetails") {
+      if (
+        errorKey.startsWith("errors.customer") ||
+        errorKey === "errors.passengerDetails" ||
+        errorKey === "errors.returnFlightNumber" ||
+        errorKey === "errors.schedule"
+      ) {
         dispatch({ type: "SET_STEP", step: "customer" });
       }
 
@@ -502,6 +579,7 @@ export function BookingFlowProvider({
       requestQuote,
       setSelectedExtras,
       updateOutboundSchedule,
+      updateReturnSchedule,
       updateLuggageCount,
       confirmVehicleSelection,
       swapRouteDirection,
@@ -516,6 +594,7 @@ export function BookingFlowProvider({
       requestQuote,
       setSelectedExtras,
       updateOutboundSchedule,
+      updateReturnSchedule,
       updateLuggageCount,
       confirmVehicleSelection,
       swapRouteDirection,

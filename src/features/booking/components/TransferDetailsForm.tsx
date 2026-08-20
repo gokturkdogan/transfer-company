@@ -11,11 +11,15 @@ import { FormDateTimeField } from "@/features/booking/components/FormDateTimeFie
 import { HotelSelector } from "@/features/booking/components/HotelSelector";
 import { LuggageCountField } from "@/features/booking/components/LuggageCountField";
 import { useBookingFlow } from "@/features/booking/context/booking-flow-context";
+import { cn } from "@/lib/utils";
 
 export function TransferDetailsForm() {
   const t = useTranslations("booking.transfer");
-  const { state, dispatch, updateOutboundSchedule } = useBookingFlow();
+  const { state, dispatch, updateOutboundSchedule, updateReturnSchedule } =
+    useBookingFlow();
   const { flight, search } = state;
+  const highlightReturnSchedule = state.fieldHighlight === "transfer.returnSchedule";
+  const highlightReturnFlight = state.fieldHighlight === "transfer.returnFlightNumber";
 
   return (
     <BookingFormSection
@@ -52,29 +56,50 @@ export function TransferDetailsForm() {
           <HotelSelector />
         </div>
 
-        <LuggageCountField />
-
-        {search.tripType === "ROUND_TRIP" && (
-          <BookingFormField
-            label={t("returnFlightNumber")}
-            htmlFor="return-flight"
-            className="lg:max-w-sm"
-          >
-            <BookingInput
-              id="return-flight"
-              placeholder={t("flightNumberPlaceholder")}
-              value={flight.returnFlightNumber}
-              onChange={(event) =>
-                dispatch({
-                  type: "UPDATE_FLIGHT",
-                  flight: { returnFlightNumber: event.target.value },
-                })
-              }
+        {search.tripType === "ROUND_TRIP" ? (
+          <div className="grid gap-4 lg:grid-cols-2">
+            <FormDateTimeField
+              id="return-datetime"
+              label={t("returnDateTime")}
+              required
+              dateValue={search.returnDate}
+              timeValue={search.returnTime}
+              minDate={search.outboundDate || undefined}
+              disabled={state.isLoadingQuote}
+              className={cn(
+                highlightReturnSchedule &&
+                  "rounded-xl ring-2 ring-destructive/40 ring-offset-2",
+              )}
+              onCommit={(returnDate, returnTime) => {
+                void updateReturnSchedule(returnDate, returnTime);
+              }}
             />
-          </BookingFormField>
-        )}
+            <BookingFormField
+              label={t("returnFlightNumber")}
+              htmlFor="return-flight"
+              required
+            >
+              <BookingInput
+                id="return-flight"
+                placeholder={t("flightNumberPlaceholder")}
+                value={flight.returnFlightNumber}
+                aria-invalid={highlightReturnFlight}
+                className={cn(
+                  highlightReturnFlight &&
+                    "border-destructive ring-2 ring-destructive/20",
+                )}
+                onChange={(event) =>
+                  dispatch({
+                    type: "UPDATE_FLIGHT",
+                    flight: { returnFlightNumber: event.target.value },
+                  })
+                }
+              />
+            </BookingFormField>
+          </div>
+        ) : null}
 
-        <CustomDestinationFields />
+        <LuggageCountField />
 
         {state.isLoadingQuote ? (
           <p className="text-sm text-muted-foreground">{t("updatingSchedule")}</p>

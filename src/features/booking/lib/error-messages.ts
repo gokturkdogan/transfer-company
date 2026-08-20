@@ -29,6 +29,10 @@ export function mapApiErrorToKey(
       return "errors.schedule";
     }
 
+    if (fieldErrors.returnFlightNumber?.length) {
+      return "errors.returnFlightNumber";
+    }
+
     return "errors.validation";
   }
 

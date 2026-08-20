@@ -102,6 +102,17 @@ export const createReservationInputSchema = z
       });
     }
 
+    if (
+      value.tripType === "ROUND_TRIP" &&
+      (!value.returnFlightNumber || value.returnFlightNumber.trim().length === 0)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Return flight number is required for round trips",
+        path: ["returnFlightNumber"],
+      });
+    }
+
     if (value.hotelLocationId && value.customDestination) {
       ctx.addIssue({
         code: "custom",

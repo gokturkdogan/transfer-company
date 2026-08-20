@@ -200,7 +200,17 @@ function applySearchChange(
 ): BookingFlowState {
   // Draft search edits must not clear an existing quote. Results stay visible
   // until the user explicitly runs search (`requestQuote` → QUOTE_SUCCESS).
-  return withSyncedPassengers({ ...state, errorKey: null }, search);
+  const next = withSyncedPassengers({ ...state, errorKey: null }, search);
+
+  if (
+    next.fieldHighlight === "transfer.returnSchedule" &&
+    next.search.returnDate &&
+    next.search.returnTime
+  ) {
+    return { ...next, fieldHighlight: null };
+  }
+
+  return next;
 }
 
 export function bookingFlowReducer(
@@ -429,6 +439,11 @@ export function bookingFlowReducer(
       return {
         ...state,
         flight: { ...state.flight, ...action.flight },
+        fieldHighlight:
+          state.fieldHighlight === "transfer.returnFlightNumber" &&
+          action.flight.returnFlightNumber !== undefined
+            ? null
+            : state.fieldHighlight,
       };
 
     case "SET_NOTES":

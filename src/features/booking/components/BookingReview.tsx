@@ -191,8 +191,7 @@ export function BookingReview() {
                 variant={cardVariant}
               />
             ) : null}
-            {state.search.tripType === "ROUND_TRIP" &&
-            state.flight.returnFlightNumber.trim() ? (
+            {state.search.tripType === "ROUND_TRIP" ? (
               <SummaryFactRow
                 label={t("returnFlightNumber")}
                 value={state.flight.returnFlightNumber.trim()}

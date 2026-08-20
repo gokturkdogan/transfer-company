@@ -68,7 +68,9 @@ export type BookingFieldHighlight =
   | "customer.fullName"
   | "customer.email"
   | "customer.phone"
-  | "passengers";
+  | "passengers"
+  | "transfer.returnSchedule"
+  | "transfer.returnFlightNumber";
 
 export type BookingFlowState = {
   step: BookingStep;
