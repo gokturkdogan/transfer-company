@@ -15,6 +15,7 @@ import {
   pdfSectionTitle,
 } from "@/features/admin/server/admin-pdf-layout";
 import type { DashboardData } from "@/features/admin/server/dashboard-admin-repository";
+import { formatPdfFilenameDateStamp } from "@/features/admin/lib/format-admin-datetime";
 import {
   ADMIN_PDF_COLORS,
   createAdminPdfDocument,
@@ -270,11 +271,7 @@ function recentReservationsTable(
 }
 
 export function buildDashboardPdfFilename(): string {
-  const dateStamp = new Intl.DateTimeFormat("tr-TR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
+  const dateStamp = formatPdfFilenameDateStamp(new Date());
 
   return `${adminCopy.dashboard.exportFilename}-${dateStamp}.pdf`;
 }

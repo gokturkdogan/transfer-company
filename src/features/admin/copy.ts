@@ -543,7 +543,7 @@ export const adminCopy = {
     exportPdf: "PDF rapor indir",
     exportPdfLoading: "PDF hazırlanıyor…",
     exportPdfFailed: "PDF oluşturulamadı. Lütfen tekrar deneyin.",
-    exportFilename: "dashboard-rapor",
+    exportFilename: "Royal Rhein rezervasyon raporu",
     exportPdfSubtitle: "Dashboard özeti",
     exportPdfGeneratedAt: (generatedAt: string) => `Oluşturulma: ${generatedAt}`,
     exportPdfFooter: (generatedAt: string) =>

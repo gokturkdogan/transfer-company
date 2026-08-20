@@ -24,7 +24,10 @@ export async function GET(
     const { id } = await context.params;
     const reservation = await reservationRepository.getReservationById(id);
     const buffer = await buildReservationPdfBuffer(reservation);
-    const filename = buildReservationPdfFilename(reservation.reference);
+    const filename = buildReservationPdfFilename(
+      reservation.customerName,
+      reservation.outboundAt,
+    );
 
     return new NextResponse(new Uint8Array(buffer), {
       status: 200,

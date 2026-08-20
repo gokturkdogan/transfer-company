@@ -11,3 +11,20 @@ export function formatReservationOutboundDate(date: Date): string {
     minute: "2-digit",
   }).format(date);
 }
+
+export function formatPdfFilenameDateStamp(date: Date): string {
+  return new Intl.DateTimeFormat("tr-TR", {
+    timeZone: PROJECT_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
+export function sanitizePdfFilenameSegment(value: string): string {
+  return value
+    .trim()
+    .replace(/[/\\:*?"<>|]+/g, "-")
+    .replace(/\s+/g, " ")
+    .replace(/\.+/g, ".");
+}

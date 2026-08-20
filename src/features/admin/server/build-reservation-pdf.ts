@@ -7,7 +7,11 @@ import {
   formatReservationStatus,
   formatTripType,
 } from "@/features/admin/copy";
-import { formatReservationOutboundDate } from "@/features/admin/lib/format-admin-datetime";
+import {
+  formatPdfFilenameDateStamp,
+  formatReservationOutboundDate,
+  sanitizePdfFilenameSegment,
+} from "@/features/admin/lib/format-admin-datetime";
 import {
   partitionReservationLineItems,
   resolveReservationLuggageCount,
@@ -99,10 +103,14 @@ function goldRule(): Record<string, unknown> {
   };
 }
 
-export function buildReservationPdfFilename(reference: string): string {
-  const safeReference = reference.replace(/[^\w-]+/g, "-");
+export function buildReservationPdfFilename(
+  customerName: string,
+  outboundAt: Date,
+): string {
+  const safeName = sanitizePdfFilenameSegment(customerName);
+  const dateStamp = formatPdfFilenameDateStamp(outboundAt);
 
-  return `${adminCopy.reservations.detail.exportFilename}-${safeReference}.pdf`;
+  return `${safeName} ${dateStamp}.pdf`;
 }
 
 export async function buildReservationPdfBuffer(
