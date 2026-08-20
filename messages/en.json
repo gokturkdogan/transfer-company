@@ -248,7 +248,7 @@
         },
         "payment": {
           "title": "Payment",
-          "value": "Cash or card, after the transfer"
+          "value": "Cash payment after the transfer"
         },
         "booking": {
           "title": "Online booking",

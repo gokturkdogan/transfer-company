@@ -248,7 +248,7 @@
         },
         "payment": {
           "title": "Ödeme",
-          "value": "Nakit veya kart, transfer sonrası"
+          "value": "Transfer sonrası nakit ödeme"
         },
         "booking": {
           "title": "Online rezervasyon",

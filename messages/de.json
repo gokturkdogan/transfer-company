@@ -248,7 +248,7 @@
         },
         "payment": {
           "title": "Zahlung",
-          "value": "Bar oder Karte, nach dem Transfer"
+          "value": "Barzahlung nach dem Transfer"
         },
         "booking": {
           "title": "Online-Buchung",

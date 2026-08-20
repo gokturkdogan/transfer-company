@@ -11,8 +11,17 @@ const withBundleAnalyzer = bundleAnalyzer({
 const cloudinaryCloudName =
   process.env.CLOUDINARY_CLOUD_NAME?.trim() || "pdyhhkjq";
 
+const pdfAssetIncludes = [
+  "./node_modules/dejavu-fonts-ttf/ttf/**/*.ttf",
+  "./public/images/brand/logo-emblem.png",
+];
+
 const nextConfig: NextConfig = {
   serverExternalPackages: ["pdfmake", "dejavu-fonts-ttf"],
+  outputFileTracingIncludes: {
+    "/admin/dashboard-report": pdfAssetIncludes,
+    "/admin/reservations/[id]/report": pdfAssetIncludes,
+  },
   images: {
     remotePatterns: [
       {

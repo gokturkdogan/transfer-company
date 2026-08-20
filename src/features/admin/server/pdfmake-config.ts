@@ -1,18 +1,21 @@
 import "server-only";
 
+import fs from "node:fs";
 import path from "node:path";
 
 // pdfmake ships as CJS; default export is a configured singleton.
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const pdfmake = require("pdfmake/js/index.js") as {
   setFonts: (fonts: Record<string, Record<string, string>>) => void;
-  setLocalAccessPolicy: (callback: () => boolean) => void;
+  setLocalAccessPolicy: (callback: (filePath: string) => boolean) => void;
+  setUrlAccessPolicy: (callback: (url: string) => boolean) => void;
   createPdf: (docDefinition: Record<string, unknown>) => {
     getBuffer: () => Promise<Buffer>;
   };
 };
 
 let pdfMakeConfigured = false;
+let brandLogoDataUrl: string | null = null;
 
 export const ADMIN_PDF_COLORS = {
   ink: "#0b0b10",
@@ -30,8 +33,30 @@ export const ADMIN_PDF_COLORS = {
   success: "#047857",
 } as const;
 
-export function getBrandLogoPath(): string {
+function getBrandLogoFilePath(): string {
   return path.join(process.cwd(), "public/images/brand/logo-emblem.png");
+}
+
+function isPathWithinRoot(filePath: string, rootPath: string): boolean {
+  const normalizedFilePath = path.resolve(filePath);
+  const normalizedRootPath = path.resolve(rootPath);
+
+  return (
+    normalizedFilePath === normalizedRootPath ||
+    normalizedFilePath.startsWith(`${normalizedRootPath}${path.sep}`)
+  );
+}
+
+export function getBrandLogoPath(): string {
+  if (brandLogoDataUrl) {
+    return brandLogoDataUrl;
+  }
+
+  const logoPath = getBrandLogoFilePath();
+  const logoBuffer = fs.readFileSync(logoPath);
+  brandLogoDataUrl = `data:image/png;base64,${logoBuffer.toString("base64")}`;
+
+  return brandLogoDataUrl;
 }
 
 export function ensurePdfMakeConfigured(): void {
@@ -43,6 +68,7 @@ export function ensurePdfMakeConfigured(): void {
     process.cwd(),
     "node_modules/dejavu-fonts-ttf/ttf",
   );
+  const resolvedFontDir = path.resolve(fontDir);
 
   pdfmake.setFonts({
     DejaVu: {
@@ -52,7 +78,10 @@ export function ensurePdfMakeConfigured(): void {
       bolditalics: path.join(fontDir, "DejaVuSans-BoldOblique.ttf"),
     },
   });
-  pdfmake.setLocalAccessPolicy(() => true);
+  pdfmake.setUrlAccessPolicy(() => false);
+  pdfmake.setLocalAccessPolicy((filePath) =>
+    isPathWithinRoot(filePath, resolvedFontDir),
+  );
   pdfMakeConfigured = true;
 }
 
