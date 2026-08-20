@@ -4,18 +4,26 @@ import { drizzle } from "drizzle-orm/neon-serverless";
 import * as schema from "../src/db/schema";
 import { hashPassword } from "../src/features/admin/server/password";
 
-const email = process.env.ADMIN_BOOTSTRAP_EMAIL?.trim().toLowerCase();
-const password = process.env.ADMIN_BOOTSTRAP_PASSWORD;
-const name = process.env.ADMIN_BOOTSTRAP_NAME?.trim() || "Royal Rhein Admin";
+function readBootstrapConfig(): {
+  email: string;
+  password: string;
+  name: string;
+} {
+  const email = process.env.ADMIN_BOOTSTRAP_EMAIL?.trim().toLowerCase();
+  const password = process.env.ADMIN_BOOTSTRAP_PASSWORD;
+  const name = process.env.ADMIN_BOOTSTRAP_NAME?.trim() || "Royal Rhein Admin";
 
-if (!email || !password) {
-  throw new Error(
-    "Set ADMIN_BOOTSTRAP_EMAIL and ADMIN_BOOTSTRAP_PASSWORD before running.",
-  );
-}
+  if (!email || !password) {
+    throw new Error(
+      "Set ADMIN_BOOTSTRAP_EMAIL and ADMIN_BOOTSTRAP_PASSWORD before running.",
+    );
+  }
 
-if (password.length < 8) {
-  throw new Error("ADMIN_BOOTSTRAP_PASSWORD must be at least 8 characters.");
+  if (password.length < 8) {
+    throw new Error("ADMIN_BOOTSTRAP_PASSWORD must be at least 8 characters.");
+  }
+
+  return { email, password, name };
 }
 
 const pool = new Pool({
@@ -26,6 +34,8 @@ const pool = new Pool({
 const db = drizzle(pool, { schema });
 
 async function main() {
+  const { email, password, name } = readBootstrapConfig();
+
   const removed = await db
     .delete(schema.adminUsers)
     .returning({ id: schema.adminUsers.id });
